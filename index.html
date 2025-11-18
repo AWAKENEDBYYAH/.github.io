@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <style>
-    /* RESET */
     *, *::before, *::after {
       margin: 0;
       padding: 0;
@@ -22,7 +21,6 @@
       background: radial-gradient(circle at top left, #182544 0%, #050814 55%, #020308 100%);
       color: #f9fafb;
       line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
     }
 
     a {
@@ -56,37 +54,14 @@
     .brand-block {
       display: flex;
       align-items: center;
-      gap: 0.9rem;
+      gap: 0.6rem;
     }
 
     .brand-logo {
-      width: clamp(55px, 5vw, 85px);
+      width: clamp(60px, 6vw, 90px);
       height: auto;
       object-fit: contain;
-      filter: drop-shadow(0 6px 12px rgba(0,0,0,0.55));
-    }
-
-    .brand-text {
-      display: flex;
-      flex-direction: column;
-      gap: 0.15rem;
-    }
-
-    .brand-title {
-      font-size: clamp(0.95rem, 1.2vw, 1.25rem);
-      font-weight: 700;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: #fbbf24;
-      text-shadow: 0 6px 14px rgba(0,0,0,0.8);
-    }
-
-    .brand-subtitle {
-      font-size: clamp(0.62rem, 1vw, 0.75rem);
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: #cbd5e1;
-      opacity: 0.9;
+      filter: drop-shadow(0 6px 12px rgba(0,0,0,0.7));
     }
 
     .header-tags {
@@ -103,7 +78,7 @@
       border: 1px solid rgba(255,255,255,0.18);
       text-transform: uppercase;
       letter-spacing: 0.16em;
-      background: linear-gradient(135deg, rgba(15,23,42,0.9), rgba(15,23,42,0.4));
+      background: rgba(255,255,255,0.06);
       backdrop-filter: blur(14px);
       display: inline-flex;
       align-items: center;
@@ -133,45 +108,25 @@
 
     @media (max-width: 900px) {
       .hero {
-        grid-template-columns: minmax(0, 1fr);
+        grid-template-columns: 1fr;
       }
     }
 
-    /* LEFT HERO PANEL */
+    /* LEFT PANEL */
 
     .hero-left {
       background: radial-gradient(circle at top left, #111827 0%, #020617 70%);
       border-radius: 26px;
-      padding: 2.25rem 2rem 2rem;
-      box-shadow:
-        0 26px 60px rgba(0,0,0,0.7),
-        0 0 0 1px rgba(148,163,184,0.06);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-left::before {
-      content: "";
-      position: absolute;
-      inset: -40%;
-      background:
-        radial-gradient(circle at 10% -10%, rgba(248,150,30,0.35), transparent 60%),
-        radial-gradient(circle at 100% 0%, rgba(56,189,248,0.18), transparent 55%);
-      opacity: 0.8;
-      pointer-events: none;
-    }
-
-    .hero-left-inner {
-      position: relative;
-      z-index: 1;
+      padding: 2.25rem 2rem;
+      box-shadow: 0 26px 60px rgba(0,0,0,0.7);
     }
 
     .eyebrow {
       font-size: 0.82rem;
       letter-spacing: 0.36em;
-      text-transform: uppercase;
       color: #facc15;
       margin-bottom: 0.6rem;
+      text-transform: uppercase;
     }
 
     .hero-title {
@@ -188,19 +143,7 @@
     .hero-title-main {
       font-size: 2.6rem;
       letter-spacing: 0.28em;
-      margin-top: 0.25rem;
       text-shadow: 0 14px 32px rgba(0,0,0,0.9);
-    }
-
-    @media (max-width: 520px) {
-      .hero-title-main {
-        font-size: 2.05rem;
-        letter-spacing: 0.18em;
-      }
-
-      .hero-title {
-        letter-spacing: 0.24em;
-      }
     }
 
     .hero-copy {
@@ -218,35 +161,23 @@
     }
 
     .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.55rem;
       padding: 0.78rem 1.6rem;
       border-radius: 999px;
       font-size: 0.9rem;
       font-weight: 600;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      border: 1px solid transparent;
       cursor: pointer;
-      transition: transform 0.16s ease, box-shadow 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      border: 1px solid transparent;
       white-space: nowrap;
     }
 
     .btn-primary {
       background: linear-gradient(120deg, #f59e0b, #fbbf24);
       color: #111827;
-      box-shadow:
-        0 10px 30px rgba(15,23,42,0.9),
-        0 0 0 1px rgba(249,250,251,0.14);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-1px) scale(1.02);
-      box-shadow:
-        0 16px 36px rgba(0,0,0,0.9),
-        0 0 0 1px rgba(249,250,251,0.24);
     }
 
     .btn-outline {
@@ -255,238 +186,19 @@
       color: #e5e7eb;
     }
 
-    .btn-outline:hover {
-      background: rgba(15,23,42,0.85);
-      transform: translateY(-1px);
-    }
-
-    .btn-icon {
-      font-size: 1.15rem;
-    }
-
-    .info-strip {
-      margin-top: 2rem;
-      padding-top: 1rem;
-      border-top: 1px solid rgba(148,163,184,0.32);
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 1.2rem;
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.2em;
-      color: #9ca3af;
-    }
-
-    .info-label {
-      font-size: 0.7rem;
-      color: #6b7280;
-      margin-bottom: 0.25rem;
-    }
-
-    .info-value {
-      color: #f9fafb;
-    }
-
-    @media (max-width: 640px) {
-      .info-strip {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    .featured-card {
-      margin-top: 1.85rem;
-      padding: 1.3rem 1.4rem 1.4rem;
-      background: radial-gradient(circle at top left, rgba(15,23,42,0.92), rgba(15,23,42,0.8));
-      border-radius: 22px;
-      border: 1px solid rgba(148,163,184,0.35);
-      box-shadow: 0 18px 40px rgba(0,0,0,0.7);
-    }
-
-    .featured-label {
-      font-size: 0.72rem;
-      letter-spacing: 0.24em;
-      text-transform: uppercase;
-      color: #9ca3af;
-      margin-bottom: 0.35rem;
-    }
-
-    .featured-title-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 0.85rem;
-    }
-
-    .featured-title {
-      font-size: 1rem;
-      font-weight: 600;
-    }
-
-    .featured-meta {
-      font-size: 0.72rem;
-      color: #9ca3af;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-    }
-
-    .player-row {
-      margin-top: 0.4rem;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    audio {
-      width: 220px;
-      max-width: 100%;
-      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.6));
-    }
-
-    .player-pill {
-      font-size: 0.72rem;
-      padding: 0.3rem 0.9rem;
-      border-radius: 999px;
-      background: rgba(22,163,74,0.16);
-      color: #bbf7d0;
-      border: 1px solid rgba(34,197,94,0.35);
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-    }
-
-    /* RIGHT HERO PANEL */
+    /* RIGHT PANEL */
 
     .hero-right {
-      position: relative;
       border-radius: 26px;
       overflow: hidden;
-      box-shadow:
-        0 26px 60px rgba(0,0,0,0.85),
-        0 0 0 1px rgba(148,163,184,0.18);
-      background: radial-gradient(circle at top right, #1d3557, #020617);
-      min-height: 340px;
+      box-shadow: 0 26px 60px rgba(0,0,0,0.85);
     }
 
-    .hero-image-wrapper {
-      position: relative;
-      width: 100%;
-      height: 100%;
-    }
-
-    .hero-image-wrapper img {
-      display: block;
+    .hero-right img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-    }
-
-    /* overlay tag bar */
-
-    .overlay-pill-bar {
-      position: absolute;
-      top: 1.4rem;
-      right: 1.4rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.45rem;
-      padding: 0.35rem 0.9rem;
-      border-radius: 999px;
-      background: radial-gradient(circle at 0% 0%, rgba(248,150,30,0.85), rgba(88,28,135,0.9));
-      font-size: 0.72rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      box-shadow: 0 10px 26px rgba(0,0,0,0.65);
-    }
-
-    .overlay-pill-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: #fbbf24;
-    }
-
-    /* MAIN OVERLAY TITLE INSIDE IMAGE */
-
-    .overlay-title {
-      position: absolute;
-      top: 7%;
-      left: 50%;
-      transform: translateX(-50%);
-      text-align: center;
-      color: rgba(249,250,251,0.92);
-      font-weight: 800;
-      font-size: clamp(18px, 2.8vw, 34px);
-      letter-spacing: 0.24em;
-      text-transform: uppercase;
-      width: 90%;
-      pointer-events: none;
-      text-shadow: 0 10px 24px rgba(0,0,0,0.75);
-    }
-
-    .overlay-title span {
       display: block;
-      margin-top: 4px;
-      font-weight: 600;
-      font-size: clamp(12px, 1.6vw, 20px);
-      letter-spacing: 0.22em;
-      color: rgba(249,250,251,0.9);
-    }
-
-    .hero-caption {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      padding: 1.2rem 1.6rem 1.5rem;
-      background: linear-gradient(to top, rgba(3,7,18,0.95), rgba(3,7,18,0.5), transparent);
-      font-size: 0.82rem;
-      color: #e5e7eb;
-    }
-
-    .hero-caption-title {
-      text-transform: uppercase;
-      letter-spacing: 0.22em;
-      font-size: 0.72rem;
-      color: #9ca3af;
-      margin-bottom: 0.25rem;
-    }
-
-    .hero-caption-text span {
-      color: #f59e0b;
-      font-weight: 600;
-    }
-
-    @media (max-width: 900px) {
-      .hero-right {
-        order: -1;
-      }
-      .overlay-title {
-        top: 9%;
-      }
-    }
-
-    @media (max-width: 640px) {
-      .shell {
-        padding-inline: 1.25rem;
-      }
-      .top-bar {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .header-tags {
-        justify-content: flex-start;
-      }
-      .brand-block {
-        gap: 0.6rem;
-      }
-      .brand-logo {
-        width: 58px;
-      }
-      .overlay-title {
-        top: 10%;
-        letter-spacing: 0.16em;
-      }
     }
 
     /* FOOTER */
@@ -499,10 +211,6 @@
       color: #9ca3af;
       text-align: center;
     }
-
-    .site-footer a {
-      color: #e5e7eb;
-    }
   </style>
 </head>
 
@@ -510,133 +218,48 @@
   <div class="page">
     <main class="shell">
 
-      <!-- TOP BRAND BAR -->
       <header class="top-bar">
         <div class="brand-block">
-          <!-- Transparent logo: make sure this path & filename match your repo -->
-          <img src="assets/images/abytransparent.png"
-               alt="Awakened By YAH Logo"
-               class="brand-logo" />
-
-          <div class="brand-text">
-            <span class="brand-title">AWAKENED BY YAH</span>
-            <span class="brand-subtitle">TRUTH-BASED SOUL</span>
-          </div>
+          <img src="abytransparent.png" class="brand-logo" alt="Awakened By YAH" />
         </div>
 
         <div class="header-tags">
-          <div class="pill">
-            <span class="pill-dot"></span>
-            <span>NEW MUSIC LIVE</span>
-          </div>
-          <div class="pill pill-gold">
-            <span>100% SET-APART</span>
-          </div>
+          <div class="pill"><span class="pill-dot"></span>NEW MUSIC LIVE</div>
+          <div class="pill pill-gold">100% SET-APART</div>
         </div>
       </header>
 
-      <!-- HERO -->
       <section class="hero">
 
-        <!-- LEFT PANEL -->
         <div class="hero-left">
-          <div class="hero-left-inner">
-            <p class="eyebrow">TRUTH-BASED • SET-APART</p>
+          <p class="eyebrow">TRUTH-BASED • SET-APART</p>
 
-            <h1 class="hero-title">
-              <span>SOUL • R&amp;B •</span>
-              <span class="hero-title-main">PRAISE</span>
-            </h1>
+          <h1 class="hero-title">
+            <span>SOUL • R&amp;B •</span>
+            <span class="hero-title-main">PRAISE</span>
+          </h1>
 
-            <p class="hero-copy">
-              Welcome to the official home of <strong>Awakened By YAH</strong> — music for the
-              Remnant that refuses to compromise. Press play, feel the conviction, and let your
-              spirit rise.
-            </p>
+          <p class="hero-copy">
+            Welcome to the official home of <strong>Awakened By YAH</strong> — music for the
+            Remnant that refuses to compromise. Press play, feel the conviction, and let your
+            spirit rise.
+          </p>
 
-            <div class="hero-cta-row">
-              <a href="#" class="btn btn-primary">
-                <span class="btn-icon">🎧</span>
-                <span>Listen &amp; Download</span>
-              </a>
-
-              <a href="#" class="btn btn-outline">
-                <span class="btn-icon">✉️</span>
-                <span>Join the Remnant List</span>
-              </a>
-            </div>
-
-            <div class="info-strip">
-              <div>
-                <p class="info-label">Latest Single</p>
-                <p class="info-value">“WE RISE”</p>
-              </div>
-              <div>
-                <p class="info-label">Genre</p>
-                <p class="info-value">Righteous R&amp;B / Soul</p>
-              </div>
-              <div>
-                <p class="info-label">For</p>
-                <p class="info-value">The Set-Apart Ones</p>
-              </div>
-            </div>
-
-            <div class="featured-card">
-              <p class="featured-label">Featured Single</p>
-              <div class="featured-title-row">
-                <p class="featured-title">WE RISE (Preview)</p>
-                <p class="featured-meta">Awakened By YAH • Truth-Based Soul</p>
-              </div>
-
-              <div class="player-row">
-                <audio controls>
-                  <!-- Replace with your actual preview file when ready -->
-                  <source src="assets/audio/werise-preview.mp3" type="audio/mpeg">
-                  Your browser does not support the audio element.
-                </audio>
-                <span class="player-pill">60-second preview — full download coming soon</span>
-              </div>
-            </div>
+          <div class="hero-cta-row">
+            <a href="#" class="btn btn-primary">🎧 Listen & Download</a>
+            <a href="#" class="btn btn-outline">Join The Remnant List</a>
           </div>
         </div>
 
-        <!-- RIGHT PANEL: IMAGE + OVERLAY TEXT -->
-        <aside class="hero-right">
-          <div class="hero-image-wrapper">
-            <!-- Replace src with your real hero cover image file -->
-            <img src="assets/images/aby-hero-cover.jpg"
-                 alt="Awakened By YAH artists" />
+        <!-- RIGHT IMAGE -->
+        <div class="hero-right">
+          <img src="abybanner.png" alt="Awakened By YAH Artists" />
+        </div>
 
-            <!-- Pill bar at top right -->
-            <div class="overlay-pill-bar">
-              <span class="overlay-pill-dot"></span>
-              <span>TRUTH-BASED • SET-APART • SOUL</span>
-            </div>
-
-            <!-- Main overlay title inside the picture -->
-            <div class="overlay-title">
-              AWAKENED BY YAH
-              <span>TRUTH-BASED SOUL</span>
-            </div>
-
-            <!-- Bottom caption -->
-            <div class="hero-caption">
-              <p class="hero-caption-title">Soundtrack For The Awakened</p>
-              <p class="hero-caption-text">
-                Music for those who know they are YAH’s <span>Remnant</span> — bold, holy,
-                and unashamed. Sing it, live it, and let the nations hear.
-              </p>
-            </div>
-          </div>
-        </aside>
       </section>
 
-      <!-- FOOTER -->
       <footer class="site-footer">
-        <p>More music, videos &amp; merch coming to <strong>AwakenedByYahMusic.com</strong>.</p>
-        <p>For bookings &amp; collaborations, email:
-          <a href="mailto:awakenedbyyahmusic@gmail.com">awakenedbyyahmusic@gmail.com</a>
-        </p>
+        More music, videos & merch coming to <strong>AwakenedByYahMusic.com</strong>.
       </footer>
 
     </main>
