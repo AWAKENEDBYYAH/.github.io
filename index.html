@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <style>
+    /* RESET */
     *, *::before, *::after {
       margin: 0;
       padding: 0;
@@ -21,6 +22,7 @@
       background: radial-gradient(circle at top left, #182544 0%, #050814 55%, #020308 100%);
       color: #f9fafb;
       line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
     }
 
     a {
@@ -54,7 +56,7 @@
     .brand-block {
       display: flex;
       align-items: center;
-      gap: 0.6rem;
+      gap: 0.8rem;
     }
 
     .brand-logo {
@@ -62,6 +64,29 @@
       height: auto;
       object-fit: contain;
       filter: drop-shadow(0 6px 12px rgba(0,0,0,0.7));
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15rem;
+    }
+
+    .brand-title {
+      font-size: clamp(0.95rem, 1.2vw, 1.25rem);
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #fbbf24;
+      text-shadow: 0 6px 14px rgba(0,0,0,0.8);
+    }
+
+    .brand-subtitle {
+      font-size: clamp(0.62rem, 1vw, 0.75rem);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #cbd5e1;
+      opacity: 0.9;
     }
 
     .header-tags {
@@ -78,7 +103,7 @@
       border: 1px solid rgba(255,255,255,0.18);
       text-transform: uppercase;
       letter-spacing: 0.16em;
-      background: rgba(255,255,255,0.06);
+      background: linear-gradient(135deg, rgba(15,23,42,0.9), rgba(15,23,42,0.4));
       backdrop-filter: blur(14px);
       display: inline-flex;
       align-items: center;
@@ -192,13 +217,14 @@
       border-radius: 26px;
       overflow: hidden;
       box-shadow: 0 26px 60px rgba(0,0,0,0.85);
+      background: radial-gradient(circle at top right, #1d3557, #020617);
     }
 
     .hero-right img {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      height: auto;      /* important: no cropping */
       display: block;
+      /* no object-fit so the full text shows */
     }
 
     /* FOOTER */
@@ -211,6 +237,19 @@
       color: #9ca3af;
       text-align: center;
     }
+
+    @media (max-width: 640px) {
+      .shell {
+        padding-inline: 1.25rem;
+      }
+      .top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .header-tags {
+        justify-content: flex-start;
+      }
+    }
   </style>
 </head>
 
@@ -218,9 +257,16 @@
   <div class="page">
     <main class="shell">
 
+      <!-- TOP BRAND BAR -->
       <header class="top-bar">
         <div class="brand-block">
-          <img src="abytransparent.png" class="brand-logo" alt="Awakened By YAH" />
+          <!-- Transparent logo in repo root -->
+          <img src="abytransparent.png" class="brand-logo" alt="" />
+
+          <div class="brand-text">
+            <span class="brand-title">AWAKENED BY YAH</span>
+            <span class="brand-subtitle">TRUTH-BASED SOUL</span>
+          </div>
         </div>
 
         <div class="header-tags">
@@ -229,8 +275,10 @@
         </div>
       </header>
 
+      <!-- HERO -->
       <section class="hero">
 
+        <!-- LEFT PANEL -->
         <div class="hero-left">
           <p class="eyebrow">TRUTH-BASED • SET-APART</p>
 
@@ -246,20 +294,20 @@
           </p>
 
           <div class="hero-cta-row">
-            <a href="#" class="btn btn-primary">🎧 Listen & Download</a>
+            <a href="#" class="btn btn-primary">🎧 Listen &amp; Download</a>
             <a href="#" class="btn btn-outline">Join The Remnant List</a>
           </div>
         </div>
 
-        <!-- RIGHT IMAGE -->
+        <!-- RIGHT PANEL: ARTIST IMAGE -->
         <div class="hero-right">
-          <img src="abybanner.png" alt="Awakened By YAH Artists" />
+          <img src="abybanner.png" alt="" />
         </div>
 
       </section>
 
       <footer class="site-footer">
-        More music, videos & merch coming to <strong>AwakenedByYahMusic.com</strong>.
+        More music, videos &amp; merch coming to <strong>AwakenedByYahMusic.com</strong>.
       </footer>
 
     </main>
