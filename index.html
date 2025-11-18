@@ -5,7 +5,6 @@
   <title>Awakened By YAH — Truth-Based Soul • R&B • Praise</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- MAIN STYLES -->
   <style>
     /* RESET */
     *, *::before, *::after {
@@ -31,7 +30,6 @@
       text-decoration: none;
     }
 
-    /* LAYOUT */
     .page {
       min-height: 100vh;
       display: flex;
@@ -45,7 +43,7 @@
       padding: 2rem 1.75rem 3rem;
     }
 
-    /* HEADER */
+    /* TOP BAR */
 
     .top-bar {
       display: flex;
@@ -58,21 +56,14 @@
     .brand-block {
       display: flex;
       align-items: center;
-      gap: 0.85rem;
+      gap: 0.9rem;
     }
 
-    .brand-icon {
-      width: 42px;
-      height: 42px;
-      border-radius: 999px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: radial-gradient(circle at 30% 20%, #ffd166, #f8961e 60%, #f3722c);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-      font-weight: 800;
-      font-size: 0.9rem;
-      letter-spacing: 0.08em;
+    .brand-logo {
+      width: clamp(55px, 5vw, 85px);
+      height: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 6px 12px rgba(0,0,0,0.55));
     }
 
     .brand-text {
@@ -81,18 +72,21 @@
       gap: 0.15rem;
     }
 
-    .brand-text span:first-child {
-      font-size: 0.83rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      opacity: 0.9;
-    }
-
-    .brand-text span:last-child {
-      font-size: 0.7rem;
+    .brand-title {
+      font-size: clamp(0.95rem, 1.2vw, 1.25rem);
+      font-weight: 700;
       letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: #9ca3af;
+      color: #fbbf24;
+      text-shadow: 0 6px 14px rgba(0,0,0,0.8);
+    }
+
+    .brand-subtitle {
+      font-size: clamp(0.62rem, 1vw, 0.75rem);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #cbd5e1;
+      opacity: 0.9;
     }
 
     .header-tags {
@@ -128,7 +122,7 @@
       color: #fbbf24;
     }
 
-    /* HERO */
+    /* HERO GRID */
 
     .hero {
       display: grid;
@@ -216,8 +210,6 @@
       color: #e5e7eb;
     }
 
-    /* CTA buttons */
-
     .hero-cta-row {
       margin-top: 1.8rem;
       display: flex;
@@ -272,8 +264,6 @@
       font-size: 1.15rem;
     }
 
-    /* INFO STRIP */
-
     .info-strip {
       margin-top: 2rem;
       padding-top: 1rem;
@@ -302,8 +292,6 @@
         grid-template-columns: minmax(0, 1fr);
       }
     }
-
-    /* FEATURED CARD */
 
     .featured-card {
       margin-top: 1.85rem;
@@ -342,8 +330,6 @@
       letter-spacing: 0.18em;
     }
 
-    /* AUDIO PLAYER WRAP */
-
     .player-row {
       margin-top: 0.4rem;
       display: flex;
@@ -369,7 +355,7 @@
       letter-spacing: 0.14em;
     }
 
-    /* RIGHT HERO PANEL (IMAGE + TEXT OVERLAY) */
+    /* RIGHT HERO PANEL */
 
     .hero-right {
       position: relative;
@@ -394,34 +380,7 @@
       object-fit: cover;
     }
 
-    /* MAIN OVERLAY TITLE INSIDE IMAGE */
-
-    .overlay-title {
-      position: absolute;
-      top: 7%;                   /* vertical position inside the picture */
-      left: 50%;
-      transform: translateX(-50%);
-      text-align: center;
-      color: rgba(249,250,251,0.92);
-      font-weight: 800;
-      font-size: clamp(18px, 2.8vw, 34px);
-      letter-spacing: 0.24em;
-      text-transform: uppercase;
-      width: 90%;
-      pointer-events: none;
-      text-shadow: 0 10px 24px rgba(0,0,0,0.75);
-    }
-
-    .overlay-title span {
-      display: block;
-      margin-top: 4px;
-      font-weight: 600;
-      font-size: clamp(12px, 1.6vw, 20px);
-      letter-spacing: 0.22em;
-      color: rgba(249,250,251,0.9);
-    }
-
-    /* TAG BAR AT TOP RIGHT */
+    /* overlay tag bar */
 
     .overlay-pill-bar {
       position: absolute;
@@ -446,7 +405,32 @@
       background: #fbbf24;
     }
 
-    /* CAPTION TEXT AT BOTTOM */
+    /* MAIN OVERLAY TITLE INSIDE IMAGE */
+
+    .overlay-title {
+      position: absolute;
+      top: 7%;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      color: rgba(249,250,251,0.92);
+      font-weight: 800;
+      font-size: clamp(18px, 2.8vw, 34px);
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      width: 90%;
+      pointer-events: none;
+      text-shadow: 0 10px 24px rgba(0,0,0,0.75);
+    }
+
+    .overlay-title span {
+      display: block;
+      margin-top: 4px;
+      font-weight: 600;
+      font-size: clamp(12px, 1.6vw, 20px);
+      letter-spacing: 0.22em;
+      color: rgba(249,250,251,0.9);
+    }
 
     .hero-caption {
       position: absolute;
@@ -474,7 +458,7 @@
 
     @media (max-width: 900px) {
       .hero-right {
-        order: -1; /* image on top on mobile */
+        order: -1;
       }
       .overlay-title {
         top: 9%;
@@ -491,6 +475,12 @@
       }
       .header-tags {
         justify-content: flex-start;
+      }
+      .brand-block {
+        gap: 0.6rem;
+      }
+      .brand-logo {
+        width: 58px;
       }
       .overlay-title {
         top: 10%;
@@ -522,10 +512,14 @@
       <!-- TOP BRAND BAR -->
       <header class="top-bar">
         <div class="brand-block">
-          <div class="brand-icon">ABY</div>
+          <!-- Transparent logo you just uploaded -->
+          <img src="assets/images/aby-transparent.png"
+               alt="Awakened By YAH Logo"
+               class="brand-logo" />
+
           <div class="brand-text">
-            <span>AWAKENED BY YAH</span>
-            <span>TRUTH-BASED SOUL</span>
+            <span class="brand-title">AWAKENED BY YAH</span>
+            <span class="brand-subtitle">TRUTH-BASED SOUL</span>
           </div>
         </div>
 
@@ -595,7 +589,7 @@
 
               <div class="player-row">
                 <audio controls>
-                  <!-- Replace this with your actual preview mp3 -->
+                  <!-- TODO: replace with your real preview file -->
                   <source src="assets/audio/werise-preview.mp3" type="audio/mpeg">
                   Your browser does not support the audio element.
                 </audio>
@@ -608,16 +602,17 @@
         <!-- RIGHT PANEL: IMAGE + OVERLAY TEXT -->
         <aside class="hero-right">
           <div class="hero-image-wrapper">
-            <!-- Replace with your actual image path -->
-            <img src="assets/images/aby-hero-cover.jpg" alt="Awakened By YAH artists" />
+            <!-- TODO: replace src with your real hero cover image -->
+            <img src="assets/images/aby-hero-cover.jpg"
+                 alt="Awakened By YAH artists" />
 
-            <!-- Tag bar -->
+            <!-- Pill bar at top right -->
             <div class="overlay-pill-bar">
               <span class="overlay-pill-dot"></span>
               <span>TRUTH-BASED • SET-APART • SOUL</span>
             </div>
 
-            <!-- Main overlay title INSIDE the image -->
+            <!-- Main overlay title inside the picture -->
             <div class="overlay-title">
               AWAKENED BY YAH
               <span>TRUTH-BASED SOUL</span>
@@ -638,7 +633,9 @@
       <!-- FOOTER -->
       <footer class="site-footer">
         <p>More music, videos &amp; merch coming to <strong>AwakenedByYahMusic.com</strong>.</p>
-        <p>For bookings &amp; collaborations, email: <a href="mailto:awakenedbyyahmusic@gmail.com">awakenedbyyahmusic@gmail.com</a></p>
+        <p>For bookings &amp; collaborations, email:
+          <a href="mailto:awakenedbyyahmusic@gmail.com">awakenedbyyahmusic@gmail.com</a>
+        </p>
       </footer>
 
     </main>
