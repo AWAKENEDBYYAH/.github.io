@@ -20,11 +20,7 @@
       --shadow-soft: 0 22px 45px rgba(0, 0, 0, 0.7);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: 'Poppins', sans-serif;
@@ -81,14 +77,8 @@
       padding-bottom:3px;
     }
 
-    .nav-links a:hover {
-      color:#fff;
-    }
-
-    .nav-links a.active {
-      color:#fff;
-      border-bottom:2px solid #facc15;
-    }
+    .nav-links a:hover { color:#fff; }
+    .nav-links a.active { color:#fff; border-bottom:2px solid #facc15; }
 
     /* PAGE TITLE */
     .albums-title{
@@ -184,9 +174,7 @@
       color:#e2e8f0;
     }
 
-    .tracklist-box li + li{
-      margin-top:.15rem;
-    }
+    .tracklist-box li + li{ margin-top:.15rem; }
 
     /* BUTTONS */
     .actions {
@@ -212,9 +200,9 @@
     }
 
     .btn-outline {
-      padding:.55rem 1.6rem;
+      padding:.55rem 1.8rem;
       border-radius:50px;
-      font-weight:500;
+      font-weight:600;
       text-transform:uppercase;
       letter-spacing:.15em;
       font-size:.75rem;
@@ -241,19 +229,6 @@
       margin-top:3rem;
       font-size:.8rem;
       color:var(--text-muted);
-    }
-
-    @media (max-width:600px){
-      .nav{
-        flex-direction:column;
-        align-items:flex-start;
-        gap:.75rem;
-      }
-      .nav-links{
-        width:100%;
-        display:flex;
-        justify-content:flex-end;
-      }
     }
   </style>
 </head>
@@ -282,82 +257,76 @@
   <!-- PAGE TITLE -->
   <h1 class="albums-title">Albums &amp; Projects</h1>
   <p class="albums-subtitle">
-    Preview the first five tracks from each project, stream on SoundCloud, then download the full albums on Gumroad.
+    Stream on SoundCloud & download full projects on Gumroad.
   </p>
 
   <!-- ALBUM GRID -->
   <div class="album-grid">
 
-    <!-- ALBUM 1: Kingdom Biz -->
+    <!-- ALBUM 1 -->
     <div class="album-card">
-      <img src="kingdom-biz-cover.png" alt="Kingdom Biz: Rise of the Remnant">
+      <img src="kingdom-biz-cover.png" alt="Kingdom Biz">
       <h2>Kingdom Biz: Rise of the Remnant</h2>
-      <p class="description">
-        A bold, unapologetic 5-track EP for those handling real Kingdom business — set-apart lyrics, heavy 808s, and righteous energy.
-      </p>
+      <p class="description">A bold 5-track EP built for obedience, identity, and Kingdom focus.</p>
 
       <div class="tracklist-box">
         <div class="tracklist-header">
-          <span class="tracklist-label">5-Track Preview</span>
-          <span class="tracklist-note">Full EP on Gumroad</span>
+          <span class="tracklist-label">Track Preview</span>
+          <span class="tracklist-note">Stream full list</span>
         </div>
         <ol>
           <li>Walk It Out</li>
           <li>Rise Of The Remnant</li>
           <li>We Rise</li>
-          <li>Unbroken Frequency (feat Truth Glyph The Scribe)</li>
-          <li>Unbroken Frequency (Remix)</li>
+          <li>Unbroken Frequency</li>
+          <li>Unbroken Frequency Remix</li>
         </ol>
       </div>
 
       <div class="actions">
-        <!-- TODO: Replace the # with your real SoundCloud playlist/album URL -->
-        <a href="https://soundcloud.com/YOUR-KINGDOM-BIZ-LINK" target="_blank" class="btn-outline">
+        <a href="https://on.soundcloud.com/eX6e1WIObPDW84ylYW" target="_blank" class="btn-outline">
           Listen on SoundCloud
         </a>
 
         <a href="https://remnant5.gumroad.com/l/kingdom-biz" target="_blank" class="btn-primary">
-          Purchase &amp; Download
+          Purchase & Download
         </a>
       </div>
 
-      <p class="purchase-note">Instant digital download • High-quality WAV EP</p>
+      <p class="purchase-note">Instant download • High-quality WAV</p>
     </div>
 
-    <!-- ALBUM 2: The Rise of Yasharal -->
+    <!-- ALBUM 2 -->
     <div class="album-card">
       <img src="rise-of-yasharal-cover.png" alt="The Rise of Yasharal">
       <h2>The Rise of Yasharal</h2>
-      <p class="description">
-        A 12-track prophetic journey from scattered to awakened — R&amp;B, hip-hop, and set-apart worship telling the story of Yasharal rising.
-      </p>
+      <p class="description">A 12-track prophetic journey of awakening and identity.</p>
 
       <div class="tracklist-box">
         <div class="tracklist-header">
-          <span class="tracklist-label">5-Track Preview</span>
-          <span class="tracklist-note">Full 12-track album on Gumroad</span>
+          <span class="tracklist-label">Track Preview</span>
+          <span class="tracklist-note">Stream full list</span>
         </div>
         <ol>
           <li>The Love I Have In Yahuah</li>
           <li>You're With Me</li>
           <li>Beneath Your Wings</li>
-          <li>Yahuah The Holy One Of Yasharal</li>
+          <li>Yahuah The Holy One</li>
           <li>Show Me Your Heart</li>
         </ol>
       </div>
 
       <div class="actions">
-        <!-- TODO: Replace the # with your real SoundCloud album/playlist URL -->
-        <a href="https://soundcloud.com/YOUR-RISE-OF-YASHARAL-LINK" target="_blank" class="btn-outline">
+        <a href="https://on.soundcloud.com/eX6e1WIObPDW84ylYW" target="_blank" class="btn-outline">
           Listen on SoundCloud
         </a>
 
         <a href="https://remnant5.gumroad.com/l/rise-of-yasharal" target="_blank" class="btn-primary">
-          Purchase &amp; Download
+          Purchase & Download
         </a>
       </div>
 
-      <p class="purchase-note">Instant digital download • 12-track WAV album • Minimum price $14.99+</p>
+      <p class="purchase-note">12-track WAV album • Min price $14.99+</p>
     </div>
 
   </div>
@@ -365,7 +334,7 @@
 </div>
 
 <footer>
-  &copy; <span id="year"></span> Awakened By YAH — All Rights Reserved
+  © <span id="year"></span> Awakened By YAH — All Rights Reserved
 </footer>
 
 <script>
