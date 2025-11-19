@@ -240,11 +240,6 @@
       color: #e5e7eb;
     }
 
-    .btn-small {
-      padding: 0.7rem 1.3rem;
-      font-size: 0.8rem;
-    }
-
     /* RIGHT HERO PANEL — image only */
 
     .hero-right {
@@ -354,74 +349,6 @@
       border-color: rgba(191,219,254,0.9);
     }
 
-    /* ALBUM GRID */
-
-    .album-grid {
-      margin-top: 1.4rem;
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 1.4rem;
-    }
-
-    @media (max-width: 900px) {
-      .album-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    .album-card {
-      border-radius: 18px;
-      overflow: hidden;
-      background: rgba(15,23,42,0.95);
-      border: 1px solid rgba(148,163,184,0.4);
-      box-shadow: 0 14px 32px rgba(0,0,0,0.75);
-      display: flex;
-      flex-direction: column;
-    }
-
-    .album-cover-wrap {
-      position: relative;
-      overflow: hidden;
-      aspect-ratio: 1 / 1;
-    }
-
-    .album-cover-wrap img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.22s ease;
-    }
-
-    .album-body {
-      padding: 1rem 1.1rem 1.2rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-    }
-
-    .album-title {
-      font-size: 1rem;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-    }
-
-    .album-meta {
-      font-size: 0.8rem;
-      color: #9ca3af;
-    }
-
-    .album-actions {
-      margin-top: 0.8rem;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.6rem;
-    }
-
-    .album-card:hover img {
-      transform: scale(1.04);
-    }
-
     /* YOUTUBE VIDEO GRID */
 
     .video-grid {
@@ -527,6 +454,11 @@
       color: #9ca3af;
     }
 
+    .btn-small {
+      padding: 0.7rem 1.3rem;
+      font-size: 0.8rem;
+    }
+
     /* COLOR THEMES */
 
     .theme-swatches {
@@ -621,15 +553,14 @@
       </header>
 
       <!-- QUICK LINK NAV -->
-     <nav class="quick-links">
-  <a href="#music">Music Player</a>
-  <a href="download-music.html">Download Music</a>
-  <a href="#videos">Videos</a>
-  <a href="#signup">Email Signup</a>
-  <a href="#themes">Color Themes</a>
-  <a href="#merch">Merch Store</a>
-</nav>
-
+      <nav class="quick-links">
+        <a href="#music">Music Player</a>
+        <a href="albums.html">Albums</a>
+        <a href="#videos">Videos</a>
+        <a href="#signup">Email Signup</a>
+        <a href="#themes">Color Themes</a>
+        <a href="#merch">Merch Store</a>
+      </nav>
 
       <!-- HERO -->
       <section class="hero">
@@ -651,7 +582,7 @@
 
           <div class="hero-cta-row">
             <a href="#music" class="btn btn-primary">🎧 Listen &amp; Download</a>
-            <a href="#albums" class="btn btn-outline">Support The Albums</a>
+            <a href="#signup" class="btn btn-outline">Join The Remnant List</a>
           </div>
         </div>
 
@@ -669,12 +600,12 @@
           <p class="section-kicker">Soundtrack For The Awakened</p>
           <h2 class="section-title">Music Player</h2>
           <p class="section-text">
-            Start with a taste of <strong>“We Rise”</strong>. This preview is just one piece —
-            full projects live in the albums below.
+            Start with a taste of <strong>“We Rise”</strong>. More singles and full projects
+            are on the way — all truth-based, set-apart soul.
           </p>
 
           <audio controls>
-            <source src="audio/werise.mp3" type="audio/mpeg" />
+            <source src="audio/werise-preview.mp3" type="audio/mpeg" />
             Your browser does not support the audio element.
           </audio>
 
@@ -682,81 +613,9 @@
             <a href="https://on.soundcloud.com/i63L7q3mKa8ax5xVee" target="_blank" rel="noopener">
               Listen on SoundCloud
             </a>
-            <a href="#albums">
-              View Full Albums
+            <a href="#" target="_blank" rel="noopener">
+              Add Spotify / Apple Link
             </a>
-          </div>
-        </div>
-      </section>
-
-      <!-- ALBUMS & PAID DOWNLOADS -->
-      <section id="albums" class="extra-section">
-        <div class="section-card">
-          <p class="section-kicker">Support The Work</p>
-          <h2 class="section-title">Albums &amp; Downloads</h2>
-          <p class="section-text">
-            When you purchase an album, you’re not just buying music — you’re helping keep
-            truth-based, set-apart sound going out to the four corners. Each album comes with
-            high-quality downloads of every track.
-          </p>
-
-          <div class="album-grid">
-
-            <!-- KINGDOM BIZ: RISE OF THE REMNANT -->
-            <article class="album-card">
-              <div class="album-cover-wrap">
-                <!-- upload this image as: kingdom-biz-cover.png (or update the file name) -->
-                <img src="kingdom-biz-cover.png" alt="Kingdom Biz: Rise of the Remnant Album Cover" />
-              </div>
-              <div class="album-body">
-                <h3 class="album-title">KINGDOM BIZ: RISE OF THE REMNANT</h3>
-                <p class="album-meta">
-                  5-track project • Bold, militant praise for the builders, providers, and
-                  Kingdom entrepreneurs of Yasharal.
-                </p>
-                <p class="album-meta">
-                  Includes: “We Rise” and 4 more anthems for the remnant on the frontline.
-                </p>
-                <div class="album-actions">
-                  <!-- Replace this link with your real product / store link -->
-                  <a href="https://your-store-link.com/kingdom-biz" target="_blank" rel="noopener" class="btn btn-primary btn-small">
-                    Purchase &amp; Download Album
-                  </a>
-                  <!-- Optional: link to a page with full tracklist/lyrics -->
-                  <a href="#" class="btn btn-outline btn-small">
-                    View Track List
-                  </a>
-                </div>
-              </div>
-            </article>
-
-            <!-- THE RISE OF YASHARAL -->
-            <article class="album-card">
-              <div class="album-cover-wrap">
-                <!-- upload this image as: rise-of-yasharal-cover.png (or update the file name) -->
-                <img src="rise-of-yasharal-cover.png" alt="The Rise of Yasharal Album Cover" />
-              </div>
-              <div class="album-body">
-                <h3 class="album-title">THE RISE OF YASHARAL</h3>
-                <p class="album-meta">
-                  15-track journey • From brokenness to restoration, this album follows the
-                  awakening of Yasharal from dry bones to standing army.
-                </p>
-                <p class="album-meta">
-                  Deep cuts, reflective songs, and declaration anthems for the scattered remnant.
-                </p>
-                <div class="album-actions">
-                  <!-- Replace this link with your real product / store link -->
-                  <a href="https://your-store-link.com/rise-of-yasharal" target="_blank" rel="noopener" class="btn btn-primary btn-small">
-                    Purchase &amp; Download Album
-                  </a>
-                  <a href="#" class="btn btn-outline btn-small">
-                    View Track List
-                  </a>
-                </div>
-              </div>
-            </article>
-
           </div>
         </div>
       </section>
@@ -767,13 +626,12 @@
           <p class="section-kicker">Watch &amp; Share</p>
           <h2 class="section-title">Videos</h2>
           <p class="section-text">
-            Dive into the sound and message of <strong>YAHUAH'S_REMNANT</strong>. These featured
-            videos carry the heartbeat of the Awakening — share them, replay them, and let them
-            work on the hearts of those who listen.
+            Add your Awakened By YAH music videos, visualizers, and teachings here. Each card
+            will open the video on YouTube in a new tab.
           </p>
 
           <div class="video-grid">
-            <!-- 1 -->
+            <!-- Example video cards – swap with your real links and thumbnails -->
             <div class="video-card">
               <a href="https://youtu.be/kzfJWSSkI7M?si=XYzO2Tfy1TLmE0cG" target="_blank" rel="noopener">
                 <div class="video-thumb-wrap">
@@ -781,12 +639,11 @@
                 </div>
                 <div class="video-info">
                   <h3>Can This Song Change Your Life?</h3>
-                  <p>Set-apart praise that speaks straight to the soul — let the lyrics ask the question for you.</p>
+                  <p>Set-apart soul stirring the hearts of the Remnant.</p>
                 </div>
               </a>
             </div>
 
-            <!-- 2 -->
             <div class="video-card">
               <a href="https://youtu.be/1OAVoq37Dko?si=bDp14nQPlGLU44p1" target="_blank" rel="noopener">
                 <div class="video-thumb-wrap">
@@ -794,25 +651,23 @@
                 </div>
                 <div class="video-info">
                   <h3>Rise Above CHALLENGES with the Power of Unity</h3>
-                  <p>Music for those fighting through trials, lifting up the power of unity in Yasharal.</p>
+                  <p>Music for standing together in faith and endurance.</p>
                 </div>
               </a>
             </div>
 
-            <!-- 3 -->
             <div class="video-card">
               <a href="https://youtu.be/DQJLaqlsi8E?si=81XgrXz_dDwMKyh-" target="_blank" rel="noopener">
                 <div class="video-thumb-wrap">
-                  <img src="https://img.youtube.com/vi/DQJLaqlsi8E/hqdefault.jpg" alt="Unbroken Frequency Remix: Is This the Anthem of the Remnant Rising?" />
+                  <img src="https://img.youtube.com/vi/DQJLaqlsi8E/hqdefault.jpg" alt="Unbroken Frequency Remix" />
                 </div>
                 <div class="video-info">
-                  <h3>Unbroken Frequency Remix: Is This the Anthem of the Remnant Rising?</h3>
-                  <p>High-energy remix for the Remnant — turn it up and let the unbroken frequency hit.</p>
+                  <h3>Unbroken Frequency Remix</h3>
+                  <p>Is this the anthem of the Remnant rising?</p>
                 </div>
               </a>
             </div>
 
-            <!-- 4 -->
             <div class="video-card">
               <a href="https://youtu.be/6QeUzd-GIm0?si=NJmNSKAA3wxF_3fD" target="_blank" rel="noopener">
                 <div class="video-thumb-wrap">
@@ -820,33 +675,31 @@
                 </div>
                 <div class="video-info">
                   <h3>This Song Will Touch Your Heart!</h3>
-                  <p>A tender, convicting track for quiet moments with YAHUAH.</p>
+                  <p>A message of comfort, conviction, and hope.</p>
                 </div>
               </a>
             </div>
 
-            <!-- 5 -->
             <div class="video-card">
               <a href="https://youtu.be/2rJvyafJJoY?si=XKQ9GixFyLKxRu-L" target="_blank" rel="noopener">
                 <div class="video-thumb-wrap">
-                  <img src="https://img.youtube.com/vi/2rJvyafJJoY/hqdefault.jpg" alt="This Song Will Lift Your Spirit! (Version 1)" />
+                  <img src="https://img.youtube.com/vi/2rJvyafJJoY/hqdefault.jpg" alt="This Song Will Lift Your Spirit! (1)" />
                 </div>
                 <div class="video-info">
-                  <h3>This Song Will Lift Your Spirit!</h3>
-                  <p>Uplifting praise to carry you through the day and refocus your mind on YAHUAH.</p>
+                  <h3>This Song Will Lift Your Spirit! (1)</h3>
+                  <p>Uplifting praise to strengthen weary hearts.</p>
                 </div>
               </a>
             </div>
 
-            <!-- 6 -->
             <div class="video-card">
               <a href="https://youtu.be/tuINdGY_XbM?si=qIXGEpFoRrgUupHM" target="_blank" rel="noopener">
                 <div class="video-thumb-wrap">
-                  <img src="https://img.youtube.com/vi/tuINdGY_XbM/hqdefault.jpg" alt="This Song Will Lift Your Spirit! (Version 2)" />
+                  <img src="https://img.youtube.com/vi/tuINdGY_XbM/hqdefault.jpg" alt="This Song Will Lift Your Spirit! (2)" />
                 </div>
                 <div class="video-info">
-                  <h3>This Song Will Lift Your Spirit!</h3>
-                  <p>Another powerful lift for the Remnant — replay it, share it, and let it minister.</p>
+                  <h3>This Song Will Lift Your Spirit! (2)</h3>
+                  <p>Another wave of set-apart sound for Yasharal.</p>
                 </div>
               </a>
             </div>
