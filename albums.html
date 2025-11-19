@@ -11,6 +11,7 @@
     :root {
       --bg: #020617;
       --accent: #f5c75c;
+      --accent-2: #f97316;
       --text-main: #ffffff;
       --text-muted: #a5b4fc;
       --card-bg: rgba(15, 23, 42, 0.96);
@@ -187,6 +188,15 @@
       margin-top:.15rem;
     }
 
+    /* BUTTONS */
+    .actions {
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:.4rem;
+      margin-top:.2rem;
+    }
+
     .btn-primary {
       background:linear-gradient(135deg,#facc15,#f97316);
       padding:.7rem 1.8rem;
@@ -196,15 +206,34 @@
       letter-spacing:.15em;
       color:#000;
       display:inline-block;
-      margin-top:.5rem;
       box-shadow:0 10px 25px rgba(249,115,22,.55);
       text-decoration:none;
+      font-size:.8rem;
+    }
+
+    .btn-outline {
+      padding:.55rem 1.6rem;
+      border-radius:50px;
+      font-weight:500;
+      text-transform:uppercase;
+      letter-spacing:.15em;
+      font-size:.75rem;
+      border:1px solid rgba(148,163,184,.8);
+      color:var(--text-muted);
+      text-decoration:none;
+      background:rgba(15,23,42,.9);
+    }
+
+    .btn-outline:hover {
+      border-color:#facc15;
+      color:#fff;
     }
 
     .purchase-note{
       font-size:.75rem;
       color:var(--text-muted);
-      margin-top:.4rem;
+      margin-top:.2rem;
+      text-align:center;
     }
 
     footer {
@@ -253,7 +282,7 @@
   <!-- PAGE TITLE -->
   <h1 class="albums-title">Albums &amp; Projects</h1>
   <p class="albums-subtitle">
-    Explore the sound of the remnant. Preview 5 tracks from each project, then grab the full downloads on Gumroad.
+    Preview the first five tracks from each project, stream on SoundCloud, then download the full albums on Gumroad.
   </p>
 
   <!-- ALBUM GRID -->
@@ -281,7 +310,17 @@
         </ol>
       </div>
 
-      <a href="https://remnant5.gumroad.com/l/kingdom-biz" target="_blank" class="btn-primary">Purchase &amp; Download</a>
+      <div class="actions">
+        <!-- TODO: Replace the # with your real SoundCloud playlist/album URL -->
+        <a href="https://soundcloud.com/YOUR-KINGDOM-BIZ-LINK" target="_blank" class="btn-outline">
+          Listen on SoundCloud
+        </a>
+
+        <a href="https://remnant5.gumroad.com/l/kingdom-biz" target="_blank" class="btn-primary">
+          Purchase &amp; Download
+        </a>
+      </div>
+
       <p class="purchase-note">Instant digital download • High-quality WAV EP</p>
     </div>
 
@@ -307,7 +346,17 @@
         </ol>
       </div>
 
-      <a href="https://remnant5.gumroad.com/l/rise-of-yasharal" target="_blank" class="btn-primary">Purchase &amp; Download</a>
+      <div class="actions">
+        <!-- TODO: Replace the # with your real SoundCloud album/playlist URL -->
+        <a href="https://soundcloud.com/YOUR-RISE-OF-YASHARAL-LINK" target="_blank" class="btn-outline">
+          Listen on SoundCloud
+        </a>
+
+        <a href="https://remnant5.gumroad.com/l/rise-of-yasharal" target="_blank" class="btn-primary">
+          Purchase &amp; Download
+        </a>
+      </div>
+
       <p class="purchase-note">Instant digital download • 12-track WAV album • Minimum price $14.99+</p>
     </div>
 
