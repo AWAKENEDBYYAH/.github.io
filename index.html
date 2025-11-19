@@ -240,6 +240,11 @@
       color: #e5e7eb;
     }
 
+    .btn-small {
+      padding: 0.7rem 1.3rem;
+      font-size: 0.8rem;
+    }
+
     /* RIGHT HERO PANEL — image only */
 
     .hero-right {
@@ -349,6 +354,74 @@
       border-color: rgba(191,219,254,0.9);
     }
 
+    /* ALBUM GRID */
+
+    .album-grid {
+      margin-top: 1.4rem;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.4rem;
+    }
+
+    @media (max-width: 900px) {
+      .album-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .album-card {
+      border-radius: 18px;
+      overflow: hidden;
+      background: rgba(15,23,42,0.95);
+      border: 1px solid rgba(148,163,184,0.4);
+      box-shadow: 0 14px 32px rgba(0,0,0,0.75);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .album-cover-wrap {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 1 / 1;
+    }
+
+    .album-cover-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.22s ease;
+    }
+
+    .album-body {
+      padding: 1rem 1.1rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .album-title {
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+    }
+
+    .album-meta {
+      font-size: 0.8rem;
+      color: #9ca3af;
+    }
+
+    .album-actions {
+      margin-top: 0.8rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .album-card:hover img {
+      transform: scale(1.04);
+    }
+
     /* YOUTUBE VIDEO GRID */
 
     .video-grid {
@@ -454,11 +527,6 @@
       color: #9ca3af;
     }
 
-    .btn-small {
-      padding: 0.7rem 1.3rem;
-      font-size: 0.8rem;
-    }
-
     /* COLOR THEMES */
 
     .theme-swatches {
@@ -555,6 +623,7 @@
       <!-- QUICK LINK NAV -->
       <nav class="quick-links">
         <a href="#music">Music Player</a>
+        <a href="#albums">Albums</a>
         <a href="#videos">Videos</a>
         <a href="#signup">Email Signup</a>
         <a href="#themes">Color Themes</a>
@@ -581,7 +650,7 @@
 
           <div class="hero-cta-row">
             <a href="#music" class="btn btn-primary">🎧 Listen &amp; Download</a>
-            <a href="#signup" class="btn btn-outline">Join The Remnant List</a>
+            <a href="#albums" class="btn btn-outline">Support The Albums</a>
           </div>
         </div>
 
@@ -599,8 +668,8 @@
           <p class="section-kicker">Soundtrack For The Awakened</p>
           <h2 class="section-title">Music Player</h2>
           <p class="section-text">
-            Start with a taste of <strong>“We Rise”</strong>. More singles and full projects
-            are on the way — all truth-based, set-apart soul.
+            Start with a taste of <strong>“We Rise”</strong>. This preview is just one piece —
+            full projects live in the albums below.
           </p>
 
           <audio controls>
@@ -612,9 +681,81 @@
             <a href="https://on.soundcloud.com/i63L7q3mKa8ax5xVee" target="_blank" rel="noopener">
               Listen on SoundCloud
             </a>
-            <a href="#" target="_blank" rel="noopener">
-              Add Spotify / Apple Link
+            <a href="#albums">
+              View Full Albums
             </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ALBUMS & PAID DOWNLOADS -->
+      <section id="albums" class="extra-section">
+        <div class="section-card">
+          <p class="section-kicker">Support The Work</p>
+          <h2 class="section-title">Albums &amp; Downloads</h2>
+          <p class="section-text">
+            When you purchase an album, you’re not just buying music — you’re helping keep
+            truth-based, set-apart sound going out to the four corners. Each album comes with
+            high-quality downloads of every track.
+          </p>
+
+          <div class="album-grid">
+
+            <!-- KINGDOM BIZ: RISE OF THE REMNANT -->
+            <article class="album-card">
+              <div class="album-cover-wrap">
+                <!-- upload this image as: kingdom-biz-cover.png (or update the file name) -->
+                <img src="kingdom-biz-cover.png" alt="Kingdom Biz: Rise of the Remnant Album Cover" />
+              </div>
+              <div class="album-body">
+                <h3 class="album-title">KINGDOM BIZ: RISE OF THE REMNANT</h3>
+                <p class="album-meta">
+                  5-track project • Bold, militant praise for the builders, providers, and
+                  Kingdom entrepreneurs of Yasharal.
+                </p>
+                <p class="album-meta">
+                  Includes: “We Rise” and 4 more anthems for the remnant on the frontline.
+                </p>
+                <div class="album-actions">
+                  <!-- Replace this link with your real product / store link -->
+                  <a href="https://your-store-link.com/kingdom-biz" target="_blank" rel="noopener" class="btn btn-primary btn-small">
+                    Purchase &amp; Download Album
+                  </a>
+                  <!-- Optional: link to a page with full tracklist/lyrics -->
+                  <a href="#" class="btn btn-outline btn-small">
+                    View Track List
+                  </a>
+                </div>
+              </div>
+            </article>
+
+            <!-- THE RISE OF YASHARAL -->
+            <article class="album-card">
+              <div class="album-cover-wrap">
+                <!-- upload this image as: rise-of-yasharal-cover.png (or update the file name) -->
+                <img src="rise-of-yasharal-cover.png" alt="The Rise of Yasharal Album Cover" />
+              </div>
+              <div class="album-body">
+                <h3 class="album-title">THE RISE OF YASHARAL</h3>
+                <p class="album-meta">
+                  15-track journey • From brokenness to restoration, this album follows the
+                  awakening of Yasharal from dry bones to standing army.
+                </p>
+                <p class="album-meta">
+                  Deep cuts, reflective songs, and declaration anthems for the scattered remnant.
+                </p>
+                <div class="album-actions">
+                  <!-- Replace this link with your real product / store link -->
+                  <a href="https://your-store-link.com/rise-of-yasharal" target="_blank" rel="noopener" class="btn btn-primary btn-small">
+                    Purchase &amp; Download Album
+                  </a>
+                  <a href="#" class="btn btn-outline btn-small">
+                    View Track List
+                  </a>
+                </div>
+              </div>
+            </article>
+
           </div>
         </div>
       </section>
