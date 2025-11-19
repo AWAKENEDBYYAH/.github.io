@@ -10,186 +10,186 @@
   <style>
     :root {
       --bg: #020617;
-      --bg-alt: #020617;
       --accent: #f5c75c;
-      --accent-soft: rgba(245, 199, 92, 0.18);
       --text-main: #ffffff;
       --text-muted: #a5b4fc;
       --card-bg: rgba(15, 23, 42, 0.96);
       --border-subtle: rgba(148, 163, 184, 0.6);
       --radius-xl: 24px;
-      --radius-lg: 18px;
       --shadow-soft: 0 22px 45px rgba(0, 0, 0, 0.7);
-      --transition-fast: 0.2s ease-out;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
     }
 
     body {
-      font-family: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      min-height: 100vh;
-      background:
-        radial-gradient(circle at top left, #1e293b 0, #020617 40%, #000 100%);
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at top left, #1e293b 0%, #020617 40%, #000 100%);
       color: var(--text-main);
-      display: flex;
-      flex-direction: column;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
+      margin: 0;
     }
 
     .page {
       max-width: 1100px;
-      margin: 0 auto;
-      padding: 1.75rem 1.25rem 3.25rem;
-      width: 100%;
+      margin: auto;
+      padding: 2rem 1.5rem;
     }
 
     /* NAV */
     .nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1.25rem;
-      padding-bottom: 1.25rem;
-      border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      border-bottom:1px solid rgba(148,163,184,0.35);
+      padding-bottom:1rem;
     }
 
-    .brand-mark {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 10%, #ffffff 0, #facc15 35%, #0b1120 85%);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+    .brand-area {
+      display:flex;
+      align-items:center;
+      gap:0.75rem;
+    }
+
+    .brand-mark img {
+      width:52px;
+      height:auto;
+      object-fit:contain;
+      display:block;
     }
 
     .brand-name {
-      font-size: 0.95rem;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
+      font-size:.95rem;
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:.12em;
     }
 
     .brand-tagline {
-      font-size: 0.75rem;
-      color: var(--text-muted);
+      font-size:.75rem;
+      color:var(--text-muted);
     }
 
     .nav-links a {
-      padding-bottom: 3px;
-      font-size: .9rem;
-      color: #cbd5f5;
-    }
-    .nav-links a.active {
-      border-bottom: 2px solid #facc15;
-      color: #fff;
+      text-decoration:none;
+      color:#cbd5f5;
+      margin-left:1.25rem;
+      font-size:.9rem;
+      position:relative;
     }
 
-    .albums-title {
+    .nav-links a:hover {
+      color:#fff;
+    }
+
+    .nav-links a.active {
+      color:#fff;
+      border-bottom:2px solid #facc15;
+      padding-bottom:3px;
+    }
+
+    /* GRID */
+    .albums-title{
       text-align:center;
-      margin: 1.5rem 0 .5rem;
+      margin-top:2.5rem;
       font-size:2rem;
-      letter-spacing: .1em;
       text-transform:uppercase;
+      letter-spacing:.15em;
     }
 
     .album-grid {
-      margin-top:2rem;
+      margin-top:2.5rem;
       display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+      grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
       gap:2rem;
     }
 
     .album-card {
       background:var(--card-bg);
-      border:1px solid var(--border-subtle);
+      padding:1.7rem;
       border-radius:var(--radius-xl);
-      padding:1.5rem;
+      border:1px solid var(--border-subtle);
       text-align:center;
       box-shadow:var(--shadow-soft);
     }
 
-    .album-card img{
+    .album-card img {
       width:100%;
-      border-radius:var(--radius-lg);
+      border-radius:18px;
       margin-bottom:1rem;
-      border:1px solid rgba(255,255,255,0.15);
     }
 
     .btn-primary {
-      display:inline-block;
       background:linear-gradient(135deg,#facc15,#f97316);
       padding:.7rem 1.8rem;
       border-radius:50px;
-      color:#000;
       font-weight:600;
       text-transform:uppercase;
       letter-spacing:.15em;
+      color:#000;
+      display:inline-block;
       margin-top:1rem;
       box-shadow:0 10px 25px rgba(249,115,22,.55);
     }
 
     footer {
       text-align:center;
-      font-size:.75rem;
-      color:#a5b4fc;
       margin-top:3rem;
+      font-size:.8rem;
+      color:var(--text-muted);
     }
   </style>
 </head>
+
 <body>
 <div class="page">
 
-<header class="nav">
-  <div class="brand-left">
-    <div class="brand-mark"></div>
-    <div>
-      <div class="brand-name">Awakened By YAH</div>
-      <div class="brand-tagline">Set-Apart R&B • Truth Music</div>
+  <!-- NAV -->
+  <header class="nav">
+    <div class="brand-area">
+      <div class="brand-mark">
+        <img src="abytransparent.png" alt="Awakened By YAH Logo">
+      </div>
+      <div>
+        <div class="brand-name">Awakened By YAH</div>
+        <div class="brand-tagline">Set-Apart R&B • Truth Music</div>
+      </div>
     </div>
+
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a class="active" href="albums.html">Albums</a>
+    </nav>
+  </header>
+
+  <!-- PAGE TITLE -->
+  <h1 class="albums-title">Albums & Projects</h1>
+
+  <!-- ALBUM GRID -->
+  <div class="album-grid">
+
+    <!-- ALBUM 1 -->
+    <div class="album-card">
+      <img src="kingdom-biz-cover.png" alt="Kingdom Biz: Rise of the Remnant">
+      <h2>Kingdom Biz: Rise of the Remnant</h2>
+      <p>A bold, unapologetic soundtrack for those walking in obedience and identity.</p>
+      <a href="https://remnant5.gumroad.com/l/kingdom-biz" target="_blank" class="btn-primary">Purchase & Download</a>
+    </div>
+
+    <!-- ALBUM 2 -->
+    <div class="album-card">
+      <img src="rise-of-yasharal-cover.png" alt="The Rise of Yasharal">
+      <h2>The Rise of Yasharal</h2>
+      <p>A 12-track prophetic journey of awakening, identity, and return.</p>
+      <a href="https://remnant5.gumroad.com/l/rise-of-yasharal" target="_blank" class="btn-primary">Purchase & Download</a>
+    </div>
+
   </div>
 
-  <nav class="nav-links">
-    <a href="index.html">Home</a>
-    <a href="albums.html" class="active">Albums</a>
-  </nav>
-</header>
-
-<h1 class="albums-title">Albums & Projects</h1>
-
-<div class="album-grid">
-
-  <!-- ALBUM: Kingdom Biz -->
-  <div class="album-card">
-    <img src="kingdom-biz-cover.png" alt="Kingdom Biz: Rise of the Remnant">
-    <h2>Kingdom Biz: Rise of the Remnant</h2>
-    <p>Bold, Trap-inspired, and set-apart. The soundtrack of those walking in purpose and obedience.</p>
-    <a href="https://remnant5.gumroad.com/l/kingdom-biz" target="_blank" class="btn-primary">Purchase & Download</a>
-  </div>
-
-  <!-- ALBUM: Rise of Yasharal -->
-  <div class="album-card">
-    <img src="rise-of-yasharal-cover.png" alt="The Rise of Yasharal">
-    <h2>The Rise of Yasharal</h2>
-    <p>A 12-track prophetic journey of awakening, identity, and the return of the remnant.</p>
-    <a href="https://remnant5.gumroad.com/l/rise-of-yasharal" target="_blank" class="btn-primary">Purchase & Download</a>
-  </div>
-
-</div>
 </div>
 
 <footer>
-  © <span id="year"></span> Awakened By YAH — All Rights Reserved
+  &copy; <span id="year"></span> Awakened By YAH — All Rights Reserved
 </footer>
 
 <script>
-  document.getElementById("year").textContent = new Date().getFullYear();
+document.getElementById("year").textContent = new Date().getFullYear();
 </script>
 
 </body>
