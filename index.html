@@ -433,21 +433,6 @@
       align-items: center;
     }
 
-    .signup-form input[type="email"] {
-      flex: 1;
-      min-width: 220px;
-      padding: 0.7rem 0.9rem;
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.6);
-      background: rgba(15,23,42,0.95);
-      color: #e5e7eb;
-      font-size: 0.9rem;
-    }
-
-    .signup-form input::placeholder {
-      color: #6b7280;
-    }
-
     .signup-note {
       margin-top: 0.65rem;
       font-size: 0.78rem;
@@ -600,12 +585,14 @@
           <p class="section-kicker">Soundtrack For The Awakened</p>
           <h2 class="section-title">Music Player</h2>
           <p class="section-text">
-            Start with a taste of <strong>“We Rise”</strong>. More singles and full projects
+            Start with a taste of <strong>“Show Me Your Heart”</strong>. More singles and full projects
             are on the way — all truth-based, set-apart soul.
           </p>
 
-          <audio controls>
-            <source src="audio/werise-preview.mp3" type="audio/mpeg" />
+          <!-- UPDATED AUDIO PLAYER -->
+          <!-- Make sure this file path matches your actual file name & location -->
+          <audio id="main-audio" controls autoplay preload="auto">
+            <source src="audio/show-me-your-heart.mp3" type="audio/mpeg" />
             Your browser does not support the audio element.
           </audio>
 
@@ -717,14 +704,14 @@
             live sessions, behind-the-scenes creation, and updates on truth-based projects.
           </p>
 
-          <form class="signup-form" action="mailto:mayakaalbenyasharal@gmail.com" method="post" enctype="text/plain">
-            <input type="email" name="email" placeholder="Enter your email address" required />
-            <button type="submit" class="btn btn-primary btn-small">Join The Remnant List</button>
-          </form>
+          <!-- SECURE EMBEDDED FORM (EO Campaign) -->
+          <div class="signup-form">
+            <script async src="https://eocampaign1.com/form/6bc338e0-c532-11f0-9c5d-bdac12d6eac9.js"
+                    data-form="6bc338e0-c532-11f0-9c5d-bdac12d6eac9"></script>
+          </div>
 
           <p class="signup-note">
-            When you click “Join”, your email app will open with a message to Awakened By YAH.
-            Just hit send so we can add you to the list.
+            Your email is submitted securely over HTTPS. No mail app needed — just enter your address and join.
           </p>
         </div>
       </section>
@@ -792,5 +779,21 @@
 
     </main>
   </div>
+
+  <!-- AUTOPLAY HELPER SCRIPT -->
+  <script>
+    window.addEventListener('load', function () {
+      const audio = document.getElementById('main-audio');
+      if (!audio) return;
+
+      // Try to start playback; if blocked, user can still press play manually
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(function (error) {
+          console.log('Autoplay was blocked by the browser:', error);
+        });
+      }
+    });
+  </script>
 </body>
 </html>
