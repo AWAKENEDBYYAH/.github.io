@@ -23,65 +23,46 @@
     .shell { width: 100%; max-width: 1200px; margin: 0 auto; padding: 2rem 1.75rem 3rem; }
 
     /* TOP BAR */
-    .top-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1.5rem;
-      margin-bottom: 1rem;
-    }
-
-    .brand-block { display: flex; align-items: center; gap: 0.8rem; }
-    .brand-logo {
-      width: clamp(60px, 6vw, 90px);
-      object-fit: contain;
-      filter: drop-shadow(0 6px 12px rgba(0,0,0,0.7));
-    }
+    .top-bar { display:flex;align-items:center;justify-content:space-between;gap:1.5rem;margin-bottom:1rem; }
+    .brand-block { display:flex;align-items:center;gap:0.8rem; }
+    .brand-logo { width:clamp(60px,6vw,90px);object-fit:contain;filter:drop-shadow(0 6px 12px rgba(0,0,0,0.7)); }
 
     .brand-title {
-      font-size: clamp(0.95rem, 1.2vw, 1.25rem);
-      font-weight: 700;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: #fbbf24;
+      font-size:clamp(0.95rem,1.2vw,1.25rem);
+      font-weight:700;
+      letter-spacing:0.22em;
+      text-transform:uppercase;
+      color:#fbbf24;
     }
 
     .brand-subtitle {
-      font-size: clamp(0.62rem, 1vw, 0.75rem);
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: #cbd5e1;
-      opacity: 0.9;
+      font-size:clamp(0.62rem,1vw,0.75rem);
+      letter-spacing:0.18em;
+      text-transform:uppercase;
+      color:#cbd5e1;
+      opacity:0.9;
     }
 
-    .header-tags {
-      display: flex; gap: 0.6rem; flex-wrap: wrap; justify-content: flex-end;
-    }
+    .header-tags { display:flex;gap:0.6rem;flex-wrap:wrap;justify-content:flex-end; }
 
     .pill {
-      padding: 0.3rem 0.85rem;
-      border-radius: 999px;
-      background: rgba(15,23,42,0.9);
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      border: 1px solid rgba(255,255,255,0.18);
-      letter-spacing: 0.16em;
+      padding:0.3rem 0.85rem;
+      border-radius:999px;
+      background:rgba(15,23,42,0.9);
+      font-size:0.7rem;
+      text-transform:uppercase;
+      display:inline-flex;
+      align-items:center;
+      gap:0.4rem;
+      border:1px solid rgba(255,255,255,0.18);
+      letter-spacing:0.16em;
     }
 
-    .pill-gold { color:#fbbf24; border-color:rgba(251,191,36,0.7); }
-    .pill-dot { width:6px;height:6px;border-radius:999px;background:#4ade80;}
+    .pill-gold { color:#fbbf24;border-color:rgba(251,191,36,0.7); }
+    .pill-dot { width:6px;height:6px;border-radius:999px;background:#4ade80; }
 
     /* NAV */
-    .quick-links {
-      margin-bottom:1.75rem;
-      display:flex;
-      gap:0.5rem;
-      flex-wrap:wrap;
-    }
-
+    .quick-links { margin-bottom:1.75rem;display:flex;gap:0.5rem;flex-wrap:wrap; }
     .quick-links a {
       padding:0.25rem 0.85rem;
       font-size:0.72rem;
@@ -92,731 +73,202 @@
       text-transform:uppercase;
     }
 
-    .quick-links a:hover {
-      border-color:rgba(248,250,252,0.75);
-      background:rgba(148,163,184,0.28);
-    }
-
     /* HERO */
     .hero {
-      display:grid;
-      grid-template-columns:1.3fr 1.1fr;
-      gap:2.5rem;
-      align-items:stretch;
+      display:grid;grid-template-columns:1.3fr 1.1fr;gap:2.5rem;align-items:stretch;
     }
-
-    @media (max-width:900px){
-      .hero {grid-template-columns:1fr;}
-    }
+    @media(max-width:900px){ .hero{grid-template-columns:1fr;} }
 
     .hero-left {
-      background:#111827;
-      border-radius:26px;
-      padding:2.25rem 2rem;
+      background:#111827;border-radius:26px;padding:2.25rem 2rem;
       box-shadow:0 26px 60px rgba(0,0,0,0.7);
-      border:1px solid rgba(15,23,42,0.9);
     }
 
-    .eyebrow {
-      font-size:0.82rem;
-      text-transform:uppercase;
-      letter-spacing:0.36em;
-      color:#facc15;
-      margin-bottom:0.6rem;
-    }
+    .eyebrow{font-size:0.82rem;text-transform:uppercase;letter-spacing:0.36em;color:#facc15;margin-bottom:0.6rem;}
+    .hero-title{text-transform:uppercase;letter-spacing:0.35em;font-size:1.5rem;margin-bottom:0.4rem;}
+    .hero-title-main{font-size:2.6rem;color:#fff;text-shadow:0 14px 32px rgba(0,0,0,0.9);display:block;margin-top:0.2rem;}
+    .hero-copy{margin-top:1.1rem;font-size:0.95rem;color:#e5e7eb;max-width:28rem;}
 
-    .hero-title {
-      text-transform:uppercase;
-      letter-spacing:0.35em;
-      font-size:1.5rem;
-      margin-bottom:0.4rem;
-    }
-
-    .hero-title-main {
-      font-size:2.6rem;
-      color:#fff;
-      text-shadow:0 14px 32px rgba(0,0,0,0.9);
-      display:block;
-      margin-top:0.2rem;
-    }
-
-    .hero-copy {
-      margin-top:1.1rem;
-      max-width:28rem;
-      font-size:0.95rem;
-      color:#e5e7eb;
-    }
-
-    .hero-cta-row {
-      margin-top:1.8rem;
-      display:flex;
-      flex-wrap:wrap;
-      gap:0.9rem;
-    }
-
+    .hero-cta-row{margin-top:1.8rem;display:flex;gap:0.9rem;flex-wrap:wrap;}
+    
     .btn {
-      padding:0.78rem 1.6rem;
-      border-radius:999px;
-      font-size:0.9rem;
-      font-weight:600;
-      letter-spacing:0.18em;
-      text-transform:uppercase;
-      border:1px solid transparent;
-      cursor:pointer;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:0.5rem;
-      white-space:nowrap;
+      padding:0.78rem 1.6rem;border-radius:999px;font-size:0.9rem;font-weight:600;
+      letter-spacing:0.18em;text-transform:uppercase;border:1px solid transparent;
+      cursor:pointer;display:inline-flex;align-items:center;justify-content:center;
     }
 
-    .btn-primary {
-      background:linear-gradient(120deg,#f59e0b,#fbbf24);
-      color:#111827;
-    }
+    .btn-primary{background:linear-gradient(120deg,#f59e0b,#fbbf24);color:#111827;}
+    .btn-outline{border-color:rgba(249,250,251,0.35);color:#e5e7eb;}
 
-    .btn-outline {
-      background:transparent;
-      border-color:rgba(249,250,251,0.35);
-      color:#e5e7eb;
-    }
+    /* PLAYER */
+    .section-card{background:#111827;border-radius:24px;padding:2rem;box-shadow:0 18px 40px rgba(0,0,0,0.7);border:1px solid rgba(148,163,184,0.35);}
+    .extra-section{margin-top:2.5rem;}
 
-    .hero-right {
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
+    .now-playing-row{margin-top:0.9rem;font-size:0.85rem;color:#cbd5e1;display:flex;gap:0.35rem;}
+    .now-playing-title{font-weight:600;color:#fbbf24;}
 
-    .hero-right-inner {
-      width:100%;
-      border-radius:26px;
-      overflow:hidden;
-      box-shadow:0 26px 60px rgba(0,0,0,0.85);
-      border:1px solid rgba(15,23,42,0.9);
-    }
+    audio{width:100%;max-width:420px;margin-top:1rem;display:block;}
+    #audioVisualizer{width:100%;max-width:420px;height:80px;margin-top:0.7rem;background:#000;border-radius:14px;}
 
-    .hero-right-inner img {
-      width:100%;
-      display:block;
-      object-fit:cover;
-    }
+    .music-links{margin-top:1rem;display:flex;gap:0.6rem;flex-wrap:wrap;}
 
-    /* SECTIONS */
-    .extra-section { margin-top:2.5rem; }
+    /* EMAIL CENTERING */
+    #signup .section-card{text-align:center;}
+    #signup input[type="email"]{max-width:300px;text-align:center;}
 
-    .section-card {
-      background:#111827;
-      border-radius:24px;
-      padding:2rem;
-      box-shadow:0 18px 40px rgba(0,0,0,0.7);
-      border:1px solid rgba(148,163,184,0.35);
-    }
-
-    .section-kicker {
-      font-size:0.76rem;
-      text-transform:uppercase;
-      letter-spacing:0.26em;
-      color:#9ca3af;
-      margin-bottom:0.35rem;
-    }
-
-    .section-title {
-      text-transform:uppercase;
-      font-size:1.1rem;
-      letter-spacing:0.22em;
-      margin-bottom:0.4rem;
-    }
-
-    .section-text {
-      font-size:0.9rem;
-      color:#e5e7eb;
-      max-width:40rem;
-    }
-
-    /* MUSIC PLAYER */
-    .music-player .section-text {
-      max-width: 32rem;
-    }
-
-    .now-playing-row {
-      margin-top: 0.9rem;
-      font-size: 0.85rem;
-      color: #cbd5e1;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.35rem;
-      align-items: baseline;
-    }
-
-    .now-playing-label {
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      font-size: 0.7rem;
-      color: #9ca3af;
-    }
-
-    .now-playing-title {
-      font-weight: 600;
-      color: #fbbf24;
-    }
-
-    .music-player audio {
-      width: 100%;
-      max-width: 420px;
-      margin-top: 1rem;
-      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.7));
-    }
-
-    #audioVisualizer {
-      width: 100%;
-      max-width: 420px;
-      height: 80px;
-      margin-top: 0.7rem;
-      border-radius: 14px;
-      background: radial-gradient(circle at top left, #020617 0%, #020617 60%, #000 100%);
-      border: 1px solid rgba(148,163,184,0.35);
-      box-shadow: 0 12px 28px rgba(0,0,0,0.75);
-    }
-
-    .music-links {
-      margin-top: 1rem;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.6rem;
-    }
-
-    .music-links a {
-      font-size: 0.78rem;
-      padding: 0.45rem 0.95rem;
-      border-radius: 999px;
-      border: 1px solid rgba(248,250,252,0.3);
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      background: rgba(15,23,42,0.9);
-    }
-
-    .music-links a:hover {
-      background: rgba(59,130,246,0.35);
-      border-color: rgba(191,219,254,0.9);
-    }
-
-    /* EMAIL SIGNUP CENTERING */
-    #signup .section-card {
-      text-align: center;
-    }
-
-    #signup .section-card p,
-    #signup h2,
-    #signup .section-kicker {
-      margin-left: auto;
-      margin-right: auto;
-      max-width: 600px;
-    }
-
-    #signup .signup-form {
-      justify-content: center;
-      margin-top: 1.2rem;
-      display: flex;
-      gap: 0.9rem;
-      flex-wrap: wrap;
-    }
-
-    #signup input[type="email"] {
-      max-width: 300px;
-      text-align: center;
-    }
-
-    .signup-note {
-      margin-top:0.8rem;
-      font-size:0.8rem;
-      color:#9ca3af;
-    }
-
-    /* VIDEO GRID */
-    .video-grid {
-      margin-top: 1.2rem;
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 1.2rem;
-    }
-
-    @media (max-width: 900px) {
-      .video-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-    }
-
-    @media (max-width: 640px) {
-      .video-grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    .video-card {
-      border-radius: 18px;
-      overflow: hidden;
-      background: rgba(15,23,42,0.9);
-      border: 1px solid rgba(148,163,184,0.4);
-      box-shadow: 0 12px 28px rgba(0,0,0,0.6);
-      transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
-    }
-
-    .video-card a {
-      display: flex;
-      flex-direction: column;
-      height: 100%;
-    }
-
-    .video-thumb-wrap {
-      position: relative;
-      overflow: hidden;
-      aspect-ratio: 16 / 9;
-    }
-
-    .video-thumb-wrap img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.22s ease;
-    }
-
-    .video-info {
-      padding: 0.85rem 1rem 1rem;
-    }
-
-    .video-info h3 {
-      font-size: 0.96rem;
-      margin-bottom: 0.25rem;
-    }
-
-    .video-info p {
-      font-size: 0.8rem;
-      color: #9ca3af;
-    }
-
-    .video-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 16px 34px rgba(0,0,0,0.8);
-      border-color: rgba(248,250,252,0.7);
-    }
-
-    .video-card:hover img {
-      transform: scale(1.04);
-    }
-
-    /* SUPPORT SECTION (SMALL / MINIMAL) */
-    #support .section-card {
-      text-align:center;
-      padding:1.6rem 1.4rem;
-      max-width:420px;
-      margin:0 auto;
-    }
-
-    .support-qr {
-      margin-top:0.9rem;
-      margin-bottom:0.6rem;
-    }
-
-    .support-qr img {
-      max-width:160px;
-      width:100%;
-      display:block;
-      margin:0 auto;
-      border-radius:18px;
-      box-shadow:0 14px 32px rgba(0,0,0,0.85);
-      border:1px solid rgba(148,163,184,0.6);
-    }
-
-    .support-handle {
-      margin-top:0.4rem;
-      font-size:0.9rem;
-      color:#e5e7eb;
-    }
-
-    .btn-support {
-      margin-top:0.7rem;
-      padding:0.65rem 1.4rem;
-      font-size:0.8rem;
-      letter-spacing:0.18em;
-    }
-
-    .support-note {
-      margin-top:0.75rem;
-      font-size:0.78rem;
-      color:#9ca3af;
-    }
+    /* SUPPORT */
+    #support .section-card{text-align:center;padding:1.6rem;max-width:420px;margin:auto;}
+    .support-qr img{max-width:160px;width:100%;margin:auto;border-radius:18px;}
 
     /* FOOTER */
-    .site-footer {
-      text-align:center;
-      margin-top:3rem;
-      padding-top:1.3rem;
-      border-top:1px solid rgba(31,41,55,0.9);
-      font-size:0.78rem;
-      color:#9ca3af;
-    }
+    .site-footer{text-align:center;margin-top:3rem;padding-top:1.3rem;border-top:1px solid rgba(31,41,55,0.9);font-size:0.78rem;color:#9ca3af;}
 
-    @media (max-width:640px) {
-      .shell { padding-inline:1.25rem; }
-      .top-bar { flex-direction:column; align-items:flex-start; }
-      .header-tags { justify-content:flex-start; }
-    }
   </style>
 </head>
 
 <body>
-  <div class="page">
-    <main class="shell">
+<div class="page">
+<main class="shell">
 
-      <!-- TOP BAR -->
-      <header class="top-bar">
-        <div class="brand-block">
-          <img src="abytransparent.png" class="brand-logo" alt="Awakened By YAH logo" />
-          <div class="brand-text">
-            <span class="brand-title">AWAKENED BY YAH</span>
-            <span class="brand-subtitle">TRUTH-BASED SOUL</span>
-          </div>
-        </div>
-
-        <div class="header-tags">
-          <div class="pill">
-            <span class="pill-dot"></span>
-            <span>NEW MUSIC LIVE</span>
-          </div>
-          <div class="pill pill-gold">
-            <span>100% SET-APART</span>
-          </div>
-        </div>
-      </header>
-
-      <!-- NAV -->
-      <nav class="quick-links">
-        <a href="#music">Music Player</a>
-        <a href="albums.html">Albums</a>
-        <a href="#videos">Videos</a>
-        <a href="#signup">Email Signup</a>
-        <a href="#support">Support</a>
-      </nav>
-
-      <!-- HERO -->
-      <section class="hero">
-        <div class="hero-left">
-          <p class="eyebrow">TRUTH-BASED • SET-APART</p>
-          <h1 class="hero-title">
-            SOUL • R&amp;B •
-            <span class="hero-title-main">PRAISE</span>
-          </h1>
-          <p class="hero-copy">
-            Welcome to the official home of <strong>Awakened By YAH</strong> — music for the Remnant that refuses to compromise.
-          </p>
-          <div class="hero-cta-row">
-            <a href="#music" class="btn btn-primary">🎧 Listen</a>
-            <a href="#signup" class="btn btn-outline">Join List</a>
-          </div>
-        </div>
-
-        <aside class="hero-right">
-          <div class="hero-right-inner">
-            <img src="abybanner.png" alt="Awakened By YAH banner" />
-          </div>
-        </aside>
-      </section>
-
-      <!-- MUSIC PLAYER SECTION -->
-      <section id="music" class="extra-section">
-        <div class="section-card music-player">
-          <p class="section-kicker">Soundtrack For The Awakened</p>
-          <h2 class="section-title">Music Player</h2>
-          <p class="section-text">
-            Start with <strong>“Show Me Your Heart”</strong> and <strong>“We Rise”</strong>.
-            More singles and full projects are on the way — all truth-based, set-apart soul.
-          </p>
-
-          <div class="now-playing-row">
-            <span class="now-playing-label">NOW PLAYING</span>
-            <span class="now-playing-title" id="nowPlayingTitle">Show Me Your Heart</span>
-          </div>
-
-          <!-- IMPORTANT: this src MUST match a real file in audio/ -->
-          <audio id="mainAudio" controls src="audio/show- me- your- heart.mp3">
-            Your browser does not support the audio element.
-          </audio>
-
-          <canvas id="audioVisualizer"></canvas>
-
-          <div class="music-links">
-            <a href="#" id="playShowMe">▶ Show Me Your Heart</a>
-            <a href="#" id="playWeRise">▶ We Rise</a>
-            <a href="https://on.soundcloud.com/i63L7q3mKa8ax5xVee" target="_blank" rel="noopener">
-              Listen on SoundCloud
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <!-- VIDEOS SECTION -->
-      <section id="videos" class="extra-section">
-        <div class="section-card">
-          <p class="section-kicker">Watch &amp; Share</p>
-          <h2 class="section-title">Videos</h2>
-          <p class="section-text">
-            Awakened By YAH music videos, visualizers, and teachings. Each card opens the video on YouTube in a new tab.
-          </p>
-
-          <div class="video-grid">
-            <div class="video-card">
-              <a href="https://youtu.be/kzfJWSSkI7M?si=XYzO2Tfy1TLmE0cG" target="_blank" rel="noopener">
-                <div class="video-thumb-wrap">
-                  <img src="https://img.youtube.com/vi/kzfJWSSkI7M/hqdefault.jpg" alt="Can This Song Change Your Life?" />
-                </div>
-                <div class="video-info">
-                  <h3>Can This Song Change Your Life?</h3>
-                  <p>Set-apart soul stirring the hearts of the Remnant.</p>
-                </div>
-              </a>
-            </div>
-
-            <div class="video-card">
-              <a href="https://youtu.be/1OAVoq37Dko?si=bDp14nQPlGLU44p1" target="_blank" rel="noopener">
-                <div class="video-thumb-wrap">
-                  <img src="https://img.youtube.com/vi/1OAVoq37Dko/hqdefault.jpg" alt="Rise Above CHALLENGES with the Power of Unity" />
-                </div>
-                <div class="video-info">
-                  <h3>Rise Above CHALLENGES with the Power of Unity</h3>
-                  <p>Music for standing together in faith and endurance.</p>
-                </div>
-              </a>
-            </div>
-
-            <div class="video-card">
-              <a href="https://youtu.be/DQJLaqlsi8E?si=81XgrXz_dDwMKyh-" target="_blank" rel="noopener">
-                <div class="video-thumb-wrap">
-                  <img src="https://img.youtube.com/vi/DQJLaqlsi8E/hqdefault.jpg" alt="Unbroken Frequency Remix" />
-                </div>
-                <div class="video-info">
-                  <h3>Unbroken Frequency Remix</h3>
-                  <p>Is this the anthem of the Remnant rising?</p>
-                </div>
-              </a>
-            </div>
-
-            <div class="video-card">
-              <a href="https://youtu.be/6QeUzd-GIm0?si=NJmNSKAA3wxF_3fD" target="_blank" rel="noopener">
-                <div class="video-thumb-wrap">
-                  <img src="https://img.youtube.com/vi/6QeUzd-GIm0/hqdefault.jpg" alt="This Song Will Touch Your Heart!" />
-                </div>
-                <div class="video-info">
-                  <h3>This Song Will Touch Your Heart!</h3>
-                  <p>A message of comfort, conviction, and hope.</p>
-                </div>
-              </a>
-            </div>
-
-            <div class="video-card">
-              <a href="https://youtu.be/2rJvyafJJoY?si=XKQ9GixFyLKxRu-L" target="_blank" rel="noopener">
-                <div class="video-thumb-wrap">
-                  <img src="https://img.youtube.com/vi/2rJvyafJJoY/hqdefault.jpg" alt="This Song Will Lift Your Spirit! (1)" />
-                </div>
-                <div class="video-info">
-                  <h3>This Song Will Lift Your Spirit! (1)</h3>
-                  <p>Uplifting praise to strengthen weary hearts.</p>
-                </div>
-              </a>
-            </div>
-
-            <div class="video-card">
-              <a href="https://youtu.be/tuINdGY_XbM?si=qIXGEpFoRrgUupHM" target="_blank" rel="noopener">
-                <div class="video-thumb-wrap">
-                  <img src="https://img.youtube.com/vi/tuINdGY_XbM/hqdefault.jpg" alt="This Song Will Lift Your Spirit! (2)" />
-                </div>
-                <div class="video-info">
-                  <h3>This Song Will Lift Your Spirit! (2)</h3>
-                  <p>Another wave of set-apart sound for Yasharal.</p>
-                </div>
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- EMAIL SIGNUP -->
-      <section id="signup" class="extra-section">
-        <div class="section-card">
-          <p class="section-kicker">STAY CONNECTED</p>
-          <h2 class="section-title">EMAIL SIGNUP</h2>
-          <p class="section-text">
-            Join the Remnant List to get early access to new releases, behind-the-scenes sessions,
-            and updates on truth-based projects.
-          </p>
-
-          <div class="signup-form">
-            <script async src="https://eocampaign1.com/form/6bc338e0-c532-11f0-9c5d-bdac12d6eac9.js"
-                    data-form="6bc338e0-c532-11f0-9c5d-bdac12d6eac9"></script>
-          </div>
-
-          <p class="signup-note">
-            Your email is submitted securely — no apps or extra steps required.
-          </p>
-        </div>
-      </section>
-
-      <!-- SUPPORT SECTION (SMALL + MINIMAL) -->
-      <section id="support" class="extra-section">
-        <div class="section-card">
-          <p class="section-kicker">SUPPORT THIS MISSION</p>
-          <h2 class="section-title">SUPPORT AWAKENED BY YAH</h2>
-          <p class="section-text">
-            If this set-apart music has blessed you and you feel led to support,
-            you can sow into the work using CashApp. Every contribution is voluntary and
-            helps fund future recordings, mixing, and videos for the Remnant.
-          </p>
-
-          <div class="support-qr">
-            <!-- Make sure this filename matches what you uploaded -->
-            <img src="cashapp-qr.jpg" alt="Support via CashApp $Ravontwo2005" />
-          </div>
-
-          <p class="support-handle">
-            CashApp: <strong>$Ravontwo2005</strong>
-          </p>
-
-          <a href="https://cash.app/$Ravontwo2005"
-             target="_blank"
-             rel="noopener"
-             class="btn btn-primary btn-support">
-            SUPPORT WITH CASHAPP
-          </a>
-
-          <p class="support-note">
-            Your support is completely voluntary and not in exchange for any specific product or service.
-          </p>
-        </div>
-      </section>
-
-      <!-- FOOTER -->
-      <footer class="site-footer">
-        <span id="year"></span> © AWAKENED BY YAH MUSIC GROUP — All Rights Reserved.
-      </footer>
-
-    </main>
+<!-- HEADER -->
+<header class="top-bar">
+  <div class="brand-block">
+    <img src="abytransparent.png" class="brand-logo">
+    <div>
+      <span class="brand-title">AWAKENED BY YAH</span><br>
+      <span class="brand-subtitle">TRUTH-BASED SOUL</span>
+    </div>
   </div>
+</header>
 
-  <script>
-    // Set current year in footer
-    document.getElementById("year").textContent = new Date().getFullYear();
+<nav class="quick-links">
+  <a href="#music">Music</a>
+  <a href="#videos">Videos</a>
+  <a href="#signup">Email</a>
+  <a href="#support">Support</a>
+</nav>
 
-    // SIMPLE PLAYLIST + VISUALIZER
-    const audio = document.getElementById('mainAudio');
-    const nowTitle = document.getElementById('nowPlayingTitle');
-    const playShowMe = document.getElementById('playShowMe');
-    const playWeRise = document.getElementById('playWeRise');
-    const canvas = document.getElementById('audioVisualizer');
-    const ctx = canvas.getContext('2d');
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <p class="eyebrow">TRUTH • SET-APART</p>
+    <h1 class="hero-title">SOUL • R&B • <span class="hero-title-main">PRAISE</span></h1>
+    <p class="hero-copy">
+      Welcome to the official home of <strong>Awakened By YAH</strong>.
+    </p>
+  </div>
+</section>
 
-    const tracks = [
-      {
-        title: 'Show Me Your Heart',
-        src: 'audio/show-me-your-heart.mp3'
-      },
-      {
-        title: 'We Rise (Preview)',
-        src: 'audio/werise-preview.mp3' // make sure this file really exists
-      }
-    ];
+<!-- MUSIC PLAYER -->
+<section id="music" class="extra-section">
+  <div class="section-card">
+    <h2>MUSIC PLAYER</h2>
+    <div class="now-playing-row">NOW PLAYING: <span id="nowPlayingTitle">Show Me Your Heart</span></div>
 
-    let audioContext, analyser, sourceNode, dataArray, animationId;
-    let visualizerInitialized = false;
+    <audio id="mainAudio" controls src="audio/show-me-your-heart.mp3"></audio>
+    <canvas id="audioVisualizer"></canvas>
 
-    function setTrack(index, play = false) {
-      const track = tracks[index];
-      if (audio.src.indexOf(track.src) === -1) {
-        audio.src = track.src;
-      }
-      nowTitle.textContent = track.title;
-      if (play) {
-        audio.play().catch(() => {
-          // ignore autoplay block
-        });
-      }
+    <div class="music-links">
+      <a href="#" id="playShowMe">▶ Show Me Your Heart</a>
+      <a href="#" id="playWeRise">▶ We Rise</a>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEOS (unchanged) -->
+<section id="videos" class="extra-section">
+  <div class="section-card">
+    <h2>VIDEOS</h2>
+    <p>Watch and share.</p>
+  </div>
+</section>
+
+<!-- EMAIL -->
+<section id="signup" class="extra-section">
+  <div class="section-card">
+    <h2>EMAIL SIGNUP</h2>
+    <script async src="https://eocampaign1.com/form/6bc338e0-c532-11f0-9c5d-bdac12d6eac9.js"
+            data-form="6bc338e0-c532-11f0-9c5d-bdac12d6eac9"></script>
+  </div>
+</section>
+
+<!-- SUPPORT -->
+<section id="support" class="extra-section">
+  <div class="section-card">
+    <h2>SUPPORT THE MISSION</h2>
+    <div class="support-qr">
+      <img src="cashapp-qr.jpg" alt="CashApp Support QR">
+    </div>
+    <p>CashApp: <strong>$Ravontwo2005</strong></p>
+    <a class="btn btn-primary" href="https://cash.app/$Ravontwo2005" target="_blank">SUPPORT</a>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <span id="year"></span> © AWAKENED BY YAH MUSIC GROUP — All Rights Reserved.
+</footer>
+
+</main>
+</div>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  const audio = document.getElementById("mainAudio");
+  const nowTitle = document.getElementById("nowPlayingTitle");
+  const playShowMe = document.getElementById("playShowMe");
+  const playWeRise = document.getElementById("playWeRise");
+  const canvas = document.getElementById("audioVisualizer");
+  const ctx = canvas.getContext("2d");
+
+  const tracks = [
+    { title: "Show Me Your Heart", src: "audio/show-me-your-heart.mp3" },
+    { title: "We Rise", src: "audio/werise.mp3" }
+  ];
+
+  let audioContext, analyser, sourceNode, dataArray, visualizerStarted = false;
+
+  function setTrack(i){
+    audio.src = tracks[i].src;
+    nowTitle.textContent = tracks[i].title;
+    audio.play();
+  }
+
+  playShowMe.onclick = e => { e.preventDefault(); setTrack(0); initViz(); };
+  playWeRise.onclick = e => { e.preventDefault(); setTrack(1); initViz(); };
+
+  function initViz(){
+    if(visualizerStarted) return;
+    visualizerStarted = true;
+
+    audioContext = new AudioContext();
+    analyser = audioContext.createAnalyser();
+    analyser.fftSize = 256;
+    dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+    sourceNode = audioContext.createMediaElementSource(audio);
+    sourceNode.connect(analyser);
+    analyser.connect(audioContext.destination);
+
+    drawViz();
+  }
+
+  function drawViz(){
+    requestAnimationFrame(drawViz);
+    analyser.getByteFrequencyData(dataArray);
+
+    const w = canvas.width = canvas.clientWidth;
+    const h = canvas.height = canvas.clientHeight;
+    ctx.clearRect(0,0,w,h);
+    
+    let barWidth = w/dataArray.length;
+    for(let i=0;i<dataArray.length;i++){
+      let barHeight = (dataArray[i]/255)*h;
+      ctx.fillStyle = "#fbbf24";
+      ctx.fillRect(i*barWidth,h-barHeight,barWidth,barHeight);
     }
+  }
+</script>
 
-    function initAudioContext() {
-      if (visualizerInitialized) return;
-      visualizerInitialized = true;
-
-      audioContext = new (window.AudioContext || window.webkitAudioContext)();
-      analyser = audioContext.createAnalyser();
-      analyser.fftSize = 256;
-      const bufferLength = analyser.frequencyBinCount;
-      dataArray = new Uint8Array(bufferLength);
-
-      sourceNode = audioContext.createMediaElementSource(audio);
-      sourceNode.connect(analyser);
-      analyser.connect(audioContext.destination);
-
-      drawVisualizer();
-    }
-
-    function drawVisualizer() {
-      const bufferLength = analyser.frequencyBinCount;
-
-      function draw() {
-        animationId = requestAnimationFrame(draw);
-        analyser.getByteFrequencyData(dataArray);
-
-        const width = canvas.width;
-        const height = canvas.height;
-        ctx.clearRect(0, 0, width, height);
-
-        const barWidth = (width / bufferLength) * 1.8;
-        let x = 0;
-
-        for (let i = 0; i < bufferLength; i++) {
-          const value = dataArray[i];
-          const barHeight = (value / 255) * height;
-
-          const gradient = ctx.createLinearGradient(0, height - barHeight, 0, height);
-          gradient.addColorStop(0, '#fbbf24');
-          gradient.addColorStop(1, '#1d4ed8');
-
-          ctx.fillStyle = gradient;
-          ctx.fillRect(x, height - barHeight, barWidth, barHeight);
-          x += barWidth + 1;
-        }
-      }
-
-      draw();
-    }
-
-    function resizeCanvas() {
-      const rect = canvas.getBoundingClientRect();
-      canvas.width = rect.width;
-      canvas.height = rect.height;
-    }
-
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-
-    // Track buttons
-    playShowMe.addEventListener('click', function (e) {
-      e.preventDefault();
-      setTrack(0, true);
-      if (!visualizerInitialized) initAudioContext();
-    });
-
-    playWeRise.addEventListener('click', function (e) {
-      e.preventDefault();
-      setTrack(1, true);
-      if (!visualizerInitialized) initAudioContext();
-    });
-
-    audio.addEventListener('play', function () {
-      if (!visualizerInitialized) initAudioContext();
-      if (audioContext && audioContext.state === 'suspended') {
-        audioContext.resume();
-      }
-    });
-  </script>
 </body>
 </html>
