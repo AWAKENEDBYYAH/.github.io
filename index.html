@@ -12,7 +12,9 @@
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background: radial-gradient(circle at top left, #182544 0%, #050814 55%, #020308 100%);
-      color: #f9fafb; line-height: 1.6; -webkit-font-smoothing: antialiased;
+      color: #f9fafb;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
     }
 
     a { color: inherit; text-decoration: none; }
@@ -22,12 +24,19 @@
 
     /* TOP BAR */
     .top-bar {
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 1.5rem; margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+      margin-bottom: 1rem;
     }
 
     .brand-block { display: flex; align-items: center; gap: 0.8rem; }
-    .brand-logo { width: clamp(60px, 6vw, 90px); object-fit: contain; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.7)); }
+    .brand-logo {
+      width: clamp(60px, 6vw, 90px);
+      object-fit: contain;
+      filter: drop-shadow(0 6px 12px rgba(0,0,0,0.7));
+    }
 
     .brand-title {
       font-size: clamp(0.95rem, 1.2vw, 1.25rem);
@@ -529,8 +538,8 @@
             <span class="now-playing-title" id="nowPlayingTitle">Show Me Your Heart</span>
           </div>
 
-          <audio id="mainAudio" controls>
-            <!-- src is set via JavaScript so the visualizer can hook into it -->
+          <!-- IMPORTANT: this src MUST match a real file in audio/ -->
+          <audio id="mainAudio" controls src="audio/show-me-your-heart.mp3">
             Your browser does not support the audio element.
           </audio>
 
@@ -664,8 +673,8 @@
           </p>
 
           <div class="support-qr">
-            <!-- Replace cashapp-qr.png with your actual QR image filename if different -->
-            <img src="cashapp-qr.png" alt="Support via CashApp $Ravontwo2005" />
+            <!-- Make sure this filename matches what you uploaded -->
+            <img src="cashapp-qr.jpg" alt="Support via CashApp $Ravontwo2005" />
           </div>
 
           <p class="support-handle">
@@ -712,22 +721,22 @@
       },
       {
         title: 'We Rise (Preview)',
-        src: 'audio/werise-preview.mp3'
+        src: 'audio/werise-preview.mp3' // make sure this file really exists
       }
     ];
 
-    let currentIndex = 0;
     let audioContext, analyser, sourceNode, dataArray, animationId;
     let visualizerInitialized = false;
 
-    function loadTrack(index, play = false) {
-      currentIndex = index;
+    function setTrack(index, play = false) {
       const track = tracks[index];
-      audio.src = track.src;
+      if (audio.src.indexOf(track.src) === -1) {
+        audio.src = track.src;
+      }
       nowTitle.textContent = track.title;
       if (play) {
         audio.play().catch(() => {
-          // Autoplay might be blocked until user interacts; ignore error.
+          // ignore autoplay block
         });
       }
     }
@@ -767,7 +776,6 @@
           const value = dataArray[i];
           const barHeight = (value / 255) * height;
 
-          // Soft gold/blue gradient bars
           const gradient = ctx.createLinearGradient(0, height - barHeight, 0, height);
           gradient.addColorStop(0, '#fbbf24');
           gradient.addColorStop(1, '#1d4ed8');
@@ -781,7 +789,6 @@
       draw();
     }
 
-    // Resize canvas to actual CSS size
     function resizeCanvas() {
       const rect = canvas.getBoundingClientRect();
       canvas.width = rect.width;
@@ -791,32 +798,24 @@
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    // Initialize first track (Show Me Your Heart)
-    loadTrack(0, false);
-
-    // Click handlers
+    // Track buttons
     playShowMe.addEventListener('click', function (e) {
       e.preventDefault();
-      loadTrack(0, true);
+      setTrack(0, true);
       if (!visualizerInitialized) initAudioContext();
     });
 
     playWeRise.addEventListener('click', function (e) {
       e.preventDefault();
-      loadTrack(1, true);
+      setTrack(1, true);
       if (!visualizerInitialized) initAudioContext();
     });
 
-    // Also start visualizer when user hits play directly on the audio controls
     audio.addEventListener('play', function () {
       if (!visualizerInitialized) initAudioContext();
       if (audioContext && audioContext.state === 'suspended') {
         audioContext.resume();
       }
-    });
-
-    audio.addEventListener('pause', function () {
-      // Keep bars frozen when paused (no need to cancel animation).
     });
   </script>
 </body>
