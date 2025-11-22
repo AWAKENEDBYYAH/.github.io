@@ -590,14 +590,20 @@
     </p>
 
     <!-- MAIN AUDIO PLAYER -->
-    <!-- IMPORTANT: make sure this file name matches EXACTLY what’s in your GitHub audio folder -->
-    <audio id="main-audio" controls autoplay preload="auto">
+    <!-- IMPORTANT: change the src to match the EXACT file name in your /audio folder -->
+    <audio id="main-audio" controls preload="auto">
       <source src="audio/show-me-your-heart.mp3" type="audio/mpeg" />
       Your browser does not support the audio element.
     </audio>
 
-    <!-- Status text to help detect file/path issues -->
-    <p id="audio-status" style="margin-top:0.6rem;font-size:0.8rem;color:#fbbf24;"></p>
+    <!-- DEV TEST: direct link to see if the file is really reachable -->
+    <p style="margin-top:0.6rem;font-size:0.8rem;color:#fbbf24;">
+      File test: 
+      <a href="audio/show-me-your-heart.mp3" style="text-decoration:underline;color:#fbbf24;">
+        click here to open the audio file
+      </a>
+      (this is just for testing; you can delete this line later).
+    </p>
 
     <div class="music-links">
       <a href="https://on.soundcloud.com/i63L7q3mKa8ax5xVee" target="_blank" rel="noopener">
@@ -609,6 +615,7 @@
     </div>
   </div>
 </section>
+
 
 
       <!-- YOUTUBE VIDEOS SECTION -->
