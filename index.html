@@ -224,6 +224,73 @@
       max-width:40rem;
     }
 
+    /* MUSIC PLAYER */
+    .music-player .section-text {
+      max-width: 32rem;
+    }
+
+    .now-playing-row {
+      margin-top: 0.9rem;
+      font-size: 0.85rem;
+      color: #cbd5e1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      align-items: baseline;
+    }
+
+    .now-playing-label {
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-size: 0.7rem;
+      color: #9ca3af;
+    }
+
+    .now-playing-title {
+      font-weight: 600;
+      color: #fbbf24;
+    }
+
+    .music-player audio {
+      width: 100%;
+      max-width: 420px;
+      margin-top: 1rem;
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.7));
+    }
+
+    #audioVisualizer {
+      width: 100%;
+      max-width: 420px;
+      height: 80px;
+      margin-top: 0.7rem;
+      border-radius: 14px;
+      background: radial-gradient(circle at top left, #020617 0%, #020617 60%, #000 100%);
+      border: 1px solid rgba(148,163,184,0.35);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.75);
+    }
+
+    .music-links {
+      margin-top: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .music-links a {
+      font-size: 0.78rem;
+      padding: 0.45rem 0.95rem;
+      border-radius: 999px;
+      border: 1px solid rgba(248,250,252,0.3);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      background: rgba(15,23,42,0.9);
+    }
+
+    .music-links a:hover {
+      background: rgba(59,130,246,0.35);
+      border-color: rgba(191,219,254,0.9);
+    }
+
     /* EMAIL SIGNUP CENTERING */
     #signup .section-card {
       text-align: center;
@@ -447,7 +514,37 @@
         </aside>
       </section>
 
-      <!-- (Music section can go here later, id="music") -->
+      <!-- MUSIC PLAYER SECTION -->
+      <section id="music" class="extra-section">
+        <div class="section-card music-player">
+          <p class="section-kicker">Soundtrack For The Awakened</p>
+          <h2 class="section-title">Music Player</h2>
+          <p class="section-text">
+            Start with <strong>“Show Me Your Heart”</strong> and <strong>“We Rise (Preview)”</strong>.
+            More singles and full projects are on the way — all truth-based, set-apart soul.
+          </p>
+
+          <div class="now-playing-row">
+            <span class="now-playing-label">NOW PLAYING</span>
+            <span class="now-playing-title" id="nowPlayingTitle">Show Me Your Heart</span>
+          </div>
+
+          <audio id="mainAudio" controls>
+            <!-- src is set via JavaScript so the visualizer can hook into it -->
+            Your browser does not support the audio element.
+          </audio>
+
+          <canvas id="audioVisualizer"></canvas>
+
+          <div class="music-links">
+            <a href="#" id="playShowMe">▶ Show Me Your Heart</a>
+            <a href="#" id="playWeRise">▶ We Rise (Preview)</a>
+            <a href="https://on.soundcloud.com/i63L7q3mKa8ax5xVee" target="_blank" rel="noopener">
+              Listen on SoundCloud
+            </a>
+          </div>
+        </div>
+      </section>
 
       <!-- VIDEOS SECTION -->
       <section id="videos" class="extra-section">
@@ -568,8 +665,7 @@
 
           <div class="support-qr">
             <!-- Replace cashapp-qr.png with your actual QR image filename if different -->
-            <img src="cashapp-qr.jpeg" alt="Support via CashApp $Ravontwo2005" />
-
+            <img src="cashapp-qr.png" alt="Support via CashApp $Ravontwo2005" />
           </div>
 
           <p class="support-handle">
@@ -600,6 +696,128 @@
   <script>
     // Set current year in footer
     document.getElementById("year").textContent = new Date().getFullYear();
+
+    // SIMPLE PLAYLIST + VISUALIZER
+    const audio = document.getElementById('mainAudio');
+    const nowTitle = document.getElementById('nowPlayingTitle');
+    const playShowMe = document.getElementById('playShowMe');
+    const playWeRise = document.getElementById('playWeRise');
+    const canvas = document.getElementById('audioVisualizer');
+    const ctx = canvas.getContext('2d');
+
+    const tracks = [
+      {
+        title: 'Show Me Your Heart',
+        src: 'audio/show-me-your-heart.mp3'
+      },
+      {
+        title: 'We Rise (Preview)',
+        src: 'audio/werise-preview.mp3'
+      }
+    ];
+
+    let currentIndex = 0;
+    let audioContext, analyser, sourceNode, dataArray, animationId;
+    let visualizerInitialized = false;
+
+    function loadTrack(index, play = false) {
+      currentIndex = index;
+      const track = tracks[index];
+      audio.src = track.src;
+      nowTitle.textContent = track.title;
+      if (play) {
+        audio.play().catch(() => {
+          // Autoplay might be blocked until user interacts; ignore error.
+        });
+      }
+    }
+
+    function initAudioContext() {
+      if (visualizerInitialized) return;
+      visualizerInitialized = true;
+
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      analyser = audioContext.createAnalyser();
+      analyser.fftSize = 256;
+      const bufferLength = analyser.frequencyBinCount;
+      dataArray = new Uint8Array(bufferLength);
+
+      sourceNode = audioContext.createMediaElementSource(audio);
+      sourceNode.connect(analyser);
+      analyser.connect(audioContext.destination);
+
+      drawVisualizer();
+    }
+
+    function drawVisualizer() {
+      const bufferLength = analyser.frequencyBinCount;
+
+      function draw() {
+        animationId = requestAnimationFrame(draw);
+        analyser.getByteFrequencyData(dataArray);
+
+        const width = canvas.width;
+        const height = canvas.height;
+        ctx.clearRect(0, 0, width, height);
+
+        const barWidth = (width / bufferLength) * 1.8;
+        let x = 0;
+
+        for (let i = 0; i < bufferLength; i++) {
+          const value = dataArray[i];
+          const barHeight = (value / 255) * height;
+
+          // Soft gold/blue gradient bars
+          const gradient = ctx.createLinearGradient(0, height - barHeight, 0, height);
+          gradient.addColorStop(0, '#fbbf24');
+          gradient.addColorStop(1, '#1d4ed8');
+
+          ctx.fillStyle = gradient;
+          ctx.fillRect(x, height - barHeight, barWidth, barHeight);
+          x += barWidth + 1;
+        }
+      }
+
+      draw();
+    }
+
+    // Resize canvas to actual CSS size
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // Initialize first track (Show Me Your Heart)
+    loadTrack(0, false);
+
+    // Click handlers
+    playShowMe.addEventListener('click', function (e) {
+      e.preventDefault();
+      loadTrack(0, true);
+      if (!visualizerInitialized) initAudioContext();
+    });
+
+    playWeRise.addEventListener('click', function (e) {
+      e.preventDefault();
+      loadTrack(1, true);
+      if (!visualizerInitialized) initAudioContext();
+    });
+
+    // Also start visualizer when user hits play directly on the audio controls
+    audio.addEventListener('play', function () {
+      if (!visualizerInitialized) initAudioContext();
+      if (audioContext && audioContext.state === 'suspended') {
+        audioContext.resume();
+      }
+    });
+
+    audio.addEventListener('pause', function () {
+      // Keep bars frozen when paused (no need to cancel animation).
+    });
   </script>
 </body>
 </html>
