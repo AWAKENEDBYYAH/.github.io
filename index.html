@@ -792,52 +792,6 @@
     </main>
   </div>
 
-  <!-- AUTOPLAY HELPER SCRIPT -->
-  <script>
-    window.addEventListener('load', function () {
-      const audio = document.getElementById('main-audio');
-      if (!audio) return;
-
-      // Try to start playback; if blocked, user can still press play manually
-      const playPromise = audio.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(function (error) {
-          console.log('Autoplay was blocked by the browser:', error);
-        });
-      }
-    });
-  </script>
-  <script>
-  window.addEventListener('load', function () {
-    const audio = document.getElementById('main-audio');
-    const status = document.getElementById('audio-status');
-    if (!audio) return;
-
-    // Show which file the player is trying to load
-    if (audio.currentSrc) {
-      status.textContent = 'Loading: ' + audio.currentSrc;
-    }
-
-    // If the file loads fine, update the status
-    audio.addEventListener('canplaythrough', function () {
-      status.textContent = '“Show Me Your Heart” is ready. If it doesn’t start automatically, press play.';
-    });
-
-    // If there’s a problem (file missing / wrong path), tell us
-    audio.addEventListener('error', function () {
-      status.textContent = 'Audio could not be loaded. Check that the file exists at: ' + audio.currentSrc;
-    });
-
-    // Try autoplay (may be blocked on some browsers until user taps/clicks)
-    const playPromise = audio.play();
-    if (playPromise !== undefined) {
-      playPromise.catch(function (error) {
-        console.log('Autoplay was blocked by the browser:', error);
-        status.textContent = 'Tap the play button to start “Show Me Your Heart.”';
-      });
-    }
-  });
-</script>
-
+  
 </body>
 </html>
