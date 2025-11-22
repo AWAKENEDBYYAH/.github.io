@@ -256,6 +256,79 @@
       color:#9ca3af;
     }
 
+    /* VIDEO GRID */
+    .video-grid {
+      margin-top: 1.2rem;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.2rem;
+    }
+
+    @media (max-width: 900px) {
+      .video-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .video-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .video-card {
+      border-radius: 18px;
+      overflow: hidden;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,184,0.4);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.6);
+      transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+    }
+
+    .video-card a {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .video-thumb-wrap {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 16 / 9;
+    }
+
+    .video-thumb-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.22s ease;
+    }
+
+    .video-info {
+      padding: 0.85rem 1rem 1rem;
+    }
+
+    .video-info h3 {
+      font-size: 0.96rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .video-info p {
+      font-size: 0.8rem;
+      color: #9ca3af;
+    }
+
+    .video-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 34px rgba(0,0,0,0.8);
+      border-color: rgba(248,250,252,0.7);
+    }
+
+    .video-card:hover img {
+      transform: scale(1.04);
+    }
+
     /* SUPPORT SECTION (SMALL / MINIMAL) */
     #support .section-card {
       text-align:center;
@@ -345,6 +418,7 @@
       <nav class="quick-links">
         <a href="#music">Music Player</a>
         <a href="albums.html">Albums</a>
+        <a href="#videos">Videos</a>
         <a href="#signup">Email Signup</a>
         <a href="#support">Support</a>
       </nav>
@@ -373,7 +447,92 @@
         </aside>
       </section>
 
-      <!-- (You can drop your music player section here with id="music" when ready) -->
+      <!-- (Music section can go here later, id="music") -->
+
+      <!-- VIDEOS SECTION -->
+      <section id="videos" class="extra-section">
+        <div class="section-card">
+          <p class="section-kicker">Watch &amp; Share</p>
+          <h2 class="section-title">Videos</h2>
+          <p class="section-text">
+            Awakened By YAH music videos, visualizers, and teachings. Each card opens the video on YouTube in a new tab.
+          </p>
+
+          <div class="video-grid">
+            <div class="video-card">
+              <a href="https://youtu.be/kzfJWSSkI7M?si=XYzO2Tfy1TLmE0cG" target="_blank" rel="noopener">
+                <div class="video-thumb-wrap">
+                  <img src="https://img.youtube.com/vi/kzfJWSSkI7M/hqdefault.jpg" alt="Can This Song Change Your Life?" />
+                </div>
+                <div class="video-info">
+                  <h3>Can This Song Change Your Life?</h3>
+                  <p>Set-apart soul stirring the hearts of the Remnant.</p>
+                </div>
+              </a>
+            </div>
+
+            <div class="video-card">
+              <a href="https://youtu.be/1OAVoq37Dko?si=bDp14nQPlGLU44p1" target="_blank" rel="noopener">
+                <div class="video-thumb-wrap">
+                  <img src="https://img.youtube.com/vi/1OAVoq37Dko/hqdefault.jpg" alt="Rise Above CHALLENGES with the Power of Unity" />
+                </div>
+                <div class="video-info">
+                  <h3>Rise Above CHALLENGES with the Power of Unity</h3>
+                  <p>Music for standing together in faith and endurance.</p>
+                </div>
+              </a>
+            </div>
+
+            <div class="video-card">
+              <a href="https://youtu.be/DQJLaqlsi8E?si=81XgrXz_dDwMKyh-" target="_blank" rel="noopener">
+                <div class="video-thumb-wrap">
+                  <img src="https://img.youtube.com/vi/DQJLaqlsi8E/hqdefault.jpg" alt="Unbroken Frequency Remix" />
+                </div>
+                <div class="video-info">
+                  <h3>Unbroken Frequency Remix</h3>
+                  <p>Is this the anthem of the Remnant rising?</p>
+                </div>
+              </a>
+            </div>
+
+            <div class="video-card">
+              <a href="https://youtu.be/6QeUzd-GIm0?si=NJmNSKAA3wxF_3fD" target="_blank" rel="noopener">
+                <div class="video-thumb-wrap">
+                  <img src="https://img.youtube.com/vi/6QeUzd-GIm0/hqdefault.jpg" alt="This Song Will Touch Your Heart!" />
+                </div>
+                <div class="video-info">
+                  <h3>This Song Will Touch Your Heart!</h3>
+                  <p>A message of comfort, conviction, and hope.</p>
+                </div>
+              </a>
+            </div>
+
+            <div class="video-card">
+              <a href="https://youtu.be/2rJvyafJJoY?si=XKQ9GixFyLKxRu-L" target="_blank" rel="noopener">
+                <div class="video-thumb-wrap">
+                  <img src="https://img.youtube.com/vi/2rJvyafJJoY/hqdefault.jpg" alt="This Song Will Lift Your Spirit! (1)" />
+                </div>
+                <div class="video-info">
+                  <h3>This Song Will Lift Your Spirit! (1)</h3>
+                  <p>Uplifting praise to strengthen weary hearts.</p>
+                </div>
+              </a>
+            </div>
+
+            <div class="video-card">
+              <a href="https://youtu.be/tuINdGY_XbM?si=qIXGEpFoRrgUupHM" target="_blank" rel="noopener">
+                <div class="video-thumb-wrap">
+                  <img src="https://img.youtube.com/vi/tuINdGY_XbM/hqdefault.jpg" alt="This Song Will Lift Your Spirit! (2)" />
+                </div>
+                <div class="video-info">
+                  <h3>This Song Will Lift Your Spirit! (2)</h3>
+                  <p>Another wave of set-apart sound for Yasharal.</p>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <!-- EMAIL SIGNUP -->
       <section id="signup" class="extra-section">
