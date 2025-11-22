@@ -581,31 +581,35 @@
 
       <!-- MUSIC PLAYER SECTION -->
       <section id="music" class="extra-section">
-        <div class="section-card music-player">
-          <p class="section-kicker">Soundtrack For The Awakened</p>
-          <h2 class="section-title">Music Player</h2>
-          <p class="section-text">
-            Start with a taste of <strong>“Show Me Your Heart”</strong>. More singles and full projects
-            are on the way — all truth-based, set-apart soul.
-          </p>
+  <div class="section-card music-player">
+    <p class="section-kicker">Soundtrack For The Awakened</p>
+    <h2 class="section-title">Music Player</h2>
+    <p class="section-text">
+      Start with a taste of <strong>“Show Me Your Heart”</strong>. More singles and full projects
+      are on the way — all truth-based, set-apart soul.
+    </p>
 
-          <!-- UPDATED AUDIO PLAYER -->
-          <!-- Make sure this file path matches your actual file name & location -->
-          <audio id="main-audio" controls autoplay preload="auto">
-            <source src="audio/show-me-your-heart.mp3" type="audio/mpeg" />
-            Your browser does not support the audio element.
-          </audio>
+    <!-- MAIN AUDIO PLAYER -->
+    <!-- IMPORTANT: make sure this file name matches EXACTLY what’s in your GitHub audio folder -->
+    <audio id="main-audio" controls autoplay preload="auto">
+      <source src="audio/show-me-your-heart.mp3" type="audio/mpeg" />
+      Your browser does not support the audio element.
+    </audio>
 
-          <div class="music-links">
-            <a href="https://on.soundcloud.com/i63L7q3mKa8ax5xVee" target="_blank" rel="noopener">
-              Listen on SoundCloud
-            </a>
-            <a href="#" target="_blank" rel="noopener">
-              Add Spotify / Apple Link
-            </a>
-          </div>
-        </div>
-      </section>
+    <!-- Status text to help detect file/path issues -->
+    <p id="audio-status" style="margin-top:0.6rem;font-size:0.8rem;color:#fbbf24;"></p>
+
+    <div class="music-links">
+      <a href="https://on.soundcloud.com/i63L7q3mKa8ax5xVee" target="_blank" rel="noopener">
+        Listen on SoundCloud
+      </a>
+      <a href="#" target="_blank" rel="noopener">
+        Add Spotify / Apple Link
+      </a>
+    </div>
+  </div>
+</section>
+
 
       <!-- YOUTUBE VIDEOS SECTION -->
       <section id="videos" class="extra-section">
