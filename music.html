@@ -1,1 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Music | Awakened By YAH</title>
+
+  <style>
+    :root{
+      --bg:#020617;
+      --text:#e5e7eb;
+      --muted:#94a3b8;
+      --line:rgba(255,255,255,.10);
+      --glow:rgba(28,57,168,.45);
+      --brand:#1C39A8;
+      --brand2:#2b56ff;
+      --radius:22px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(1200px 700px at 10% 0%, rgba(28,57,168,.35), transparent 55%),
+        radial-gradient(900px 600px at 100% 10%, rgba(43,86,255,.25), transparent 55%),
+        var(--bg);
+      color:var(--text);
+    }
+    .wrap{max-width:1180px;margin:0 auto;padding:18px}
+
+    /* ===== BIG MUSIC HERO (bigger than homepage) ===== */
+    .musicHero{
+      position:relative;
+      height:520px;
+      border-radius:var(--radius);
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow:0 35px 90px rgba(0,0,0,.60);
+      background:
+        linear-gradient(
+          180deg,
+          rgba(2,6,23,.20),
+          rgba(2,6,23,.40),
+          rgba(2,6,23,.82)
+        ),
+        url("music-banner.png");
+      background-size:cover;
+      background-position:center;
+      margin-bottom:16px;
+    }
+    .musicHeroInner{
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:32px;
+    }
+    .musicHeroTitle{
+      margin:0;
+      font-size:54px;
+      font-weight:900;
+      letter-spacing:2px;
+      text-transform:uppercase;
+      color:#e5e7eb;
+      text-shadow:
+        0 12px 35px rgba(0,0,0,.85),
+        0 0 45px rgba(28,57,168,.45);
+    }
+    .musicHeroSub{
+      margin-top:14px;
+      font-size:18px;
+      letter-spacing:.35px;
+      color:rgba(229,231,235,.90);
+      text-shadow:0 8px 22px rgba(0,0,0,.75);
+    }
+    .musicHeroBack{
+      position:absolute;
+      top:16px;
+      left:16px;
+      z-index:2;
+    }
+    .musicHeroBack a{
+      color:var(--text);
+      text-decoration:none;
+      border:1px solid rgba(255,255,255,.18);
+      padding:10px 12px;
+      border-radius:999px;
+      background:rgba(2,6,23,.45);
+      backdrop-filter: blur(6px);
+      display:inline-block;
+    }
+    .musicHeroBack a:hover{border-color:rgba(255,255,255,.30)}
+
+    /* ===== LAYOUT ===== */
+    .grid{
+      display:grid;
+      grid-template-columns: 1.35fr .65fr;
+      gap:16px;
+    }
+    @media (max-width: 920px){
+      .grid{grid-template-columns:1fr}
+      .musicHero{height:420px}
+      .musicHeroTitle{font-size:40px}
+    }
+
+    /* ===== BIG PLAYER CARD (visual + ready for Step 2 wiring) ===== */
+    .playerCard{
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border-radius: var(--radius);
+      overflow:hidden;
+      box-shadow: 0 22px 55px rgba(0,0,0,.45);
+    }
+    .playerHead{
+      display:flex;gap:16px;align-items:center;
+      padding:16px;
+      background: linear-gradient(180deg, rgba(28,57,168,.18), transparent);
+      border-bottom:1px solid var(--line);
+    }
+    .cover{
+      width:160px;height:160px;border-radius:18px;flex:0 0 auto;
+      background:#111827;
+      border:1px solid var(--line);
+      box-shadow: 0 0 0 6px rgba(28,57,168,.12), 0 0 32px var(--glow);
+      overflow:hidden;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .cover img{width:100%;height:100%;object-fit:cover;display:block}
+    .meta{min-width:0}
+    .artist{font-weight:900;font-size:18px;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .album{color:var(--muted);margin:7px 0 0 0;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .track{margin:10px 0 0 0;font-weight:800;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+    .controls{padding:14px 16px 16px}
+    .barRow{
+      display:flex;align-items:center;gap:10px;margin-bottom:10px;
+      color:var(--muted);font-size:12px;
+    }
+    input[type="range"]{width:100%}
+    .seek{
+      appearance:none;height:8px;border-radius:999px;background:rgba(255,255,255,.12);
+      outline:none;
+    }
+    .seek::-webkit-slider-thumb{
+      appearance:none;width:18px;height:18px;border-radius:50%;
+      background:linear-gradient(180deg, var(--brand2), var(--brand));
+      box-shadow:0 0 0 6px rgba(28,57,168,.18);
+      cursor:pointer;
+      border:1px solid rgba(255,255,255,.18);
+    }
+    .btnRow{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      margin-top:10px;flex-wrap:wrap;
+    }
+    .leftBtns,.rightBtns{display:flex;align-items:center;gap:10px}
+    button{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      border-radius:999px;
+      padding:10px 14px;
+      cursor:pointer;
+      font-weight:800;
+      letter-spacing:.1px;
+    }
+    button:hover{border-color:rgba(255,255,255,.22)}
+    .primary{
+      background:linear-gradient(180deg, rgba(43,86,255,.95), rgba(28,57,168,.95));
+      border-color:rgba(255,255,255,.14);
+      box-shadow:0 0 36px rgba(28,57,168,.35);
+      padding:10px 18px;
+    }
+    .tinyLabel{color:var(--muted);font-size:12px;margin-left:6px}
+    .vol{width:170px;display:flex;align-items:center;gap:10px}
+    .vol input{flex:1}
+
+    /* ===== PLAYLIST PLACEHOLDER (Step 2 will populate) ===== */
+    .playlist{
+      border-top:1px solid var(--line);
+      background: rgba(0,0,0,.18);
+      padding:12px;
+    }
+    .plistHead{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:0 2px 10px;
+      color:var(--muted);font-size:12px;
+    }
+    .pill{
+      display:inline-block;padding:4px 10px;border-radius:999px;
+      border:1px solid var(--line);background:rgba(255,255,255,.04);
+      margin-right:6px
+    }
+    .ghost{
+      border:1px dashed rgba(255,255,255,.14);
+      background:rgba(255,255,255,.03);
+      padding:12px;border-radius:16px;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.35;
+    }
+
+    /* ===== COVER SELECTOR ===== */
+    .coversCard{
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      border-radius: var(--radius);
+      overflow:hidden;
+      box-shadow: 0 18px 44px rgba(0,0,0,.40);
+    }
+    .coversHead{
+      padding:14px;
+      border-bottom:1px solid var(--line);
+      display:flex;justify-content:space-between;gap:10px;align-items:center;
+      background:rgba(255,255,255,.03);
+    }
+    .coversHead h2{margin:0;font-size:15px;letter-spacing:.2px}
+    .hint{color:var(--muted);font-size:12px}
+
+    .coverGrid{
+      padding:14px;
+      display:grid;
+      grid-template-columns:1fr;
+      gap:12px;
+    }
+    .coverBtn{
+      display:flex;gap:12px;align-items:center;
+      padding:12px;
+      border-radius:18px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      cursor:pointer;
+      user-select:none;
+    }
+    .coverBtn:hover{border-color:rgba(255,255,255,.20)}
+    .coverBtn.active{
+      border-color:rgba(28,57,168,.70);
+      background:rgba(28,57,168,.18);
+      box-shadow:0 0 28px rgba(28,57,168,.22);
+    }
+    .thumb{
+      width:76px;height:76px;border-radius:16px;overflow:hidden;
+      border:1px solid var(--line);flex:0 0 auto;
+      background:#111827;
+    }
+    .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+    .coverText{min-width:0}
+    .coverName{margin:0;font-weight:900;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .coverMeta{margin:6px 0 0 0;color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <!-- HERO BANNER -->
+    <header class="musicHero" aria-label="Awakened By YAH Music Banner">
+      <div class="musicHeroBack">
+        <a href="index.html">← Back to Home</a>
+      </div>
+
+      <div class="musicHeroInner">
+        <div>
+          <h1 class="musicHeroTitle">AWAKENED BY YAH</h1>
+          <p class="musicHeroSub">Truth-Based Soul</p>
+        </div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- BIG PLAYER -->
+      <section class="playerCard" aria-label="Music Player">
+        <div class="playerHead">
+          <div class="cover">
+            <img id="playerCover" src="kingdom-biz-cover.png" alt="Project cover" />
+          </div>
+
+          <div class="meta">
+            <p class="artist" id="playerArtist">AWAKENED BY YAH</p>
+            <p class="album" id="playerAlbum">Kingdom Biz</p>
+            <p class="track" id="playerTrack">Select a track (Step 2)</p>
+          </div>
+        </div>
+
+        <div class="controls">
+          <div class="barRow">
+            <span>0:00</span>
+            <input class="seek" type="range" min="0" max="1000" value="0" />
+            <span>0:00</span>
+          </div>
+
+          <div class="btnRow">
+            <div class="leftBtns">
+              <button title="Previous">⏮</button>
+              <button class="primary" title="Play / Pause">▶️ Play</button>
+              <button title="Next">⏭</button>
+              <span class="tinyLabel">Covers Wired</span>
+            </div>
+
+            <div class="rightBtns">
+              <button title="Restart">⟲ Restart</button>
+              <div class="vol">
+                <span class="tinyLabel">Vol</span>
+                <input class="seek" type="range" min="0" max="100" value="85" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="playlist">
+          <div class="plistHead">
+            <div>
+              <span class="pill" id="projectPill">Kingdom Biz</span>
+              <span class="pill" id="countPill">Tracks load next</span>
+            </div>
+            <div class="hint">Playlist wiring is Step 2</div>
+          </div>
+
+          <div class="ghost">
+            ✅ Page design + covers are complete.<br><br>
+            Next step: connect your audio files and load the full playlist for each project.
+          </div>
+        </div>
+      </section>
+
+      <!-- COVER SELECTOR -->
+      <aside class="coversCard" aria-label="Albums & Singles">
+        <div class="coversHead">
+          <h2>Albums & Singles</h2>
+          <div class="hint">Click a cover to load</div>
+        </div>
+
+        <div class="coverGrid">
+          <div class="coverBtn active" data-key="kingdombiz">
+            <div class="thumb"><img src="kingdom-biz-cover.png" alt="Kingdom Biz cover"></div>
+            <div class="coverText">
+              <p class="coverName">Kingdom Biz</p>
+              <p class="coverMeta">Album</p>
+            </div>
+          </div>
+
+          <div class="coverBtn" data-key="rise">
+            <div class="thumb"><img src="rise-of-yasharal-cover.png" alt="The Rise of Yasharal cover"></div>
+            <div class="coverText">
+              <p class="coverName">The Rise of Yasharal</p>
+              <p class="coverMeta">Album</p>
+            </div>
+          </div>
+
+          <div class="coverBtn" data-key="hear">
+            <div class="thumb"><img src="hear-my-voice.png" alt="Hear My Voice cover"></div>
+            <div class="coverText">
+              <p class="coverName">Hear My Voice</p>
+              <p class="coverMeta">Single</p>
+            </div>
+          </div>
+
+          <div class="coverBtn" data-key="deliver">
+            <div class="thumb"><img src="deliver-us.png" alt="Deliver Us cover"></div>
+            <div class="coverText">
+              <p class="coverName">Deliver Us</p>
+              <p class="coverMeta">Single</p>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    // Step 1: cover switching. Step 2: audio + playlist wiring.
+
+    const playerCover = document.getElementById("playerCover");
+    const playerAlbum = document.getElementById("playerAlbum");
+    const projectPill = document.getElementById("projectPill");
+
+    const PROJECTS = {
+      kingdombiz: { title: "Kingdom Biz", cover: "kingdom-biz-cover.png" },
+      rise:       { title: "The Rise of Yasharal", cover: "rise-of-yasharal-cover.png" },
+      hear:       { title: "Hear My Voice", cover: "hear-my-voice.png" },
+      deliver:    { title: "Deliver Us", cover: "deliver-us.png" }
+    };
+
+    document.querySelectorAll(".coverBtn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".coverBtn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+
+        const key = btn.getAttribute("data-key");
+        const data = PROJECTS[key];
+
+        playerCover.src = data.cover;
+        playerAlbum.textContent = data.title;
+        projectPill.textContent = data.title;
+      });
+    });
+  </script>
+</body>
+</html>
 
