@@ -419,9 +419,19 @@
         .replaceAll("'","&#039;");
     }
 
-    function safeSrc(path) { return encodeURI(path); }
+    // ✅ FIX: handles spaces + apostrophes safely by encoding each URL segment
+    function safeSrc(path) {
+      try {
+        return path.split("/").map((seg, i) => (i === 0 ? seg : encodeURIComponent(seg))).join("/");
+      } catch {
+        return encodeURI(path);
+      }
+    }
 
     // ====== TRACK LISTS ======
+    // NOTE: Your screenshot said:
+    // - KINGDOM BIZ has 5 tracks named TRACK_01...TRACK_05 (these are web-safe)
+    // - THE RISE OF YASHARAL has 12 tracks named ROY_TRACK 01...ROY_TRACK 12 (these include spaces/apostrophes)
     const kingdomBizTracks = [
       { title: "Walk It Out", subtitle: "KINGDOM BIZ", src: "/audio/TRACK_01_WALK_IT_OUT.mp3" },
       { title: "Rise of the Remnant", subtitle: "KINGDOM BIZ", src: "/audio/TRACK_02_RISE_OF_THE_REMNANT.mp3" },
@@ -445,15 +455,23 @@
       { title: "Return to the Covenant", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 12_RETURN TO THE COVENANT.mp3" }
     ];
 
-    // ====== LIBRARY ======
-    // Cache-buster is added to Kingdom Biz + Rise covers to force refresh.
+    // ====== LIBRARY (✅ FIXED COVERS) ======
+    // IMPORTANT: Your covers are in /images/ and named:
+    // - /images/abym-cover.png
+    // - /images/rise-of-yasharal.png
+    // - /images/kingdom-biz.png
+    // We include a cache-buster to force GitHub Pages/browser to refresh quickly.
+    const COVER_FAN = "/images/abym-cover.png?v=3";
+    const COVER_ROY = "/images/rise-of-yasharal.png?v=3";
+    const COVER_KB  = "/images/kingdom-biz.png?v=3";
+
     const library = [
       {
         id: "fan-exclusives",
         title: "FAN EXCLUSIVES",
         subtitle: "Supporter Vault • Bonus Access",
         badge: "EXCLUSIVE",
-        cover: "/images/abym-cover.png",
+        cover: COVER_FAN,
         tracks: [
           { title: "Hear My Voice", subtitle: "Fan Exclusive", src: "/audio/hear-my-voice.mp3" },
           { title: "Deliver Us", subtitle: "Fan Exclusive", src: "/audio/deliver-us.mp3" },
@@ -466,7 +484,7 @@
         title: "THE RISE OF YASHARAL",
         subtitle: "Full Album • Fan Streaming",
         badge: "FULL ALBUM",
-        cover: "/images/rise-of-yasharal.png?v=2",
+        cover: COVER_ROY,
         tracks: riseOfYasharalTracks
       },
       {
@@ -474,14 +492,14 @@
         title: "KINGDOM BIZ: RISE OF THE REMNANT",
         subtitle: "Full Album • Fan Streaming",
         badge: "FULL ALBUM",
-        cover: "/images/kingdom-biz.png?v=2",
+        cover: COVER_KB,
         tracks: kingdomBizTracks
       }
     ];
 
     // ====== RENDER ALBUM GRID ======
     const albumGrid = $("albumGrid");
-    const FALLBACK_COVER = "/images/abym-cover.png";
+    const FALLBACK_COVER = COVER_FAN;
 
     function albumCardHTML(a){
       const safeTitle = escapeHTML(a.title);
@@ -489,9 +507,6 @@
       const safeBadge = escapeHTML(a.badge || "");
       const cover = a.cover || FALLBACK_COVER;
 
-      // IMPORTANT FIX:
-      // - Do NOT remove the image on error
-      // - Fall back to the Fan Exclusives cover instead
       return `
         <div class="album" data-album="${a.id}" role="button" tabindex="0" aria-label="Open album ${safeTitle}">
           <div class="cover">
