@@ -429,9 +429,6 @@
     }
 
     // ====== TRACK LISTS ======
-    // NOTE: Your screenshot said:
-    // - KINGDOM BIZ has 5 tracks named TRACK_01...TRACK_05 (these are web-safe)
-    // - THE RISE OF YASHARAL has 12 tracks named ROY_TRACK 01...ROY_TRACK 12 (these include spaces/apostrophes)
     const kingdomBizTracks = [
       { title: "Walk It Out", subtitle: "KINGDOM BIZ", src: "/audio/TRACK_01_WALK_IT_OUT.mp3" },
       { title: "Rise of the Remnant", subtitle: "KINGDOM BIZ", src: "/audio/TRACK_02_RISE_OF_THE_REMNANT.mp3" },
@@ -456,11 +453,6 @@
     ];
 
     // ====== LIBRARY (✅ FIXED COVERS) ======
-    // IMPORTANT: Your covers are in /images/ and named:
-    // - /images/abym-cover.png
-    // - /images/rise-of-yasharal.png
-    // - /images/kingdom-biz.png
-    // We include a cache-buster to force GitHub Pages/browser to refresh quickly.
     const COVER_FAN = "/images/abym-cover.png?v=3";
     const COVER_ROY = "/images/rise-of-yasharal.png?v=3";
     const COVER_KB  = "/images/kingdom-biz.png?v=3";
@@ -474,9 +466,7 @@
         cover: COVER_FAN,
         tracks: [
           { title: "Hear My Voice", subtitle: "Fan Exclusive", src: "/audio/hear-my-voice.mp3" },
-          { title: "Deliver Us", subtitle: "Fan Exclusive", src: "/audio/deliver-us.mp3" },
-          ...riseOfYasharalTracks,
-          ...kingdomBizTracks
+          { title: "Deliver Us", subtitle: "Fan Exclusive", src: "/audio/deliver-us.mp3" }
         ]
       },
       {
