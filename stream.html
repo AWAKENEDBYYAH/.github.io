@@ -42,6 +42,7 @@
         var(--bg);
     }
 
+    /* Top bar */
     .top{
       position:sticky; top:0; z-index:10;
       backdrop-filter: blur(10px);
@@ -98,6 +99,7 @@
       background: rgba(239,68,68,.10);
     }
 
+    /* Layout */
     .wrap{
       max-width:1200px; margin:0 auto;
       padding:26px 18px 70px;
@@ -118,6 +120,7 @@
       overflow:hidden;
     }
 
+    /* Header / Welcome */
     .hero{
       padding:22px;
       position:relative;
@@ -156,6 +159,7 @@
       max-width:70ch;
     }
 
+    /* Album grid */
     .grid{
       padding:18px;
       display:grid;
@@ -195,7 +199,9 @@
       border-bottom: 1px solid var(--line);
       position:relative;
     }
-    .cover img{width:100%; height:100%; object-fit:cover; display:block;}
+    .cover img{
+      width:100%; height:100%; object-fit:cover; display:block;
+    }
     .badge{
       position:absolute; top:10px; left:10px;
       padding:7px 10px;
@@ -213,6 +219,7 @@
     .meta strong{letter-spacing:.04em}
     .meta span{color:var(--muted); font-size:12px}
 
+    /* Player panel (right column) */
     .player{
       padding:18px;
       position:sticky;
@@ -385,7 +392,7 @@
 
       <div class="fine">
         <strong>Note:</strong> This is a protected fan page. If someone is not logged in, they will be redirected to
-        <code>/login.html</code>. For launch, we’ll replace the temporary login system with real membership (Stripe/Gumroad).
+        <code>/login.html</code>. For paid launch, we’ll replace the temporary login system with real membership (Stripe/Gumroad).
       </div>
     </aside>
   </main>
@@ -405,36 +412,82 @@
     }
 
     const session = getSession();
-    if (!session || !session.email) window.location.replace("/login.html");
+    if (!session || !session.email) {
+      window.location.replace("/login.html");
+    }
 
-    // ====== PAGE SETUP ======
+    // ====== HELPERS ======
     const $ = (id) => document.getElementById(id);
     $("yr").textContent = new Date().getFullYear();
 
+    // Welcome text
     const email = (session?.email || "").toString();
     const role = (session?.role || "").toString();
     const displayName = email ? email.split("@")[0] : "Supporter";
     $("welcome").textContent = `Welcome, ${displayName}${role ? " (" + role + ")" : ""}.`;
 
+    // Logout
     $("logoutBtn").addEventListener("click", () => {
       localStorage.removeItem(SESSION_KEY);
       sessionStorage.removeItem(SESSION_KEY);
       window.location.href = "/login.html";
     });
 
-    // ====== DATA (UPDATED TO YOUR REAL FILENAMES) ======
-    // NOTE: Spaces and apostrophes are handled safely via encodeURI() when we load the audio src.
+    // Escape HTML
+    function escapeHTML(str) {
+      return String(str)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    // IMPORTANT: Handles spaces + apostrophes safely in filenames
+    function safeSrc(path) {
+      return encodeURI(path);
+    }
+
+    // ====== LIBRARY (CORRECTED) ======
+    // KINGDOM BIZ = 5 tracks
+    // THE RISE OF YASHARAL = 12 tracks
+    // FAN EXCLUSIVES includes Hear My Voice + Deliver Us + all album tracks (as requested)
+
+    const kingdomBizTracks = [
+      { title: "Walk It Out", subtitle: "KINGDOM BIZ", src: "/audio/TRACK_01_WALK_IT_OUT.mp3" },
+      { title: "Rise of the Remnant", subtitle: "KINGDOM BIZ", src: "/audio/TRACK_02_RISE_OF_THE_REMNANT.mp3" },
+      { title: "We Rise", subtitle: "KINGDOM BIZ", src: "/audio/TRACK_03_WE_RISE.mp3" },
+      { title: "Unbroken Frequency", subtitle: "KINGDOM BIZ", src: "/audio/TRACK_04_UNBROKEN_FREQUENCY.mp3" },
+      { title: "Unbroken Frequency (Remix)", subtitle: "KINGDOM BIZ", src: "/audio/TRACK_05_UNBROKEN_FREQUENCY_REMIX.mp3" }
+    ];
+
+    const riseOfYasharalTracks = [
+      { title: "The Love I Have in YAHUAH", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 01_THE LOVE I HAVE IN YAHUAH.mp3" },
+      { title: "You're With Me", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 02_YOU'RE WITH ME.mp3" },
+      { title: "Beneath Your Wings", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 03_BENEATH YOUR WINGS.mp3" },
+      { title: "YAHUAH the Most High", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 04_YAHUAH THE MOST HIGH.mp3" },
+      { title: "Show Me Your Heart", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 05_SHOW ME YOUR HEART.mp3" },
+      { title: "YAH's Chosen", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 06_YAHS CHOSEN.mp3" },
+      { title: "YAHUAH Is the Way", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 07_YAHUAH IS THE WAY.mp3" },
+      { title: "How Sweet Is Your Name", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 08_HOW SWEET IS YOUR NAME.mp3" },
+      { title: "In Your Presence", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 09_IN YOUR PRESENCE.mp3" },
+      { title: "Halal YAHUAH", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 10_HALAL YAHUAH.mp3" },
+      { title: "Awakened by YAH", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 11_AWAKENED BY YAH.mp3" },
+      { title: "Return to the Covenant", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 12_RETURN TO THE COVENANT.mp3" }
+    ];
 
     const library = [
       {
         id: "fan-exclusives",
         title: "FAN EXCLUSIVES",
-        subtitle: "Exclusive Fan-Only Streaming",
+        subtitle: "Supporter Vault • Bonus Access",
         badge: "EXCLUSIVE",
-        cover: "/abytransparent.png",
+        cover: "/images/abym-cover.png",
         tracks: [
           { title: "Hear My Voice", subtitle: "Fan Exclusive", src: "/audio/hear-my-voice.mp3" },
-          { title: "Deliver Us", subtitle: "Fan Exclusive", src: "/audio/deliver-us.mp3" }
+          { title: "Deliver Us", subtitle: "Fan Exclusive", src: "/audio/deliver-us.mp3" },
+          ...riseOfYasharalTracks,
+          ...kingdomBizTracks
         ]
       },
       {
@@ -442,35 +495,16 @@
         title: "THE RISE OF YASHARAL",
         subtitle: "Full Album • Fan Streaming",
         badge: "FULL ALBUM",
-        cover: "/abytransparent.png",
-        tracks: [
-          { title: "THE LOVE I HAVE IN YAHUAH", subtitle: "Album Track", src: "/audio/ROY_TRACK 01_THE LOVE I HAVE IN YAHUAH.mp3" },
-          { title: "YOU'RE WITH ME", subtitle: "Album Track", src: "/audio/ROY_TRACK 02_YOU'RE WITH ME.mp3" },
-          { title: "BENEATH YOUR WINGS", subtitle: "Album Track", src: "/audio/ROY_TRACK 03_BENEATH YOUR WINGS.mp3" },
-          { title: "YAHUAH THE MOST HIGH", subtitle: "Album Track", src: "/audio/ROY_TRACK 04_YAHUAH THE MOST HIGH.mp3" },
-          { title: "SHOW ME YOUR HEART", subtitle: "Album Track", src: "/audio/ROY_TRACK 05_SHOW ME YOUR HEART.mp3" },
-          { title: "YAHS CHOSEN", subtitle: "Album Track", src: "/audio/ROY_TRACK 06_YAHS CHOSEN.mp3" },
-          { title: "YAHUAH IS THE WAY", subtitle: "Album Track", src: "/audio/ROY_TRACK 07_YAHUAH IS THE WAY.mp3" },
-          { title: "HOW SWEET IS YOUR NAME", subtitle: "Album Track", src: "/audio/ROY_TRACK 08_HOW SWEET IS YOUR NAME.mp3" },
-          { title: "IN YOUR PRESENCE", subtitle: "Album Track", src: "/audio/ROY_TRACK 09_IN YOUR PRESENCE.mp3" },
-          { title: "HALAL YAHUAH", subtitle: "Album Track", src: "/audio/ROY_TRACK 10_HALAL YAHUAH.mp3" },
-          { title: "AWAKENED BY YAH", subtitle: "Album Track", src: "/audio/ROY_TRACK 11_AWAKENED BY YAH.mp3" },
-          { title: "RETURN TO THE COVENANT", subtitle: "Album Track", src: "/audio/ROY_TRACK 12_RETURN TO THE COVENANT.mp3" }
-        ]
+        cover: "/images/rise-of-yasharal.png",
+        tracks: riseOfYasharalTracks
       },
       {
         id: "kingdom-biz",
         title: "KINGDOM BIZ: RISE OF THE REMNANT",
         subtitle: "Full Album • Fan Streaming",
         badge: "FULL ALBUM",
-        cover: "/abytransparent.png",
-        tracks: [
-          { title: "WALK IT OUT", subtitle: "Album Track", src: "/audio/TRACK_01_WALK IT OUT.mp3" },
-          { title: "RISE OF THE REMNANT", subtitle: "Album Track", src: "/audio/TRACK_02_RISE OF THE REMNANT.mp3" },
-          { title: "WE RISE", subtitle: "Album Track", src: "/audio/TRACK_03__WE RISE.mp3" },
-          { title: "UNBROKEN FREQUENCY", subtitle: "Album Track", src: "/audio/TRACK_04_UNBROKEN FREQUENCY.mp3" },
-          { title: "UNBROKEN FREQUENCY REMIX", subtitle: "Album Track", src: "/audio/TRACK_05__UNBROKEN FREQUENCY REMIX.mp3" }
-        ]
+        cover: "/images/kingdom-biz.png",
+        tracks: kingdomBizTracks
       }
     ];
 
@@ -498,7 +532,9 @@
       `;
     }
 
-    for (const a of library) albumGrid.insertAdjacentHTML("beforeend", albumCardHTML(a));
+    for (const a of library) {
+      albumGrid.insertAdjacentHTML("beforeend", albumCardHTML(a));
+    }
 
     // ====== PLAYER LOGIC ======
     const audio = $("audio");
@@ -508,6 +544,7 @@
     let currentAlbum = null;
     let currentIndex = 0;
 
+    // Repeat modes
     let repeat1 = false;
     let repeatAll = false;
 
@@ -557,11 +594,6 @@
       });
     }
 
-    function loadSrc(src) {
-      // Ensures filenames with spaces/apostrophes work reliably
-      audio.src = encodeURI(src);
-    }
-
     function playTrack(i) {
       if (!currentAlbum) return;
       currentIndex = i;
@@ -569,29 +601,45 @@
       const t = currentAlbum.tracks[currentIndex];
       nowText.innerHTML = `<strong>${escapeHTML(currentAlbum.title)}</strong><br>${escapeHTML(t.title)}`;
 
-      loadSrc(t.src);
+      audio.src = safeSrc(t.src);
       audio.play().catch(() => {});
+
       $("playBtn").textContent = "⏸️ Pause";
       highlightActive();
     }
 
     function nextTrack() {
       if (!currentAlbum) return;
-      if (currentIndex < currentAlbum.tracks.length - 1) playTrack(currentIndex + 1);
-      else if (repeatAll) playTrack(0);
-      else $("playBtn").textContent = "▶️ Play";
+
+      if (currentIndex < currentAlbum.tracks.length - 1) {
+        playTrack(currentIndex + 1);
+      } else {
+        if (repeatAll) playTrack(0);
+        else $("playBtn").textContent = "▶️ Play";
+      }
     }
 
     function prevTrack() {
       if (!currentAlbum) return;
-      if (audio.currentTime > 3) { audio.currentTime = 0; return; }
+
+      if (audio.currentTime > 3) {
+        audio.currentTime = 0;
+        return;
+      }
+
       if (currentIndex > 0) playTrack(currentIndex - 1);
-      else if (repeatAll) playTrack(currentAlbum.tracks.length - 1);
-      else audio.currentTime = 0;
+      else {
+        if (repeatAll) playTrack(currentAlbum.tracks.length - 1);
+        else audio.currentTime = 0;
+      }
     }
 
     audio.addEventListener("ended", () => {
-      if (repeat1) { audio.currentTime = 0; audio.play(); return; }
+      if (repeat1) {
+        audio.currentTime = 0;
+        audio.play();
+        return;
+      }
       nextTrack();
     });
 
@@ -600,8 +648,14 @@
         if (currentAlbum && currentAlbum.tracks.length) playTrack(0);
         return;
       }
-      if (audio.paused) { audio.play(); $("playBtn").textContent = "⏸️ Pause"; }
-      else { audio.pause(); $("playBtn").textContent = "▶️ Play"; }
+
+      if (audio.paused) {
+        audio.play();
+        $("playBtn").textContent = "⏸️ Pause";
+      } else {
+        audio.pause();
+        $("playBtn").textContent = "▶️ Play";
+      }
     });
 
     $("nextBtn").addEventListener("click", nextTrack);
@@ -610,7 +664,9 @@
     albumGrid.addEventListener("click", (e) => {
       const card = e.target.closest(".album");
       if (!card) return;
-      const album = library.find(a => a.id === card.dataset.album);
+
+      const id = card.dataset.album;
+      const album = library.find(a => a.id === id);
       if (!album) return;
 
       currentAlbum = album;
@@ -619,30 +675,24 @@
       renderTracklist(album);
       nowText.textContent = `Album selected: ${album.title}. Choose a track.`;
 
-      if (album.tracks?.length) loadSrc(album.tracks[0].src);
+      if (album.tracks?.length) {
+        audio.src = safeSrc(album.tracks[0].src);
+      }
     });
 
     albumGrid.addEventListener("keydown", (e) => {
       if (e.key !== "Enter") return;
       const card = e.target.closest(".album");
-      if (card) card.click();
+      if (!card) return;
+      card.click();
     });
 
-    // Default: select first album
+    // Default select first album
     if (library.length) {
       currentAlbum = library[0];
       renderTracklist(currentAlbum);
       nowText.textContent = `Album selected: ${currentAlbum.title}. Choose a track.`;
-      if (currentAlbum.tracks?.length) loadSrc(currentAlbum.tracks[0].src);
-    }
-
-    function escapeHTML(str) {
-      return String(str)
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
+      if (currentAlbum.tracks?.length) audio.src = safeSrc(currentAlbum.tracks[0].src);
     }
   </script>
 </body>
