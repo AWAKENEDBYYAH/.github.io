@@ -428,7 +428,7 @@
       }
     }
 
-    // ====== TRACK LISTS (✅ UPDATED + TRACK 6 FALLBACK FIX) ======
+    // ====== TRACK LISTS (MATCH YOUR UPLOADED NAMES) ======
     const kingdomBizTracks = [
       { title: "Walk It Out", subtitle: "KINGDOM BIZ", src: "/audio/TRACK 01_WALK IT OUT.mp3" },
       { title: "Rise of the Remnant", subtitle: "KINGDOM BIZ", src: "/audio/TRACK 02_RISE OF THE REMNANT.mp3" },
@@ -444,15 +444,8 @@
       { title: "YAHUAH the Holy One of Yasharal", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 04_YAHUAH THE HOLY ONE OF YASHARAL.mp3" },
       { title: "Show Me Your Heart", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 05_SHOW ME YOUR HEART.mp3" },
 
-      // ✅ Track 6: try BOTH filenames automatically
-      {
-        title: "YAH'S Chosen (The Great Gathering)",
-        subtitle: "THE RISE OF YASHARAL",
-        src: [
-          "/audio/ROY_TRACK 06_YAHS CHOSEN THE GREAT GATHERING.mp3",
-          "/audio/ROY_TRACK 06_YAHS CHOSEN THE GREAT GATHERING FINAL.mp3"
-        ]
-      },
+      <!-- ✅ UPDATED TRACK 06 FILE -->
+      { title: "YAH'S Chosen (The Great Gathering)", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 06_YAHS CHOSEN THE GREAT GATHERING.mp3" },
 
       { title: "YAHUAH Is the Father's Name", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 07_YAHUAH IS THE FATHERS NAME.mp3" },
       { title: "How Sweet Is Your Name YAHUAH", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 08_HOW SWEET IS YOUR NAME YAHUAH.mp3" },
@@ -586,7 +579,6 @@
       });
     }
 
-    // ✅ UPDATED: supports src as string OR array (fallback)
     function playTrack(i) {
       if (!currentAlbum) return;
       currentIndex = i;
@@ -594,38 +586,10 @@
       const t = currentAlbum.tracks[currentIndex];
       nowText.innerHTML = `<strong>${escapeHTML(currentAlbum.title)}</strong><br>${escapeHTML(t.title)}`;
 
-      const sources = Array.isArray(t.src) ? t.src : [t.src];
-      let tryIndex = 0;
-
-      const tryPlay = () => {
-        audio.src = safeSrc(sources[tryIndex]);
-        audio.play().then(() => {
-          $("playBtn").textContent = "⏸️ Pause";
-          highlightActive();
-        }).catch(() => {
-          // Autoplay may be blocked; user can press play
-          $("playBtn").textContent = "▶️ Play";
-          highlightActive();
-        });
-      };
-
-      const onError = () => {
-        audio.removeEventListener("error", onError);
-        if (tryIndex < sources.length - 1) {
-          tryIndex++;
-          audio.addEventListener("error", onError, { once: true });
-          tryPlay();
-        } else {
-          nowText.innerHTML =
-            `<strong>${escapeHTML(currentAlbum.title)}</strong><br>` +
-            `⚠️ Missing file for: ${escapeHTML(t.title)}<br>` +
-            `<span style="color:#94a3b8">Check the exact filename in /audio.</span>`;
-          $("playBtn").textContent = "▶️ Play";
-        }
-      };
-
-      audio.addEventListener("error", onError, { once: true });
-      tryPlay();
+      audio.src = safeSrc(t.src);
+      audio.play().catch(() => {});
+      $("playBtn").textContent = "⏸️ Pause";
+      highlightActive();
     }
 
     function nextTrack() {
@@ -668,7 +632,7 @@
 
       renderTracklist(album);
       nowText.textContent = `Album selected: ${album.title}. Choose a track.`;
-      if (album.tracks?.length) audio.src = safeSrc(Array.isArray(album.tracks[0].src) ? album.tracks[0].src[0] : album.tracks[0].src);
+      if (album.tracks?.length) audio.src = safeSrc(album.tracks[0].src);
     });
 
     albumGrid.addEventListener("keydown", (e) => {
@@ -681,7 +645,7 @@
       currentAlbum = library[0];
       renderTracklist(currentAlbum);
       nowText.textContent = `Album selected: ${currentAlbum.title}. Choose a track.`;
-      if (currentAlbum.tracks?.length) audio.src = safeSrc(Array.isArray(currentAlbum.tracks[0].src) ? currentAlbum.tracks[0].src[0] : currentAlbum.tracks[0].src);
+      if (currentAlbum.tracks?.length) audio.src = safeSrc(currentAlbum.tracks[0].src);
     }
   </script>
 </body>
