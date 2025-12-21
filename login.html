@@ -18,7 +18,7 @@
       --text:#e5e7eb;
       --muted:#94a3b8;
       --line:rgba(255,255,255,.10);
-      --brand:#1C39A8;   /* SAS Blue */
+      --brand:#1C39A8;
       --brand2:#2b56ff;
       --glow:rgba(28,57,168,.45);
       --ok:rgba(34,197,94,.15);
@@ -26,7 +26,6 @@
       --radius:22px;
       --shadow: 0 18px 55px rgba(0,0,0,.45);
     }
-
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
@@ -39,8 +38,6 @@
         radial-gradient(1200px 700px at 50% 100%, rgba(255,255,255,.06), transparent 60%),
         var(--bg);
     }
-
-    /* Top bar (kept minimal so it won't disturb site) */
     .top{
       position:sticky; top:0; z-index:10;
       backdrop-filter: blur(10px);
@@ -65,15 +62,10 @@
       overflow:hidden;
     }
     .logo img{width:100%;height:100%;object-fit:cover}
-    .brand-title{
-      display:flex; flex-direction:column; line-height:1.1;
-    }
+    .brand-title{display:flex; flex-direction:column; line-height:1.1;}
     .brand-title strong{letter-spacing:.06em}
     .brand-title span{font-size:12px;color:var(--muted)}
-
-    .top-actions{
-      display:flex; align-items:center; gap:10px; flex-wrap:wrap;
-    }
+    .top-actions{display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
     .btn{
       border:1px solid var(--line);
       background:rgba(255,255,255,.04);
@@ -97,8 +89,6 @@
       box-shadow: 0 0 28px rgba(43,86,255,.18);
     }
     .btn.primary:hover{border-color:rgba(43,86,255,.65);}
-
-    /* Layout */
     .wrap{
       max-width:1100px; margin:0 auto;
       padding:32px 18px 60px;
@@ -109,7 +99,6 @@
     @media (max-width: 900px){
       .wrap{grid-template-columns:1fr; padding-top:18px;}
     }
-
     .hero{
       border:1px solid var(--line);
       background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
@@ -138,7 +127,6 @@
       font-size:15px;
       max-width:62ch;
     }
-
     .bullets{
       margin:18px 0 0;
       display:grid;
@@ -164,7 +152,6 @@
     }
     .pill strong{display:block; font-size:13px; letter-spacing:.03em}
     .pill span{display:block; font-size:12px; color:var(--muted); margin-top:4px}
-
     .card{
       border:1px solid var(--line);
       background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
@@ -172,17 +159,9 @@
       box-shadow: var(--shadow);
       padding:22px;
     }
-    .card h2{
-      margin:0 0 6px;
-      letter-spacing:.06em;
-      font-size:18px;
-    }
+    .card h2{margin:0 0 6px; letter-spacing:.06em; font-size:18px;}
     .card p{margin:0 0 14px; color:var(--muted); font-size:13px}
-
-    label{
-      display:block; font-size:12px; color:var(--muted);
-      margin:12px 0 6px;
-    }
+    label{display:block; font-size:12px; color:var(--muted); margin:12px 0 6px;}
     input{
       width:100%;
       padding:12px 12px;
@@ -196,29 +175,17 @@
       border-color: rgba(43,86,255,.55);
       box-shadow: 0 0 0 4px rgba(43,86,255,.12);
     }
-
-    /* ✅ Password eye toggle (added) */
-    .password-wrap{
-      position:relative;
-      width:100%;
-    }
-    .password-wrap input{
-      padding-right:46px; /* room for eye button */
-    }
+    .password-wrap{position:relative;width:100%;}
+    .password-wrap input{padding-right:46px;}
     .toggle-eye{
-      position:absolute;
-      right:12px;
-      top:50%;
+      position:absolute; right:12px; top:50%;
       transform:translateY(-50%);
-      width:34px;
-      height:34px;
-      border-radius:12px;
+      width:34px;height:34px;border-radius:12px;
       border:1px solid rgba(255,255,255,.12);
       background: rgba(255,255,255,.04);
       color: var(--muted);
       cursor:pointer;
-      display:grid;
-      place-items:center;
+      display:grid; place-items:center;
       transition:.2s transform, .2s background, .2s border-color, .2s color;
     }
     .toggle-eye:hover{
@@ -227,16 +194,8 @@
       border-color: rgba(255,255,255,.18);
       color: #fff;
     }
-
-    .row{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:10px; margin-top:12px;
-      flex-wrap:wrap;
-    }
-    .small{
-      font-size:12px; color:var(--muted);
-    }
-
+    .row{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:12px; flex-wrap:wrap;}
+    .small{font-size:12px; color:var(--muted);}
     .notice{
       margin-top:14px;
       padding:12px 12px;
@@ -247,7 +206,6 @@
       font-size:12px;
       line-height:1.35;
     }
-
     .toast{
       margin-top:12px;
       padding:12px 12px;
@@ -258,7 +216,6 @@
     }
     .toast.ok{display:block; background:var(--ok); border-color:rgba(34,197,94,.25); color:#dcfce7}
     .toast.bad{display:block; background:var(--bad); border-color:rgba(239,68,68,.25); color:#fee2e2}
-
     footer{
       max-width:1100px; margin:0 auto;
       padding:0 18px 28px;
@@ -295,7 +252,7 @@
 
       <div class="top-actions">
         <a class="btn" href="/music.html">MUSIC</a>
-        <a class="btn primary" href="#" id="joinBtn">JOIN & STREAM</a>
+        <a class="btn primary" href="/subscribe.html" id="joinBtn">JOIN & STREAM</a>
       </div>
     </div>
   </div>
@@ -317,21 +274,20 @@
       </div>
 
       <div class="notice">
-        <strong>Owner Note:</strong> This page is live-safe (it won’t disturb your site).
-        Right now it uses a temporary test login so you can access everything without paying while we build the real membership connection.
+        <strong>Note:</strong> Log in below to continue. If you don’t have a supporter account yet,
+        use <strong>JOIN & STREAM</strong> to subscribe first.
       </div>
     </section>
 
     <aside class="card">
       <h2>LOG IN</h2>
-      <p>Use your supporter login. (Owner/admin access included.)</p>
+      <p>Use your supporter login.</p>
 
       <form id="loginForm" autocomplete="on">
         <label for="email">Email</label>
         <input id="email" type="email" placeholder="you@example.com" required />
 
         <label for="password">Password</label>
-        <!-- ✅ Eye toggle wrapper (added) -->
         <div class="password-wrap">
           <input id="password" type="password" placeholder="••••••••" required />
           <button class="toggle-eye" id="togglePassword" type="button" aria-label="Show password" title="Show/Hide Password">👁️</button>
@@ -351,10 +307,7 @@
         <div id="toast" class="toast"></div>
 
         <div class="notice" style="margin-top:14px;">
-          <strong>Test Owner Login (temporary):</strong><br/>
-          Email: <code>owner@awakenedbyyahmusic.com</code><br/>
-          Password: <code>AWAKENED</code><br/><br/>
-          After we connect real payments/membership, this test login will be removed.
+          <strong>Tip:</strong> If you just subscribed, use the same email you used at checkout.
         </div>
       </form>
     </aside>
@@ -364,22 +317,29 @@
     © <span id="yr"></span> <strong>AWAKENED BY YAH</strong>. All Rights Reserved.
   </footer>
 
-  <script>
-    // ====== CONFIG (temporary for testing) ======
-    // This is NOT secure for paid launch; it's a front-end gate to test the flow + design.
-    const TEST_USERS = [
-      { email: "owner@awakenedbyyahmusic.com", password: "AWAKENED", role: "owner" }
-    ];
+  <!-- Supabase JS (UMD) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    // Where to send successful logins (we'll build this next)
+  <script>
+    // =======================
+    // ✅ CONFIG (REQUIRED)
+    // =======================
+    const SUPABASE_URL = "PASTE_YOUR_SUPABASE_URL_HERE";
+    const SUPABASE_ANON_KEY = "PASTE_YOUR_SUPABASE_ANON_KEY_HERE";
+
+    // Edge function that returns { subscribed: true/false }
+    // If your function name differs, change it here.
+    const CHECK_SUB_FN = "check-subscription";
+
+    // Where people go
     const STREAM_PAGE = "/stream.html";
+    const SUBSCRIBE_PAGE = "/subscribe.html";
 
     const $ = (id) => document.getElementById(id);
     const toast = $("toast");
-
     $("yr").textContent = new Date().getFullYear();
 
-    // ✅ Password visibility toggle (added)
+    // Password eye toggle
     const pw = $("password");
     const eye = $("togglePassword");
     eye.addEventListener("click", () => {
@@ -389,46 +349,125 @@
       eye.setAttribute("aria-label", showing ? "Show password" : "Hide password");
     });
 
-    // Join button (placeholder for your pricing / checkout later)
-    $("joinBtn").addEventListener("click", (e) => {
+    // Toast helper
+    function showToast(kind, msg){
+      toast.className = "toast " + (kind === "ok" ? "ok" : "bad");
+      toast.textContent = msg;
+    }
+
+    // Redirect support: login.html?redirect=/stream.html
+    function getRedirectPath(){
+      const u = new URL(window.location.href);
+      const r = u.searchParams.get("redirect");
+      if (!r) return null;
+      // allow only same-site paths
+      if (!r.startsWith("/")) return null;
+      return r;
+    }
+
+    // Create Supabase client
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // Forgot password: send reset email (requires you to configure redirect URL in Supabase Auth settings)
+    $("forgotBtn").addEventListener("click", async (e) => {
       e.preventDefault();
-      alert("JOIN & STREAM will connect to your membership checkout next (Stripe/Gumroad).");
-    });
-
-    $("forgotBtn").addEventListener("click", (e) => {
-      e.preventDefault();
-      alert("Password reset will be enabled when we connect real membership login.");
-    });
-
-    $("loginForm").addEventListener("submit", (e) => {
-      e.preventDefault();
-
-      const email = $("email").value.trim().toLowerCase();
-      const password = $("password").value.trim();
-      const remember = $("remember").checked;
-
-      const match = TEST_USERS.find(u => u.email.toLowerCase() === email && u.password === password);
-
-      if (!match) {
-        toast.className = "toast bad";
-        toast.textContent = "Login failed. Please check your email/password.";
+      const email = $("email").value.trim();
+      if (!email){
+        showToast("bad", "Enter your email first, then click Forgot password.");
         return;
       }
 
-      // store a simple session flag for now
-      const session = {
-        email: match.email,
-        role: match.role,
-        ts: Date.now()
-      };
+      try{
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: window.location.origin + "/reset.html"
+        });
+        if (error) throw error;
+        showToast("ok", "Password reset email sent. Check your inbox.");
+      }catch(err){
+        console.warn(err);
+        showToast("bad", "Could not send reset email. Try again.");
+      }
+    });
 
-      const storage = remember ? localStorage : sessionStorage;
-      storage.setItem("aby_stream_session", JSON.stringify(session));
+    // After login, check subscription
+    async function routeAfterLogin(){
+      const desired = getRedirectPath();
 
-      toast.className = "toast ok";
-      toast.textContent = "Success. Redirecting to streaming…";
+      try{
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) {
+          showToast("bad", "No active session. Please log in again.");
+          return;
+        }
 
-      setTimeout(() => window.location.href = STREAM_PAGE, 700);
+        // Call Edge Function to check subscription (uses JWT automatically if Authorization header is set)
+        const res = await fetch(`${SUPABASE_URL}/functions/v1/${CHECK_SUB_FN}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${session.access_token}`
+          },
+          body: JSON.stringify({}) // keep extensible
+        });
+
+        if (!res.ok){
+          // If your function isn't deployed yet, don't lock users out—send to subscribe
+          console.warn("check-subscription failed", res.status);
+          window.location.href = SUBSCRIBE_PAGE;
+          return;
+        }
+
+        const json = await res.json();
+        const subscribed = !!json.subscribed;
+
+        // If user is subscribed, go to stream (or desired path if it's stream)
+        if (subscribed){
+          window.location.href = (desired || STREAM_PAGE);
+        } else {
+          window.location.href = SUBSCRIBE_PAGE;
+        }
+      }catch(err){
+        console.warn(err);
+        // Safe fallback
+        window.location.href = SUBSCRIBE_PAGE;
+      }
+    }
+
+    // Auto-route if already logged in
+    (async () => {
+      try{
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session){
+          showToast("ok", "You're already signed in. Checking access…");
+          setTimeout(routeAfterLogin, 400);
+        }
+      }catch(_){}
+    })();
+
+    // Login form submit
+    $("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const email = $("email").value.trim();
+      const password = $("password").value.trim();
+
+      if (!email || !password){
+        showToast("bad", "Please enter your email and password.");
+        return;
+      }
+
+      showToast("ok", "Signing in…");
+
+      try{
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+
+        showToast("ok", "Success. Checking access…");
+        setTimeout(routeAfterLogin, 400);
+      }catch(err){
+        console.warn(err);
+        showToast("bad", "Login failed. Check your email/password.");
+      }
     });
   </script>
 </body>
