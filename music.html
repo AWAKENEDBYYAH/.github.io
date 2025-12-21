@@ -28,6 +28,7 @@
     }
     .wrap{max-width:1180px;margin:0 auto;padding:18px}
 
+    /* ===== BIG MUSIC HERO (bigger than homepage) ===== */
     .musicHero{
       position:relative;
       height:520px;
@@ -36,7 +37,12 @@
       border:1px solid rgba(255,255,255,.12);
       box-shadow:0 35px 90px rgba(0,0,0,.60);
       background:
-        linear-gradient(180deg, rgba(2,6,23,.20), rgba(2,6,23,.40), rgba(2,6,23,.82)),
+        linear-gradient(
+          180deg,
+          rgba(2,6,23,.20),
+          rgba(2,6,23,.40),
+          rgba(2,6,23,.82)
+        ),
         url("music-banner.png");
       background-size:cover;
       background-position:center;
@@ -60,6 +66,7 @@
     }
     .musicHeroBack a:hover{border-color:rgba(255,255,255,.30)}
 
+    /* ===== LAYOUT ===== */
     .grid{
       display:grid;
       grid-template-columns: 1.35fr .65fr;
@@ -70,6 +77,7 @@
       .musicHero{height:420px}
     }
 
+    /* ===== BIG PLAYER CARD ===== */
     .playerCard{
       border:1px solid var(--line);
       background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
@@ -140,6 +148,7 @@
     .vol{width:170px;display:flex;align-items:center;gap:10px}
     .vol input{flex:1}
 
+    /* ===== PLAYLIST ===== */
     .playlist{
       border-top:1px solid var(--line);
       background: rgba(0,0,0,.18);
@@ -206,6 +215,7 @@
       text-overflow:ellipsis;
     }
 
+    /* ===== COVER SELECTOR ===== */
     .coversCard{
       border:1px solid var(--line);
       background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
@@ -257,13 +267,17 @@
 
 <body>
   <div class="wrap">
+
+    <!-- HERO BANNER -->
     <header class="musicHero" aria-label="Awakened By YAH Music Banner">
       <div class="musicHeroBack">
         <a href="index.html">← Back to Home</a>
       </div>
+      <!-- No text overlay -->
     </header>
 
     <div class="grid">
+      <!-- BIG PLAYER -->
       <section class="playerCard" aria-label="Music Player">
         <div class="playerHead">
           <div class="cover">
@@ -289,7 +303,7 @@
               <button id="prevBtn" title="Previous">⏮</button>
               <button id="playBtn" class="primary" title="Play / Pause">▶️ Play</button>
               <button id="nextBtn" title="Next">⏭</button>
-              <span class="tinyLabel" id="statusLabel">Loading…</span>
+              <span class="tinyLabel" id="statusLabel">Ready</span>
             </div>
 
             <div class="rightBtns">
@@ -315,6 +329,7 @@
         </div>
       </section>
 
+      <!-- COVER SELECTOR -->
       <aside class="coversCard" aria-label="Albums & Singles">
         <div class="coversHead">
           <h2>Albums & Singles</h2>
@@ -359,11 +374,14 @@
   </div>
 
   <script>
+    /* ========= AUDIO BASE (root) ========= */
     const AUDIO_BASE = "/audio/";
-    const REMOTE_MANIFEST_URL = "/audio/manifest.json"; // <-- upload this once, then no more edits
 
-    // Fallback (used ONLY if manifest.json is missing)
-    const FALLBACK_MANIFEST = {
+    /* ========= MANIFEST =========
+       Kingdom Biz + Singles are fixed lists.
+       Rise is AUTO-LOADED from /audio/README.txt
+    */
+    const MANIFEST = {
       kingdombiz: [
         "TRACK 01_WALK IT OUT.mp3",
         "TRACK 02_RISE OF THE REMNANT.mp3",
@@ -371,12 +389,14 @@
         "TRACK 04_UNBROKEN FREQUENCY.mp3",
         "TRACK 05__UNBROKEN FREQUENCY REMIX.mp3"
       ],
-      rise: [
-        "ROY_TRACK 01_THE LOVE I HAVE IN YAHUAH.mp3"
-      ],
+
+      // ✅ AUTO-POPULATED at runtime from /audio/README.txt
+      rise: [],
+
       hear: [
         "ABY_TRACK 01_HEAR MY VOICE.mp3"
       ],
+
       deliver: [
         "ABYM_TRACK 01_DELIVER US.mp3"
       ]
@@ -388,8 +408,6 @@
       hear:       { title: "Hear My Voice", cover: "hear-my-voice.png", artist: "AWAKENED BY YAH" },
       deliver:    { title: "Deliver Us", cover: "deliver-us.png", artist: "AWAKENED BY YAH" }
     };
-
-    let MANIFEST = structuredClone(FALLBACK_MANIFEST);
 
     const audio = new Audio();
     audio.preload = "metadata";
@@ -428,26 +446,33 @@
       return `${m}:${String(s).padStart(2,"0")}`;
     }
 
+    // Clean filename -> "TRACK 01 — TITLE" (hides KB/ROY/ABY/ABYM)
     function parseDisplayFromFilename(file){
       const original = file.replace(/\.mp3$/i, "");
       let cleaned = original;
 
+      // Strip common prefixes (never show these)
       cleaned = cleaned.replace(/^KB[_\s-]*/i, "");
       cleaned = cleaned.replace(/^ROY[_\s-]*/i, "");
       cleaned = cleaned.replace(/^ABYM[_\s-]*/i, "");
       cleaned = cleaned.replace(/^ABY[_\s-]*/i, "");
 
+      // Normalize underscores to spaces, trim extra spaces
       cleaned = cleaned.replace(/_+/g, " ").replace(/\s+/g," ").trim();
 
+      // Accepts "TRACK 01", "TRACK 1", "TRACK01"
       const match = cleaned.match(/TRACK\s*0*([0-9]{1,2})\s*(.*)$/i);
       if (match){
         const num = Number(match[1]);
         const title = (match[2] || "").trim() || "Untitled";
         return { num, title, label: `TRACK ${pad2(num)} — ${title}` };
       }
+
+      // fallback
       return { num: null, title: cleaned, label: cleaned };
     }
 
+    /* ========= SAFE URL BUILD (spaces, apostrophes, etc.) ========= */
     function audioUrl(filename){
       return AUDIO_BASE + encodeURIComponent(filename);
     }
@@ -457,9 +482,16 @@
         .filter(Boolean)
         .map((file) => {
           const parsed = parseDisplayFromFilename(file);
-          return { file, src: audioUrl(file), num: parsed.num, title: parsed.title, label: parsed.label };
+          return {
+            file,
+            src: audioUrl(file),
+            num: parsed.num,
+            title: parsed.title,
+            label: parsed.label
+          };
         });
 
+      // Sort by track number if present
       list.sort((a,b) => {
         if (a.num == null && b.num == null) return a.label.localeCompare(b.label);
         if (a.num == null) return 1;
@@ -470,7 +502,9 @@
       return list;
     }
 
-    function setStatus(text){ statusLabel.textContent = text; }
+    function setStatus(text){
+      statusLabel.textContent = text;
+    }
 
     function updateMeta(){
       const proj = PROJECTS[currentProjectKey];
@@ -481,9 +515,11 @@
       projectPill.textContent = proj.title;
       countPill.textContent = `${tracks.length} track${tracks.length===1?"":"s"}`;
 
-      playerTrack.textContent = tracks.length
-        ? (tracks[currentIndex]?.label || "Select a track")
-        : "No tracks loaded";
+      if (tracks.length){
+        playerTrack.textContent = tracks[currentIndex]?.label || "Select a track";
+      } else {
+        playerTrack.textContent = "No tracks loaded";
+      }
     }
 
     function renderPlaylist(){
@@ -496,7 +532,9 @@
         li.innerHTML = `
           <div class="itemLeft">
             <p class="itemTitle">No tracks found</p>
-            <p class="itemSub">Add filenames in /audio/manifest.json (recommended) or MANIFEST.</p>
+            <p class="itemSub">
+              For Rise: make sure /audio/README.txt contains the ROY_TRACK mp3 filenames.
+            </p>
           </div>
         `;
         plistEl.appendChild(li);
@@ -531,8 +569,10 @@
       if (!tracks.length) return;
       currentIndex = Math.max(0, Math.min(idx, tracks.length - 1));
       const t = tracks[currentIndex];
+
       audio.src = t.src;
       audio.load();
+
       playerTrack.textContent = t.label;
       highlightActive();
       setStatus("Loaded");
@@ -583,8 +623,59 @@
       }
     }
 
-    function loadProject(key){
+    /* ========= AUTO-LOAD RISE TRACKS FROM /audio/README.txt ========= */
+    let riseLoadedOnce = false;
+
+    async function loadRiseFromReadme(){
+      try{
+        setStatus("Loading Rise tracks…");
+
+        // cache-bust so changes show immediately
+        const url = AUDIO_BASE + "README.txt?cb=" + Date.now();
+        const res = await fetch(url, { cache: "no-store" });
+        if (!res.ok) throw new Error("README fetch failed: " + res.status);
+
+        const text = await res.text();
+
+        // Find all ROY_TRACK ... .mp3 occurrences in the README
+        // Works whether README is plain list, copied URLs, or pasted text.
+        const matches = Array.from(
+          text.matchAll(/ROY_TRACK[^"\n\r]*?\.mp3/gi),
+          m => m[0].trim()
+        );
+
+        // Deduplicate while preserving order
+        const unique = [];
+        const seen = new Set();
+        for (const m of matches){
+          if (!seen.has(m)){
+            seen.add(m);
+            unique.push(m);
+          }
+        }
+
+        MANIFEST.rise = unique;
+        riseLoadedOnce = true;
+
+        if (MANIFEST.rise.length){
+          setStatus(`Rise loaded (${MANIFEST.rise.length})`);
+        } else {
+          setStatus("Rise README has no ROY_TRACK mp3 names");
+        }
+      }catch(err){
+        console.warn(err);
+        setStatus("Rise load failed (README missing?)");
+      }
+    }
+
+    async function loadProject(key){
       currentProjectKey = key;
+
+      // If Rise is selected and still empty, auto-fill from README once
+      if (key === "rise" && (!MANIFEST.rise || MANIFEST.rise.length === 0) && !riseLoadedOnce){
+        await loadRiseFromReadme();
+      }
+
       tracks = buildTrackObjects(MANIFEST[key] || []);
       currentIndex = 0;
 
@@ -593,6 +684,7 @@
       audio.src = "";
       playBtn.textContent = "▶️ Play";
 
+      // Reset times/seek when switching projects
       seekEl.value = "0";
       tNowEl.textContent = "0:00";
       tDurEl.textContent = "0:00";
@@ -637,38 +729,15 @@
     audio.addEventListener("error", () => setStatus("Audio error (check filename/path)"));
 
     document.querySelectorAll(".coverBtn").forEach(btn => {
-      btn.addEventListener("click", () => {
+      btn.addEventListener("click", async () => {
         document.querySelectorAll(".coverBtn").forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
-        loadProject(btn.getAttribute("data-key"));
+        await loadProject(btn.getAttribute("data-key"));
       });
     });
 
-    async function loadRemoteManifest(){
-      try{
-        const res = await fetch(REMOTE_MANIFEST_URL, { cache: "no-store" });
-        if (!res.ok) throw new Error("manifest missing");
-        const data = await res.json();
-
-        // Accept either { kingdombiz:[], rise:[], hear:[], deliver:[] } or { projects: {...} }
-        const incoming = data.projects && typeof data.projects === "object" ? data.projects : data;
-
-        // Only overwrite keys we know
-        for (const k of Object.keys(PROJECTS)){
-          if (Array.isArray(incoming[k])) MANIFEST[k] = incoming[k];
-        }
-
-        setStatus("Manifest loaded");
-      } catch (e){
-        setStatus("Using fallback manifest");
-      }
-    }
-
-    (async function init(){
-      setStatus("Loading…");
-      await loadRemoteManifest();
-      loadProject("kingdombiz");
-    })();
+    // initial load
+    loadProject("kingdombiz");
   </script>
 </body>
 </html>
