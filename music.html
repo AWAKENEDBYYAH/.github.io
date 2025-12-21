@@ -147,7 +147,6 @@
     .vol{width:170px;display:flex;align-items:center;gap:10px}
     .vol input{flex:1}
 
-    /* ✅ Repeat button active state */
     button.is-active{
       border-color: rgba(43,86,255,.70);
       background: rgba(28,57,168,.22);
@@ -272,7 +271,6 @@
 <body>
   <div class="wrap">
 
-    <!-- HERO BANNER -->
     <header class="musicHero" aria-label="Awakened By YAH Music Banner">
       <div class="musicHeroBack">
         <a href="/">← Back to Home</a>
@@ -306,7 +304,6 @@
               <button id="playBtn" class="primary" title="Play / Pause">▶️ Play</button>
               <button id="nextBtn" title="Next">⏭</button>
 
-              <!-- ✅ NEW: Repeat buttons -->
               <button id="repeatAllBtn" title="Repeat All (Playlist)">🔁</button>
               <button id="repeatOneBtn" title="Repeat 1 (Current Track)">🔂</button>
 
@@ -381,6 +378,7 @@
 
   <script>
     const AUDIO_BASE = "/audio/";
+
     const MANIFEST = {
       kingdombiz: [
         "TRACK 01_WALK IT OUT.mp3",
@@ -407,18 +405,14 @@
 
     const audio = new Audio();
     audio.preload = "metadata";
+    audio.crossOrigin = "anonymous"; // safe (also helps if you ever use WebAudio)
 
     let currentProjectKey = "kingdombiz";
     let tracks = [];
     let currentIndex = 0;
     let userSeeking = false;
 
-    /* ✅ Repeat modes:
-       - "none" (default)
-       - "all"  (repeat playlist)
-       - "one"  (repeat current track)
-    */
-    let repeatMode = "none";
+    let repeatMode = "none"; // none | all | one
 
     const playerCover = document.getElementById("playerCover");
     const playerArtist = document.getElementById("playerArtist");
@@ -469,12 +463,48 @@
         const title = (match[2] || "").trim() || "Untitled";
         return { num, title, label: `TRACK ${pad2(num)} — ${title}` };
       }
-
       return { num: null, title: cleaned, label: cleaned };
     }
 
+    // ✅ FIX #1: encode ONLY the filename safely without breaking ".mp3"
+    // - Keeps .mp3 intact (does not encode the dot)
+    // - Encodes spaces and other characters reliably
+    function safeEncodeFilename(filename){
+      // Split on last dot, preserve extension
+      const i = filename.lastIndexOf(".");
+      if (i === -1) return encodeURIComponent(filename).replace(/%2F/g, "/");
+      const base = filename.slice(0, i);
+      const ext  = filename.slice(i); // includes dot
+      return encodeURIComponent(base).replace(/%2F/g, "/") + ext;
+    }
+
     function audioUrl(filename){
-      return AUDIO_BASE + encodeURIComponent(filename);
+      return AUDIO_BASE + safeEncodeFilename(filename);
+    }
+
+    // ✅ FIX #2: try a fallback if the uploaded filename differs slightly
+    function sanitizeFilenameVariants(filename){
+      const variants = [];
+      variants.push(filename);
+
+      // common mismatch: double underscores vs single underscores
+      variants.push(filename.replace(/__+/g, "_"));
+
+      // common mismatch: accidental extra spaces
+      variants.push(filename.replace(/\s+/g, " ").trim());
+
+      // de-dupe
+      return [...new Set(variants)];
+    }
+
+    async function urlExists(url){
+      try{
+        // HEAD sometimes blocked; use Range GET
+        const r = await fetch(url, { method:"GET", headers:{ "Range":"bytes=0-1" }, cache:"no-store" });
+        return r.ok;
+      }catch(_){
+        return false;
+      }
     }
 
     function buildTrackObjects(files){
@@ -484,6 +514,7 @@
           const parsed = parseDisplayFromFilename(file);
           return {
             file,
+            variants: sanitizeFilenameVariants(file),
             src: audioUrl(file),
             num: parsed.num,
             title: parsed.title,
@@ -536,9 +567,7 @@
         li.innerHTML = `
           <div class="itemLeft">
             <p class="itemTitle">No tracks found</p>
-            <p class="itemSub">
-              For Rise: make sure /audio/README.txt contains the ROY_TRACK mp3 filenames.
-            </p>
+            <p class="itemSub">Upload mp3 files into /audio/ and match names exactly (case-sensitive).</p>
           </div>
         `;
         plistEl.appendChild(li);
@@ -569,21 +598,33 @@
       });
     }
 
-    function loadIndex(idx){
+    async function resolvePlayableSrc(trackObj){
+      // try primary, then fallbacks
+      for (const v of trackObj.variants){
+        const u = audioUrl(v);
+        if (await urlExists(u)) return u;
+      }
+      return trackObj.src; // last resort (will error with good messaging)
+    }
+
+    async function loadIndex(idx){
       if (!tracks.length) return;
       currentIndex = Math.max(0, Math.min(idx, tracks.length - 1));
       const t = tracks[currentIndex];
 
-      audio.src = t.src;
-      audio.load();
-
       playerTrack.textContent = t.label;
       highlightActive();
+      setStatus("Loading…");
+
+      const playableSrc = await resolvePlayableSrc(t);
+      audio.src = playableSrc;
+      audio.load();
+
       setStatus("Loaded");
     }
 
-    function loadAndPlayIndex(idx, autoplay){
-      loadIndex(idx);
+    async function loadAndPlayIndex(idx, autoplay){
+      await loadIndex(idx);
       if (autoplay){
         audio.play().then(() => {
           playBtn.textContent = "⏸ Pause";
@@ -592,10 +633,9 @@
       }
     }
 
-    function next(){
+    async function next(){
       if (!tracks.length) return;
 
-      // ✅ If at end and repeatMode is none, stop
       if (repeatMode === "none" && currentIndex >= tracks.length - 1){
         playBtn.textContent = "▶️ Play";
         setStatus("Ended");
@@ -603,13 +643,13 @@
       }
 
       const idx = (currentIndex + 1) % tracks.length;
-      loadAndPlayIndex(idx, !audio.paused);
+      await loadAndPlayIndex(idx, !audio.paused);
     }
 
-    function prev(){
+    async function prev(){
       if (!tracks.length) return;
       const idx = (currentIndex - 1 + tracks.length) % tracks.length;
-      loadAndPlayIndex(idx, !audio.paused);
+      await loadAndPlayIndex(idx, !audio.paused);
     }
 
     function restart(){
@@ -619,9 +659,9 @@
       setStatus("Restarted");
     }
 
-    function togglePlay(){
+    async function togglePlay(){
       if (!tracks.length){ setStatus("No tracks"); return; }
-      if (!audio.src) loadIndex(currentIndex);
+      if (!audio.src) await loadIndex(currentIndex);
 
       if (audio.paused){
         audio.play().then(() => {
@@ -635,30 +675,26 @@
       }
     }
 
-    // ✅ Repeat buttons behavior:
-    // - Clicking Repeat All toggles "all" <-> "none"
-    // - Clicking Repeat 1 toggles "one" <-> "none"
-    // - Only one can be active at a time
+    // ✅ FIX #3: repeat buttons truly mutually exclusive
     repeatAllBtn.addEventListener("click", () => {
-      repeatMode = (repeatMode === "all") ? "none" : "all";
-      if (repeatMode === "all") repeatMode = "all";
+      if (repeatMode === "all"){
+        repeatMode = "none";
+      } else {
+        repeatMode = "all";
+      }
       updateRepeatUI();
       setStatus(repeatMode === "all" ? "Repeat All" : "Repeat Off");
     });
 
     repeatOneBtn.addEventListener("click", () => {
-      repeatMode = (repeatMode === "one") ? "none" : "one";
+      if (repeatMode === "one"){
+        repeatMode = "none";
+      } else {
+        repeatMode = "one";
+      }
       updateRepeatUI();
       setStatus(repeatMode === "one" ? "Repeat 1" : "Repeat Off");
     });
-
-    // Ensure mutually exclusive UI states
-    function normalizeRepeatMode(){
-      if (repeatMode === "one"){
-        // No extra action needed; UI handles exclusivity
-      }
-      updateRepeatUI();
-    }
 
     let riseLoadedOnce = false;
 
@@ -688,11 +724,7 @@
         MANIFEST.rise = unique;
         riseLoadedOnce = true;
 
-        if (MANIFEST.rise.length){
-          setStatus(`Rise loaded (${MANIFEST.rise.length})`);
-        } else {
-          setStatus("Rise README has no ROY_TRACK mp3 names");
-        }
+        setStatus(MANIFEST.rise.length ? `Rise loaded (${MANIFEST.rise.length})` : "Rise README has no ROY_TRACK mp3 names");
       }catch(err){
         console.warn(err);
         setStatus("Rise load failed (README missing?)");
@@ -722,15 +754,13 @@
       renderPlaylist();
       setStatus("Ready");
 
-      if (tracks.length) loadIndex(0);
-
-      // keep repeat UI consistent when switching projects
-      normalizeRepeatMode();
+      if (tracks.length) await loadIndex(0);
+      updateRepeatUI();
     }
 
-    playBtn.addEventListener("click", togglePlay);
-    nextBtn.addEventListener("click", next);
-    prevBtn.addEventListener("click", prev);
+    playBtn.addEventListener("click", () => { togglePlay(); });
+    nextBtn.addEventListener("click", () => { next(); });
+    prevBtn.addEventListener("click", () => { prev(); });
     restartBtn.addEventListener("click", restart);
 
     volEl.addEventListener("input", () => audio.volume = Number(volEl.value) / 100);
@@ -757,8 +787,7 @@
       }
     });
 
-    // ✅ UPDATED ended behavior to support Repeat 1 and Repeat All
-    audio.addEventListener("ended", () => {
+    audio.addEventListener("ended", async () => {
       if (!tracks.length) return;
 
       if (repeatMode === "one"){
@@ -771,20 +800,25 @@
       }
 
       if (repeatMode === "all"){
-        next(); // loops at end
+        await next();
         return;
       }
 
-      // repeatMode === "none"
       if (currentIndex < tracks.length - 1){
-        next();
+        await next();
       } else {
         playBtn.textContent = "▶️ Play";
         setStatus("Ended");
       }
     });
 
-    audio.addEventListener("error", () => setStatus("Audio error (check filename/path)"));
+    // ✅ FIX #4: better error message showing filename + URL that failed
+    audio.addEventListener("error", () => {
+      const t = tracks[currentIndex];
+      const src = audio.currentSrc || audio.src || "(no src)";
+      setStatus(`Audio error: ${t?.file || "unknown file"} (check /audio/ name + case)`);
+      console.warn("Audio error file:", t?.file, "src:", src);
+    });
 
     document.querySelectorAll(".coverBtn").forEach(btn => {
       btn.addEventListener("click", async () => {
