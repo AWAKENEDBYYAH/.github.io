@@ -2,6 +2,14 @@
 <html lang="en">
 <head>
   <link rel="canonical" href="https://awakenedbyyahmusic.com/" />
+<link rel="canonical" href="https://awakenedbyyahmusic.com/" />
+
+<script>
+  // Force the clean homepage URL (prevents Google indexing /index.html as a duplicate)
+  if (location.pathname.endsWith('/index.html')) {
+    location.replace('/' + location.search + location.hash);
+  }
+</script>
 
   <link rel="icon" type="image/png" href="/abytransparent.png">
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
