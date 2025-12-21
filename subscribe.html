@@ -221,9 +221,11 @@
     // Supabase new UI calls this "Publishable key" (this is safe for browser use)
     const SUPABASE_ANON_KEY = "sb_publishable__LlL7rsAYeDlub9OmvofaA_ck1tKqca";
 
-    const PROJECT_REF = "fgzopgqtotwmvfohtlcq";
-    const PRICE_ID   = "price_1SgJlh19lhS22qNvxCQJgIYt";
-    const ENDPOINT   = `https://${PROJECT_REF}.supabase.co/functions/v1/create-checkout`;
+   const PROJECT_REF = "fgzopgqtownfvohtlcq"; // ✅ CORRECT project ref
+const PRICE_ID   = "price_1SgJlh19lhS22qNvxCQJgIYt";
+const ENDPOINT   = "https://fgzopgqtownfvohtlcq.supabase.co/functions/v1/create-checkout";
+
+
 
     const statusEl = document.getElementById("status");
     const btn = document.getElementById("checkoutBtn");
