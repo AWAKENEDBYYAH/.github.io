@@ -115,6 +115,7 @@
     }
     .btn:hover{filter:brightness(1.05)}
     .btn:active{transform:translateY(1px)}
+    .btn:disabled{opacity:.6; cursor:not-allowed}
     .note{
       font-size:13px;
       color:var(--muted);
@@ -136,6 +137,7 @@
       font-size:13px;
       color:var(--muted);
       min-height:18px;
+      white-space:pre-wrap;
     }
     .ok{color:#a7f3d0}
     .bad{color:#fecaca}
@@ -188,7 +190,7 @@
           <div id="status" class="status"></div>
 
           <div class="note">
-            If you see a message like <code>Method Not Allowed</code> when visiting your function URL directly, that’s normal —
+            If you see <code>Method Not Allowed</code> when visiting your function URL directly, that’s normal —
             Checkout must be started by clicking the button.
           </div>
         </div>
@@ -215,19 +217,13 @@
   </footer>
 
   <script>
-    // ✅ REPLACE THESE TWO VALUES:
+    // ✅ REQUIRED FIX: Supabase Edge Functions often require apikey + Authorization headers.
+    // Supabase new UI calls this "Publishable key" (this is safe for browser use)
+    const SUPABASE_ANON_KEY = "sb_publishable__LlL7rsAYeDlub9OmvofaA_ck1tKqca";
 
-
-const PROJECT_REF = "fgzopgqtotwmvfohtlcq";
-const PRICE_ID   = "price_1SgJlh19lhS22qNvxCQJgIYt";
-
-const ENDPOINT = "https://fgzopgqtotwmvfohtlcq.supabase.co/functions/v1/create-checkout";
-
-
-
-
-
-
+    const PROJECT_REF = "fgzopgqtotwmvfohtlcq";
+    const PRICE_ID   = "price_1SgJlh19lhS22qNvxCQJgIYt";
+    const ENDPOINT   = `https://${PROJECT_REF}.supabase.co/functions/v1/create-checkout`;
 
     const statusEl = document.getElementById("status");
     const btn = document.getElementById("checkoutBtn");
@@ -238,28 +234,44 @@ const ENDPOINT = "https://fgzopgqtotwmvfohtlcq.supabase.co/functions/v1/create-c
       statusEl.className = "status " + (type || "");
     }
 
+    function safeJsonParse(text){
+      try { return JSON.parse(text); } catch { return null; }
+    }
+
     btn.addEventListener("click", async () => {
       setStatus("Starting Checkout…", "");
       btn.disabled = true;
 
       try {
+        if (!SUPABASE_ANON_KEY || SUPABASE_ANON_KEY.includes("PASTE_YOUR_")) {
+          throw new Error("Missing SUPABASE_ANON_KEY. Paste your anon public key into subscribe.html.");
+        }
+
         const email = (emailInput.value || "").trim();
+
+        const payload = {
+          priceId: PRICE_ID,
+          customerEmail: email || undefined,
+          successUrl: `${location.origin}/success.html`,
+          cancelUrl: `${location.origin}/subscribe.html`,
+        };
 
         const res = await fetch(ENDPOINT, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            priceId: PRICE_ID,
-            customerEmail: email || undefined,
-            successUrl: "https://awakenedbyyahmusic.com/success.html",
-            cancelUrl: "https://awakenedbyyahmusic.com/subscribe.html"
-          })
+          headers: {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_ANON_KEY,
+            "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+          },
+          body: JSON.stringify(payload),
         });
 
-        const data = await res.json().catch(() => ({}));
+        const raw = await res.text();
+        const data = safeJsonParse(raw) || {};
 
         if (!res.ok) {
-          throw new Error(data.error || `Request failed (${res.status})`);
+          const detail = data.error || data.message || raw || `Request failed (${res.status})`;
+          throw new Error(detail);
         }
         if (!data.url) {
           throw new Error("No Checkout URL returned from server.");
@@ -269,11 +281,10 @@ const ENDPOINT = "https://fgzopgqtotwmvfohtlcq.supabase.co/functions/v1/create-c
         window.location.href = data.url;
 
       } catch (e) {
-        setStatus(String(e.message || e), "bad");
+        setStatus(`Checkout error:\n${String(e?.message || e)}`, "bad");
         btn.disabled = false;
       }
     });
   </script>
 </body>
 </html>
-
