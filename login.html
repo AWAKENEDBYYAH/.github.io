@@ -1,1 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>LOG IN TO STREAM | AWAKENED BY YAH</title>
+
+  <link rel="icon" type="image/png" href="/abytransparent.png">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" href="/favicon.png">
+  <link rel="canonical" href="https://awakenedbyyahmusic.com/login.html" />
+
+  <style>
+    :root{
+      --bg:#020617;
+      --panel:rgba(255,255,255,.06);
+      --panel2:rgba(255,255,255,.03);
+      --text:#e5e7eb;
+      --muted:#94a3b8;
+      --line:rgba(255,255,255,.10);
+      --brand:#1C39A8;   /* SAS Blue */
+      --brand2:#2b56ff;
+      --glow:rgba(28,57,168,.45);
+      --ok:rgba(34,197,94,.15);
+      --bad:rgba(239,68,68,.15);
+      --radius:22px;
+      --shadow: 0 18px 55px rgba(0,0,0,.45);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(900px 500px at 15% 15%, rgba(43,86,255,.20), transparent 55%),
+        radial-gradient(900px 500px at 85% 20%, rgba(28,57,168,.22), transparent 55%),
+        radial-gradient(1200px 700px at 50% 100%, rgba(255,255,255,.06), transparent 60%),
+        var(--bg);
+    }
+
+    /* Top bar (kept minimal so it won't disturb site) */
+    .top{
+      position:sticky; top:0; z-index:10;
+      backdrop-filter: blur(10px);
+      background: linear-gradient(to bottom, rgba(2,6,23,.85), rgba(2,6,23,.55));
+      border-bottom:1px solid var(--line);
+    }
+    .top-inner{
+      max-width:1100px; margin:0 auto;
+      padding:14px 18px;
+      display:flex; align-items:center; justify-content:space-between; gap:14px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      text-decoration:none; color:var(--text);
+    }
+    .logo{
+      width:36px;height:36px;border-radius:12px;
+      background: radial-gradient(circle at 30% 30%, rgba(43,86,255,.55), rgba(28,57,168,.12));
+      border:1px solid var(--line);
+      display:grid; place-items:center;
+      box-shadow: 0 0 22px var(--glow);
+      overflow:hidden;
+    }
+    .logo img{width:100%;height:100%;object-fit:cover}
+    .brand-title{
+      display:flex; flex-direction:column; line-height:1.1;
+    }
+    .brand-title strong{letter-spacing:.06em}
+    .brand-title span{font-size:12px;color:var(--muted)}
+
+    .top-actions{
+      display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+    }
+    .btn{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:14px;
+      text-decoration:none;
+      cursor:pointer;
+      transition:.2s transform, .2s background, .2s border-color;
+      font-weight:650;
+      letter-spacing:.02em;
+    }
+    .btn:hover{transform:translateY(-1px); background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.18)}
+    .btn.primary{
+      border-color:rgba(43,86,255,.45);
+      background: linear-gradient(135deg, rgba(28,57,168,.55), rgba(43,86,255,.22));
+      box-shadow: 0 0 28px rgba(43,86,255,.18);
+    }
+    .btn.primary:hover{border-color:rgba(43,86,255,.65);}
+
+    /* Layout */
+    .wrap{
+      max-width:1100px; margin:0 auto;
+      padding:32px 18px 60px;
+      display:grid; grid-template-columns: 1.1fr .9fr;
+      gap:22px;
+    }
+    @media (max-width: 900px){
+      .wrap{grid-template-columns:1fr; padding-top:18px;}
+    }
+
+    .hero{
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:24px;
+      position:relative;
+      overflow:hidden;
+    }
+    .hero::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(650px 240px at 20% 10%, rgba(43,86,255,.22), transparent 60%),
+                  radial-gradient(650px 240px at 80% 20%, rgba(28,57,168,.22), transparent 60%);
+      pointer-events:none;
+    }
+    .hero > *{position:relative}
+    h1{
+      margin:0 0 10px;
+      font-size: clamp(28px, 4vw, 44px);
+      letter-spacing:.04em;
+    }
+    .subtitle{
+      margin:0 0 18px;
+      color:var(--muted);
+      font-size:15px;
+      max-width:62ch;
+    }
+
+    .bullets{
+      margin:18px 0 0;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+    @media (max-width: 520px){
+      .bullets{grid-template-columns:1fr;}
+    }
+    .pill{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      border-radius: 16px;
+      padding:12px 12px;
+      display:flex; gap:10px; align-items:flex-start;
+    }
+    .dot{
+      width:12px;height:12px;border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, rgba(43,86,255,.9), rgba(28,57,168,.25));
+      box-shadow: 0 0 12px rgba(43,86,255,.25);
+      margin-top:4px;
+      flex:0 0 auto;
+    }
+    .pill strong{display:block; font-size:13px; letter-spacing:.03em}
+    .pill span{display:block; font-size:12px; color:var(--muted); margin-top:4px}
+
+    .card{
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:22px;
+    }
+    .card h2{
+      margin:0 0 6px;
+      letter-spacing:.06em;
+      font-size:18px;
+    }
+    .card p{margin:0 0 14px; color:var(--muted); font-size:13px}
+
+    label{
+      display:block; font-size:12px; color:var(--muted);
+      margin:12px 0 6px;
+    }
+    input{
+      width:100%;
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(2,6,23,.65);
+      color: var(--text);
+      outline:none;
+    }
+    input:focus{
+      border-color: rgba(43,86,255,.55);
+      box-shadow: 0 0 0 4px rgba(43,86,255,.12);
+    }
+
+    .row{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px; margin-top:12px;
+      flex-wrap:wrap;
+    }
+    .small{
+      font-size:12px; color:var(--muted);
+    }
+
+    .notice{
+      margin-top:14px;
+      padding:12px 12px;
+      border-radius:16px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color: var(--muted);
+      font-size:12px;
+      line-height:1.35;
+    }
+
+    .toast{
+      margin-top:12px;
+      padding:12px 12px;
+      border-radius:16px;
+      border:1px solid var(--line);
+      display:none;
+      font-size:13px;
+    }
+    .toast.ok{display:block; background:var(--ok); border-color:rgba(34,197,94,.25); color:#dcfce7}
+    .toast.bad{display:block; background:var(--bad); border-color:rgba(239,68,68,.25); color:#fee2e2}
+
+    footer{
+      max-width:1100px; margin:0 auto;
+      padding:0 18px 28px;
+      color:var(--muted);
+      font-size:12px;
+      opacity:.9;
+    }
+    .lock{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 10px;
+      border-radius:14px;
+      border:1px solid rgba(43,86,255,.28);
+      background: rgba(28,57,168,.18);
+      color: var(--text);
+      font-weight:750;
+      letter-spacing:.06em;
+      font-size:12px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="top">
+    <div class="top-inner">
+      <a class="brand" href="/">
+        <div class="logo" aria-hidden="true">
+          <img src="/abytransparent.png" alt="">
+        </div>
+        <div class="brand-title">
+          <strong>AWAKENED BY YAH</strong>
+          <span>LOG IN TO STREAM</span>
+        </div>
+      </a>
+
+      <div class="top-actions">
+        <a class="btn" href="/music.html">MUSIC</a>
+        <!-- This will later point to your pricing/join page -->
+        <a class="btn primary" href="#" id="joinBtn">JOIN & STREAM</a>
+      </div>
+    </div>
+  </div>
+
+  <main class="wrap">
+    <section class="hero">
+      <div class="lock">🔒 LOG IN TO STREAM</div>
+      <h1>Enter the Listening Sanctuary.</h1>
+      <p class="subtitle">
+        Supporters of <strong>AWAKENED BY YAH</strong> receive full-length streaming, early access releases,
+        and a focused, ad-free experience—direct from the source.
+      </p>
+
+      <div class="bullets">
+        <div class="pill"><div class="dot"></div><div><strong>FULL STREAMING</strong><span>Listen to complete albums and singles.</span></div></div>
+        <div class="pill"><div class="dot"></div><div><strong>EARLY ACCESS</strong><span>Hear new music before public release.</span></div></div>
+        <div class="pill"><div class="dot"></div><div><strong>FAN EXCLUSIVES</strong><span>Exclusive tracks and versions (optional).</span></div></div>
+        <div class="pill"><div class="dot"></div><div><strong>ARTIST-OWNED</strong><span>No ads. No algorithms. No compromise.</span></div></div>
+      </div>
+
+      <div class="notice">
+        <strong>Owner Note:</strong> This page is live-safe (it won’t disturb your site).
+        Right now it uses a temporary test login so you can access everything without paying while we build the real membership connection.
+      </div>
+    </section>
+
+    <aside class="card">
+      <h2>LOG IN</h2>
+      <p>Use your supporter login. (Owner/admin access included.)</p>
+
+      <form id="loginForm" autocomplete="on">
+        <label for="email">Email</label>
+        <input id="email" type="email" placeholder="you@example.com" required />
+
+        <label for="password">Password</label>
+        <input id="password" type="password" placeholder="••••••••" required />
+
+        <div class="row">
+          <label class="small" style="display:flex;align-items:center;gap:8px;margin:0;">
+            <input id="remember" type="checkbox" style="width:auto;margin:0;"> Remember me
+          </label>
+          <a class="small" href="#" id="forgotBtn" style="text-decoration:none;color:var(--muted);">Forgot password?</a>
+        </div>
+
+        <div class="row" style="margin-top:14px;">
+          <button class="btn primary" type="submit" style="width:100%;">LOG IN</button>
+        </div>
+
+        <div id="toast" class="toast"></div>
+
+        <div class="notice" style="margin-top:14px;">
+          <strong>Test Owner Login (temporary):</strong><br/>
+          Email: <code>owner@awakenedbyyahmusic.com</code><br/>
+          Password: <code>AWAKENED</code><br/><br/>
+          After we connect real payments/membership, this test login will be removed.
+        </div>
+      </form>
+    </aside>
+  </main>
+
+  <footer>
+    © <span id="yr"></span> <strong>AWAKENED BY YAH</strong>. All Rights Reserved.
+  </footer>
+
+  <script>
+    // ====== CONFIG (temporary for testing) ======
+    // This is NOT secure for paid launch; it's a front-end gate to test the flow + design.
+    const TEST_USERS = [
+      { email: "owner@awakenedbyyahmusic.com", password: "AWAKENED", role: "owner" }
+    ];
+
+    // Where to send successful logins (we'll build this next)
+    const STREAM_PAGE = "/stream.html";
+
+    const $ = (id) => document.getElementById(id);
+    const toast = $("toast");
+
+    $("yr").textContent = new Date().getFullYear();
+
+    // Join button (placeholder for your pricing / checkout later)
+    $("joinBtn").addEventListener("click", (e) => {
+      e.preventDefault();
+      alert("JOIN & STREAM will connect to your membership checkout next (Stripe/Gumroad).");
+    });
+
+    $("forgotBtn").addEventListener("click", (e) => {
+      e.preventDefault();
+      alert("Password reset will be enabled when we connect real membership login.");
+    });
+
+    $("loginForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const email = $("email").value.trim().toLowerCase();
+      const password = $("password").value.trim();
+      const remember = $("remember").checked;
+
+      const match = TEST_USERS.find(u => u.email.toLowerCase() === email && u.password === password);
+
+      if (!match) {
+        toast.className = "toast bad";
+        toast.textContent = "Login failed. Please check your email/password.";
+        return;
+      }
+
+      // store a simple session flag for now
+      const session = {
+        email: match.email,
+        role: match.role,
+        ts: Date.now()
+      };
+
+      const storage = remember ? localStorage : sessionStorage;
+      storage.setItem("aby_stream_session", JSON.stringify(session));
+
+      toast.className = "toast ok";
+      toast.textContent = "Success. Redirecting to streaming…";
+
+      setTimeout(() => window.location.href = STREAM_PAGE, 700);
+    });
+  </script>
+</body>
+</html>
 
