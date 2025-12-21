@@ -147,6 +147,13 @@
     .vol{width:170px;display:flex;align-items:center;gap:10px}
     .vol input{flex:1}
 
+    /* ✅ Repeat button active state */
+    button.is-active{
+      border-color: rgba(43,86,255,.70);
+      background: rgba(28,57,168,.22);
+      box-shadow: 0 0 18px rgba(28,57,168,.22);
+    }
+
     .playlist{
       border-top:1px solid var(--line);
       background: rgba(0,0,0,.18);
@@ -298,6 +305,11 @@
               <button id="prevBtn" title="Previous">⏮</button>
               <button id="playBtn" class="primary" title="Play / Pause">▶️ Play</button>
               <button id="nextBtn" title="Next">⏭</button>
+
+              <!-- ✅ NEW: Repeat buttons -->
+              <button id="repeatAllBtn" title="Repeat All (Playlist)">🔁</button>
+              <button id="repeatOneBtn" title="Repeat 1 (Current Track)">🔂</button>
+
               <span class="tinyLabel" id="statusLabel">Ready</span>
             </div>
 
@@ -401,6 +413,13 @@
     let currentIndex = 0;
     let userSeeking = false;
 
+    /* ✅ Repeat modes:
+       - "none" (default)
+       - "all"  (repeat playlist)
+       - "one"  (repeat current track)
+    */
+    let repeatMode = "none";
+
     const playerCover = document.getElementById("playerCover");
     const playerArtist = document.getElementById("playerArtist");
     const playerAlbum  = document.getElementById("playerAlbum");
@@ -415,6 +434,9 @@
     const nextBtn    = document.getElementById("nextBtn");
     const restartBtn = document.getElementById("restartBtn");
     const statusLabel= document.getElementById("statusLabel");
+
+    const repeatAllBtn = document.getElementById("repeatAllBtn");
+    const repeatOneBtn = document.getElementById("repeatOneBtn");
 
     const seekEl = document.getElementById("seek");
     const volEl  = document.getElementById("vol");
@@ -481,6 +503,11 @@
 
     function setStatus(text){
       statusLabel.textContent = text;
+    }
+
+    function updateRepeatUI(){
+      repeatAllBtn.classList.toggle("is-active", repeatMode === "all");
+      repeatOneBtn.classList.toggle("is-active", repeatMode === "one");
     }
 
     function updateMeta(){
@@ -567,6 +594,14 @@
 
     function next(){
       if (!tracks.length) return;
+
+      // ✅ If at end and repeatMode is none, stop
+      if (repeatMode === "none" && currentIndex >= tracks.length - 1){
+        playBtn.textContent = "▶️ Play";
+        setStatus("Ended");
+        return;
+      }
+
       const idx = (currentIndex + 1) % tracks.length;
       loadAndPlayIndex(idx, !audio.paused);
     }
@@ -598,6 +633,31 @@
         playBtn.textContent = "▶️ Play";
         setStatus("Paused");
       }
+    }
+
+    // ✅ Repeat buttons behavior:
+    // - Clicking Repeat All toggles "all" <-> "none"
+    // - Clicking Repeat 1 toggles "one" <-> "none"
+    // - Only one can be active at a time
+    repeatAllBtn.addEventListener("click", () => {
+      repeatMode = (repeatMode === "all") ? "none" : "all";
+      if (repeatMode === "all") repeatMode = "all";
+      updateRepeatUI();
+      setStatus(repeatMode === "all" ? "Repeat All" : "Repeat Off");
+    });
+
+    repeatOneBtn.addEventListener("click", () => {
+      repeatMode = (repeatMode === "one") ? "none" : "one";
+      updateRepeatUI();
+      setStatus(repeatMode === "one" ? "Repeat 1" : "Repeat Off");
+    });
+
+    // Ensure mutually exclusive UI states
+    function normalizeRepeatMode(){
+      if (repeatMode === "one"){
+        // No extra action needed; UI handles exclusivity
+      }
+      updateRepeatUI();
     }
 
     let riseLoadedOnce = false;
@@ -663,6 +723,9 @@
       setStatus("Ready");
 
       if (tracks.length) loadIndex(0);
+
+      // keep repeat UI consistent when switching projects
+      normalizeRepeatMode();
     }
 
     playBtn.addEventListener("click", togglePlay);
@@ -694,7 +757,33 @@
       }
     });
 
-    audio.addEventListener("ended", next);
+    // ✅ UPDATED ended behavior to support Repeat 1 and Repeat All
+    audio.addEventListener("ended", () => {
+      if (!tracks.length) return;
+
+      if (repeatMode === "one"){
+        audio.currentTime = 0;
+        audio.play().then(() => {
+          playBtn.textContent = "⏸ Pause";
+          setStatus("Repeat 1");
+        }).catch(() => setStatus("Tap Play"));
+        return;
+      }
+
+      if (repeatMode === "all"){
+        next(); // loops at end
+        return;
+      }
+
+      // repeatMode === "none"
+      if (currentIndex < tracks.length - 1){
+        next();
+      } else {
+        playBtn.textContent = "▶️ Play";
+        setStatus("Ended");
+      }
+    });
+
     audio.addEventListener("error", () => setStatus("Audio error (check filename/path)"));
 
     document.querySelectorAll(".coverBtn").forEach(btn => {
@@ -705,6 +794,8 @@
       });
     });
 
+    // init
+    updateRepeatUI();
     loadProject("kingdombiz");
   </script>
 </body>
