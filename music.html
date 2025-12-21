@@ -374,8 +374,14 @@
   </div>
 
   <script>
-    const AUDIO_BASE = "audio/";
+    /* ========= FIX 1: ABSOLUTE ROOT AUDIO BASE =========
+       This prevents /pages/audio/... issues if music.html isn't at root.
+    */
+    const AUDIO_BASE = "/audio/";
 
+    /* ========= MANIFEST =========
+       IMPORTANT: Filenames MUST match exactly what is in /audio/ on GitHub.
+    */
     const MANIFEST = {
       kingdombiz: [
         "TRACK 01_WALK IT OUT.mp3",
@@ -469,6 +475,13 @@
       return { num: null, title: cleaned, label: cleaned };
     }
 
+    /* ========= FIX 2: SAFE URL BUILD (spaces, etc.) ========= */
+    function audioUrl(filename){
+      // Build /audio/<encoded filename>
+      // encodeURIComponent handles spaces safely.
+      return AUDIO_BASE + encodeURIComponent(filename);
+    }
+
     function buildTrackObjects(files){
       const list = files
         .filter(Boolean)
@@ -476,7 +489,7 @@
           const parsed = parseDisplayFromFilename(file);
           return {
             file,
-            src: AUDIO_BASE + file,
+            src: audioUrl(file),
             num: parsed.num,
             title: parsed.title,
             label: parsed.label
@@ -550,6 +563,7 @@
     function highlightActive(){
       document.querySelectorAll("#plist .item").forEach((el) => {
         const idx = Number(el.getAttribute("data-idx"));
+        if (!Number.isFinite(idx)) return;
         el.classList.toggle("active", idx === currentIndex);
       });
     }
@@ -558,8 +572,10 @@
       if (!tracks.length) return;
       currentIndex = Math.max(0, Math.min(idx, tracks.length - 1));
       const t = tracks[currentIndex];
+
       audio.src = t.src;
       audio.load();
+
       playerTrack.textContent = t.label;
       highlightActive();
       setStatus("Loaded");
@@ -620,6 +636,11 @@
       audio.src = "";
       playBtn.textContent = "▶️ Play";
 
+      // Reset times/seek when switching projects
+      seekEl.value = "0";
+      tNowEl.textContent = "0:00";
+      tDurEl.textContent = "0:00";
+
       updateMeta();
       renderPlaylist();
       setStatus("Ready");
@@ -645,7 +666,7 @@
 
     audio.addEventListener("loadedmetadata", () => {
       tDurEl.textContent = formatTime(audio.duration);
-      setStatus("Ready");
+      setStatus(audio.paused ? "Ready" : "Playing");
     });
 
     audio.addEventListener("timeupdate", () => {
