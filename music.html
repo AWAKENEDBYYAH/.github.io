@@ -273,7 +273,6 @@
       <div class="musicHeroBack">
         <a href="index.html">← Back to Home</a>
       </div>
-      <!-- No text overlay -->
     </header>
 
     <div class="grid">
@@ -374,13 +373,11 @@
   </div>
 
   <script>
-    /* ========= FIX 1: ABSOLUTE ROOT AUDIO BASE =========
-       This prevents /pages/audio/... issues if music.html isn't at root.
-    */
+    /* ========= AUDIO BASE (absolute) ========= */
     const AUDIO_BASE = "/audio/";
 
     /* ========= MANIFEST =========
-       IMPORTANT: Filenames MUST match exactly what is in /audio/ on GitHub.
+       Replace Rise 02–12 with the exact full filenames from GitHub (no "..." truncation).
     */
     const MANIFEST = {
       kingdombiz: [
@@ -391,9 +388,19 @@
         "TRACK 05__UNBROKEN FREQUENCY REMIX.mp3"
       ],
 
-      // NOTE: Add the rest of your Rise of Yasharal tracks (01–12) here
       rise: [
-        "ROY_TRACK 01_THE LOVE I HAVE IN YAHUAH.mp3"
+        "ROY_TRACK 01_THE LOVE I HAVE IN YAHUAH.mp3",
+        "ROY_TRACK 02_REPLACE_WITH_EXACT_FILENAME.mp3",
+        "ROY_TRACK 03_REPLACE_WITH_EXACT_FILENAME.mp3",
+        "ROY_TRACK 04_REPLACE_WITH_EXACT_FILENAME.mp3",
+        "ROY_TRACK 05_REPLACE_WITH_EXACT_FILENAME.mp3",
+        "ROY_TRACK 06_REPLACE_WITH_EXACT_FILENAME.mp3",
+        "ROY_TRACK 07_REPLACE_WITH_EXACT_FILENAME.mp3",
+        "ROY_TRACK 08_REPLACE_WITH_EXACT_FILENAME.mp3",
+        "ROY_TRACK 09_REPLACE_WITH_EXACT_FILENAME.mp3",
+        "ROY_TRACK 10_REPLACE_WITH_EXACT_FILENAME.mp3",
+        "ROY_TRACK 11_REPLACE_WITH_EXACT_FILENAME.mp3",
+        "ROY_TRACK 12_REPLACE_WITH_EXACT_FILENAME.mp3"
       ],
 
       hear: [
@@ -454,31 +461,23 @@
       const original = file.replace(/\.mp3$/i, "");
       let cleaned = original;
 
-      // Strip common prefixes (never show these)
       cleaned = cleaned.replace(/^KB[_\s-]*/i, "");
       cleaned = cleaned.replace(/^ROY[_\s-]*/i, "");
       cleaned = cleaned.replace(/^ABYM[_\s-]*/i, "");
       cleaned = cleaned.replace(/^ABY[_\s-]*/i, "");
 
-      // Normalize underscores to spaces, trim extra spaces
       cleaned = cleaned.replace(/_+/g, " ").replace(/\s+/g," ").trim();
 
-      // Accepts "TRACK 01", "TRACK 1", "TRACK01"
       const match = cleaned.match(/TRACK\s*0*([0-9]{1,2})\s*(.*)$/i);
       if (match){
         const num = Number(match[1]);
         const title = (match[2] || "").trim() || "Untitled";
         return { num, title, label: `TRACK ${pad2(num)} — ${title}` };
       }
-
-      // fallback
       return { num: null, title: cleaned, label: cleaned };
     }
 
-    /* ========= FIX 2: SAFE URL BUILD (spaces, etc.) ========= */
     function audioUrl(filename){
-      // Build /audio/<encoded filename>
-      // encodeURIComponent handles spaces safely.
       return AUDIO_BASE + encodeURIComponent(filename);
     }
 
@@ -494,9 +493,10 @@
             title: parsed.title,
             label: parsed.label
           };
-        });
+        })
+        // ✅ Skip obvious placeholders so the album doesn't look broken
+        .filter(t => !/REPLACE_WITH_EXACT_FILENAME/i.test(t.file));
 
-      // Sort by track number if present
       list.sort((a,b) => {
         if (a.num == null && b.num == null) return a.label.localeCompare(b.label);
         if (a.num == null) return 1;
@@ -537,7 +537,7 @@
         li.innerHTML = `
           <div class="itemLeft">
             <p class="itemTitle">No tracks found</p>
-            <p class="itemSub">Make sure filenames match exactly in MANIFEST.</p>
+            <p class="itemSub">Add exact filenames in MANIFEST.</p>
           </div>
         `;
         plistEl.appendChild(li);
@@ -636,7 +636,6 @@
       audio.src = "";
       playBtn.textContent = "▶️ Play";
 
-      // Reset times/seek when switching projects
       seekEl.value = "0";
       tNowEl.textContent = "0:00";
       tDurEl.textContent = "0:00";
@@ -678,7 +677,15 @@
     });
 
     audio.addEventListener("ended", next);
-    audio.addEventListener("error", () => setStatus("Audio error (check filename/path)"));
+
+    audio.addEventListener("error", () => {
+      setStatus("Audio error (filename/path). Skipping…");
+      // If a file is missing, skip to next
+      setTimeout(() => {
+        if (tracks.length > 1) next();
+        else setStatus("Audio error (check /audio/ filenames)");
+      }, 600);
+    });
 
     document.querySelectorAll(".coverBtn").forEach(btn => {
       btn.addEventListener("click", () => {
