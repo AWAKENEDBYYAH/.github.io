@@ -30,7 +30,6 @@
     }
     .wrap{max-width:1180px;margin:0 auto;padding:18px}
 
-    /* ===== BIG MUSIC HERO (bigger than homepage) ===== */
     .musicHero{
       position:relative;
       height:520px;
@@ -68,7 +67,6 @@
     }
     .musicHeroBack a:hover{border-color:rgba(255,255,255,.30)}
 
-    /* ===== LAYOUT ===== */
     .grid{
       display:grid;
       grid-template-columns: 1.35fr .65fr;
@@ -79,7 +77,6 @@
       .musicHero{height:420px}
     }
 
-    /* ===== BIG PLAYER CARD ===== */
     .playerCard{
       border:1px solid var(--line);
       background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
@@ -150,7 +147,6 @@
     .vol{width:170px;display:flex;align-items:center;gap:10px}
     .vol input{flex:1}
 
-    /* ===== PLAYLIST ===== */
     .playlist{
       border-top:1px solid var(--line);
       background: rgba(0,0,0,.18);
@@ -217,7 +213,6 @@
       text-overflow:ellipsis;
     }
 
-    /* ===== COVER SELECTOR ===== */
     .coversCard{
       border:1px solid var(--line);
       background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
@@ -273,13 +268,11 @@
     <!-- HERO BANNER -->
     <header class="musicHero" aria-label="Awakened By YAH Music Banner">
       <div class="musicHeroBack">
-        <a href="index.html">← Back to Home</a>
+        <a href="/">← Back to Home</a>
       </div>
-      <!-- No text overlay -->
     </header>
 
     <div class="grid">
-      <!-- BIG PLAYER -->
       <section class="playerCard" aria-label="Music Player">
         <div class="playerHead">
           <div class="cover">
@@ -331,7 +324,6 @@
         </div>
       </section>
 
-      <!-- COVER SELECTOR -->
       <aside class="coversCard" aria-label="Albums & Singles">
         <div class="coversHead">
           <h2>Albums & Singles</h2>
@@ -376,13 +368,7 @@
   </div>
 
   <script>
-    /* ========= AUDIO BASE (root) ========= */
     const AUDIO_BASE = "/audio/";
-
-    /* ========= MANIFEST =========
-       Kingdom Biz + Singles are fixed lists.
-       Rise is AUTO-LOADED from /audio/README.txt
-    */
     const MANIFEST = {
       kingdombiz: [
         "TRACK 01_WALK IT OUT.mp3",
@@ -391,14 +377,10 @@
         "TRACK 04_UNBROKEN FREQUENCY.mp3",
         "TRACK 05__UNBROKEN FREQUENCY REMIX.mp3"
       ],
-
-      // ✅ AUTO-POPULATED at runtime from /audio/README.txt
       rise: [],
-
       hear: [
         "ABY_TRACK 01_HEAR MY VOICE.mp3"
       ],
-
       deliver: [
         "ABYM_TRACK 01_DELIVER US.mp3"
       ]
@@ -448,21 +430,17 @@
       return `${m}:${String(s).padStart(2,"0")}`;
     }
 
-    // Clean filename -> "TRACK 01 — TITLE" (hides KB/ROY/ABY/ABYM)
     function parseDisplayFromFilename(file){
       const original = file.replace(/\.mp3$/i, "");
       let cleaned = original;
 
-      // Strip common prefixes (never show these)
       cleaned = cleaned.replace(/^KB[_\s-]*/i, "");
       cleaned = cleaned.replace(/^ROY[_\s-]*/i, "");
       cleaned = cleaned.replace(/^ABYM[_\s-]*/i, "");
       cleaned = cleaned.replace(/^ABY[_\s-]*/i, "");
 
-      // Normalize underscores to spaces, trim extra spaces
       cleaned = cleaned.replace(/_+/g, " ").replace(/\s+/g," ").trim();
 
-      // Accepts "TRACK 01", "TRACK 1", "TRACK01"
       const match = cleaned.match(/TRACK\s*0*([0-9]{1,2})\s*(.*)$/i);
       if (match){
         const num = Number(match[1]);
@@ -470,11 +448,9 @@
         return { num, title, label: `TRACK ${pad2(num)} — ${title}` };
       }
 
-      // fallback
       return { num: null, title: cleaned, label: cleaned };
     }
 
-    /* ========= SAFE URL BUILD (spaces, apostrophes, etc.) ========= */
     function audioUrl(filename){
       return AUDIO_BASE + encodeURIComponent(filename);
     }
@@ -493,7 +469,6 @@
           };
         });
 
-      // Sort by track number if present
       list.sort((a,b) => {
         if (a.num == null && b.num == null) return a.label.localeCompare(b.label);
         if (a.num == null) return 1;
@@ -625,28 +600,22 @@
       }
     }
 
-    /* ========= AUTO-LOAD RISE TRACKS FROM /audio/README.txt ========= */
     let riseLoadedOnce = false;
 
     async function loadRiseFromReadme(){
       try{
         setStatus("Loading Rise tracks…");
-
-        // cache-bust so changes show immediately
         const url = AUDIO_BASE + "README.txt?cb=" + Date.now();
         const res = await fetch(url, { cache: "no-store" });
         if (!res.ok) throw new Error("README fetch failed: " + res.status);
 
         const text = await res.text();
 
-        // Find all ROY_TRACK ... .mp3 occurrences in the README
-        // Works whether README is plain list, copied URLs, or pasted text.
         const matches = Array.from(
           text.matchAll(/ROY_TRACK[^"\n\r]*?\.mp3/gi),
           m => m[0].trim()
         );
 
-        // Deduplicate while preserving order
         const unique = [];
         const seen = new Set();
         for (const m of matches){
@@ -673,7 +642,6 @@
     async function loadProject(key){
       currentProjectKey = key;
 
-      // If Rise is selected and still empty, auto-fill from README once
       if (key === "rise" && (!MANIFEST.rise || MANIFEST.rise.length === 0) && !riseLoadedOnce){
         await loadRiseFromReadme();
       }
@@ -686,7 +654,6 @@
       audio.src = "";
       playBtn.textContent = "▶️ Play";
 
-      // Reset times/seek when switching projects
       seekEl.value = "0";
       tNowEl.textContent = "0:00";
       tDurEl.textContent = "0:00";
@@ -738,7 +705,6 @@
       });
     });
 
-    // initial load
     loadProject("kingdombiz");
   </script>
 </body>
