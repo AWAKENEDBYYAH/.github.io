@@ -218,11 +218,13 @@
     // ✅ REPLACE THESE TWO VALUES:
 
 
-const PROJECT_REF = "fgzopgqotwmvfohtlcq";
+const PROJECT_REF = "fgzopgqtotwmvfohtlcq";
+const PRICE_ID   = "price_1SgJlh19lhS22qNvxCQJgIYt";
 
-    const PRICE_ID   = "price_1Sgjlh19IhS22qNxvCQJgIYt";         // ex: "price_12345"
+const ENDPOINT = "https://" + PROJECT_REF + ".functions.supabase.co/create-checkout-session";
 
-    const ENDPOINT = `https://${PROJECT_REF}.functions.supabase.co/create-checkout-session`;
+
+
 
     const statusEl = document.getElementById("status");
     const btn = document.getElementById("checkoutBtn");
