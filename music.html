@@ -48,33 +48,6 @@
       background-position:center;
       margin-bottom:16px;
     }
-    .musicHeroInner{
-      position:absolute;
-      inset:0;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      padding:32px;
-    }
-    .musicHeroTitle{
-      margin:0;
-      font-size:54px;
-      font-weight:900;
-      letter-spacing:2px;
-      text-transform:uppercase;
-      color:#e5e7eb;
-      text-shadow:
-        0 12px 35px rgba(0,0,0,.85),
-        0 0 45px rgba(28,57,168,.45);
-    }
-    .musicHeroSub{
-      margin-top:14px;
-      font-size:18px;
-      letter-spacing:.35px;
-      color:rgba(229,231,235,.90);
-      text-shadow:0 8px 22px rgba(0,0,0,.75);
-    }
     .musicHeroBack{
       position:absolute;
       top:16px;
@@ -102,10 +75,9 @@
     @media (max-width: 920px){
       .grid{grid-template-columns:1fr}
       .musicHero{height:420px}
-      .musicHeroTitle{font-size:40px}
     }
 
-    /* ===== BIG PLAYER CARD (visual + ready for Step 2 wiring) ===== */
+    /* ===== BIG PLAYER CARD ===== */
     .playerCard{
       border:1px solid var(--line);
       background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
@@ -131,7 +103,7 @@
     .meta{min-width:0}
     .artist{font-weight:900;font-size:18px;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .album{color:var(--muted);margin:7px 0 0 0;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .track{margin:10px 0 0 0;font-weight:800;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .track{margin:10px 0 0 0;font-weight:900;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
     .controls{padding:14px 16px 16px}
     .barRow{
@@ -162,7 +134,7 @@
       border-radius:999px;
       padding:10px 14px;
       cursor:pointer;
-      font-weight:800;
+      font-weight:900;
       letter-spacing:.1px;
     }
     button:hover{border-color:rgba(255,255,255,.22)}
@@ -176,7 +148,7 @@
     .vol{width:170px;display:flex;align-items:center;gap:10px}
     .vol input{flex:1}
 
-    /* ===== PLAYLIST PLACEHOLDER (Step 2 will populate) ===== */
+    /* ===== PLAYLIST ===== */
     .playlist{
       border-top:1px solid var(--line);
       background: rgba(0,0,0,.18);
@@ -192,13 +164,55 @@
       border:1px solid var(--line);background:rgba(255,255,255,.04);
       margin-right:6px
     }
-    .ghost{
-      border:1px dashed rgba(255,255,255,.14);
+    .plist{
+      list-style:none;
+      padding:0;
+      margin:0;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      max-height:380px;
+      overflow:auto;
+    }
+    .item{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:10px 12px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.10);
       background:rgba(255,255,255,.03);
-      padding:12px;border-radius:16px;
-      color:var(--muted);
+      cursor:pointer;
+      user-select:none;
+    }
+    .item:hover{border-color:rgba(255,255,255,.18)}
+    .item.active{
+      border-color:rgba(28,57,168,.70);
+      background:rgba(28,57,168,.18);
+      box-shadow:0 0 20px rgba(28,57,168,.18);
+    }
+    .itemLeft{
+      min-width:0;
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+    .itemTitle{
+      margin:0;
+      font-weight:900;
       font-size:13px;
-      line-height:1.35;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .itemSub{
+      margin:0;
+      color:var(--muted);
+      font-size:12px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
 
     /* ===== COVER SELECTOR ===== */
@@ -259,8 +273,7 @@
       <div class="musicHeroBack">
         <a href="index.html">← Back to Home</a>
       </div>
-
-     
+      <!-- No text overlay (your banner already has text in the middle) -->
     </header>
 
     <div class="grid">
@@ -274,30 +287,30 @@
           <div class="meta">
             <p class="artist" id="playerArtist">AWAKENED BY YAH</p>
             <p class="album" id="playerAlbum">Kingdom Biz</p>
-            <p class="track" id="playerTrack">Select a track (Step 2)</p>
+            <p class="track" id="playerTrack">TRACK 01 — Select a track</p>
           </div>
         </div>
 
         <div class="controls">
           <div class="barRow">
-            <span>0:00</span>
-            <input class="seek" type="range" min="0" max="1000" value="0" />
-            <span>0:00</span>
+            <span id="tNow">0:00</span>
+            <input id="seek" class="seek" type="range" min="0" max="1000" value="0" />
+            <span id="tDur">0:00</span>
           </div>
 
           <div class="btnRow">
             <div class="leftBtns">
-              <button title="Previous">⏮</button>
-              <button class="primary" title="Play / Pause">▶️ Play</button>
-              <button title="Next">⏭</button>
-              <span class="tinyLabel">Covers Wired</span>
+              <button id="prevBtn" title="Previous">⏮</button>
+              <button id="playBtn" class="primary" title="Play / Pause">▶️ Play</button>
+              <button id="nextBtn" title="Next">⏭</button>
+              <span class="tinyLabel" id="statusLabel">Ready</span>
             </div>
 
             <div class="rightBtns">
-              <button title="Restart">⟲ Restart</button>
+              <button id="restartBtn" title="Restart">⟲ Restart</button>
               <div class="vol">
                 <span class="tinyLabel">Vol</span>
-                <input class="seek" type="range" min="0" max="100" value="85" />
+                <input id="vol" class="seek" type="range" min="0" max="100" value="85" />
               </div>
             </div>
           </div>
@@ -307,15 +320,12 @@
           <div class="plistHead">
             <div>
               <span class="pill" id="projectPill">Kingdom Biz</span>
-              <span class="pill" id="countPill">Tracks load next</span>
+              <span class="pill" id="countPill">0 tracks</span>
             </div>
-            <div class="hint">Playlist wiring is Step 2</div>
+            <div class="hint">Click a track to play</div>
           </div>
 
-          <div class="ghost">
-            ✅ Page design + covers are complete.<br><br>
-            Next step: connect your audio files and load the full playlist for each project.
-          </div>
+          <ul id="plist" class="plist" aria-label="Playlist"></ul>
         </div>
       </section>
 
@@ -364,33 +374,377 @@
   </div>
 
   <script>
-    // Step 1: cover switching. Step 2: audio + playlist wiring.
+    /************************************************************
+     * AUDIO CONFIG
+     * Put ALL MP3 files in /audio/ (as you confirmed).
+     ************************************************************/
+    const AUDIO_BASE = "audio/"; // all tracks live here
 
-    const playerCover = document.getElementById("playerCover");
-    const playerAlbum = document.getElementById("playerAlbum");
-    const projectPill = document.getElementById("projectPill");
+    /************************************************************
+     * TRACK MANIFEST
+     * IMPORTANT: GitHub Pages cannot auto-list /audio/, so we list
+     * filenames here once. Display titles are auto-cleaned so KB/ROY
+     * never show to listeners.
+     *
+     * ✅ Kingdom Biz is prefilled with your known filenames.
+     * 🔧 Rise + Singles: paste exact filenames from GitHub (audio folder).
+     ************************************************************/
+    const MANIFEST = {
+      kingdombiz: [
+        "TRACK 01_WALK IT OUT.mp3",
+        "TRACK 02_RISE OF THE REMNANT.mp3",
+        "TRACK 03__WE RISE.mp3",
+        "TRACK 04_UNBROKEN FREQUENCY.mp3",
+        "TRACK 05__UNBROKEN FREQUENCY REMIX.mp3"
+      ],
 
-    const PROJECTS = {
-      kingdombiz: { title: "Kingdom Biz", cover: "kingdom-biz-cover.png" },
-      rise:       { title: "The Rise of Yasharal", cover: "rise-of-yasharal-cover.png" },
-      hear:       { title: "Hear My Voice", cover: "hear-my-voice.png" },
-      deliver:    { title: "Deliver Us", cover: "deliver-us.png" }
+      // Paste ALL Rise of Yasharal filenames here EXACTLY as in GitHub:
+      // Example format you used:
+      // "ROY_TRACK 01_THE LOVE I HAVE IN YAHUAH.mp3",
+      rise: [
+        "ROY_TRACK 01_THE LOVE I HAVE IN YAHUAH.mp3"
+        // "ROY_TRACK 02_....mp3",
+        // ...
+        // "ROY_TRACK 12_....mp3"
+      ],
+
+      // Paste the exact single filenames (the MP3s) from /audio/
+      hear: [
+        // Example:
+        // "HEAR_MY_VOICE.mp3"
+      ],
+
+      deliver: [
+        // Example:
+        // "DELIVER_US.mp3"
+      ]
     };
 
+    const PROJECTS = {
+      kingdombiz: { title: "Kingdom Biz", cover: "kingdom-biz-cover.png", artist: "AWAKENED BY YAH" },
+      rise:       { title: "The Rise of Yasharal", cover: "rise-of-yasharal-cover.png", artist: "AWAKENED BY YAH" },
+      hear:       { title: "Hear My Voice", cover: "hear-my-voice.png", artist: "AWAKENED BY YAH" },
+      deliver:    { title: "Deliver Us", cover: "deliver-us.png", artist: "AWAKENED BY YAH" }
+    };
+
+    /************************************************************
+     * PLAYER STATE
+     ************************************************************/
+    const audio = new Audio();
+    audio.preload = "metadata";
+
+    let currentProjectKey = "kingdombiz";
+    let tracks = [];
+    let currentIndex = 0;
+    let userSeeking = false;
+
+    /************************************************************
+     * UI ELEMENTS
+     ************************************************************/
+    const playerCover = document.getElementById("playerCover");
+    const playerArtist = document.getElementById("playerArtist");
+    const playerAlbum  = document.getElementById("playerAlbum");
+    const playerTrack  = document.getElementById("playerTrack");
+
+    const projectPill = document.getElementById("projectPill");
+    const countPill   = document.getElementById("countPill");
+    const plistEl     = document.getElementById("plist");
+
+    const playBtn    = document.getElementById("playBtn");
+    const prevBtn    = document.getElementById("prevBtn");
+    const nextBtn    = document.getElementById("nextBtn");
+    const restartBtn = document.getElementById("restartBtn");
+    const statusLabel= document.getElementById("statusLabel");
+
+    const seekEl = document.getElementById("seek");
+    const volEl  = document.getElementById("vol");
+    const tNowEl = document.getElementById("tNow");
+    const tDurEl = document.getElementById("tDur");
+
+    /************************************************************
+     * HELPERS
+     ************************************************************/
+    function pad2(n){ return String(n).padStart(2, "0"); }
+
+    function formatTime(sec){
+      if (!isFinite(sec) || sec < 0) return "0:00";
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${m}:${String(s).padStart(2,"0")}`;
+    }
+
+    // Turn filename into clean display: "TRACK 01 — TITLE"
+    function parseDisplayFromFilename(file){
+      const original = file.replace(/\.mp3$/i, "");
+      let cleaned = original;
+
+      // Strip album prefixes (never show these)
+      cleaned = cleaned.replace(/^KB[_\s-]*/i, "");
+      cleaned = cleaned.replace(/^ROY[_\s-]*/i, "");
+
+      // Normalize underscores to spaces
+      cleaned = cleaned.replace(/_+/g, " ").trim();
+
+      // Attempt to extract track number:
+      // Accepts "TRACK 01", "TRACK 1", "TRACK01"
+      const match = cleaned.match(/TRACK\s*0*([0-9]{1,2})\s*(.*)$/i);
+      if (match){
+        const num = Number(match[1]);
+        const title = (match[2] || "").trim() || "Untitled";
+        return { num, title, label: `TRACK ${pad2(num)} — ${title}` };
+      }
+
+      // fallback if unexpected format
+      return { num: null, title: cleaned, label: cleaned };
+    }
+
+    function buildTrackObjects(files){
+      const list = files
+        .filter(Boolean)
+        .map((file) => {
+          const parsed = parseDisplayFromFilename(file);
+          return {
+            file,
+            src: AUDIO_BASE + file,
+            num: parsed.num,
+            title: parsed.title,
+            label: parsed.label
+          };
+        });
+
+      // Sort by track number if present
+      list.sort((a,b) => {
+        if (a.num == null && b.num == null) return a.label.localeCompare(b.label);
+        if (a.num == null) return 1;
+        if (b.num == null) return -1;
+        return a.num - b.num;
+      });
+
+      return list;
+    }
+
+    function setStatus(text){
+      statusLabel.textContent = text;
+    }
+
+    function updateMeta(){
+      const proj = PROJECTS[currentProjectKey];
+      playerCover.src = proj.cover;
+      playerArtist.textContent = proj.artist;
+      playerAlbum.textContent = proj.title;
+
+      projectPill.textContent = proj.title;
+      countPill.textContent = `${tracks.length} track${tracks.length===1?"":"s"}`;
+
+      if (tracks.length){
+        playerTrack.textContent = tracks[currentIndex]?.label || "Select a track";
+      } else {
+        playerTrack.textContent = "No tracks loaded (add filenames in MANIFEST)";
+      }
+    }
+
+    function renderPlaylist(){
+      plistEl.innerHTML = "";
+
+      if (!tracks.length){
+        const li = document.createElement("li");
+        li.className = "item";
+        li.style.cursor = "default";
+        li.innerHTML = `
+          <div class="itemLeft">
+            <p class="itemTitle">No tracks found</p>
+            <p class="itemSub">Add filenames for this project in the MANIFEST.</p>
+          </div>
+        `;
+        plistEl.appendChild(li);
+        return;
+      }
+
+      tracks.forEach((t, idx) => {
+        const li = document.createElement("li");
+        li.className = "item" + (idx === currentIndex ? " active" : "");
+        li.setAttribute("data-idx", String(idx));
+        li.innerHTML = `
+          <div class="itemLeft">
+            <p class="itemTitle">${t.label}</p>
+            <p class="itemSub">${PROJECTS[currentProjectKey].title}</p>
+          </div>
+          <div class="itemSub">▶</div>
+        `;
+        li.addEventListener("click", () => {
+          loadAndPlayIndex(idx, true);
+        });
+        plistEl.appendChild(li);
+      });
+    }
+
+    function highlightActive(){
+      document.querySelectorAll("#plist .item").forEach((el) => {
+        const idx = Number(el.getAttribute("data-idx"));
+        el.classList.toggle("active", idx === currentIndex);
+      });
+    }
+
+    function loadIndex(idx){
+      if (!tracks.length) return;
+
+      currentIndex = Math.max(0, Math.min(idx, tracks.length - 1));
+      const t = tracks[currentIndex];
+
+      audio.src = t.src;
+      audio.load();
+
+      playerTrack.textContent = t.label;
+      highlightActive();
+      setStatus("Loaded");
+    }
+
+    function loadAndPlayIndex(idx, autoplay){
+      loadIndex(idx);
+      if (autoplay){
+        audio.play().then(() => {
+          playBtn.textContent = "⏸ Pause";
+          setStatus("Playing");
+        }).catch(() => {
+          setStatus("Tap Play");
+        });
+      }
+    }
+
+    function next(){
+      if (!tracks.length) return;
+      const idx = (currentIndex + 1) % tracks.length;
+      loadAndPlayIndex(idx, !audio.paused);
+    }
+
+    function prev(){
+      if (!tracks.length) return;
+      const idx = (currentIndex - 1 + tracks.length) % tracks.length;
+      loadAndPlayIndex(idx, !audio.paused);
+    }
+
+    function restart(){
+      if (!tracks.length) return;
+      audio.currentTime = 0;
+      if (!audio.paused) audio.play();
+      setStatus("Restarted");
+    }
+
+    function togglePlay(){
+      if (!tracks.length){
+        setStatus("No tracks");
+        return;
+      }
+
+      if (!audio.src) loadIndex(currentIndex);
+
+      if (audio.paused){
+        audio.play().then(() => {
+          playBtn.textContent = "⏸ Pause";
+          setStatus("Playing");
+        }).catch(() => {
+          setStatus("Tap Play");
+        });
+      } else {
+        audio.pause();
+        playBtn.textContent = "▶️ Play";
+        setStatus("Paused");
+      }
+    }
+
+    function loadProject(key){
+      currentProjectKey = key;
+
+      // Build track objects from manifest
+      tracks = buildTrackObjects(MANIFEST[key] || []);
+      currentIndex = 0;
+
+      // Stop current audio
+      audio.pause();
+      audio.currentTime = 0;
+      audio.src = "";
+      playBtn.textContent = "▶️ Play";
+
+      updateMeta();
+      renderPlaylist();
+      setStatus("Ready");
+
+      // Preload first track metadata (optional)
+      if (tracks.length){
+        loadIndex(0);
+      }
+    }
+
+    /************************************************************
+     * EVENTS: AUDIO + UI
+     ************************************************************/
+    playBtn.addEventListener("click", togglePlay);
+    nextBtn.addEventListener("click", next);
+    prevBtn.addEventListener("click", prev);
+    restartBtn.addEventListener("click", restart);
+
+    volEl.addEventListener("input", () => {
+      audio.volume = Number(volEl.value) / 100;
+    });
+    audio.volume = Number(volEl.value) / 100;
+
+    // Seek handling
+    seekEl.addEventListener("input", () => {
+      userSeeking = true;
+    });
+    seekEl.addEventListener("change", () => {
+      if (!isFinite(audio.duration) || audio.duration <= 0) { userSeeking = false; return; }
+      const p = Number(seekEl.value) / 1000;
+      audio.currentTime = p * audio.duration;
+      userSeeking = false;
+    });
+
+    audio.addEventListener("loadedmetadata", () => {
+      tDurEl.textContent = formatTime(audio.duration);
+      setStatus("Ready");
+    });
+
+    audio.addEventListener("timeupdate", () => {
+      tNowEl.textContent = formatTime(audio.currentTime);
+      if (!userSeeking && isFinite(audio.duration) && audio.duration > 0){
+        const p = audio.currentTime / audio.duration;
+        seekEl.value = String(Math.round(p * 1000));
+      }
+    });
+
+    audio.addEventListener("ended", () => {
+      // auto-next when a track finishes
+      next();
+    });
+
+    audio.addEventListener("play", () => {
+      playBtn.textContent = "⏸ Pause";
+      setStatus("Playing");
+    });
+
+    audio.addEventListener("pause", () => {
+      if (audio.currentTime === 0) return;
+      playBtn.textContent = "▶️ Play";
+      setStatus("Paused");
+    });
+
+    audio.addEventListener("error", () => {
+      setStatus("Audio error (check filename/path)");
+    });
+
+    // Cover selector (switch projects)
     document.querySelectorAll(".coverBtn").forEach(btn => {
       btn.addEventListener("click", () => {
         document.querySelectorAll(".coverBtn").forEach(b => b.classList.remove("active"));
         btn.classList.add("active");
 
         const key = btn.getAttribute("data-key");
-        const data = PROJECTS[key];
-
-        playerCover.src = data.cover;
-        playerAlbum.textContent = data.title;
-        projectPill.textContent = data.title;
+        loadProject(key);
       });
     });
+
+    // INIT
+    loadProject("kingdombiz");
   </script>
 </body>
 </html>
-
