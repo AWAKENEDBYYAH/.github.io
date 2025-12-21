@@ -326,11 +326,12 @@
     // =======================
     const SUPABASE_URL = "https://fgqzopgqtownfvohtlcq.supabase.co";
 
-  const SUPABASE_ANON_KEY = "sb_publishable__LlL7rsAYeDlub9OmvofaA_ck1tKqca";
-
+    // IMPORTANT:
+    // This MUST be your anon public key from Supabase Settings → API → Project API keys → anon public
+    // It looks like a long "eyJ..." JWT string.
+    const SUPABASE_ANON_KEY = "PASTE_YOUR_ANON_KEY_HERE";
 
     // Edge function that returns { subscribed: true/false }
-    // If your function name differs, change it here.
     const CHECK_SUB_FN = "check-subscription";
 
     // Where people go
@@ -351,7 +352,6 @@
       eye.setAttribute("aria-label", showing ? "Show password" : "Hide password");
     });
 
-    // Toast helper
     function showToast(kind, msg){
       toast.className = "toast " + (kind === "ok" ? "ok" : "bad");
       toast.textContent = msg;
@@ -362,15 +362,14 @@
       const u = new URL(window.location.href);
       const r = u.searchParams.get("redirect");
       if (!r) return null;
-      // allow only same-site paths
-      if (!r.startsWith("/")) return null;
+      if (!r.startsWith("/")) return null; // same-site only
       return r;
     }
 
     // Create Supabase client
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    // Forgot password: send reset email (requires you to configure redirect URL in Supabase Auth settings)
+    // Forgot password
     $("forgotBtn").addEventListener("click", async (e) => {
       e.preventDefault();
       const email = $("email").value.trim();
@@ -402,27 +401,25 @@
           return;
         }
 
-        // Call Edge Function to check subscription (uses JWT automatically if Authorization header is set)
         const res = await fetch(`${SUPABASE_URL}/functions/v1/${CHECK_SUB_FN}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${session.access_token}`
+            "Authorization": `Bearer ${session.access_token}`,
+            "apikey": SUPABASE_ANON_KEY
           },
-          body: JSON.stringify({}) // keep extensible
+          body: JSON.stringify({})
         });
 
         if (!res.ok){
-          // If your function isn't deployed yet, don't lock users out—send to subscribe
           console.warn("check-subscription failed", res.status);
           window.location.href = SUBSCRIBE_PAGE;
           return;
         }
 
-        const json = await res.json();
+        const json = await res.json().catch(() => ({}));
         const subscribed = !!json.subscribed;
 
-        // If user is subscribed, go to stream (or desired path if it's stream)
         if (subscribed){
           window.location.href = (desired || STREAM_PAGE);
         } else {
@@ -430,7 +427,6 @@
         }
       }catch(err){
         console.warn(err);
-        // Safe fallback
         window.location.href = SUBSCRIBE_PAGE;
       }
     }
