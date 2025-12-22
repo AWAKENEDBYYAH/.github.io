@@ -347,7 +347,7 @@
   <main class="wrap">
     <section class="panel">
       <div class="hero">
-        <div class="tag">🔒 FAN ACCESS • FULL STREAMING</div>
+        <div class="tag" id="accessTag">🔒 FAN ACCESS • FULL STREAMING</div>
         <h1 id="welcome">Welcome.</h1>
         <p class="sub">
           You are inside the listening sanctuary of <strong>AWAKENED BY YAH</strong>.
@@ -386,6 +386,28 @@
   </footer>
 
   <script>
+    // =========================
+    // YAKA UNLIMITED ACCESS
+    // =========================
+    // Visit once:
+    // https://awakenedbyyahmusic.com/stream.html?yaka=YAKA-ACCESS-2025
+    // (then it stays unlocked on that browser until cache/site-data is cleared)
+    const YAKA_PASSCODE = "YAKA-ACCESS-2025";
+    const YAKA_KEY = "yaka_unlimited_access";
+
+    function setYakaAccess(){ localStorage.setItem(YAKA_KEY, "1"); }
+    function hasYakaAccess(){ return localStorage.getItem(YAKA_KEY) === "1"; }
+
+    (function handleYakaQueryParam(){
+      const url = new URL(window.location.href);
+      const yaka = url.searchParams.get("yaka");
+      if (yaka && yaka === YAKA_PASSCODE) {
+        setYakaAccess();
+        url.searchParams.delete("yaka");
+        window.history.replaceState({}, document.title, url.toString());
+      }
+    })();
+
     // ====== AUTH GUARD ======
     const SESSION_KEY = "aby_stream_session";
     function getSession() {
@@ -393,18 +415,31 @@
       const b = sessionStorage.getItem(SESSION_KEY);
       try { return JSON.parse(a || b || "null"); } catch { return null; }
     }
+
     const session = getSession();
-    if (!session || !session.email) window.location.replace("/login.html");
+    const isYaka = hasYakaAccess();
+
+    // ✅ Allow YAKA always
+    if (!isYaka && (!session || !session.email)) {
+      window.location.replace("/login.html");
+    }
 
     const $ = (id) => document.getElementById(id);
     $("yr").textContent = new Date().getFullYear();
 
-    const email = (session?.email || "").toString();
-    const role = (session?.role || "").toString();
-    const displayName = email ? email.split("@")[0] : "Supporter";
-    $("welcome").textContent = `Welcome, ${displayName}${role ? " (" + role + ")" : ""}.`;
+    // Show correct welcome & tag
+    if (isYaka) {
+      $("accessTag").textContent = "👑 YAKA ACCESS • UNLIMITED STREAMING";
+      $("welcome").textContent = "Welcome, YAKA.";
+    } else {
+      const email = (session?.email || "").toString();
+      const role = (session?.role || "").toString();
+      const displayName = email ? email.split("@")[0] : "Supporter";
+      $("welcome").textContent = `Welcome, ${displayName}${role ? " (" + role + ")" : ""}.`;
+    }
 
     $("logoutBtn").addEventListener("click", () => {
+      // logout clears supporter session only (keeps YAKA access unless you clear site data)
       localStorage.removeItem(SESSION_KEY);
       sessionStorage.removeItem(SESSION_KEY);
       window.location.href = "/login.html";
@@ -444,7 +479,7 @@
       { title: "YAHUAH the Holy One of Yasharal", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 04_YAHUAH THE HOLY ONE OF YASHARAL.mp3" },
       { title: "Show Me Your Heart", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 05_SHOW ME YOUR HEART.mp3" },
 
-      <!-- ✅ UPDATED TRACK 06 FILE -->
+      // ✅ UPDATED TRACK 06 FILE (JS comment, NOT HTML comment)
       { title: "YAH'S Chosen (The Great Gathering)", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 06_YAHS CHOSEN THE GREAT GATHERING.mp3" },
 
       { title: "YAHUAH Is the Father's Name", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 07_YAHUAH IS THE FATHERS NAME.mp3" },
