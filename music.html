@@ -265,6 +265,80 @@
     .coverText{min-width:0}
     .coverName{margin:0;font-weight:900;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .coverMeta{margin:6px 0 0 0;color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+    /* =========================
+       PREVIEW MODAL (PRO LOOK)
+       ========================= */
+    .modalBack{
+      position:fixed; inset:0;
+      background: rgba(2,6,23,.70);
+      backdrop-filter: blur(10px);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:9999;
+      padding:18px;
+    }
+    .modal{
+      width:min(560px, 100%);
+      border-radius: 22px;
+      border:1px solid rgba(255,255,255,.14);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      box-shadow: 0 30px 90px rgba(0,0,0,.55);
+      overflow:hidden;
+      position:relative;
+    }
+    .modalHead{
+      padding:16px 16px 10px;
+      border-bottom:1px solid rgba(255,255,255,.10);
+      background: radial-gradient(700px 240px at 20% 0%, rgba(43,86,255,.22), transparent 55%),
+                  radial-gradient(700px 240px at 80% 20%, rgba(28,57,168,.22), transparent 55%);
+    }
+    .modalHead strong{
+      letter-spacing:.06em;
+      display:block;
+      font-size:14px;
+    }
+    .modalHead span{
+      display:block;
+      margin-top:6px;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.35;
+    }
+    .modalBody{padding:14px 16px 16px}
+    .modalBtns{
+      display:flex; gap:10px; flex-wrap:wrap;
+      margin-top:12px;
+    }
+    .mBtn{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      padding:10px 14px;
+      border-radius: 999px;
+      cursor:pointer;
+      font-weight:900;
+      letter-spacing:.02em;
+    }
+    .mBtn:hover{border-color:rgba(255,255,255,.22)}
+    .mBtn.primary{
+      background: linear-gradient(180deg, rgba(43,86,255,.95), rgba(28,57,168,.95));
+      box-shadow:0 0 36px rgba(28,57,168,.28);
+    }
+    .xBtn{
+      position:absolute; top:10px; right:10px;
+      width:38px; height:38px;
+      display:grid; place-items:center;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(2,6,23,.35);
+      cursor:pointer;
+      color: var(--text);
+      font-weight:900;
+    }
+    .xBtn:hover{border-color:rgba(255,255,255,.24)}
+    .modalBack.show{display:flex}
   </style>
 </head>
 
@@ -376,6 +450,27 @@
     </div>
   </div>
 
+  <!-- =========================
+       PREVIEW ENDED MODAL
+       ========================= -->
+  <div class="modalBack" id="previewModal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-label="Preview ended">
+      <button class="xBtn" id="closePreviewModal" type="button" aria-label="Close">✕</button>
+      <div class="modalHead">
+        <strong>PREVIEW ENDED</strong>
+        <span>
+          You just heard a 45-second preview. Unlock full streaming inside the Sanctuary.
+        </span>
+      </div>
+      <div class="modalBody">
+        <div class="modalBtns">
+          <button class="mBtn primary" id="goLoginBtn" type="button">Unlock Full Streaming</button>
+          <button class="mBtn" id="keepBrowsingBtn" type="button">Keep Browsing</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
     const AUDIO_BASE = "/audio/";
 
@@ -405,7 +500,7 @@
 
     const audio = new Audio();
     audio.preload = "metadata";
-    audio.crossOrigin = "anonymous"; // safe (also helps if you ever use WebAudio)
+    audio.crossOrigin = "anonymous";
 
     let currentProjectKey = "kingdombiz";
     let tracks = [];
@@ -466,15 +561,11 @@
       return { num: null, title: cleaned, label: cleaned };
     }
 
-    // ✅ FIX #1: encode ONLY the filename safely without breaking ".mp3"
-    // - Keeps .mp3 intact (does not encode the dot)
-    // - Encodes spaces and other characters reliably
     function safeEncodeFilename(filename){
-      // Split on last dot, preserve extension
       const i = filename.lastIndexOf(".");
       if (i === -1) return encodeURIComponent(filename).replace(/%2F/g, "/");
       const base = filename.slice(0, i);
-      const ext  = filename.slice(i); // includes dot
+      const ext  = filename.slice(i);
       return encodeURIComponent(base).replace(/%2F/g, "/") + ext;
     }
 
@@ -482,24 +573,16 @@
       return AUDIO_BASE + safeEncodeFilename(filename);
     }
 
-    // ✅ FIX #2: try a fallback if the uploaded filename differs slightly
     function sanitizeFilenameVariants(filename){
       const variants = [];
       variants.push(filename);
-
-      // common mismatch: double underscores vs single underscores
       variants.push(filename.replace(/__+/g, "_"));
-
-      // common mismatch: accidental extra spaces
       variants.push(filename.replace(/\s+/g, " ").trim());
-
-      // de-dupe
       return [...new Set(variants)];
     }
 
     async function urlExists(url){
       try{
-        // HEAD sometimes blocked; use Range GET
         const r = await fetch(url, { method:"GET", headers:{ "Range":"bytes=0-1" }, cache:"no-store" });
         return r.ok;
       }catch(_){
@@ -599,12 +682,11 @@
     }
 
     async function resolvePlayableSrc(trackObj){
-      // try primary, then fallbacks
       for (const v of trackObj.variants){
         const u = audioUrl(v);
         if (await urlExists(u)) return u;
       }
-      return trackObj.src; // last resort (will error with good messaging)
+      return trackObj.src;
     }
 
     async function loadIndex(idx){
@@ -675,7 +757,6 @@
       }
     }
 
-    // ✅ FIX #3: repeat buttons truly mutually exclusive
     repeatAllBtn.addEventListener("click", () => {
       if (repeatMode === "all"){
         repeatMode = "none";
@@ -812,7 +893,6 @@
       }
     });
 
-    // ✅ FIX #4: better error message showing filename + URL that failed
     audio.addEventListener("error", () => {
       const t = tracks[currentIndex];
       const src = audio.currentSrc || audio.src || "(no src)";
@@ -828,9 +908,131 @@
       });
     });
 
-    // init
+    // ==========================================
+    // OPTION 1: 45s PREVIEW + SMOOTH FADES
+    // ==========================================
+    const PREVIEW_SECONDS = 45;
+    const FADE_IN_SECONDS = 2;
+    const FADE_OUT_SECONDS = 3;
+
+    // If YAKA has unlimited access, disable preview mode
+    const YAKA_KEY = "yaka_unlimited_access";
+    const previewMode = !(localStorage.getItem(YAKA_KEY) === "1");
+
+    const modalBack = document.getElementById("previewModal");
+    const closeModalBtn = document.getElementById("closePreviewModal");
+    const goLoginBtn = document.getElementById("goLoginBtn");
+    const keepBrowsingBtn = document.getElementById("keepBrowsingBtn");
+
+    function showPreviewModal(){
+      modalBack.classList.add("show");
+      modalBack.setAttribute("aria-hidden", "false");
+    }
+    function hidePreviewModal(){
+      modalBack.classList.remove("show");
+      modalBack.setAttribute("aria-hidden", "true");
+    }
+
+    closeModalBtn.addEventListener("click", hidePreviewModal);
+    keepBrowsingBtn.addEventListener("click", hidePreviewModal);
+    modalBack.addEventListener("click", (e) => { if (e.target === modalBack) hidePreviewModal(); });
+    goLoginBtn.addEventListener("click", () => window.location.href = "/login.html");
+
+    let fadeOutStarted = false;
+    let handlingPreviewEnd = false;
+
+    function clampPreviewSeek(){
+      if (!previewMode) return;
+      const limit = PREVIEW_SECONDS - FADE_OUT_SECONDS;
+      if (audio.currentTime > limit) audio.currentTime = limit;
+    }
+
+    function fadeTo(target, durationSeconds){
+      const start = audio.volume;
+      const delta = target - start;
+      if (durationSeconds <= 0) { audio.volume = target; return; }
+
+      const startTime = performance.now();
+      const durMs = durationSeconds * 1000;
+
+      function step(now){
+        const t = Math.min(1, (now - startTime) / durMs);
+        audio.volume = Math.max(0, Math.min(1, start + delta * t));
+        if (t < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
+
+    function fadeIn(){
+      // If user volume is set, preserve it as "max"
+      const userMax = Number(volEl.value) / 100;
+      audio.volume = 0;
+      fadeTo(userMax, FADE_IN_SECONDS);
+    }
+
+    function fadeOut(){
+      fadeTo(0, FADE_OUT_SECONDS);
+    }
+
+    audio.addEventListener("play", () => {
+      if (!previewMode) return;
+      handlingPreviewEnd = false;
+      fadeOutStarted = false;
+      fadeIn();
+    });
+
+    // Prevent seeking beyond preview window (public page)
+    audio.addEventListener("seeking", () => {
+      if (!previewMode) return;
+      clampPreviewSeek();
+    });
+
+    // Enforce preview end + fade out
+    audio.addEventListener("timeupdate", () => {
+      if (!previewMode) return;
+      if (!audio.src) return;
+
+      const fadeStart = PREVIEW_SECONDS - FADE_OUT_SECONDS;
+
+      if (audio.currentTime >= fadeStart && !fadeOutStarted && !handlingPreviewEnd){
+        fadeOutStarted = true;
+        fadeOut();
+      }
+
+      if (audio.currentTime >= PREVIEW_SECONDS && !handlingPreviewEnd){
+        handlingPreviewEnd = true;
+
+        audio.pause();
+        audio.currentTime = 0;
+
+        // keep UI consistent
+        playBtn.textContent = "▶️ Play";
+        setStatus("Preview ended");
+        // ensure volume returns to user's slider value for next play (fade-in will apply)
+        audio.volume = Math.max(0, Math.min(1, Number(volEl.value) / 100));
+
+        showPreviewModal();
+      }
+    });
+
+    // Keep volume slider behavior but respect preview fades
+    volEl.addEventListener("input", () => {
+      const v = Number(volEl.value) / 100;
+      // If user changes volume while playing, set instantly (fade system will still work)
+      audio.volume = Math.max(0, Math.min(1, v));
+    });
+
+    // ==========================================
+    // INIT
+    // ==========================================
     updateRepeatUI();
     loadProject("kingdombiz");
+
+    if (previewMode){
+      setStatus("Preview mode (45s)");
+    } else {
+      setStatus("Full access");
+    }
   </script>
 </body>
 </html>
