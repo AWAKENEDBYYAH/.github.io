@@ -295,7 +295,7 @@
 
         <div class="row">
           <label class="small" style="display:flex;align-items:center;gap:8px;margin:0;">
-            <input id="remember" type="checkbox" style="width:auto;margin:0;"> Remember me
+            <input id="remember" type="checkbox" style="width:auto;margin:0;" checked> Remember me
           </label>
           <a class="small" href="#" id="forgotBtn" style="text-decoration:none;color:var(--muted);">Forgot password?</a>
         </div>
@@ -326,10 +326,9 @@
     // =======================
     const SUPABASE_URL = "https://fgqzopgqtownfvohtlcq.supabase.co";
 
-    // IMPORTANT:
-    // This MUST be your anon public key from Supabase Settings → API → Project API keys → anon public
-    // It looks like a long "eyJ..." JWT string.
-    const SUPABASE_ANON_KEY = "PASTE_YOUR_ANON_KEY_HERE";
+    // ✅ USE YOUR SUPABASE "PUBLISHABLE KEY" (Settings → API Keys → Publishable key)
+    // It starts with: sb_publishable_
+    const SUPABASE_PUBLISHABLE_KEY = "PASTE_YOUR_PUBLISHABLE_KEY_HERE";
 
     // Edge function that returns { subscribed: true/false }
     const CHECK_SUB_FN = "check-subscription";
@@ -357,6 +356,15 @@
       toast.textContent = msg;
     }
 
+    function missingKeyGuard(){
+      if (!SUPABASE_PUBLISHABLE_KEY || SUPABASE_PUBLISHABLE_KEY.includes("PASTE_")){
+        showToast("bad", "Supabase key missing. Paste your Publishable key (sb_publishable_...) into the page code.");
+        console.warn("Missing SUPABASE_PUBLISHABLE_KEY. Paste the sb_publishable_ key from Supabase Settings → API Keys.");
+        return true;
+      }
+      return false;
+    }
+
     // Redirect support: login.html?redirect=/stream.html
     function getRedirectPath(){
       const u = new URL(window.location.href);
@@ -366,12 +374,51 @@
       return r;
     }
 
-    // Create Supabase client
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    // ✅ Remember-me storage:
+    // checked => localStorage (persists)
+    // unchecked => sessionStorage (ends when browser closes)
+    const storageLocal = {
+      getItem: (k) => localStorage.getItem(k),
+      setItem: (k, v) => localStorage.setItem(k, v),
+      removeItem: (k) => localStorage.removeItem(k),
+    };
+    const storageSession = {
+      getItem: (k) => sessionStorage.getItem(k),
+      setItem: (k, v) => sessionStorage.setItem(k, v),
+      removeItem: (k) => sessionStorage.removeItem(k),
+    };
+
+    // Create two clients so we can choose storage at login time
+    const supabasePersist = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+      auth: { persistSession: true, storage: storageLocal }
+    });
+    const supabaseSessionOnly = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
+      auth: { persistSession: true, storage: storageSession }
+    });
+
+    // Use either client depending on "Remember me"
+    function activeClient(){
+      return $("remember").checked ? supabasePersist : supabaseSessionOnly;
+    }
+
+    // Utility: check session from either storage (so auto-login works in both modes)
+    async function getAnySession(){
+      const a = await supabasePersist.auth.getSession().catch(() => null);
+      const s1 = a?.data?.session;
+      if (s1) return { client: supabasePersist, session: s1 };
+
+      const b = await supabaseSessionOnly.auth.getSession().catch(() => null);
+      const s2 = b?.data?.session;
+      if (s2) return { client: supabaseSessionOnly, session: s2 };
+
+      return { client: activeClient(), session: null };
+    }
 
     // Forgot password
     $("forgotBtn").addEventListener("click", async (e) => {
       e.preventDefault();
+      if (missingKeyGuard()) return;
+
       const email = $("email").value.trim();
       if (!email){
         showToast("bad", "Enter your email first, then click Forgot password.");
@@ -379,7 +426,8 @@
       }
 
       try{
-        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        const client = activeClient();
+        const { error } = await client.auth.resetPasswordForEmail(email, {
           redirectTo: window.location.origin + "/reset.html"
         });
         if (error) throw error;
@@ -392,10 +440,12 @@
 
     // After login, check subscription
     async function routeAfterLogin(){
+      if (missingKeyGuard()) return;
+
       const desired = getRedirectPath();
 
       try{
-        const { data: { session } } = await supabase.auth.getSession();
+        const { session } = await getAnySession();
         if (!session) {
           showToast("bad", "No active session. Please log in again.");
           return;
@@ -406,7 +456,7 @@
           headers: {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${session.access_token}`,
-            "apikey": SUPABASE_ANON_KEY
+            "apikey": SUPABASE_PUBLISHABLE_KEY
           },
           body: JSON.stringify({})
         });
@@ -431,10 +481,12 @@
       }
     }
 
-    // Auto-route if already logged in
+    // Auto-route if already logged in (either storage)
     (async () => {
       try{
-        const { data: { session } } = await supabase.auth.getSession();
+        if (missingKeyGuard()) return;
+
+        const { session } = await getAnySession();
         if (session){
           showToast("ok", "You're already signed in. Checking access…");
           setTimeout(routeAfterLogin, 400);
@@ -445,6 +497,7 @@
     // Login form submit
     $("loginForm").addEventListener("submit", async (e) => {
       e.preventDefault();
+      if (missingKeyGuard()) return;
 
       const email = $("email").value.trim();
       const password = $("password").value.trim();
@@ -457,7 +510,8 @@
       showToast("ok", "Signing in…");
 
       try{
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        const client = activeClient();
+        const { error } = await client.auth.signInWithPassword({ email, password });
         if (error) throw error;
 
         showToast("ok", "Success. Checking access…");
