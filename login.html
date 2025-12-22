@@ -213,6 +213,8 @@
       border:1px solid var(--line);
       display:none;
       font-size:13px;
+      line-height:1.35;
+      white-space:pre-line;
     }
     .toast.ok{display:block; background:var(--ok); border-color:rgba(34,197,94,.25); color:#dcfce7}
     .toast.bad{display:block; background:var(--bad); border-color:rgba(239,68,68,.25); color:#fee2e2}
@@ -234,6 +236,29 @@
       letter-spacing:.06em;
       font-size:12px;
     }
+    .tabs{
+      display:flex; gap:10px; align-items:center;
+      margin:12px 0 14px;
+    }
+    .tab{
+      flex:1;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+      cursor:pointer;
+      font-weight:800;
+      letter-spacing:.04em;
+      transition:.2s transform,.2s background,.2s border-color;
+    }
+    .tab:hover{transform:translateY(-1px); background:rgba(255,255,255,.05); border-color:rgba(255,255,255,.18)}
+    .tab.active{
+      border-color: rgba(43,86,255,.60);
+      background: rgba(28,57,168,.18);
+      box-shadow: 0 0 0 4px rgba(43,86,255,.10);
+    }
+    .hide{display:none !important;}
   </style>
 </head>
 
@@ -274,15 +299,21 @@
       </div>
 
       <div class="notice">
-        <strong>Note:</strong> Log in below to continue. If you don’t have a supporter account yet,
-        use <strong>JOIN & STREAM</strong> to subscribe first.
+        <strong>YAKA note:</strong> If you don’t have an account yet, use <strong>Create Account</strong> on the right.
+        Your email <strong>yahuahsremnant@gmail.com</strong> will always be allowed into the Sanctuary.
       </div>
     </section>
 
     <aside class="card">
-      <h2>LOG IN</h2>
-      <p>Use your supporter login.</p>
+      <h2>ACCESS</h2>
+      <p>Log in (existing) or create an account (first time).</p>
 
+      <div class="tabs" role="tablist" aria-label="Access tabs">
+        <button class="tab active" id="tabLogin" type="button">LOG IN</button>
+        <button class="tab" id="tabSignup" type="button">CREATE ACCOUNT</button>
+      </div>
+
+      <!-- LOGIN -->
       <form id="loginForm" autocomplete="on">
         <label for="email">Email</label>
         <input id="email" type="email" placeholder="you@example.com" required />
@@ -304,12 +335,39 @@
           <button class="btn primary" type="submit" style="width:100%;">LOG IN</button>
         </div>
 
-        <div id="toast" class="toast"></div>
-
         <div class="notice" style="margin-top:14px;">
-          <strong>Tip:</strong> If you just subscribed, use the same email you used at checkout.
+          <strong>Tip:</strong> If you subscribed, use the same email you used at checkout.
         </div>
       </form>
+
+      <!-- SIGNUP -->
+      <form id="signupForm" class="hide" autocomplete="on">
+        <label for="suEmail">Email</label>
+        <input id="suEmail" type="email" placeholder="you@example.com" required />
+
+        <label for="suPassword">Create Password</label>
+        <div class="password-wrap">
+          <input id="suPassword" type="password" placeholder="Create a strong password" required />
+          <button class="toggle-eye" id="toggleSignupPassword" type="button" aria-label="Show password" title="Show/Hide Password">👁️</button>
+        </div>
+
+        <label for="suPassword2">Confirm Password</label>
+        <div class="password-wrap">
+          <input id="suPassword2" type="password" placeholder="Confirm password" required />
+          <button class="toggle-eye" id="toggleSignupPassword2" type="button" aria-label="Show password" title="Show/Hide Password">👁️</button>
+        </div>
+
+        <div class="row" style="margin-top:14px;">
+          <button class="btn primary" type="submit" style="width:100%;">CREATE ACCOUNT</button>
+        </div>
+
+        <div class="notice" style="margin-top:14px;">
+          <strong>After signup:</strong> If email confirmation is enabled in Supabase, you may need to confirm your email first.
+          Then come back and log in.
+        </div>
+      </form>
+
+      <div id="toast" class="toast"></div>
     </aside>
   </main>
 
@@ -326,9 +384,9 @@
     // =======================
     const SUPABASE_URL = "https://fgqzopgqtownfvohtlcq.supabase.co";
 
-    // ✅ USE YOUR SUPABASE "PUBLISHABLE KEY" (Settings → API Keys → Publishable key)
-    // It starts with: sb_publishable_
-   const SUPABASE_PUBLISHABLE_KEY = "sb_publishable__LlL7rsAYeDlub9OmvofaA_ck1tKqca";
+    // Publishable key (Settings → API Keys → Publishable key)
+    // starts with sb_publishable_
+    const SUPABASE_PUBLISHABLE_KEY = "sb_publishable__LlL7rsAYeDlub9OmvofaA_ck1tKqca";
 
     // Edge function that returns { subscribed: true/false }
     const CHECK_SUB_FN = "check-subscription";
@@ -337,19 +395,15 @@
     const STREAM_PAGE = "/stream.html";
     const SUBSCRIBE_PAGE = "/subscribe.html";
 
+    // ✅ Your site session key for gating/roles across pages
+    const SITE_SESSION_KEY = "aby_stream_session";
+
+    // ✅ YAKA allowlist (owner/admin)
+    const OWNER_EMAILS = ["yahuahsremnant@gmail.com"];
+
     const $ = (id) => document.getElementById(id);
     const toast = $("toast");
     $("yr").textContent = new Date().getFullYear();
-
-    // Password eye toggle
-    const pw = $("password");
-    const eye = $("togglePassword");
-    eye.addEventListener("click", () => {
-      const showing = pw.type === "text";
-      pw.type = showing ? "password" : "text";
-      eye.textContent = showing ? "👁️" : "🙈";
-      eye.setAttribute("aria-label", showing ? "Show password" : "Hide password");
-    });
 
     function showToast(kind, msg){
       toast.className = "toast " + (kind === "ok" ? "ok" : "bad");
@@ -363,6 +417,11 @@
         return true;
       }
       return false;
+    }
+
+    function roleForEmail(email){
+      const e = (email || "").trim().toLowerCase();
+      return OWNER_EMAILS.includes(e) ? "YAKA" : "Supporter";
     }
 
     // Redirect support: login.html?redirect=/stream.html
@@ -398,7 +457,7 @@
 
     // Use either client depending on "Remember me"
     function activeClient(){
-      return $("remember").checked ? supabasePersist : supabaseSessionOnly;
+      return $("remember")?.checked ? supabasePersist : supabaseSessionOnly;
     }
 
     // Utility: check session from either storage (so auto-login works in both modes)
@@ -413,6 +472,62 @@
 
       return { client: activeClient(), session: null };
     }
+
+    // Write your site session (used by stream.html / music.html)
+    function setSiteSession(email){
+      const role = roleForEmail(email);
+      const sessionObj = { email, role };
+
+      // store in the same storage mode user chose
+      const useLocal = $("remember")?.checked ?? true;
+
+      if (useLocal){
+        localStorage.setItem(SITE_SESSION_KEY, JSON.stringify(sessionObj));
+        sessionStorage.removeItem(SITE_SESSION_KEY);
+      } else {
+        sessionStorage.setItem(SITE_SESSION_KEY, JSON.stringify(sessionObj));
+        localStorage.removeItem(SITE_SESSION_KEY);
+      }
+
+      return sessionObj;
+    }
+
+    // Password eye toggles
+    function setupEye(inputId, btnId){
+      const pw = $(inputId);
+      const eye = $(btnId);
+      if (!pw || !eye) return;
+      eye.addEventListener("click", () => {
+        const showing = pw.type === "text";
+        pw.type = showing ? "password" : "text";
+        eye.textContent = showing ? "👁️" : "🙈";
+        eye.setAttribute("aria-label", showing ? "Show password" : "Hide password");
+      });
+    }
+    setupEye("password", "togglePassword");
+    setupEye("suPassword", "toggleSignupPassword");
+    setupEye("suPassword2", "toggleSignupPassword2");
+
+    // Tabs
+    function setTab(which){
+      const isLogin = which === "login";
+      $("tabLogin").classList.toggle("active", isLogin);
+      $("tabSignup").classList.toggle("active", !isLogin);
+      $("loginForm").classList.toggle("hide", !isLogin);
+      $("signupForm").classList.toggle("hide", isLogin);
+
+      // sync email field convenience
+      if (!isLogin){
+        $("suEmail").value = $("email").value || $("suEmail").value;
+      } else {
+        $("email").value = $("suEmail").value || $("email").value;
+      }
+
+      toast.className = "toast";
+      toast.textContent = "";
+    }
+    $("tabLogin").addEventListener("click", () => setTab("login"));
+    $("tabSignup").addEventListener("click", () => setTab("signup"));
 
     // Forgot password
     $("forgotBtn").addEventListener("click", async (e) => {
@@ -438,7 +553,7 @@
       }
     });
 
-    // After login, check subscription
+    // After login, check subscription (but ALWAYS allow YAKA)
     async function routeAfterLogin(){
       if (missingKeyGuard()) return;
 
@@ -448,6 +563,15 @@
         const { session } = await getAnySession();
         if (!session) {
           showToast("bad", "No active session. Please log in again.");
+          return;
+        }
+
+        const email = (session.user?.email || "").toString();
+        const siteSess = setSiteSession(email);
+
+        // ✅ YAKA never gets blocked by subscription checks
+        if (siteSess.role === "YAKA"){
+          window.location.href = (desired || STREAM_PAGE);
           return;
         }
 
@@ -519,6 +643,70 @@
       }catch(err){
         console.warn(err);
         showToast("bad", "Login failed. Check your email/password.");
+      }
+    });
+
+    // Signup form submit
+    $("signupForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (missingKeyGuard()) return;
+
+      const email = $("suEmail").value.trim();
+      const pw1 = $("suPassword").value.trim();
+      const pw2 = $("suPassword2").value.trim();
+
+      if (!email || !pw1 || !pw2){
+        showToast("bad", "Please fill out email + both password fields.");
+        return;
+      }
+      if (pw1.length < 8){
+        showToast("bad", "Password must be at least 8 characters.");
+        return;
+      }
+      if (pw1 !== pw2){
+        showToast("bad", "Passwords do not match.");
+        return;
+      }
+
+      showToast("ok", "Creating account…");
+
+      try{
+        const client = activeClient();
+        const { data, error } = await client.auth.signUp({
+          email,
+          password: pw1,
+          options: {
+            emailRedirectTo: window.location.origin + "/login.html"
+          }
+        });
+        if (error) throw error;
+
+        // If email confirmations are ON, session may be null until confirmed
+        const hasSession = !!data?.session;
+
+        if (hasSession){
+          setSiteSession(email);
+          showToast("ok", "Account created. Checking access…");
+          setTimeout(routeAfterLogin, 400);
+        } else {
+          showToast(
+            "ok",
+            "Account created.\nCheck your email to confirm, then come back and log in."
+          );
+          // switch to login tab and prefill email
+          $("email").value = email;
+          setTab("login");
+        }
+      }catch(err){
+        console.warn(err);
+        const msg = (err?.message || "").toString().toLowerCase();
+        if (msg.includes("user already registered")){
+          showToast("bad", "That email already has an account. Switch to LOG IN.");
+          setTab("login");
+          $("email").value = email;
+          return;
+        }
+        showToast("bad", "Could not create account. Try a different email or reset password.");
       }
     });
   </script>
