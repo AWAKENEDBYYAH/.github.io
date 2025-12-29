@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- ✅ Clean canonical (no .html) -->
-  <link rel="canonical" href="https://awakenedbyyahmusic.com/music" />
+  <!-- ✅ Correct canonical for folder-based page -->
+  <link rel="canonical" href="https://awakenedbyyahmusic.com/music/" />
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -467,6 +467,7 @@
   </div>
 
   <script>
+    // ✅ Absolute base paths so this works from /music/
     const AUDIO_BASE = "/audio/";
 
     const MANIFEST = {
@@ -556,6 +557,7 @@
       return { num: null, title: cleaned, label: cleaned };
     }
 
+    // ✅ Safe encoding for spaces + punctuation (keeps extension readable)
     function safeEncodeFilename(filename){
       const i = filename.lastIndexOf(".");
       if (i === -1) return encodeURIComponent(filename).replace(/%2F/g, "/");
@@ -578,6 +580,7 @@
 
     async function urlExists(url){
       try{
+        // Range helps avoid downloading full mp3
         const r = await fetch(url, { method:"GET", headers:{ "Range":"bytes=0-1" }, cache:"no-store" });
         return r.ok;
       }catch(_){
@@ -921,8 +924,22 @@
     keepBrowsingBtn.addEventListener("click", hidePreviewModal);
     modalBack.addEventListener("click", (e) => { if (e.target === modalBack) hidePreviewModal(); });
 
-    // ✅ fixed: go to clean login URL (no .html)
-    goLoginBtn.addEventListener("click", () => window.location.href = "/login");
+    // ✅ Robust login navigation: tries /login/ then falls back to /login.html
+    async function goToLogin(){
+      const candidates = ["/login/", "/login.html", "/login"];
+      for (const path of candidates){
+        try{
+          const r = await fetch(path, { method: "GET", cache: "no-store" });
+          if (r.ok){
+            window.location.href = path;
+            return;
+          }
+        }catch(_){}
+      }
+      // last resort
+      window.location.href = "/login.html";
+    }
+    goLoginBtn.addEventListener("click", goToLogin);
 
     let fadeOutStarted = false;
     let handlingPreviewEnd = false;
