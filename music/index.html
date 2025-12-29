@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="canonical" href="https://awakenedbyyahmusic.com/music.html" />
+  <!-- ✅ Clean canonical (no .html) -->
+  <link rel="canonical" href="https://awakenedbyyahmusic.com/music" />
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -44,7 +45,7 @@
           rgba(2,6,23,.40),
           rgba(2,6,23,.82)
         ),
-        url("music-banner.png");
+        url("/images/music-banner.png");
       background-size:cover;
       background-position:center;
       margin-bottom:16px;
@@ -266,9 +267,6 @@
     .coverName{margin:0;font-weight:900;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .coverMeta{margin:6px 0 0 0;color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-    /* =========================
-       PREVIEW MODAL (PRO LOOK)
-       ========================= */
     .modalBack{
       position:fixed; inset:0;
       background: rgba(2,6,23,.70);
@@ -355,7 +353,7 @@
       <section class="playerCard" aria-label="Music Player">
         <div class="playerHead">
           <div class="cover">
-            <img id="playerCover" src="kingdom-biz-cover.png" alt="Project cover" />
+            <img id="playerCover" src="/images/kingdom-biz-cover.png" alt="Project cover" />
           </div>
 
           <div class="meta">
@@ -415,7 +413,7 @@
 
         <div class="coverGrid">
           <div class="coverBtn active" data-key="kingdombiz">
-            <div class="thumb"><img src="kingdom-biz-cover.png" alt="Kingdom Biz cover"></div>
+            <div class="thumb"><img src="/images/kingdom-biz-cover.png" alt="Kingdom Biz cover"></div>
             <div class="coverText">
               <p class="coverName">Kingdom Biz</p>
               <p class="coverMeta">Album</p>
@@ -423,7 +421,7 @@
           </div>
 
           <div class="coverBtn" data-key="rise">
-            <div class="thumb"><img src="rise-of-yasharal-cover.png" alt="The Rise of Yasharal cover"></div>
+            <div class="thumb"><img src="/images/rise-of-yasharal-cover.png" alt="The Rise of Yasharal cover"></div>
             <div class="coverText">
               <p class="coverName">The Rise of Yasharal</p>
               <p class="coverMeta">Album</p>
@@ -431,7 +429,7 @@
           </div>
 
           <div class="coverBtn" data-key="hear">
-            <div class="thumb"><img src="hear-my-voice.png" alt="Hear My Voice cover"></div>
+            <div class="thumb"><img src="/images/hear-my-voice.png" alt="Hear My Voice cover"></div>
             <div class="coverText">
               <p class="coverName">Hear My Voice</p>
               <p class="coverMeta">Single</p>
@@ -439,7 +437,7 @@
           </div>
 
           <div class="coverBtn" data-key="deliver">
-            <div class="thumb"><img src="deliver-us.png" alt="Deliver Us cover"></div>
+            <div class="thumb"><img src="/images/deliver-us.png" alt="Deliver Us cover"></div>
             <div class="coverText">
               <p class="coverName">Deliver Us</p>
               <p class="coverMeta">Single</p>
@@ -450,9 +448,6 @@
     </div>
   </div>
 
-  <!-- =========================
-       PREVIEW ENDED MODAL
-       ========================= -->
   <div class="modalBack" id="previewModal" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-label="Preview ended">
       <button class="xBtn" id="closePreviewModal" type="button" aria-label="Close">✕</button>
@@ -492,10 +487,10 @@
     };
 
     const PROJECTS = {
-      kingdombiz: { title: "Kingdom Biz", cover: "kingdom-biz-cover.png", artist: "AWAKENED BY YAH" },
-      rise:       { title: "The Rise of Yasharal", cover: "rise-of-yasharal-cover.png", artist: "AWAKENED BY YAH" },
-      hear:       { title: "Hear My Voice", cover: "hear-my-voice.png", artist: "AWAKENED BY YAH" },
-      deliver:    { title: "Deliver Us", cover: "deliver-us.png", artist: "AWAKENED BY YAH" }
+      kingdombiz: { title: "Kingdom Biz", cover: "/images/kingdom-biz-cover.png", artist: "AWAKENED BY YAH" },
+      rise:       { title: "The Rise of Yasharal", cover: "/images/rise-of-yasharal-cover.png", artist: "AWAKENED BY YAH" },
+      hear:       { title: "Hear My Voice", cover: "/images/hear-my-voice.png", artist: "AWAKENED BY YAH" },
+      deliver:    { title: "Deliver Us", cover: "/images/deliver-us.png", artist: "AWAKENED BY YAH" }
     };
 
     const audio = new Audio();
@@ -758,21 +753,13 @@
     }
 
     repeatAllBtn.addEventListener("click", () => {
-      if (repeatMode === "all"){
-        repeatMode = "none";
-      } else {
-        repeatMode = "all";
-      }
+      repeatMode = (repeatMode === "all") ? "none" : "all";
       updateRepeatUI();
       setStatus(repeatMode === "all" ? "Repeat All" : "Repeat Off");
     });
 
     repeatOneBtn.addEventListener("click", () => {
-      if (repeatMode === "one"){
-        repeatMode = "none";
-      } else {
-        repeatMode = "one";
-      }
+      repeatMode = (repeatMode === "one") ? "none" : "one";
       updateRepeatUI();
       setStatus(repeatMode === "one" ? "Repeat 1" : "Repeat Off");
     });
@@ -908,14 +895,11 @@
       });
     });
 
-    // ==========================================
-    // OPTION 1: 45s PREVIEW + SMOOTH FADES
-    // ==========================================
+    // 45s preview + fades
     const PREVIEW_SECONDS = 45;
     const FADE_IN_SECONDS = 2;
     const FADE_OUT_SECONDS = 3;
 
-    // If YAKA has unlimited access, disable preview mode
     const YAKA_KEY = "yaka_unlimited_access";
     const previewMode = !(localStorage.getItem(YAKA_KEY) === "1");
 
@@ -936,7 +920,9 @@
     closeModalBtn.addEventListener("click", hidePreviewModal);
     keepBrowsingBtn.addEventListener("click", hidePreviewModal);
     modalBack.addEventListener("click", (e) => { if (e.target === modalBack) hidePreviewModal(); });
-    goLoginBtn.addEventListener("click", () => window.location.href = "/login.html");
+
+    // ✅ fixed: go to clean login URL (no .html)
+    goLoginBtn.addEventListener("click", () => window.location.href = "/login");
 
     let fadeOutStarted = false;
     let handlingPreviewEnd = false;
@@ -964,7 +950,6 @@
     }
 
     function fadeIn(){
-      // If user volume is set, preserve it as "max"
       const userMax = Number(volEl.value) / 100;
       audio.volume = 0;
       fadeTo(userMax, FADE_IN_SECONDS);
@@ -981,13 +966,11 @@
       fadeIn();
     });
 
-    // Prevent seeking beyond preview window (public page)
     audio.addEventListener("seeking", () => {
       if (!previewMode) return;
       clampPreviewSeek();
     });
 
-    // Enforce preview end + fade out
     audio.addEventListener("timeupdate", () => {
       if (!previewMode) return;
       if (!audio.src) return;
@@ -1005,34 +988,23 @@
         audio.pause();
         audio.currentTime = 0;
 
-        // keep UI consistent
         playBtn.textContent = "▶️ Play";
         setStatus("Preview ended");
-        // ensure volume returns to user's slider value for next play (fade-in will apply)
         audio.volume = Math.max(0, Math.min(1, Number(volEl.value) / 100));
 
         showPreviewModal();
       }
     });
 
-    // Keep volume slider behavior but respect preview fades
     volEl.addEventListener("input", () => {
       const v = Number(volEl.value) / 100;
-      // If user changes volume while playing, set instantly (fade system will still work)
       audio.volume = Math.max(0, Math.min(1, v));
     });
 
-    // ==========================================
-    // INIT
-    // ==========================================
     updateRepeatUI();
     loadProject("kingdombiz");
 
-    if (previewMode){
-      setStatus("Preview mode (45s)");
-    } else {
-      setStatus("Full access");
-    }
+    setStatus(previewMode ? "Preview mode (45s)" : "Full access");
   </script>
 </body>
 </html>
