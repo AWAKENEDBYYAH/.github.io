@@ -45,7 +45,7 @@
           rgba(2,6,23,.40),
           rgba(2,6,23,.82)
         ),
-        url("/images/music-banner.png");
+        url("/music-banner.png"); /* ✅ FIXED: root banner */
       background-size:cover;
       background-position:center;
       margin-bottom:16px;
@@ -353,7 +353,10 @@
       <section class="playerCard" aria-label="Music Player">
         <div class="playerHead">
           <div class="cover">
-            <img id="playerCover" src="/images/kingdom-biz-cover.png" alt="Project cover" />
+            <img id="playerCover"
+                 src="/kingdom-biz-cover.png"
+                 alt="Project cover"
+                 onerror="this.onerror=null;this.src='/abytransparent.png';" />
           </div>
 
           <div class="meta">
@@ -413,7 +416,10 @@
 
         <div class="coverGrid">
           <div class="coverBtn active" data-key="kingdombiz">
-            <div class="thumb"><img src="/images/kingdom-biz-cover.png" alt="Kingdom Biz cover"></div>
+            <div class="thumb">
+              <img src="/kingdom-biz-cover.png" alt="Kingdom Biz cover"
+                   onerror="this.onerror=null;this.src='/abytransparent.png';">
+            </div>
             <div class="coverText">
               <p class="coverName">Kingdom Biz</p>
               <p class="coverMeta">Album</p>
@@ -421,7 +427,10 @@
           </div>
 
           <div class="coverBtn" data-key="rise">
-            <div class="thumb"><img src="/images/rise-of-yasharal-cover.png" alt="The Rise of Yasharal cover"></div>
+            <div class="thumb">
+              <img src="/rise-of-yasharal-cover.png" alt="The Rise of Yasharal cover"
+                   onerror="this.onerror=null;this.src='/abytransparent.png';">
+            </div>
             <div class="coverText">
               <p class="coverName">The Rise of Yasharal</p>
               <p class="coverMeta">Album</p>
@@ -429,7 +438,10 @@
           </div>
 
           <div class="coverBtn" data-key="hear">
-            <div class="thumb"><img src="/images/hear-my-voice.png" alt="Hear My Voice cover"></div>
+            <div class="thumb">
+              <img src="/hear-my-voice.png" alt="Hear My Voice cover"
+                   onerror="this.onerror=null;this.src='/abytransparent.png';">
+            </div>
             <div class="coverText">
               <p class="coverName">Hear My Voice</p>
               <p class="coverMeta">Single</p>
@@ -437,7 +449,10 @@
           </div>
 
           <div class="coverBtn" data-key="deliver">
-            <div class="thumb"><img src="/images/deliver-us.png" alt="Deliver Us cover"></div>
+            <div class="thumb">
+              <img src="/deliver-us.png" alt="Deliver Us cover"
+                   onerror="this.onerror=null;this.src='/abytransparent.png';">
+            </div>
             <div class="coverText">
               <p class="coverName">Deliver Us</p>
               <p class="coverMeta">Single</p>
@@ -467,7 +482,6 @@
   </div>
 
   <script>
-    // ✅ Absolute base paths so this works from /music/
     const AUDIO_BASE = "/audio/";
 
     const MANIFEST = {
@@ -487,11 +501,12 @@
       ]
     };
 
+    // ✅ FIXED: Covers point to root PNGs (where your files actually are)
     const PROJECTS = {
-      kingdombiz: { title: "Kingdom Biz", cover: "/images/kingdom-biz-cover.png", artist: "AWAKENED BY YAH" },
-      rise:       { title: "The Rise of Yasharal", cover: "/images/rise-of-yasharal-cover.png", artist: "AWAKENED BY YAH" },
-      hear:       { title: "Hear My Voice", cover: "/images/hear-my-voice.png", artist: "AWAKENED BY YAH" },
-      deliver:    { title: "Deliver Us", cover: "/images/deliver-us.png", artist: "AWAKENED BY YAH" }
+      kingdombiz: { title: "Kingdom Biz", cover: "/kingdom-biz-cover.png", artist: "AWAKENED BY YAH" },
+      rise:       { title: "The Rise of Yasharal", cover: "/rise-of-yasharal-cover.png", artist: "AWAKENED BY YAH" },
+      hear:       { title: "Hear My Voice", cover: "/hear-my-voice.png", artist: "AWAKENED BY YAH" },
+      deliver:    { title: "Deliver Us", cover: "/deliver-us.png", artist: "AWAKENED BY YAH" }
     };
 
     const audio = new Audio();
@@ -557,7 +572,6 @@
       return { num: null, title: cleaned, label: cleaned };
     }
 
-    // ✅ Safe encoding for spaces + punctuation (keeps extension readable)
     function safeEncodeFilename(filename){
       const i = filename.lastIndexOf(".");
       if (i === -1) return encodeURIComponent(filename).replace(/%2F/g, "/");
@@ -580,7 +594,6 @@
 
     async function urlExists(url){
       try{
-        // Range helps avoid downloading full mp3
         const r = await fetch(url, { method:"GET", headers:{ "Range":"bytes=0-1" }, cache:"no-store" });
         return r.ok;
       }catch(_){
@@ -622,9 +635,14 @@
       repeatOneBtn.classList.toggle("is-active", repeatMode === "one");
     }
 
+    function setImageSafe(imgEl, src){
+      imgEl.onerror = () => { imgEl.onerror = null; imgEl.src = "/abytransparent.png"; };
+      imgEl.src = src;
+    }
+
     function updateMeta(){
       const proj = PROJECTS[currentProjectKey];
-      playerCover.src = proj.cover;
+      setImageSafe(playerCover, proj.cover);
       playerArtist.textContent = proj.artist;
       playerAlbum.textContent = proj.title;
 
@@ -924,7 +942,6 @@
     keepBrowsingBtn.addEventListener("click", hidePreviewModal);
     modalBack.addEventListener("click", (e) => { if (e.target === modalBack) hidePreviewModal(); });
 
-    // ✅ Robust login navigation: tries /login/ then falls back to /login.html
     async function goToLogin(){
       const candidates = ["/login/", "/login.html", "/login"];
       for (const path of candidates){
@@ -936,7 +953,6 @@
           }
         }catch(_){}
       }
-      // last resort
       window.location.href = "/login.html";
     }
     goLoginBtn.addEventListener("click", goToLogin);
@@ -1020,7 +1036,6 @@
 
     updateRepeatUI();
     loadProject("kingdombiz");
-
     setStatus(previewMode ? "Preview mode (45s)" : "Full access");
   </script>
 </body>
