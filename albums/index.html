@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
 
-  <!-- ✅ Correct canonical URL -->
+  <!-- ✅ Correct canonical -->
   <link rel="canonical" href="https://awakenedbyyahmusic.com/albums/" />
 
   <!-- ✅ Prevent duplicate indexing of /albums/index.html -->
@@ -17,8 +17,8 @@
   <meta name="description" content="Stream Awakened By YAH albums including Kingdom Biz and Rise of Yasharal. Set-apart R&B and soul music for the Remnant of Yasharal." />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="/abytransparent.png">
+  <!-- ✅ Use absolute paths so it works from /albums/ -->
+  <link rel="icon" type="image/png" href="/abytransparent.png" />
 
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
@@ -41,6 +41,7 @@
       font-family: 'Poppins', sans-serif;
       background: radial-gradient(circle at top left, #1e293b 0%, #020617 40%, #000 100%);
       color: var(--text-main);
+      min-height: 100vh;
     }
 
     .page {
@@ -130,6 +131,7 @@
       border-radius:18px;
       margin-bottom:1rem;
       border:1px solid rgba(255,255,255,0.12);
+      display:block;
     }
 
     .album-card h2{
@@ -145,11 +147,51 @@
       margin-bottom:1rem;
     }
 
+    .tracklist-box{
+      width:100%;
+      margin-top:.5rem;
+      margin-bottom:1rem;
+      padding:0.85rem 1rem;
+      border-radius:16px;
+      border:1px dashed rgba(148,163,184,.7);
+      background:rgba(2,6,23,.85);
+      text-align:left;
+    }
+
+    .tracklist-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:baseline;
+      margin-bottom:.25rem;
+    }
+
+    .tracklist-label{
+      font-size:.75rem;
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      color:var(--text-muted);
+    }
+
+    .tracklist-note{
+      font-size:.7rem;
+      color:var(--text-muted);
+    }
+
+    .tracklist-box ol{
+      margin-top:.3rem;
+      padding-left:1.15rem;
+      font-size:.82rem;
+      color:#e2e8f0;
+    }
+
+    .tracklist-box li + li{ margin-top:.15rem; }
+
     .actions {
       display:flex;
       flex-direction:column;
       align-items:center;
       gap:.4rem;
+      margin-top:.2rem;
     }
 
     .btn-primary {
@@ -179,12 +221,54 @@
       background:rgba(15,23,42,.9);
     }
 
+    .btn-outline:hover { border-color:#facc15; color:#fff; }
+
+    .purchase-note{
+      font-size:.75rem;
+      color:var(--text-muted);
+      margin-top:.2rem;
+      text-align:center;
+    }
+
+    .social-wrap { text-align:center; margin-top:3rem; }
+
+    .social-wrap p {
+      font-size:0.9rem;
+      margin-bottom:0.6rem;
+      color:#cbd5f5;
+    }
+
+    .social-icons {
+      display:flex;
+      justify-content:center;
+      gap:1.4rem;
+      font-size:1.6rem;
+    }
+
+    .social-icons a {
+      text-decoration:none;
+      filter:drop-shadow(0 0 6px rgba(250,200,20,0.4));
+    }
+
     footer {
       text-align:center;
       margin-top:3rem;
       padding:1.3rem;
       font-size:.85rem;
       color:#9ca3af;
+    }
+
+    @media (max-width:600px){
+      .nav{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:.75rem;
+      }
+      .nav-links{
+        width:100%;
+        display:flex;
+        justify-content:flex-end;
+      }
     }
   </style>
 </head>
@@ -213,10 +297,92 @@
   <h1 class="albums-title">Albums &amp; Projects</h1>
   <p class="albums-subtitle">Stream on SoundCloud &amp; download full projects on Gumroad.</p>
 
+  <div class="album-grid">
+
+    <div class="album-card">
+      <!-- ✅ absolute path -->
+      <img src="/kingdom-biz-cover.png" alt="Kingdom Biz: Rise of the Remnant">
+      <h2>Kingdom Biz: Rise of the Remnant</h2>
+      <p class="description">
+        A bold 5-track EP built for obedience, identity, and Kingdom focus. Heavy 808s, set-apart lyrics, and righteous energy for the remnant.
+      </p>
+
+      <div class="tracklist-box">
+        <div class="tracklist-header">
+          <span class="tracklist-label">Track Preview</span>
+          <span class="tracklist-note">Stream full list</span>
+        </div>
+        <ol>
+          <li>Walk It Out</li>
+          <li>Rise Of The Remnant</li>
+          <li>We Rise</li>
+          <li>Unbroken Frequency</li>
+          <li>Unbroken Frequency Remix</li>
+        </ol>
+      </div>
+
+      <div class="actions">
+        <a href="https://on.soundcloud.com/eX6e1WIObPDW84ylYW" target="_blank" class="btn-outline" rel="noopener">
+          Listen on SoundCloud
+        </a>
+        <a href="https://remnant5.gumroad.com/l/kingdom-biz" target="_blank" class="btn-primary" rel="noopener">
+          Purchase &amp; Download
+        </a>
+      </div>
+
+      <p class="purchase-note">Instant download • High-quality WAV EP</p>
+    </div>
+
+    <div class="album-card">
+      <!-- ✅ absolute path -->
+      <img src="/rise-of-yasharal-cover.png" alt="The Rise of Yasharal">
+      <h2>The Rise of Yasharal</h2>
+      <p class="description">
+        A 12-track prophetic journey of awakening, repentance, and identity. From scattered to restored — the sound of Yasharal rising.
+      </p>
+
+      <div class="tracklist-box">
+        <div class="tracklist-header">
+          <span class="tracklist-label">Track Preview</span>
+          <span class="tracklist-note">Stream full list</span>
+        </div>
+        <ol>
+          <li>The Love I Have In Yahuah</li>
+          <li>You're With Me</li>
+          <li>Beneath Your Wings</li>
+          <li>Yahuah The Holy One</li>
+          <li>Show Me Your Heart</li>
+        </ol>
+      </div>
+
+      <div class="actions">
+        <a href="https://on.soundcloud.com/eX6e1WIObPDW84ylYW" target="_blank" class="btn-outline" rel="noopener">
+          Listen on SoundCloud
+        </a>
+        <a href="https://remnant5.gumroad.com/l/rise-of-yasharal" target="_blank" class="btn-primary" rel="noopener">
+          Purchase &amp; Download
+        </a>
+      </div>
+
+      <p class="purchase-note">12-track WAV album • Minimum price $14.99+</p>
+    </div>
+
+  </div>
+
+  <div class="social-wrap">
+    <p>Connect With Awakened By YAH</p>
+    <div class="social-icons">
+      <a href="https://on.soundcloud.com/eX6e1WIObPDW84ylYW" target="_blank" rel="noopener" title="SoundCloud">🎧</a>
+      <a href="https://www.youtube.com/@YAHUAHS_REMNANT" target="_blank" rel="noopener" title="YouTube">▶️</a>
+      <a href="https://www.tiktok.com/@mayakaalbenyasharal?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener" title="TikTok">🎵</a>
+    </div>
+  </div>
+
 </div>
 
 <footer>
-  © <span id="year"></span> Awakened By YAH • Truth-Based Music
+  © <span id="year"></span> Awakened By YAH • Truth-Based Music<br>
+  All Rights Reserved • Built With Purpose — YAHUAH Reigns
 </footer>
 
 <script>
