@@ -156,6 +156,44 @@
       max-width:70ch;
     }
 
+    /* ✅ CTA: Downloads */
+    .cta-download{
+      margin:16px 0 0;
+      padding:14px 14px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.14);
+      background:linear-gradient(135deg, rgba(28,57,168,.35), rgba(255,255,255,.05));
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .cta-text{
+      margin:0;
+      font-weight:850;
+      letter-spacing:.03em;
+    }
+    .cta-sub{
+      display:block;
+      margin-top:4px;
+      font-size:13px;
+      color:var(--muted);
+      font-weight:650;
+    }
+    .cta-btn{
+      padding:10px 14px;
+      border-radius:999px;
+      text-decoration:none;
+      font-weight:950;
+      color:#fff;
+      border:1px solid rgba(43,86,255,.7);
+      background:linear-gradient(135deg, rgba(28,57,168,.75), rgba(43,86,255,.28));
+      white-space:nowrap;
+    }
+    .cta-btn:hover{
+      box-shadow:0 0 0 7px rgba(43,86,255,.12);
+    }
+
     .grid{
       padding:18px;
       display:grid;
@@ -338,6 +376,7 @@
 
       <div class="top-actions">
         <a class="btn" href="/music.html">MUSIC</a>
+        <a class="btn primary" href="/downloads/">DOWNLOADS</a>
         <a class="btn" href="/login.html" title="Go to login page">ACCOUNT</a>
         <button class="btn danger" id="logoutBtn" type="button">LOG OUT</button>
       </div>
@@ -353,6 +392,15 @@
           You are inside the listening sanctuary of <strong>AWAKENED BY YAH</strong>.
           Stream full-length music, hear early releases first, and support the sound directly—ad-free and distraction-free.
         </p>
+
+        <!-- ✅ DOWNLOADS CTA -->
+        <div class="cta-download">
+          <p class="cta-text">
+            Own the music you’re streaming.
+            <span class="cta-sub">Download full projects — keep forever.</span>
+          </p>
+          <a href="/downloads/" class="cta-btn">GO TO DOWNLOADS</a>
+        </div>
       </div>
 
       <div class="grid" id="albumGrid"></div>
@@ -478,10 +526,7 @@
       { title: "Beneath Your Wings", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 03_BENEATH YOUR WINGS.mp3" },
       { title: "YAHUAH the Holy One of Yasharal", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 04_YAHUAH THE HOLY ONE OF YASHARAL.mp3" },
       { title: "Show Me Your Heart", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 05_SHOW ME YOUR HEART.mp3" },
-
-      // ✅ UPDATED TRACK 06 FILE (JS comment, NOT HTML comment)
       { title: "YAH'S Chosen (The Great Gathering)", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 06_YAHS CHOSEN THE GREAT GATHERING.mp3" },
-
       { title: "YAHUAH Is the Father's Name", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 07_YAHUAH IS THE FATHERS NAME.mp3" },
       { title: "How Sweet Is Your Name YAHUAH", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 08_HOW SWEET IS YOUR NAME YAHUAH.mp3" },
       { title: "In Your Presence", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 09_IN YOUR PRESENCE.mp3" },
