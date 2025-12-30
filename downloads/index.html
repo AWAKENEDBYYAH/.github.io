@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Downloads | Awakened By YAH</title>
+
+  <link rel="icon" type="image/png" href="/abytransparent.png">
+  <link rel="canonical" href="https://awakenedbyyahmusic.com/downloads/" />
+
+  <style>
+    :root{
+      --bg:#020617;
+      --text:#e5e7eb;
+      --muted:#94a3b8;
+      --line:rgba(255,255,255,.12);
+      --panel:rgba(255,255,255,.05);
+      --glow:rgba(43,86,255,.22);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:radial-gradient(1200px 600px at 20% 0%, rgba(43,86,255,.20), transparent 55%),
+                 radial-gradient(900px 600px at 90% 20%, rgba(28,57,168,.22), transparent 55%),
+                 var(--bg);
+      color:var(--text);
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    }
+
+    /* Top bar */
+    .topbar{
+      position:sticky; top:0; z-index:10;
+      background:rgba(2,6,23,.82);
+      border-bottom:1px solid var(--line);
+      backdrop-filter: blur(10px);
+    }
+    .topbar .inner{
+      max-width:1100px; margin:0 auto;
+      padding:14px 18px;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:14px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      font-weight:800; letter-spacing:.06em;
+    }
+    .brand img{width:34px; height:34px; border-radius:10px}
+    .nav{
+      display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;
+    }
+    .nav a{
+      text-decoration:none;
+      color:var(--text);
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.04);
+      font-weight:700;
+      letter-spacing:.03em;
+    }
+    .nav a:hover{border-color:rgba(43,86,255,.6); box-shadow:0 0 0 6px rgba(43,86,255,.08)}
+    .nav a.primary{
+      border-color:rgba(43,86,255,.7);
+      background:linear-gradient(135deg, rgba(28,57,168,.75), rgba(43,86,255,.28));
+    }
+
+    .wrap{max-width:1100px; margin:0 auto; padding:26px 18px 60px;}
+    h1{margin:0 0 8px; font-size:34px; letter-spacing:.03em}
+    p.lead{margin:0 0 18px; color:var(--muted); max-width:720px; line-height:1.5}
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap:14px;
+      margin-top:18px;
+    }
+    @media (max-width: 980px){ .grid{grid-template-columns: repeat(2, minmax(0, 1fr));} }
+    @media (max-width: 640px){ .grid{grid-template-columns: 1fr;} }
+
+    .card{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:20px;
+      overflow:hidden;
+      box-shadow:0 20px 60px rgba(0,0,0,.45);
+    }
+    .art{
+      aspect-ratio: 16/10;
+      background:linear-gradient(135deg, rgba(28,57,168,.55), rgba(255,255,255,.06));
+      display:grid; place-items:center;
+      border-bottom:1px solid var(--line);
+      position:relative;
+    }
+    .art img{
+      width:100%; height:100%;
+      object-fit:cover;
+      display:block;
+    }
+    .badge{
+      position:absolute; top:12px; left:12px;
+      font-size:12px; font-weight:800;
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.16);
+      background:rgba(2,6,23,.60);
+      letter-spacing:.06em;
+    }
+    .body{padding:14px 14px 16px}
+    .title{font-weight:900; letter-spacing:.03em; margin:0 0 6px}
+    .meta{color:var(--muted); font-size:13px; margin:0 0 12px; line-height:1.4}
+    .row{display:flex; align-items:center; justify-content:space-between; gap:10px;}
+    .price{font-weight:900}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(43,86,255,.7);
+      background:linear-gradient(135deg, rgba(28,57,168,.75), rgba(43,86,255,.28));
+      color:#fff;
+      text-decoration:none;
+      font-weight:900;
+      letter-spacing:.03em;
+      white-space:nowrap;
+    }
+    .btn:hover{box-shadow:0 0 0 7px rgba(43,86,255,.10)}
+    .note{
+      margin-top:18px;
+      padding:14px 14px;
+      border-radius:16px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.5;
+    }
+    .note b{color:var(--text)}
+  </style>
+</head>
+
+<body>
+  <div class="topbar">
+    <div class="inner">
+      <div class="brand">
+        <img src="/abytransparent.png" alt="Awakened By YAH" />
+        <div>AWAKENED BY YAH</div>
+      </div>
+
+      <div class="nav">
+        <a href="/music/">MUSIC</a>
+        <a class="primary" href="/downloads/">DOWNLOADS</a>
+        <a href="/account/">ACCOUNT</a>
+        <a href="/logout/">LOG OUT</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <h1>Downloads</h1>
+    <p class="lead">
+      Own the music. Purchase singles or albums and download instantly.
+      Fan Access stays streaming-only so supporters always get a clean listening sanctuary.
+    </p>
+
+    <div class="grid">
+      <!-- SINGLE 1 -->
+      <div class="card">
+        <div class="art">
+          <!-- optional cover image -->
+          <!-- <img src="/covers/hear-my-voice.jpg" alt="Hear My Voice cover"> -->
+          <span class="badge">SINGLE</span>
+        </div>
+        <div class="body">
+          <p class="title">Hear My Voice</p>
+          <p class="meta">High-quality download • MP3 / WAV (your choice)</p>
+          <div class="row">
+            <div class="price">$1.99</div>
+            <a class="btn" href="PASTE_BUY_LINK_HERE" target="_blank" rel="noopener">BUY &amp; DOWNLOAD</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- SINGLE 2 -->
+      <div class="card">
+        <div class="art">
+          <span class="badge">SINGLE</span>
+        </div>
+        <div class="body">
+          <p class="title">Deliver Us</p>
+          <p class="meta">High-quality download • MP3 / WAV (your choice)</p>
+          <div class="row">
+            <div class="price">$1.99</div>
+            <a class="btn" href="PASTE_BUY_LINK_HERE" target="_blank" rel="noopener">BUY &amp; DOWNLOAD</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ALBUM -->
+      <div class="card">
+        <div class="art">
+          <span class="badge">ALBUM</span>
+        </div>
+        <div class="body">
+          <p class="title">The Rise of Yasharal</p>
+          <p class="meta">Full album download • ZIP (all tracks)</p>
+          <div class="row">
+            <div class="price">$9.99</div>
+            <a class="btn" href="PASTE_BUY_LINK_HERE" target="_blank" rel="noopener">BUY ALBUM</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>Tip:</b> If you want the cleanest experience, sell downloads as:
+      <b>Singles</b> (MP3/WAV) and <b>Albums</b> (ZIP).  
+      After purchase, the platform you choose (Gumroad or Stripe) delivers the file automatically.
+    </div>
+  </div>
+</body>
+</html>
