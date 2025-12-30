@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Subscribe | Awakened By YAH</title>
-  <link rel="canonical" href="https://awakenedbyyahmusic.com/subscribe.html" />
+  <title>Subscribe | AWAKENED BY YAH</title>
+  <link rel="canonical" href="https://awakenedbyyahmusic.com/subscribe/" />
+
   <link rel="icon" type="image/png" href="/abytransparent.png">
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <link rel="apple-touch-icon" href="/favicon.png">
@@ -18,278 +19,291 @@
       --brand:#1C39A8;
       --brand2:#2b56ff;
       --radius:22px;
-      --glow:rgba(28,57,168,.45);
+      --card:rgba(255,255,255,.05);
     }
     *{box-sizing:border-box}
     body{
       margin:0;
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      color:var(--text);
       background:
-        radial-gradient(1200px 700px at 10% 10%, rgba(28,57,168,.35), transparent 55%),
-        radial-gradient(1000px 700px at 90% 15%, rgba(43,86,255,.18), transparent 60%),
-        radial-gradient(900px 600px at 50% 95%, rgba(255,255,255,.06), transparent 55%),
+        radial-gradient(1200px 700px at 10% 0%, rgba(28,57,168,.35), transparent 55%),
+        radial-gradient(900px 600px at 100% 10%, rgba(43,86,255,.25), transparent 55%),
         var(--bg);
+      color:var(--text);
       min-height:100vh;
     }
-    header{
-      padding:18px 18px 0;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      max-width:1000px;
-      margin:0 auto;
+    a{color:inherit}
+    .wrap{max-width:1100px;margin:0 auto;padding:18px}
+    .topbar{
+      display:flex;align-items:center;justify-content:space-between;gap:14px;
+      padding:10px 12px;border:1px solid var(--line);border-radius:999px;
+      background:rgba(2,6,23,.35);backdrop-filter: blur(8px);
     }
     .brand{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      text-decoration:none;
-      color:var(--text);
+      display:flex;align-items:center;gap:10px;min-width:0;
+      font-weight:900;letter-spacing:.04em;
     }
-    .brand img{width:38px;height:38px;object-fit:contain}
-    .brand span{font-weight:800;letter-spacing:.3px}
-    .nav a{
+    .brand img{width:34px;height:34px;border-radius:999px}
+    nav{display:flex;gap:14px;flex-wrap:wrap}
+    nav a{
+      text-decoration:none;
+      padding:8px 12px;border-radius:999px;
+      border:1px solid transparent;
       color:var(--muted);
-      text-decoration:none;
-      font-weight:600;
-      margin-left:14px;
+      font-weight:800;
     }
-    .nav a:hover{color:var(--text)}
-    main{
-      max-width:1000px;
-      margin:0 auto;
-      padding:22px 18px 38px;
+    nav a:hover{border-color:rgba(255,255,255,.16);color:var(--text)}
+    nav a.active{
+      color:var(--text);
+      border-color:rgba(255,255,255,.18);
+      background:rgba(255,255,255,.05);
     }
+
+    .hero{
+      margin-top:16px;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:var(--radius);
+      overflow:hidden;
+      background:
+        linear-gradient(180deg, rgba(2,6,23,.35), rgba(2,6,23,.82)),
+        url("/music-banner.png");
+      background-size:cover;
+      background-position:center;
+      box-shadow:0 35px 90px rgba(0,0,0,.55);
+    }
+    .heroInner{padding:26px 22px}
+    h1{margin:0;font-size:34px;letter-spacing:.02em}
+    .sub{margin:10px 0 0;color:var(--muted);line-height:1.45;max-width:780px}
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:14px;
+      margin-top:16px;
+    }
+    @media (max-width: 980px){
+      .grid{grid-template-columns:1fr}
+    }
+
     .card{
       border:1px solid var(--line);
-      background:rgba(255,255,255,.04);
       border-radius:var(--radius);
-      box-shadow:0 0 0 1px rgba(255,255,255,.03), 0 24px 80px rgba(0,0,0,.35);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow: 0 18px 44px rgba(0,0,0,.40);
       overflow:hidden;
     }
-    .hero{
-      padding:24px;
+    .cardHead{
+      padding:16px;
       border-bottom:1px solid var(--line);
-      background:linear-gradient(135deg, rgba(28,57,168,.18), rgba(255,255,255,.02));
+      background: radial-gradient(700px 240px at 20% 0%, rgba(43,86,255,.18), transparent 55%),
+                  radial-gradient(700px 240px at 80% 20%, rgba(28,57,168,.18), transparent 55%);
     }
-    h1{margin:0 0 8px;font-size:28px;letter-spacing:.2px}
-    p{margin:0;color:var(--muted);line-height:1.6}
-    .content{
-      padding:22px 24px 26px;
-      display:grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap:18px;
+    .tier{margin:0;font-weight:950;font-size:16px;letter-spacing:.08em}
+    .price{margin:10px 0 0;font-size:30px;font-weight:950}
+    .per{font-size:13px;color:var(--muted);margin-left:6px;font-weight:800}
+    .cardBody{padding:16px}
+    ul{margin:0;padding-left:18px;color:var(--muted);line-height:1.6}
+    .ctaRow{padding:16px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
+
+    .emailRow{
+      display:flex;flex-direction:column;gap:6px;
+      font-size:12px;color:var(--muted);font-weight:700;
     }
-    @media (max-width:860px){
-      .content{grid-template-columns:1fr}
-    }
-    .panel{
-      border:1px solid var(--line);
-      border-radius:18px;
-      background:rgba(255,255,255,.03);
-      padding:18px;
-    }
-    .panel h2{
-      margin:0 0 10px;
-      font-size:16px;
-      letter-spacing:.3px;
-      text-transform:uppercase;
-      color:var(--text);
-    }
-    .bullets{margin:0;padding-left:18px;color:var(--muted);line-height:1.7}
-    .btn{
-      appearance:none;
-      border:0;
+    input{
       width:100%;
-      cursor:pointer;
-      border-radius:16px;
-      padding:14px 16px;
-      font-weight:900;
-      letter-spacing:.3px;
-      color:white;
-      background:linear-gradient(135deg, var(--brand), var(--brand2));
-      box-shadow:0 14px 40px var(--glow);
-      transition:transform .08s ease, filter .15s ease;
-      margin-top:10px;
-    }
-    .btn:hover{filter:brightness(1.05)}
-    .btn:active{transform:translateY(1px)}
-    .btn:disabled{opacity:.6; cursor:not-allowed}
-    .note{
-      font-size:13px;
-      color:var(--muted);
-      margin-top:10px;
-      line-height:1.5;
-    }
-    .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
-    .input{
-      width:100%;
-      padding:12px 12px;
+      padding:12px 14px;
       border-radius:14px;
-      border:1px solid var(--line);
-      background:rgba(2,6,23,.4);
-      color:var(--text);
+      border:1px solid rgba(255,255,255,.12);
       outline:none;
+      background:rgba(2,6,23,.35);
+      color:var(--text);
     }
+    input::placeholder{color:rgba(148,163,184,.8)}
+    button{
+      width:100%;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      border-radius:999px;
+      padding:12px 14px;
+      cursor:pointer;
+      font-weight:950;
+      letter-spacing:.02em;
+    }
+    button:hover{border-color:rgba(255,255,255,.22)}
+    button.primary{
+      background:linear-gradient(180deg, rgba(43,86,255,.95), rgba(28,57,168,.95));
+      box-shadow:0 0 36px rgba(28,57,168,.28);
+    }
+    button:disabled{opacity:.55;cursor:not-allowed}
+
     .status{
-      margin-top:10px;
-      font-size:13px;
-      color:var(--muted);
-      min-height:18px;
-      white-space:pre-wrap;
-    }
-    .ok{color:#a7f3d0}
-    .bad{color:#fecaca}
-    footer{
-      max-width:1000px;
-      margin:16px auto 24px;
-      padding:0 18px;
+      margin-top:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+      border-radius:18px;
+      padding:12px 14px;
       color:var(--muted);
       font-size:12px;
+      line-height:1.45;
     }
-    code{color:#c7d2fe}
+    .status strong{color:var(--text)}
   </style>
 </head>
 
 <body>
-  <header>
-    <a class="brand" href="/index.html">
-      <img src="/abytransparent.png" alt="Awakened By YAH logo" />
-      <span>AWAKENED BY YAH</span>
-    </a>
-    <div class="nav">
-      <a href="/music.html">Music</a>
-      <a href="/stream.html">Stream</a>
-      <a href="/index.html">Home</a>
-    </div>
-  </header>
+  <div class="wrap">
 
-  <main>
-    <div class="card">
-      <div class="hero">
+    <div class="topbar">
+      <div class="brand">
+        <img src="/abytransparent.png" alt="AWAKENED BY YAH" onerror="this.onerror=null;this.src='/abytransparent.png';">
+        <span>AWAKENED BY YAH</span>
+      </div>
+      <nav>
+        <a href="/music/" >Music</a>
+        <a href="/stream/" >Stream</a>
+        <a href="/" >Home</a>
+        <a class="active" href="/subscribe/">Subscribe</a>
+      </nav>
+    </div>
+
+    <section class="hero" aria-label="Subscribe Banner">
+      <div class="heroInner">
         <h1>Subscribe & Support</h1>
-        <p>Click below to open secure Stripe Checkout.</p>
+        <p class="sub">
+          Choose a tier below to support the music and unlock full streaming access inside the Sanctuary.
+        </p>
       </div>
+    </section>
 
-      <div class="content">
-        <div class="panel">
-          <h2>What you’ll get</h2>
-          <ul class="bullets">
-            <li>Support the music & mission</li>
-            <li>Access to supporter-only updates (if you enable gating later)</li>
-            <li>Secure payment through Stripe Checkout</li>
-          </ul>
-
-          <div class="row">
-            <input id="email" class="input" type="email" placeholder="Email (optional but recommended)" autocomplete="email" />
-          </div>
-
-          <button id="checkoutBtn" class="btn">Continue to Checkout</button>
-
-          <div id="status" class="status"></div>
-
-          <div class="note">
-            If you see <code>Method Not Allowed</code> when visiting your function URL directly, that’s normal —
-            Checkout must be started by clicking the button.
-          </div>
-        </div>
-
-        <div class="panel">
-          <h2>Setup (already done)</h2>
-          <ul class="bullets">
-            <li>Your backend creates a Checkout Session</li>
-            <li>Your browser redirects to Stripe</li>
-            <li>Your webhook confirms payments</li>
-          </ul>
-          <div class="note">
-            This page is just the “front door” so you finally have a real link to share:
-            <br><br>
-            <code>awakenedbyyahmusic.com/subscribe.html</code>
-          </div>
-        </div>
+    <!-- Optional email (recommended) -->
+    <div class="status" style="margin-top:16px">
+      <strong>Email (optional but recommended):</strong>
+      We’ll pass this to Stripe Checkout so receipts and account links go to the right inbox.
+      <div style="margin-top:10px">
+        <input id="email" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" />
       </div>
     </div>
-  </main>
 
-  <footer>
-    © Awakened By YAH — Secure payments powered by Stripe.
-  </footer>
+    <section class="grid" aria-label="Subscription Tiers">
+
+      <!-- SUPPORTER -->
+      <article class="card">
+        <div class="cardHead">
+          <p class="tier">SUPPORTER</p>
+          <div class="price">$5<span class="per">/ month</span></div>
+        </div>
+        <div class="cardBody">
+          <ul>
+            <li>Support the mission</li>
+            <li>Helps fund new releases</li>
+            <li>Unlock full streaming access</li>
+          </ul>
+        </div>
+        <div class="ctaRow">
+          <button class="primary" data-price="price_1SjrAQ0J5682KmNwPnoTqk1G">Choose Supporter</button>
+        </div>
+      </article>
+
+      <!-- BUILDER -->
+      <article class="card">
+        <div class="cardHead">
+          <p class="tier">BUILDER</p>
+          <div class="price">$10<span class="per">/ month</span></div>
+        </div>
+        <div class="cardBody">
+          <ul>
+            <li>Stronger monthly support</li>
+            <li>Builds the platform + growth</li>
+            <li>Unlock full streaming access</li>
+          </ul>
+        </div>
+        <div class="ctaRow">
+          <button class="primary" data-price="price_1SjrCt0J5682KmNwbF9ZrUH3">Choose Builder</button>
+        </div>
+      </article>
+
+      <!-- KINGDOM PARTNER -->
+      <article class="card">
+        <div class="cardHead">
+          <p class="tier">KINGDOM PARTNER</p>
+          <div class="price">$25<span class="per">/ month</span></div>
+        </div>
+        <div class="cardBody">
+          <ul>
+            <li>Highest monthly support</li>
+            <li>Fuel bigger projects + reach</li>
+            <li>Unlock full streaming access</li>
+          </ul>
+        </div>
+        <div class="ctaRow">
+          <button class="primary" data-price="price_1SjrEh0J5682KmNwbJrFTfhp">Choose Kingdom Partner</button>
+        </div>
+      </article>
+
+    </section>
+
+    <div class="status" id="statusBox" style="display:none"></div>
+  </div>
 
   <script>
-    // ✅ REQUIRED FIX: Supabase Edge Functions often require apikey + Authorization headers.
-    // Supabase new UI calls this "Publishable key" (this is safe for browser use)
-const SUPABASE_ANON_KEY = "sb_publishable__LlL7rsAYeDlub9OmvofaA_ck1tKqca";
+    /**
+     * IMPORTANT:
+     * Your backend endpoint must be the LIVE version (live Stripe secret key),
+     * otherwise Checkout will still appear as “sandbox/test”.
+     *
+     * Replace this URL with your actual deployed function endpoint if needed.
+     * (You already have one working — keep it the same.)
+     */
+    const CHECKOUT_ENDPOINT = window.CHECKOUT_ENDPOINT || "/.netlify/functions/create-checkout-session";
 
-const PROJECT_REF = "fgqzopgqtownfvohtlcq";
-const PRICE_ID   = "price_1SgrbI19IhS22qNxiidiVOTA";
-
-
-const ENDPOINT   = "https://fgqzopgqtownfvohtlcq.supabase.co/functions/v1/create-checkout";
-
-
-
-
-
-    const statusEl = document.getElementById("status");
-    const btn = document.getElementById("checkoutBtn");
-    const emailInput = document.getElementById("email");
-
-    function setStatus(msg, type){
-      statusEl.textContent = msg || "";
-      statusEl.className = "status " + (type || "");
+    const statusBox = document.getElementById("statusBox");
+    function setStatus(msg, show=true){
+      statusBox.style.display = show ? "block" : "none";
+      statusBox.textContent = msg;
     }
 
-    function safeJsonParse(text){
-      try { return JSON.parse(text); } catch { return null; }
-    }
+    async function startCheckout(priceId){
+      const email = (document.getElementById("email").value || "").trim();
 
-    btn.addEventListener("click", async () => {
-      setStatus("Starting Checkout…", "");
-      btn.disabled = true;
+      setStatus("Redirecting to secure checkout…", true);
 
-      try {
-        if (!SUPABASE_ANON_KEY || SUPABASE_ANON_KEY.includes("PASTE_YOUR_")) {
-          throw new Error("Missing SUPABASE_ANON_KEY. Paste your anon public key into subscribe.html.");
-        }
+      const payload = {
+        priceId,
+        email: email || undefined,
+        successUrl: "https://awakenedbyyahmusic.com/stream/",
+        cancelUrl: "https://awakenedbyyahmusic.com/subscribe/"
+      };
 
-        const email = (emailInput.value || "").trim();
+      const res = await fetch(CHECKOUT_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
-        const payload = {
-          priceId: PRICE_ID,
-          customerEmail: email || undefined,
-          successUrl: `${location.origin}/success.html`,
-          cancelUrl: `${location.origin}/subscribe.html`,
-        };
+      const raw = await res.text();
+      let data = {};
+      try{ data = JSON.parse(raw); }catch(_){}
 
-        const res = await fetch(ENDPOINT, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "apikey": SUPABASE_ANON_KEY,
-            "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
-          },
-          body: JSON.stringify(payload),
-        });
-
-        const raw = await res.text();
-        const data = safeJsonParse(raw) || {};
-
-        if (!res.ok) {
-          const detail = data.error || data.message || raw || `Request failed (${res.status})`;
-          throw new Error(detail);
-        }
-        if (!data.url) {
-          throw new Error("No Checkout URL returned from server.");
-        }
-
-        setStatus("Redirecting to Stripe Checkout…", "ok");
-        window.location.href = data.url;
-
-      } catch (e) {
-        setStatus(`Checkout error:\n${String(e?.message || e)}`, "bad");
-        btn.disabled = false;
+      if (!res.ok){
+        const detail = data.error || data.message || raw || `Request failed (${res.status})`;
+        throw new Error(detail);
       }
+      if (!data.url) throw new Error("No Checkout URL returned from server.");
+
+      window.location.href = data.url;
+    }
+
+    document.querySelectorAll("button[data-price]").forEach(btn=>{
+      btn.addEventListener("click", async ()=>{
+        try{
+          document.querySelectorAll("button[data-price]").forEach(b=>b.disabled=true);
+          await startCheckout(btn.getAttribute("data-price"));
+        }catch(e){
+          setStatus("Checkout error: " + (e?.message || String(e)), true);
+          document.querySelectorAll("button[data-price]").forEach(b=>b.disabled=false);
+        }
+      });
     });
   </script>
 </body>
