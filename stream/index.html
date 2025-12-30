@@ -1,7 +1,6 @@
-<!-- stream.html (Fan Streaming Sanctuary for AWAKENED BY YAH)
+<!-- stream/index.html (Fan Streaming Sanctuary for AWAKENED BY YAH)
      - Protected: requires aby_stream_session from login.html
-     - Redirects to /login.html if not logged in
-     - Safe: does not disturb the rest of your site
+     - Redirects to /login.html if not logged in (unless YAKA access is enabled)
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -156,7 +155,6 @@
       max-width:70ch;
     }
 
-    /* ✅ CTA: Downloads */
     .cta-download{
       margin:16px 0 0;
       padding:14px 14px;
@@ -190,9 +188,7 @@
       background:linear-gradient(135deg, rgba(28,57,168,.75), rgba(43,86,255,.28));
       white-space:nowrap;
     }
-    .cta-btn:hover{
-      box-shadow:0 0 0 7px rgba(43,86,255,.12);
-    }
+    .cta-btn:hover{ box-shadow:0 0 0 7px rgba(43,86,255,.12); }
 
     .grid{
       padding:18px;
@@ -200,12 +196,8 @@
       grid-template-columns: repeat(3, 1fr);
       gap:12px;
     }
-    @media (max-width: 980px){
-      .grid{grid-template-columns: repeat(2, 1fr);}
-    }
-    @media (max-width: 520px){
-      .grid{grid-template-columns: 1fr;}
-    }
+    @media (max-width: 980px){ .grid{grid-template-columns: repeat(2, 1fr);} }
+    @media (max-width: 520px){ .grid{grid-template-columns: 1fr;} }
 
     .album{
       border:1px solid var(--line);
@@ -233,10 +225,7 @@
         radial-gradient(circle at 75% 20%, rgba(28,57,168,.22), transparent 55%),
         rgba(255,255,255,.02);
     }
-    .cover img{
-      width:100%; height:100%;
-      object-fit:cover; display:block;
-    }
+    .cover img{ width:100%; height:100%; object-fit:cover; display:block; }
     .badge{
       position:absolute; top:10px; left:10px;
       padding:7px 10px;
@@ -247,10 +236,7 @@
       font-weight:900;
       letter-spacing:.06em;
     }
-    .meta{
-      padding:12px 12px 14px;
-      display:flex; flex-direction:column; gap:6px;
-    }
+    .meta{ padding:12px 12px 14px; display:flex; flex-direction:column; gap:6px; }
     .meta strong{letter-spacing:.04em}
     .meta span{color:var(--muted); font-size:12px}
 
@@ -259,20 +245,9 @@
       position:sticky;
       top:76px;
     }
-    @media (max-width: 980px){
-      .player{position:relative; top:auto;}
-    }
-    .player h2{
-      margin:0 0 6px;
-      letter-spacing:.06em;
-      font-size:16px;
-    }
-    .player .now{
-      color:var(--muted);
-      font-size:13px;
-      margin:0 0 14px;
-      line-height:1.35;
-    }
+    @media (max-width: 980px){ .player{position:relative; top:auto;} }
+    .player h2{ margin:0 0 6px; letter-spacing:.06em; font-size:16px; }
+    .player .now{ color:var(--muted); font-size:13px; margin:0 0 14px; line-height:1.35; }
 
     .tracklist{
       margin-top:12px;
@@ -315,12 +290,7 @@
       background: rgba(28,57,168,.10);
     }
 
-    /* ✅ Per-track Buy/Download button */
-    .track-actions{
-      margin-left:auto;
-      display:flex;
-      align-items:center;
-    }
+    .track-actions{ margin-left:auto; display:flex; align-items:center; }
     .buy-btn{
       border:1px solid rgba(43,86,255,.45);
       background: linear-gradient(135deg, rgba(28,57,168,.55), rgba(43,86,255,.22));
@@ -421,7 +391,6 @@
           Stream full-length music, hear early releases first, and support the sound directly—ad-free and distraction-free.
         </p>
 
-        <!-- ✅ DOWNLOADS CTA -->
         <div class="cta-download">
           <p class="cta-text">
             Own the music you’re streaming.
@@ -465,9 +434,6 @@
     // =========================
     // YAKA UNLIMITED ACCESS
     // =========================
-    // Visit once:
-    // https://awakenedbyyahmusic.com/stream.html?yaka=YAKA-ACCESS-2025
-    // (then it stays unlocked on that browser until cache/site-data is cleared)
     const YAKA_PASSCODE = "YAKA-ACCESS-2025";
     const YAKA_KEY = "yaka_unlimited_access";
 
@@ -503,10 +469,39 @@
     const $ = (id) => document.getElementById(id);
     $("yr").textContent = new Date().getFullYear();
 
+    // =========================
+    // KINGDOM PARTNERS (FREE DOWNLOADS via Gumroad 100% off link)
+    // =========================
+    // IMPORTANT:
+    // 1) Create a Gumroad discount code (100% off) for Partners
+    // 2) Put the exact code below:
+    // Gumroad discount links work by appending "/DISCOUNTCODE" to the product URL. :contentReference[oaicite:1]{index=1}
+    const PARTNER_DISCOUNT_CODE = "KINGDOMPARTNER"; // <-- change to your real code
+
+    function isKingdomPartner(sess){
+      const r = String(sess?.role || "").toLowerCase();
+      // flexible matching so you don't have to rename everything
+      return r.includes("partner");
+    }
+
+    const isPartner = (!isYaka && isKingdomPartner(session));
+
+    function gumroadDiscountedUrl(url, discountCode){
+      if (!url || !discountCode) return url;
+      // Avoid double-appending
+      if (url.endsWith("/" + discountCode)) return url;
+      return url.replace(/\/+$/,"") + "/" + encodeURIComponent(discountCode);
+    }
+
     // Show correct welcome & tag
     if (isYaka) {
       $("accessTag").textContent = "👑 YAKA ACCESS • UNLIMITED STREAMING";
       $("welcome").textContent = "Welcome, YAKA.";
+    } else if (isPartner) {
+      $("accessTag").textContent = "💙 KINGDOM PARTNER • STREAMING + FREE DOWNLOADS";
+      const email = (session?.email || "").toString();
+      const name = email ? email.split("@")[0] : "Partner";
+      $("welcome").textContent = `Welcome, ${name} (KINGDOM PARTNER).`;
     } else {
       const email = (session?.email || "").toString();
       const role = (session?.role || "").toString();
@@ -515,7 +510,6 @@
     }
 
     $("logoutBtn").addEventListener("click", () => {
-      // logout clears supporter session only (keeps YAKA access unless you clear site data)
       localStorage.removeItem(SESSION_KEY);
       sessionStorage.removeItem(SESSION_KEY);
       window.location.href = "/login.html";
@@ -530,7 +524,6 @@
         .replaceAll("'","&#039;");
     }
 
-    // Handles spaces + apostrophes safely by encoding each URL segment
     function safeSrc(path) {
       try {
         return path.split("/").map((seg, i) => (i === 0 ? seg : encodeURIComponent(seg))).join("/");
@@ -539,7 +532,7 @@
       }
     }
 
-    // ====== TRACK LISTS (MATCH YOUR UPLOADED NAMES) ======
+    // ====== TRACK LISTS ======
     const kingdomBizTracks = [
       { title: "Walk It Out", subtitle: "KINGDOM BIZ", src: "/audio/TRACK 01_WALK IT OUT.mp3" },
       { title: "Rise of the Remnant", subtitle: "KINGDOM BIZ", src: "/audio/TRACK 02_RISE OF THE REMNANT.mp3" },
@@ -564,20 +557,16 @@
     ];
 
     // ====== TRACK PURCHASE LINKS (GUMROAD) ======
-    // ✅ UPDATED: Gumroad links installed for Walk It Out + Rise of the Remnant
     const TRACK_BUY_LINKS = {
-      // Fan Exclusives
       "Hear My Voice": null,
       "Deliver Us": null,
 
-      // Kingdom Biz
       "Walk It Out": "https://remnant5.gumroad.com/l/iyvlyp",
       "Rise of the Remnant": "https://remnant5.gumroad.com/l/krotqi",
       "We Rise": null,
       "Unbroken Frequency": null,
       "Unbroken Frequency (Remix)": null,
 
-      // Rise of Yasharal
       "The Love I Have in YAHUAH": null,
       "You're With Me": null,
       "Beneath Your Wings": null,
@@ -698,7 +687,18 @@
         el.className = "track";
         el.dataset.index = i;
 
-        const buyLink = TRACK_BUY_LINKS[t.title] || null;
+        const baseBuyLink = TRACK_BUY_LINKS[t.title] || null;
+
+        // If Partner + link exists, use discounted Gumroad link for free checkout
+        const partnerLink = (isPartner && baseBuyLink)
+          ? gumroadDiscountedUrl(baseBuyLink, PARTNER_DISCOUNT_CODE)
+          : null;
+
+        const effectiveLink = partnerLink || baseBuyLink || null;
+
+        const tooltip = !baseBuyLink
+          ? "Coming soon"
+          : (isPartner ? "Free download (Kingdom Partner)" : "Buy & Download");
 
         el.innerHTML = `
           <div class="n">${i+1}</div>
@@ -708,10 +708,10 @@
           </div>
           <div class="track-actions">
             <button
-              class="buy-btn ${buyLink ? "" : "disabled"}"
-              title="${buyLink ? "Buy & Download ($1.99)" : "Coming soon"}"
+              class="buy-btn ${effectiveLink ? "" : "disabled"}"
+              title="${escapeHTML(tooltip)}"
               type="button"
-              aria-label="Buy and download ${escapeHTML(t.title)}"
+              aria-label="${effectiveLink ? escapeHTML(tooltip) : "Coming soon"}: ${escapeHTML(t.title)}"
             >⬇️</button>
           </div>
         `;
@@ -722,14 +722,14 @@
           playTrack(i);
         });
 
-        // buy/download button
+        // buy/download button (always POS via Gumroad; no direct file downloads here)
         el.querySelector(".buy-btn").addEventListener("click", (e) => {
           e.stopPropagation();
-          if (!buyLink) {
-            alert("This track will be available for purchase soon.");
+          if (!effectiveLink) {
+            alert("This track will be available soon.");
             return;
           }
-          window.open(buyLink, "_blank", "noopener");
+          window.open(effectiveLink, "_blank", "noopener");
         });
 
         tracklistEl.appendChild(el);
