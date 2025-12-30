@@ -104,11 +104,13 @@
       SUPABASE_PUBLISHABLE_KEY
     );
 
-    // ✅ REQUIRED: activate recovery session from email link
+    // ✅ REQUIRED: activate recovery session from email link (Supabase v2)
     (async () => {
-      const { error } = await supabase.auth.getSession();
+      const { error } = await supabase.auth.exchangeCodeForSession(
+        window.location.href
+      );
       if (error) {
-        console.warn("Session error:", error);
+        console.warn("Recovery exchange error:", error);
       }
     })();
 
@@ -135,7 +137,7 @@
 
       show("Password updated. Redirecting…");
       setTimeout(() => {
-        window.location.href = "/login.html";
+        window.location.href = "/login/";
       }, 1200);
     });
   </script>
