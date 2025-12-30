@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Success | Awakened By YAH</title>
+  <link rel="canonical" href="https://awakenedbyyahmusic.com/success.html" />
+  <link rel="icon" type="image/png" href="/abytransparent.png">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" href="/favicon.png">
+
+  <style>
+    :root{
+      --bg:#020617;
+      --text:#e5e7eb;
+      --muted:#94a3b8;
+      --line:rgba(255,255,255,.10);
+      --brand:#1C39A8;
+      --brand2:#2b56ff;
+      --radius:22px;
+      --glow:rgba(28,57,168,.45);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 700px at 10% 10%, rgba(28,57,168,.35), transparent 55%),
+        radial-gradient(1000px 700px at 90% 15%, rgba(43,86,255,.18), transparent 60%),
+        radial-gradient(900px 600px at 50% 95%, rgba(255,255,255,.06), transparent 55%),
+        var(--bg);
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+    .card{
+      width:min(920px, 100%);
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      border-radius:var(--radius);
+      box-shadow:0 0 0 1px rgba(255,255,255,.03), 0 24px 80px rgba(0,0,0,.35);
+      overflow:hidden;
+    }
+    .hero{
+      padding:26px 24px;
+      border-bottom:1px solid var(--line);
+      background:linear-gradient(135deg, rgba(28,57,168,.18), rgba(255,255,255,.02));
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px;
+    }
+    .brand img{width:40px;height:40px;object-fit:contain}
+    .brand span{font-weight:900; letter-spacing:.3px}
+    h1{margin:14px 0 6px; font-size:30px}
+    p{margin:0; color:var(--muted); line-height:1.6}
+    .content{
+      padding:22px 24px 26px;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:16px;
+    }
+    .panel{
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:rgba(255,255,255,.03);
+      padding:18px;
+    }
+    .btnRow{
+      display:flex; gap:12px; flex-wrap:wrap;
+      margin-top:10px;
+    }
+    a.btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      text-decoration:none;
+      border-radius:16px;
+      padding:12px 16px;
+      font-weight:900;
+      letter-spacing:.3px;
+      color:white;
+      background:linear-gradient(135deg, var(--brand), var(--brand2));
+      box-shadow:0 14px 40px var(--glow);
+      transition:transform .08s ease, filter .15s ease;
+      min-width:220px;
+    }
+    a.btn:hover{filter:brightness(1.05)}
+    a.btn:active{transform:translateY(1px)}
+    a.btn.secondary{
+      background:rgba(255,255,255,.06);
+      box-shadow:none;
+      border:1px solid var(--line);
+      color:var(--text);
+      min-width:220px;
+    }
+    .small{font-size:13px}
+    code{color:#c7d2fe}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="hero">
+      <div class="brand">
+        <img src="/abytransparent.png" alt="Awakened By YAH logo" />
+        <span>AWAKENED BY YAH</span>
+      </div>
+      <h1>Subscription Successful</h1>
+      <p>Thank you for supporting the music & mission. Your subscription is active.</p>
+    </div>
+
+    <div class="content">
+      <div class="panel">
+        <p class="small">
+          If you used <b>Test mode</b>, this was a test subscription (no real charge).<br>
+          You can confirm it inside Stripe under <b>Customers</b> / <b>Subscriptions</b>.
+        </p>
+
+        <div class="btnRow">
+          <a class="btn" href="/index.html">Go to Home</a>
+          <a class="btn secondary" href="/subscribe.html">Back to Subscribe Page</a>
+        </div>
+
+        <p class="small" style="margin-top:12px;color:var(--muted)">
+          Need help? Email us anytime.
+        </p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
