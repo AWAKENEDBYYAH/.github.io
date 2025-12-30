@@ -92,6 +92,9 @@
     const SUPABASE_PUBLISHABLE_KEY = "sb_publishable__LlL7rsAYeDlub9OmvofaA_ck1tKqca";
 
     const toast = document.getElementById("toast");
+    const passwordEl = document.getElementById("password");
+    const password2El = document.getElementById("password2");
+    const resetBtn = document.getElementById("resetBtn");
 
     function show(msg, bad=false){
       toast.textContent = msg;
@@ -104,19 +107,30 @@
       SUPABASE_PUBLISHABLE_KEY
     );
 
-    // ✅ REQUIRED: activate recovery session from email link (Supabase v2)
+    // ✅ IMPORTANT: Your email link uses HASH tokens (#access_token=...&type=recovery)
+    // This activates the recovery session so updateUser() will work.
+    let recoveryReady = false;
+
     (async () => {
-      const { error } = await supabase.auth.exchangeCodeForSession(
-        window.location.href
-      );
-      if (error) {
-        console.warn("Recovery exchange error:", error);
+      const { data, error } = await supabase.auth.getSession();
+
+      if (error || !data?.session) {
+        console.warn("No recovery session:", error);
+        show("Invalid or expired reset link. Please request a new one.", true);
+        return;
       }
+
+      recoveryReady = true;
     })();
 
-    document.getElementById("resetBtn").addEventListener("click", async () => {
-      const p1 = password.value.trim();
-      const p2 = password2.value.trim();
+    resetBtn.addEventListener("click", async () => {
+      if (!recoveryReady) {
+        show("Reset link not active yet. Reload or request a new link.", true);
+        return;
+      }
+
+      const p1 = (passwordEl.value || "").trim();
+      const p2 = (password2El.value || "").trim();
 
       if (!p1 || p1.length < 8){
         show("Password must be at least 8 characters.", true);
@@ -130,8 +144,8 @@
       const { error } = await supabase.auth.updateUser({ password: p1 });
 
       if (error){
-        console.warn(error);
-        show("Reset failed. Try again.", true);
+        console.warn("updateUser error:", error);
+        show("Reset failed. Try requesting a new reset link.", true);
         return;
       }
 
