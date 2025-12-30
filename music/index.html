@@ -45,7 +45,7 @@
           rgba(2,6,23,.40),
           rgba(2,6,23,.82)
         ),
-        url("/music-banner.png"); /* ✅ FIXED: root banner */
+        url("/music-banner.png");
       background-size:cover;
       background-position:center;
       margin-bottom:16px;
@@ -428,7 +428,7 @@
 
           <div class="coverBtn" data-key="rise">
             <div class="thumb">
-              <img src="/ images/rise-of-yasharal.png" alt="The Rise of Yasharal cover"
+              <img src="/rise-of-yasharal-cover.png" alt="The Rise of Yasharal cover"
                    onerror="this.onerror=null;this.src='/abytransparent.png';">
             </div>
             <div class="coverText">
@@ -501,7 +501,35 @@
       ]
     };
 
-    // ✅ FIXED: Covers point to root PNGs (where your files actually are)
+    // ✅ NEW: cover candidates (fixes wrong Rise cover when filename/case differs)
+    const COVER_CANDIDATES = {
+      kingdombiz: [
+        "/kingdom-biz-cover.png",
+        "/kingdom-biz-cover.jpg",
+        "/kingdom-biz-cover.webp"
+      ],
+      rise: [
+        "/rise-of-yasharal-cover.png",
+        "/Rise-of-Yasharal-Cover.png",
+        "/rise-of-yasharal-cover.jpg",
+        "/rise-of-yasharal-cover.webp",
+        "/the-rise-of-yasharal-cover.png",
+        "/the-rise-of-yasharal.png",
+        "/rise-of-yasharal.png",
+        "/roy-cover.png"
+      ],
+      hear: [
+        "/hear-my-voice.png",
+        "/hear-my-voice.jpg",
+        "/hear-my-voice.webp"
+      ],
+      deliver: [
+        "/deliver-us.png",
+        "/deliver-us.jpg",
+        "/deliver-us.webp"
+      ]
+    };
+
     const PROJECTS = {
       kingdombiz: { title: "Kingdom Biz", cover: "/kingdom-biz-cover.png", artist: "AWAKENED BY YAH" },
       rise:       { title: "The Rise of Yasharal", cover: "/rise-of-yasharal-cover.png", artist: "AWAKENED BY YAH" },
@@ -640,9 +668,29 @@
       imgEl.src = src;
     }
 
-    function updateMeta(){
+    // ✅ NEW: resolve cover using candidates (fixes wrong Rise cover)
+    const RESOLVED_COVERS = {};
+    async function resolveCoverForKey(key){
+      if (RESOLVED_COVERS[key]) return RESOLVED_COVERS[key];
+
+      const candidates = COVER_CANDIDATES[key] || [PROJECTS[key]?.cover].filter(Boolean);
+      for (const c of candidates){
+        if (!c) continue;
+        const ok = await urlExists(c);
+        if (ok){
+          RESOLVED_COVERS[key] = c;
+          return c;
+        }
+      }
+      RESOLVED_COVERS[key] = PROJECTS[key]?.cover || "/abytransparent.png";
+      return RESOLVED_COVERS[key];
+    }
+
+    async function updateMeta(){
       const proj = PROJECTS[currentProjectKey];
-      setImageSafe(playerCover, proj.cover);
+      const resolved = await resolveCoverForKey(currentProjectKey);
+
+      setImageSafe(playerCover, resolved);
       playerArtist.textContent = proj.artist;
       playerAlbum.textContent = proj.title;
 
@@ -839,12 +887,15 @@
       tNowEl.textContent = "0:00";
       tDurEl.textContent = "0:00";
 
-      updateMeta();
+      await updateMeta();
       renderPlaylist();
       setStatus("Ready");
 
       if (tracks.length) await loadIndex(0);
       updateRepeatUI();
+
+      // ✅ NEW: also correct the right-side thumbnail if it was failing
+      await refreshThumbs();
     }
 
     playBtn.addEventListener("click", () => { togglePlay(); });
@@ -915,6 +966,19 @@
         await loadProject(btn.getAttribute("data-key"));
       });
     });
+
+    // ✅ NEW: refresh right-side thumbs using resolved covers
+    async function refreshThumbs(){
+      const btns = document.querySelectorAll(".coverBtn");
+      for (const btn of btns){
+        const key = btn.getAttribute("data-key");
+        const img = btn.querySelector(".thumb img");
+        if (!key || !img) continue;
+        const resolved = await resolveCoverForKey(key);
+        img.onerror = () => { img.onerror = null; img.src = "/abytransparent.png"; };
+        img.src = resolved;
+      }
+    }
 
     // 45s preview + fades
     const PREVIEW_SECONDS = 45;
@@ -1035,8 +1099,11 @@
     });
 
     updateRepeatUI();
-    loadProject("kingdombiz");
-    setStatus(previewMode ? "Preview mode (45s)" : "Full access");
+    (async () => {
+      await refreshThumbs();
+      await loadProject("kingdombiz");
+      setStatus(previewMode ? "Preview mode (45s)" : "Full access");
+    })();
   </script>
 </body>
 </html>
