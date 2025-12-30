@@ -168,15 +168,9 @@
       </a>
 
       <div class="nav">
-        <!-- ✅ IMPORTANT: If your albums/music page is music.html (root), keep this -->
         <a href="/music.html">MUSIC</a>
-
         <a class="primary" href="/downloads/">DOWNLOADS</a>
-
-        <!-- ✅ FIXED: ACCOUNT must be absolute root link -->
         <a class="account" href="/login.html" title="Go to login page">ACCOUNT</a>
-
-        <!-- ✅ REAL LOGOUT: clears session + returns to login -->
         <button class="danger" id="logoutBtn" type="button" title="Log out">LOG OUT</button>
       </div>
     </div>
@@ -233,7 +227,7 @@
           <p class="meta">Full album download • ZIP (all tracks)</p>
           <div class="row">
             <div class="price">$9.99</div>
-            <a class="btn disabled" href="#" aria-disabled="true">COMING SOON</a>
+            <a class="btn" href="https://remnant5.gumroad.com/l/rise-of-yasharal" target="_blank" rel="noopener">BUY ALBUM</a>
           </div>
         </div>
       </div>
@@ -249,8 +243,7 @@
           <p class="meta">Full album download • ZIP (all tracks)</p>
           <div class="row">
             <div class="price">$9.99</div>
-            <!-- Paste your Gumroad album link here when ready -->
-            <a class="btn disabled" href="#" aria-disabled="true">COMING SOON</a>
+            <a class="btn" href="https://remnant5.gumroad.com/l/kingdom-biz" target="_blank" rel="noopener">BUY ALBUM</a>
           </div>
         </div>
       </div>
@@ -269,7 +262,6 @@
     document.getElementById("logoutBtn").addEventListener("click", () => {
       localStorage.removeItem(SESSION_KEY);
       sessionStorage.removeItem(SESSION_KEY);
-      // (Optional) clear yaka access if you ever want: localStorage.removeItem("yaka_unlimited_access");
       window.location.href = "/login.html";
     });
   </script>
