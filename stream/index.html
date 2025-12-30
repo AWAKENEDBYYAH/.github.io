@@ -315,6 +315,34 @@
       background: rgba(28,57,168,.10);
     }
 
+    /* ✅ Per-track Buy/Download button */
+    .track-actions{
+      margin-left:auto;
+      display:flex;
+      align-items:center;
+    }
+    .buy-btn{
+      border:1px solid rgba(43,86,255,.45);
+      background: linear-gradient(135deg, rgba(28,57,168,.55), rgba(43,86,255,.22));
+      color:#fff;
+      border-radius:12px;
+      padding:8px 10px;
+      font-size:14px;
+      cursor:pointer;
+      box-shadow: 0 0 18px rgba(43,86,255,.25);
+      transition:.2s transform,.2s box-shadow,.2s border-color;
+    }
+    .buy-btn:hover{
+      transform:translateY(-1px);
+      border-color:rgba(43,86,255,.75);
+      box-shadow:0 0 28px rgba(43,86,255,.45);
+    }
+    .buy-btn.disabled{
+      opacity:.45;
+      cursor:not-allowed;
+      box-shadow:none;
+    }
+
     audio{width:100%; margin-top:10px; border-radius: 14px; outline:none;}
 
     .controls{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;}
@@ -535,6 +563,37 @@
       { title: "Return to the Covenant", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 12_RETURN TO THE COVENANT.mp3" }
     ];
 
+    // ====== TRACK PURCHASE LINKS (GUMROAD) ======
+    // Replace null with your Gumroad link when each product is created.
+    // Example:
+    // "Walk It Out": "https://remnant5.gumroad.com/l/walk-it-out",
+    const TRACK_BUY_LINKS = {
+      // Fan Exclusives
+      "Hear My Voice": null,
+      "Deliver Us": null,
+
+      // Kingdom Biz
+      "Walk It Out": null,
+      "Rise of the Remnant": null,
+      "We Rise": null,
+      "Unbroken Frequency": null,
+      "Unbroken Frequency (Remix)": null,
+
+      // Rise of Yasharal
+      "The Love I Have in YAHUAH": null,
+      "You're With Me": null,
+      "Beneath Your Wings": null,
+      "YAHUAH the Holy One of Yasharal": null,
+      "Show Me Your Heart": null,
+      "YAH'S Chosen (The Great Gathering)": null,
+      "YAHUAH Is the Father's Name": null,
+      "How Sweet Is Your Name YAHUAH": null,
+      "In Your Presence": null,
+      "Halal YAHUAH (We Magnify Your Name)": null,
+      "Awakened by YAH": null,
+      "Return to the Covenant": null
+    };
+
     // ====== COVERS ======
     const COVER_FAN = "/images/abym-cover.png?v=3";
     const COVER_ROY = "/images/rise-of-yasharal.png?v=3";
@@ -635,10 +694,13 @@
 
     function renderTracklist(album) {
       tracklistEl.innerHTML = "";
+
       album.tracks.forEach((t, i) => {
         const el = document.createElement("div");
         el.className = "track";
         el.dataset.index = i;
+
+        const buyLink = TRACK_BUY_LINKS[t.title] || null;
 
         el.innerHTML = `
           <div class="n">${i+1}</div>
@@ -646,10 +708,35 @@
             <strong>${escapeHTML(t.title)}</strong>
             <span>${escapeHTML(t.subtitle || "")}</span>
           </div>
+          <div class="track-actions">
+            <button
+              class="buy-btn ${buyLink ? "" : "disabled"}"
+              title="${buyLink ? "Buy & Download ($1.99)" : "Coming soon"}"
+              type="button"
+              aria-label="Buy and download ${escapeHTML(t.title)}"
+            >⬇️</button>
+          </div>
         `;
-        el.addEventListener("click", () => playTrack(i));
+
+        // play track when clicking main row (but not button)
+        el.addEventListener("click", (e) => {
+          if (e.target.closest(".buy-btn")) return;
+          playTrack(i);
+        });
+
+        // buy/download button
+        el.querySelector(".buy-btn").addEventListener("click", (e) => {
+          e.stopPropagation();
+          if (!buyLink) {
+            alert("This track will be available for purchase soon.");
+            return;
+          }
+          window.open(buyLink, "_blank", "noopener");
+        });
+
         tracklistEl.appendChild(el);
       });
+
       highlightActive();
     }
 
