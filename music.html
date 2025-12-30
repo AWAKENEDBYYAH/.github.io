@@ -1,10 +1,17 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="refresh" content="0; url=/music.html">
-  <script>location.replace("/music.html");</script>
-  <title>Music</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow" />
+  <link rel="canonical" href="https://awakenedbyyahmusic.com/music/" />
+  <title>Music | Awakened By YAH</title>
+
+  <!-- Redirect /music.html -> /music/ -->
+  <meta http-equiv="refresh" content="0; url=/music/" />
+  <script>
+    location.replace("/music/" + location.search + location.hash);
+  </script>
 </head>
 <body></body>
 </html>
