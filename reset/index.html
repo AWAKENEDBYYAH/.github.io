@@ -9,27 +9,65 @@
   <link rel="canonical" href="https://awakenedbyyahmusic.com/reset/" />
 
   <style>
-    body{margin:0;min-height:100vh;display:grid;place-items:center;background:#020617;color:#e5e7eb;
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;}
-    .card{width:min(420px,92vw);padding:24px;border-radius:20px;background:rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.12);box-shadow:0 20px 60px rgba(0,0,0,.5);}
-    h1{margin:0 0 10px;letter-spacing:.06em}
-    p{margin:0 0 16px;color:#94a3b8;font-size:14px}
-    label{display:block;font-size:12px;color:#94a3b8;margin:12px 0 6px}
-    input{width:100%;padding:12px;border-radius:14px;border:1px solid rgba(255,255,255,.15);
-      background:#020617;color:#e5e7eb}
-    button{margin-top:16px;width:100%;padding:12px;border-radius:14px;border:1px solid rgba(43,86,255,.6);
-      background:linear-gradient(135deg, rgba(28,57,168,.7), rgba(43,86,255,.3));color:#fff;font-weight:700;cursor:pointer}
-    button:disabled{opacity:.55;cursor:not-allowed}
-    .toast{margin-top:14px;font-size:13px;color:#bbf7d0;display:none;word-break:break-word}
-    .toast.bad{color:#fecaca}
+    body{
+      margin:0; min-height:100vh; display:grid; place-items:center;
+      background:#020617; color:#e5e7eb;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    }
+    .card{
+      width:min(440px, 92vw);
+      padding:24px;
+      border-radius:20px;
+      background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow:0 20px 60px rgba(0,0,0,.5);
+    }
+    h1{ margin:0 0 10px; letter-spacing:.06em; }
+    p{ margin:0 0 12px; color:#94a3b8; font-size:14px; }
+    .status{
+      margin:0 0 14px;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(2,6,23,.55);
+      font-size:13px;
+      color:#e5e7eb;
+      word-break:break-word;
+    }
+    label{ display:block; font-size:12px; color:#94a3b8; margin:12px 0 6px; }
+    input{
+      width:100%;
+      padding:12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.15);
+      background:#020617;
+      color:#e5e7eb;
+      outline:none;
+    }
+    button{
+      margin-top:16px;
+      width:100%;
+      padding:12px;
+      border-radius:14px;
+      border:1px solid rgba(43,86,255,.6);
+      background:linear-gradient(135deg, rgba(28,57,168,.7), rgba(43,86,255,.3));
+      color:#fff;
+      font-weight:800;
+      letter-spacing:.04em;
+      cursor:pointer;
+    }
+    button:disabled{ opacity:.55; cursor:not-allowed; }
+    .toast{ margin-top:14px; font-size:13px; color:#bbf7d0; display:none; word-break:break-word; }
+    .toast.bad{ color:#fecaca; }
   </style>
 </head>
 
 <body>
   <div class="card">
     <h1>Reset Password</h1>
-    <p id="status">Checking your reset link…</p>
+    <p>Enter your new password below.</p>
+
+    <div id="status" class="status">Loading reset system…</div>
 
     <label for="password">New password</label>
     <input id="password" type="password" placeholder="At least 8 characters" autocomplete="new-password" />
@@ -37,117 +75,158 @@
     <label for="password2">Confirm password</label>
     <input id="password2" type="password" placeholder="Confirm password" autocomplete="new-password" />
 
-    <button id="resetBtn" disabled>UPDATE PASSWORD</button>
+    <!-- Inline onclick guarantees we capture clicks even if addEventListener never attaches -->
+    <button id="resetBtn" type="button" onclick="handleReset()" disabled>UPDATE PASSWORD</button>
 
     <div id="toast" class="toast"></div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     const SUPABASE_URL = "https://fgqzopgqtownfvohtlcq.supabase.co";
     const SUPABASE_PUBLISHABLE_KEY = "sb_publishable__LlL7rsAYeDlub9OmvofaA_ck1tKqca";
 
     const statusEl = document.getElementById("status");
-    const toast = document.getElementById("toast");
+    const toastEl = document.getElementById("toast");
+    const resetBtn = document.getElementById("resetBtn");
     const passwordEl = document.getElementById("password");
     const password2El = document.getElementById("password2");
-    const resetBtn = document.getElementById("resetBtn");
 
-    function show(msg, bad=false){
-      toast.textContent = msg;
-      toast.className = "toast" + (bad ? " bad" : "");
-      toast.style.display = "block";
-    }
+    let supabaseClient = null;
+    let recoveryReady = false;
+
     function setStatus(msg){ statusEl.textContent = msg; }
-
-    if (!window.supabase) {
-      setStatus("Reset system failed to load.");
-      show("Supabase library did not load. Hard refresh (Ctrl+F5) and try again.", true);
-      throw new Error("Supabase JS not loaded");
+    function show(msg, bad=false){
+      toastEl.textContent = msg;
+      toastEl.className = "toast" + (bad ? " bad" : "");
+      toastEl.style.display = "block";
     }
 
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
-      auth: { detectSessionInUrl: true, persistSession: true, autoRefreshToken: true }
+    // Show JS errors on-screen (no console needed)
+    window.addEventListener("error", (e) => {
+      setStatus("Script error: " + (e.message || "Unknown"));
+      show("A script error occurred. " + (e.message || ""), true);
+    });
+    window.addEventListener("unhandledrejection", (e) => {
+      setStatus("Promise error: " + (e.reason?.message || e.reason || "Unknown"));
+      show("A promise error occurred. " + (e.reason?.message || e.reason || ""), true);
     });
 
-    async function ensureRecoverySession() {
-      const url = new URL(window.location.href);
+    function loadScript(src){
+      return new Promise((resolve, reject) => {
+        const s = document.createElement("script");
+        s.src = src;
+        s.async = true;
+        s.onload = resolve;
+        s.onerror = reject;
+        document.head.appendChild(s);
+      });
+    }
 
-      // 1) NEWEST common format: token_hash + type=recovery
+    async function init(){
+      setStatus("Loading Supabase library…");
+
+      // Try jsDelivr first, then unpkg as fallback (fixes “button does nothing”)
+      try {
+        await loadScript("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2");
+      } catch (_) {
+        try {
+          await loadScript("https://unpkg.com/@supabase/supabase-js@2");
+        } catch (err) {
+          setStatus("Supabase failed to load (CDN blocked).");
+          show("Supabase library could not load. Disable adblock for this site or try another network/browser.", true);
+          return;
+        }
+      }
+
+      if (!window.supabase) {
+        setStatus("Supabase loaded but not available.");
+        show("Supabase library loaded incorrectly.", true);
+        return;
+      }
+
+      supabaseClient = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY,
+        { auth: { detectSessionInUrl: true, persistSession: true, autoRefreshToken: true } }
+      );
+
+      setStatus("Activating reset link…");
+
+      // Support token_hash, code, and hash access_token
+      const url = new URL(window.location.href);
       const token_hash = url.searchParams.get("token_hash");
       const type = url.searchParams.get("type");
+      const code = url.searchParams.get("code");
 
       if (token_hash && type === "recovery") {
-        setStatus("Activating reset link…");
-        const { data, error } = await supabase.auth.verifyOtp({ type: "recovery", token_hash });
+        const { error } = await supabaseClient.auth.verifyOtp({ type: "recovery", token_hash });
         if (error) {
-          show("Reset link invalid/expired. Request a new one.", true);
-          setStatus("Reset link invalid.");
-          return false;
+          setStatus("Reset link invalid/expired.");
+          show("Reset link invalid/expired. Request a new reset email.", true);
+          return;
         }
-        // Clean URL (optional)
         url.searchParams.delete("token_hash");
         url.searchParams.delete("type");
         window.history.replaceState({}, document.title, url.pathname + url.search + url.hash);
       }
 
-      // 2) PKCE format: ?code=...
-      const code = url.searchParams.get("code");
       if (code) {
-        setStatus("Activating reset link…");
-        const { error } = await supabase.auth.exchangeCodeForSession(code);
+        const { error } = await supabaseClient.auth.exchangeCodeForSession(code);
         if (error) {
-          show("Reset link invalid/expired. Request a new one.", true);
-          setStatus("Reset link invalid.");
-          return false;
+          setStatus("Reset link invalid/expired.");
+          show("Reset link invalid/expired. Request a new reset email.", true);
+          return;
         }
         url.searchParams.delete("code");
         window.history.replaceState({}, document.title, url.pathname + url.search + url.hash);
       }
 
-      // 3) Old hash format: #access_token=...
-      const { data, error } = await supabase.auth.getSession();
+      const { data, error } = await supabaseClient.auth.getSession();
       if (error || !data?.session) {
-        show("Invalid or expired reset link. Request a new one.", true);
         setStatus("No active recovery session.");
-        return false;
-      }
-
-      setStatus("Reset link active. Enter a new password.");
-      resetBtn.disabled = false;
-      return true;
-    }
-
-    let ready = false;
-    ensureRecoverySession().then(v => ready = v);
-
-    resetBtn.addEventListener("click", async () => {
-      if (!ready) {
-        show("Reset link not active. Request a new reset email.", true);
+        show("Reset link not active. Request a NEW reset email and click the newest link.", true);
         return;
       }
+
+      recoveryReady = true;
+      resetBtn.disabled = false;
+      setStatus("Reset link active ✅ Enter a new password.");
+    }
+
+    // Global function used by inline onclick
+    window.handleReset = async function(){
+      if (!supabaseClient) {
+        show("Reset system not loaded yet. Refresh and try again.", true);
+        return;
+      }
+      if (!recoveryReady) {
+        show("Reset link not active. Request a NEW reset email and click the newest link.", true);
+        return;
+      }
+
       const p1 = (passwordEl.value || "").trim();
       const p2 = (password2El.value || "").trim();
 
-      if (!p1 || p1.length < 8) { show("Password must be at least 8 characters.", true); return; }
-      if (p1 !== p2) { show("Passwords do not match.", true); return; }
+      if (!p1 || p1.length < 8){ show("Password must be at least 8 characters.", true); return; }
+      if (p1 !== p2){ show("Passwords do not match.", true); return; }
 
       resetBtn.disabled = true;
       setStatus("Updating password…");
 
-      const { error } = await supabase.auth.updateUser({ password: p1 });
-
+      const { error } = await supabaseClient.auth.updateUser({ password: p1 });
       if (error) {
         resetBtn.disabled = false;
         setStatus("Reset failed.");
-        show("Reset failed: " + (error.message || "Unknown error"), true);
+        show("Reset failed: " + (error.message || "Unknown error") + ". Request a new reset link and try again.", true);
         return;
       }
 
+      setStatus("Password updated ✅ Redirecting…");
       show("Password updated. Redirecting…");
-      setStatus("Done ✅ Redirecting…");
       setTimeout(() => window.location.href = "/login/", 1200);
-    });
+    };
+
+    init();
   </script>
 </body>
 </html>
