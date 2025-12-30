@@ -247,21 +247,7 @@
     }
     @media (max-width: 980px){ .player{position:relative; top:auto;} }
     .player h2{ margin:0 0 6px; letter-spacing:.06em; font-size:16px; }
-    .player .now{ color:var(--muted); font-size:13px; margin:0 0 14px; line-height:1.35; }
-
-    /* =====================================
-       FORCE PLAYER TITLES TO ALL CAPS
-       ===================================== */
-    .player h2,
-    #nowText,
-    .track .tmeta strong{
-      text-transform: uppercase;
-      letter-spacing: .06em;
-    }
-    /* Optional: make subtitle line caps too */
-    .track .tmeta span{
-      text-transform: uppercase;
-    }
+    .player .now{ color:var(--muted); font-size:13px; margin:0 0 14px; line-height:1.35; text-transform:uppercase; }
 
     .tracklist{
       margin-top:12px;
@@ -296,8 +282,13 @@
       flex:0 0 auto;
     }
     .track .tmeta{flex:1}
-    .track .tmeta strong{display:block; font-size:13px; letter-spacing:.03em}
-    .track .tmeta span{display:block; font-size:12px; color:var(--muted); margin-top:3px}
+    .track .tmeta strong{
+      display:block; font-size:13px; letter-spacing:.03em;
+      text-transform:uppercase;
+    }
+    .track .tmeta span{
+      display:block; font-size:12px; color:var(--muted); margin-top:3px
+    }
     .track.active{
       border-color: rgba(43,86,255,.55);
       box-shadow: 0 0 0 4px rgba(43,86,255,.10);
@@ -486,15 +477,10 @@
     // =========================
     // KINGDOM PARTNERS (FREE DOWNLOADS via Gumroad 100% off link)
     // =========================
-    // IMPORTANT:
-    // 1) Create a Gumroad discount code (100% off) for Partners
-    // 2) Put the exact code below:
-    // Gumroad discount links work by appending "/DISCOUNTCODE" to the product URL.
     const PARTNER_DISCOUNT_CODE = "KINGDOMPARTNER"; // <-- change to your real code
 
     function isKingdomPartner(sess){
       const r = String(sess?.role || "").toLowerCase();
-      // flexible matching so you don't have to rename everything
       return r.includes("partner");
     }
 
@@ -502,7 +488,6 @@
 
     function gumroadDiscountedUrl(url, discountCode){
       if (!url || !discountCode) return url;
-      // Avoid double-appending
       if (url.endsWith("/" + discountCode)) return url;
       return url.replace(/\/+$/,"") + "/" + encodeURIComponent(discountCode);
     }
@@ -546,56 +531,54 @@
       }
     }
 
-    // ====== TRACK LISTS ======
+    // ====== TRACK LISTS (TITLES STORED IN ALL CAPS) ======
     const kingdomBizTracks = [
-      { title: "Walk It Out", subtitle: "KINGDOM BIZ", src: "/audio/TRACK 01_WALK IT OUT.mp3" },
-      { title: "Rise of the Remnant", subtitle: "KINGDOM BIZ", src: "/audio/TRACK 02_RISE OF THE REMNANT.mp3" },
-      { title: "We Rise", subtitle: "KINGDOM BIZ", src: "/audio/TRACK 03__WE RISE.mp3" },
-      { title: "Unbroken Frequency", subtitle: "KINGDOM BIZ", src: "/audio/TRACK 04_UNBROKEN FREQUENCY.mp3" },
-      { title: "Unbroken Frequency (Remix)", subtitle: "KINGDOM BIZ", src: "/audio/TRACK 05__UNBROKEN FREQUENCY REMIX.mp3" }
+      { title: "WALK IT OUT", subtitle: "KINGDOM BIZ", src: "/audio/TRACK 01_WALK IT OUT.mp3" },
+      { title: "RISE OF THE REMNANT", subtitle: "KINGDOM BIZ", src: "/audio/TRACK 02_RISE OF THE REMNANT.mp3" },
+      { title: "WE RISE", subtitle: "KINGDOM BIZ", src: "/audio/TRACK 03__WE RISE.mp3" },
+      { title: "UNBROKEN FREQUENCY", subtitle: "KINGDOM BIZ", src: "/audio/TRACK 04_UNBROKEN FREQUENCY.mp3" },
+      { title: "UNBROKEN FREQUENCY (REMIX)", subtitle: "KINGDOM BIZ", src: "/audio/TRACK 05__UNBROKEN FREQUENCY REMIX.mp3" }
     ];
 
     const riseOfYasharalTracks = [
-      { title: "The Love I Have in YAHUAH", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 01_THE LOVE I HAVE IN YAHUAH.mp3" },
-      { title: "You're With Me", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 02_YOU'RE WITH ME.mp3" },
-      { title: "Beneath Your Wings", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 03_BENEATH YOUR WINGS.mp3" },
-      { title: "YAHUAH the Holy One of Yasharal", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 04_YAHUAH THE HOLY ONE OF YASHARAL.mp3" },
-      { title: "Show Me Your Heart", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 05_SHOW ME YOUR HEART.mp3" },
-      { title: "YAH'S Chosen (The Great Gathering)", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 06_YAHS CHOSEN THE GREAT GATHERING.mp3" },
-      { title: "YAHUAH Is the Father's Name", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 07_YAHUAH IS THE FATHERS NAME.mp3" },
-      { title: "How Sweet Is Your Name YAHUAH", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 08_HOW SWEET IS YOUR NAME YAHUAH.mp3" },
-      { title: "In Your Presence", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 09_IN YOUR PRESENCE.mp3" },
-      { title: "Halal YAHUAH (We Magnify Your Name)", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 10_HALAL YAHUAH WE MAGNIFY YOUR NAME.mp3" },
-      { title: "Awakened by YAH", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 11_AWAKENED BY YAH.mp3" },
-      { title: "Return to the Covenant", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 12_RETURN TO THE COVENANT.mp3" }
+      { title: "THE LOVE I HAVE IN YAHUAH", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 01_THE LOVE I HAVE IN YAHUAH.mp3" },
+      { title: "YOU'RE WITH ME", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 02_YOU'RE WITH ME.mp3" },
+      { title: "BENEATH YOUR WINGS", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 03_BENEATH YOUR WINGS.mp3" },
+      { title: "YAHUAH THE HOLY ONE OF YASHARAL", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 04_YAHUAH THE HOLY ONE OF YASHARAL.mp3" },
+      { title: "SHOW ME YOUR HEART", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 05_SHOW ME YOUR HEART.mp3" },
+      { title: "YAH'S CHOSEN (THE GREAT GATHERING)", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 06_YAHS CHOSEN THE GREAT GATHERING.mp3" },
+      { title: "YAHUAH IS THE FATHER'S NAME", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 07_YAHUAH IS THE FATHERS NAME.mp3" },
+      { title: "HOW SWEET IS YOUR NAME YAHUAH", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 08_HOW SWEET IS YOUR NAME YAHUAH.mp3" },
+      { title: "IN YOUR PRESENCE", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 09_IN YOUR PRESENCE.mp3" },
+      { title: "HALAL YAHUAH (WE MAGNIFY YOUR NAME)", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 10_HALAL YAHUAH WE MAGNIFY YOUR NAME.mp3" },
+      { title: "AWAKENED BY YAH", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 11_AWAKENED BY YAH.mp3" },
+      { title: "RETURN TO THE COVENANT", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 12_RETURN TO THE COVENANT.mp3" }
     ];
 
-    // ====== TRACK PURCHASE LINKS (GUMROAD) ======
+    // ====== TRACK PURCHASE LINKS (GUMROAD) — KEYS IN ALL CAPS ======
     const TRACK_BUY_LINKS = {
-      "Hear My Voice": null,
-      "Deliver Us": null,
+      "HEAR MY VOICE": null,
+      "DELIVER US": null,
 
-      "Walk It Out": "https://remnant5.gumroad.com/l/iyvlyp",
-      "Rise of the Remnant": "https://remnant5.gumroad.com/l/krotqi",
+      "WALK IT OUT": "https://remnant5.gumroad.com/l/iyvlyp",
+      "RISE OF THE REMNANT": "https://remnant5.gumroad.com/l/krotqi",
+      "WE RISE": "https://remnant5.gumroad.com/l/rpsoeb",
+      "UNBROKEN FREQUENCY": "https://remnant5.gumroad.com/l/nskuega",
+      "UNBROKEN FREQUENCY (REMIX)": "https://remnant5.gumroad.com/l/iutoaf",
 
-      "We Rise": "https://remnant5.gumroad.com/l/rpsoeb",
-      "Unbroken Frequency": "https://remnant5.gumroad.com/l/nskuega",
-      "Unbroken Frequency (Remix)": "https://remnant5.gumroad.com/l/iutoaf",
+      "THE LOVE I HAVE IN YAHUAH": "https://remnant5.gumroad.com/l/pxivle",
+      "YOU'RE WITH ME": "https://remnant5.gumroad.com/l/gxgrqq",
+      "BENEATH YOUR WINGS": "https://remnant5.gumroad.com/l/yhrwnn",
+      "YAHUAH THE HOLY ONE OF YASHARAL": "https://remnant5.gumroad.com/l/bnuwwo",
+      "SHOW ME YOUR HEART": "https://remnant5.gumroad.com/l/sagusm",
 
-      /* THE RISE OF YASHARAL (FIRST 5 LINKS ADDED) */
-      "The Love I Have in YAHUAH": "https://remnant5.gumroad.com/l/pxivle",
-      "You're With Me": "https://remnant5.gumroad.com/l/gxgrqq",
-      "Beneath Your Wings": "https://remnant5.gumroad.com/l/yhrwnn",
-      "YAHUAH the Holy One of Yasharal": "https://remnant5.gumroad.com/l/bnuwwo",
-      "Show Me Your Heart": "https://remnant5.gumroad.com/l/sagusm",
-
-      "YAH'S Chosen (The Great Gathering)": null,
-      "YAHUAH Is the Father's Name": null,
-      "How Sweet Is Your Name YAHUAH": null,
-      "In Your Presence": null,
-      "Halal YAHUAH (We Magnify Your Name)": null,
-      "Awakened by YAH": null,
-      "Return to the Covenant": null
+      "YAH'S CHOSEN (THE GREAT GATHERING)": null,
+      "YAHUAH IS THE FATHER'S NAME": null,
+      "HOW SWEET IS YOUR NAME YAHUAH": null,
+      "IN YOUR PRESENCE": null,
+      "HALAL YAHUAH (WE MAGNIFY YOUR NAME)": null,
+      "AWAKENED BY YAH": null,
+      "RETURN TO THE COVENANT": null
     };
 
     // ====== COVERS ======
@@ -612,8 +595,8 @@
         badge: "EXCLUSIVE",
         cover: COVER_FAN,
         tracks: [
-          { title: "Hear My Voice", subtitle: "Fan Exclusive", src: "/audio/ABY_TRACK 01_HEAR MY VOICE.mp3" },
-          { title: "Deliver Us", subtitle: "Fan Exclusive", src: "/audio/ABYM_TRACK 01_DELIVER US.mp3" }
+          { title: "HEAR MY VOICE", subtitle: "FAN EXCLUSIVE", src: "/audio/ABY_TRACK 01_HEAR MY VOICE.mp3" },
+          { title: "DELIVER US", subtitle: "FAN EXCLUSIVE", src: "/audio/ABYM_TRACK 01_DELIVER US.mp3" }
         ]
       },
       {
@@ -826,7 +809,7 @@
     if (library.length) {
       currentAlbum = library[0];
       renderTracklist(currentAlbum);
-      nowText.textContent = `Album selected: ${currentAlbum.title}. Choose a track.`;
+      nowText.textContent = `Album selected: ${library[0].title}. Choose a track.`;
       if (currentAlbum.tracks?.length) audio.src = safeSrc(currentAlbum.tracks[0].src);
     }
   </script>
