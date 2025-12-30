@@ -104,6 +104,14 @@
       SUPABASE_PUBLISHABLE_KEY
     );
 
+    // ✅ REQUIRED: activate recovery session from email link
+    (async () => {
+      const { error } = await supabase.auth.getSession();
+      if (error) {
+        console.warn("Session error:", error);
+      }
+    })();
+
     document.getElementById("resetBtn").addEventListener("click", async () => {
       const p1 = password.value.trim();
       const p2 = password2.value.trim();
