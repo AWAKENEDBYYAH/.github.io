@@ -298,10 +298,7 @@
         <div class="pill"><div class="dot"></div><div><strong>ARTIST-OWNED</strong><span>No ads. No algorithms. No compromise.</span></div></div>
       </div>
 
-      <div class="notice">
-        <strong>YAKA note:</strong> If you don’t have an account yet, use <strong>Create Account</strong> on the right.
-        Your email <strong>yahuahsremnant@gmail.com</strong> will always be allowed into the Sanctuary.
-      </div>
+      <!-- ✅ NOTE REMOVED (no public admin hints) -->
     </section>
 
     <aside class="card">
@@ -398,8 +395,11 @@
     // ✅ Your site session key for gating/roles across pages
     const SITE_SESSION_KEY = "aby_stream_session";
 
-    // ✅ YAKA allowlist (owner/admin)
-    const OWNER_EMAILS = ["yahuahsremnant@gmail.com"];
+    // ✅ Owner allowlist (hidden from public UI)
+    const OWNER_EMAILS = [
+      "mayakaalbenyasharal@gmail.com",
+      "dalilayah3130@gmail.com"
+    ];
 
     const $ = (id) => document.getElementById(id);
     const toast = $("toast");
@@ -421,7 +421,7 @@
 
     function roleForEmail(email){
       const e = (email || "").trim().toLowerCase();
-      return OWNER_EMAILS.includes(e) ? "YAKA" : "Supporter";
+      return OWNER_EMAILS.includes(e) ? "KINGDOM_PARTNER" : "Supporter";
     }
 
     // Redirect support: login.html?redirect=/stream.html
@@ -434,8 +434,6 @@
     }
 
     // ✅ Remember-me storage:
-    // checked => localStorage (persists)
-    // unchecked => sessionStorage (ends when browser closes)
     const storageLocal = {
       getItem: (k) => localStorage.getItem(k),
       setItem: (k, v) => localStorage.setItem(k, v),
@@ -447,7 +445,6 @@
       removeItem: (k) => sessionStorage.removeItem(k),
     };
 
-    // Create two clients so we can choose storage at login time
     const supabasePersist = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
       auth: { persistSession: true, storage: storageLocal }
     });
@@ -455,12 +452,10 @@
       auth: { persistSession: true, storage: storageSession }
     });
 
-    // Use either client depending on "Remember me"
     function activeClient(){
       return $("remember")?.checked ? supabasePersist : supabaseSessionOnly;
     }
 
-    // Utility: check session from either storage (so auto-login works in both modes)
     async function getAnySession(){
       const a = await supabasePersist.auth.getSession().catch(() => null);
       const s1 = a?.data?.session;
@@ -473,12 +468,10 @@
       return { client: activeClient(), session: null };
     }
 
-    // Write your site session (used by stream.html / music.html)
     function setSiteSession(email){
       const role = roleForEmail(email);
       const sessionObj = { email, role };
 
-      // store in the same storage mode user chose
       const useLocal = $("remember")?.checked ?? true;
 
       if (useLocal){
@@ -492,7 +485,6 @@
       return sessionObj;
     }
 
-    // Password eye toggles
     function setupEye(inputId, btnId){
       const pw = $(inputId);
       const eye = $(btnId);
@@ -508,7 +500,6 @@
     setupEye("suPassword", "toggleSignupPassword");
     setupEye("suPassword2", "toggleSignupPassword2");
 
-    // Tabs
     function setTab(which){
       const isLogin = which === "login";
       $("tabLogin").classList.toggle("active", isLogin);
@@ -516,7 +507,6 @@
       $("loginForm").classList.toggle("hide", !isLogin);
       $("signupForm").classList.toggle("hide", isLogin);
 
-      // sync email field convenience
       if (!isLogin){
         $("suEmail").value = $("email").value || $("suEmail").value;
       } else {
@@ -529,7 +519,6 @@
     $("tabLogin").addEventListener("click", () => setTab("login"));
     $("tabSignup").addEventListener("click", () => setTab("signup"));
 
-    // Forgot password
     $("forgotBtn").addEventListener("click", async (e) => {
       e.preventDefault();
       if (missingKeyGuard()) return;
@@ -553,7 +542,6 @@
       }
     });
 
-    // After login, check subscription (but ALWAYS allow YAKA)
     async function routeAfterLogin(){
       if (missingKeyGuard()) return;
 
@@ -569,8 +557,8 @@
         const email = (session.user?.email || "").toString();
         const siteSess = setSiteSession(email);
 
-        // ✅ YAKA never gets blocked by subscription checks
-        if (siteSess.role === "YAKA"){
+        // ✅ Owners skip subscription checks
+        if (siteSess.role === "KINGDOM_PARTNER"){
           window.location.href = (desired || STREAM_PAGE);
           return;
         }
@@ -605,7 +593,6 @@
       }
     }
 
-    // Auto-route if already logged in (either storage)
     (async () => {
       try{
         if (missingKeyGuard()) return;
@@ -618,7 +605,6 @@
       }catch(_){}
     })();
 
-    // Login form submit
     $("loginForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       if (missingKeyGuard()) return;
@@ -646,7 +632,6 @@
       }
     });
 
-    // Signup form submit
     $("signupForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       if (missingKeyGuard()) return;
@@ -681,7 +666,6 @@
         });
         if (error) throw error;
 
-        // If email confirmations are ON, session may be null until confirmed
         const hasSession = !!data?.session;
 
         if (hasSession){
@@ -693,7 +677,6 @@
             "ok",
             "Account created.\nCheck your email to confirm, then come back and log in."
           );
-          // switch to login tab and prefill email
           $("email").value = email;
           setTab("login");
         }
