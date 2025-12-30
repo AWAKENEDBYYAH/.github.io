@@ -43,6 +43,8 @@
     .brand{
       display:flex; align-items:center; gap:10px;
       font-weight:800; letter-spacing:.06em;
+      text-decoration:none;
+      color:var(--text);
     }
     .brand img{width:34px; height:34px; border-radius:10px}
     .nav{
@@ -57,6 +59,9 @@
       background:rgba(255,255,255,.04);
       font-weight:700;
       letter-spacing:.03em;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
     }
     .nav a:hover{border-color:rgba(43,86,255,.6); box-shadow:0 0 0 6px rgba(43,86,255,.08)}
     .nav a.primary{
@@ -140,17 +145,22 @@
 <body>
   <div class="topbar">
     <div class="inner">
-      <div class="brand">
+      <!-- ✅ clickable brand to homepage -->
+      <a class="brand" href="/">
         <img src="/abytransparent.png" alt="Awakened By YAH" />
         <div>AWAKENED BY YAH</div>
-      </div>
+      </a>
 
       <div class="nav">
-        <a href="/music/">MUSIC</a>
+        <!-- ✅ fixed to your actual page structure -->
+        <a href="/music.html">MUSIC</a>
         <a class="primary" href="/downloads/">DOWNLOADS</a>
+
+        <!-- ✅ this is correct (absolute path) -->
         <a class="btn" href="/login.html" title="Go to login page">ACCOUNT</a>
 
-        <a href="/logout/">LOG OUT</a>
+        <!-- ✅ GitHub Pages has no /logout/ route; safest is send to login -->
+        <a href="/login.html" title="Log out (go to login)">LOG OUT</a>
       </div>
     </div>
   </div>
