@@ -50,7 +50,7 @@
     .nav{
       display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;
     }
-    .nav a{
+    .nav a, .nav button{
       text-decoration:none;
       color:var(--text);
       padding:10px 14px;
@@ -62,11 +62,22 @@
       display:inline-flex;
       align-items:center;
       justify-content:center;
+      cursor:pointer;
     }
-    .nav a:hover{border-color:rgba(43,86,255,.6); box-shadow:0 0 0 6px rgba(43,86,255,.08)}
+    .nav a:hover, .nav button:hover{border-color:rgba(43,86,255,.6); box-shadow:0 0 0 6px rgba(43,86,255,.08)}
     .nav a.primary{
       border-color:rgba(43,86,255,.7);
       background:linear-gradient(135deg, rgba(28,57,168,.75), rgba(43,86,255,.28));
+    }
+    .nav .account{
+      border:1px solid rgba(43,86,255,.7);
+      background:linear-gradient(135deg, rgba(28,57,168,.75), rgba(43,86,255,.28));
+      color:#fff;
+      font-weight:900;
+    }
+    .nav .danger{
+      border-color: rgba(239,68,68,.35);
+      background: rgba(239,68,68,.10);
     }
 
     .wrap{max-width:1100px; margin:0 auto; padding:26px 18px 60px;}
@@ -128,6 +139,12 @@
       white-space:nowrap;
     }
     .btn:hover{box-shadow:0 0 0 7px rgba(43,86,255,.10)}
+    .btn.disabled{
+      opacity:.5;
+      pointer-events:none;
+      filter:saturate(.7);
+    }
+
     .note{
       margin-top:18px;
       padding:14px 14px;
@@ -145,22 +162,22 @@
 <body>
   <div class="topbar">
     <div class="inner">
-      <!-- ✅ clickable brand to homepage -->
       <a class="brand" href="/">
         <img src="/abytransparent.png" alt="Awakened By YAH" />
         <div>AWAKENED BY YAH</div>
       </a>
 
       <div class="nav">
-        <!-- ✅ fixed to your actual page structure -->
+        <!-- ✅ IMPORTANT: If your albums/music page is music.html (root), keep this -->
         <a href="/music.html">MUSIC</a>
+
         <a class="primary" href="/downloads/">DOWNLOADS</a>
 
-        <!-- ✅ this is correct (absolute path) -->
-        <a class="btn" href="/login.html" title="Go to login page">ACCOUNT</a>
+        <!-- ✅ FIXED: ACCOUNT must be absolute root link -->
+        <a class="account" href="/login.html" title="Go to login page">ACCOUNT</a>
 
-        <!-- ✅ GitHub Pages has no /logout/ route; safest is send to login -->
-        <a href="/login.html" title="Log out (go to login)">LOG OUT</a>
+        <!-- ✅ REAL LOGOUT: clears session + returns to login -->
+        <button class="danger" id="logoutBtn" type="button" title="Log out">LOG OUT</button>
       </div>
     </div>
   </div>
@@ -176,8 +193,7 @@
       <!-- SINGLE 1 -->
       <div class="card">
         <div class="art">
-          <!-- optional cover image -->
-          <!-- <img src="/covers/hear-my-voice.jpg" alt="Hear My Voice cover"> -->
+          <img src="/images/abym-cover.png?v=3" alt="Hear My Voice cover" onerror="this.onerror=null; this.style.display='none';">
           <span class="badge">SINGLE</span>
         </div>
         <div class="body">
@@ -185,7 +201,7 @@
           <p class="meta">High-quality download • MP3 / WAV (your choice)</p>
           <div class="row">
             <div class="price">$1.99</div>
-            <a class="btn" href="PASTE_BUY_LINK_HERE" target="_blank" rel="noopener">BUY &amp; DOWNLOAD</a>
+            <a class="btn disabled" href="#" aria-disabled="true">COMING SOON</a>
           </div>
         </div>
       </div>
@@ -193,6 +209,7 @@
       <!-- SINGLE 2 -->
       <div class="card">
         <div class="art">
+          <img src="/images/abym-cover.png?v=3" alt="Deliver Us cover" onerror="this.onerror=null; this.style.display='none';">
           <span class="badge">SINGLE</span>
         </div>
         <div class="body">
@@ -200,14 +217,15 @@
           <p class="meta">High-quality download • MP3 / WAV (your choice)</p>
           <div class="row">
             <div class="price">$1.99</div>
-            <a class="btn" href="PASTE_BUY_LINK_HERE" target="_blank" rel="noopener">BUY &amp; DOWNLOAD</a>
+            <a class="btn disabled" href="#" aria-disabled="true">COMING SOON</a>
           </div>
         </div>
       </div>
 
-      <!-- ALBUM -->
+      <!-- ALBUM: THE RISE OF YASHARAL -->
       <div class="card">
         <div class="art">
+          <img src="/images/rise-of-yasharal.png?v=3" alt="The Rise of Yasharal cover" onerror="this.onerror=null; this.style.display='none';">
           <span class="badge">ALBUM</span>
         </div>
         <div class="body">
@@ -215,7 +233,24 @@
           <p class="meta">Full album download • ZIP (all tracks)</p>
           <div class="row">
             <div class="price">$9.99</div>
-            <a class="btn" href="PASTE_BUY_LINK_HERE" target="_blank" rel="noopener">BUY ALBUM</a>
+            <a class="btn disabled" href="#" aria-disabled="true">COMING SOON</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ✅ ALBUM: KINGDOM BIZ -->
+      <div class="card">
+        <div class="art">
+          <img src="/images/kingdom-biz.png?v=3" alt="Kingdom Biz: Rise of the Remnant cover" onerror="this.onerror=null; this.style.display='none';">
+          <span class="badge">ALBUM</span>
+        </div>
+        <div class="body">
+          <p class="title">KINGDOM BIZ: RISE OF THE REMNANT</p>
+          <p class="meta">Full album download • ZIP (all tracks)</p>
+          <div class="row">
+            <div class="price">$9.99</div>
+            <!-- Paste your Gumroad album link here when ready -->
+            <a class="btn disabled" href="#" aria-disabled="true">COMING SOON</a>
           </div>
         </div>
       </div>
@@ -224,8 +259,19 @@
     <div class="note">
       <b>Tip:</b> If you want the cleanest experience, sell downloads as:
       <b>Singles</b> (MP3/WAV) and <b>Albums</b> (ZIP).  
-      After purchase, the platform you choose (Gumroad or Stripe) delivers the file automatically.
+      After purchase, Gumroad delivers the file automatically.
     </div>
   </div>
+
+  <script>
+    // ✅ Real logout for your fan session
+    const SESSION_KEY = "aby_stream_session";
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      localStorage.removeItem(SESSION_KEY);
+      sessionStorage.removeItem(SESSION_KEY);
+      // (Optional) clear yaka access if you ever want: localStorage.removeItem("yaka_unlimited_access");
+      window.location.href = "/login.html";
+    });
+  </script>
 </body>
 </html>
