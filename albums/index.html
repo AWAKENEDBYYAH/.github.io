@@ -2,393 +2,248 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Downloads | Awakened By YAH</title>
 
-  <!-- ✅ Correct canonical -->
-  <link rel="canonical" href="https://awakenedbyyahmusic.com/albums/" />
-
-  <!-- ✅ Prevent duplicate indexing of /albums/index.html -->
-  <script>
-    if (location.pathname.endsWith('/index.html')) {
-      location.replace('/albums/' + location.search + location.hash);
-    }
-  </script>
-
-  <title>Albums | Awakened By YAH</title>
-  <meta name="description" content="Stream Awakened By YAH albums including Kingdom Biz and Rise of Yasharal. Set-apart R&B and soul music for the Remnant of Yasharal." />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- ✅ Use absolute paths so it works from /albums/ -->
-  <link rel="icon" type="image/png" href="/abytransparent.png" />
-
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="/abytransparent.png">
+  <link rel="canonical" href="https://awakenedbyyahmusic.com/downloads/" />
 
   <style>
-    :root {
-      --bg: #020617;
-      --accent: #f5c75c;
-      --accent-2: #f97316;
-      --text-main: #ffffff;
-      --text-muted: #a5b4fc;
-      --card-bg: rgba(15, 23, 42, 0.96);
-      --border-subtle: rgba(148, 163, 184, 0.6);
-      --radius-xl: 24px;
-      --shadow-soft: 0 22px 45px rgba(0, 0, 0, 0.7);
+    :root{
+      --bg:#020617;
+      --text:#e5e7eb;
+      --muted:#94a3b8;
+      --line:rgba(255,255,255,.12);
+      --panel:rgba(255,255,255,.05);
+      --glow:rgba(43,86,255,.22);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:radial-gradient(1200px 600px at 20% 0%, rgba(43,86,255,.20), transparent 55%),
+                 radial-gradient(900px 600px at 90% 20%, rgba(28,57,168,.22), transparent 55%),
+                 var(--bg);
+      color:var(--text);
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: radial-gradient(circle at top left, #1e293b 0%, #020617 40%, #000 100%);
-      color: var(--text-main);
-      min-height: 100vh;
+    /* Top bar */
+    .topbar{
+      position:sticky; top:0; z-index:10;
+      background:rgba(2,6,23,.82);
+      border-bottom:1px solid var(--line);
+      backdrop-filter: blur(10px);
     }
-
-    .page {
-      max-width: 1100px;
-      margin: auto;
-      padding: 2rem 1.5rem 3rem;
+    .topbar .inner{
+      max-width:1100px; margin:0 auto;
+      padding:14px 18px;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:14px;
     }
-
-    .nav {
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      border-bottom:1px solid rgba(148,163,184,0.35);
-      padding-bottom:1rem;
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      font-weight:900; letter-spacing:.06em;
     }
-
-    .brand-area { display:flex; align-items:center; gap:0.75rem; }
-
-    .brand-mark img {
-      width:52px;
-      height:auto;
-      object-fit:contain;
-      display:block;
+    .brand img{width:34px; height:34px; border-radius:10px}
+    .nav{
+      display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;
     }
-
-    .brand-name {
-      font-size:.95rem;
-      font-weight:600;
-      text-transform:uppercase;
-      letter-spacing:.12em;
-    }
-
-    .brand-tagline { font-size:.75rem; color:var(--text-muted); }
-
-    .nav-links a {
+    .nav a{
       text-decoration:none;
-      color:#cbd5f5;
-      margin-left:1.25rem;
-      font-size:.9rem;
-      position:relative;
-      padding-bottom:3px;
+      color:var(--text);
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.04);
+      font-weight:800;
+      letter-spacing:.03em;
+    }
+    .nav a:hover{border-color:rgba(43,86,255,.6); box-shadow:0 0 0 6px rgba(43,86,255,.08)}
+    .nav a.primary{
+      border-color:rgba(43,86,255,.7);
+      background:linear-gradient(135deg, rgba(28,57,168,.75), rgba(43,86,255,.28));
     }
 
-    .nav-links a:hover { color:#fff; }
+    .wrap{max-width:1100px; margin:0 auto; padding:26px 18px 60px;}
+    h1{margin:0 0 8px; font-size:34px; letter-spacing:.03em}
+    p.lead{margin:0 0 18px; color:var(--muted); max-width:760px; line-height:1.5}
 
-    .nav-links a.active {
-      color:#fff;
-      border-bottom:2px solid #facc15;
-    }
-
-    .albums-title{
-      text-align:center;
-      margin-top:2.5rem;
-      font-size:2rem;
-      text-transform:uppercase;
-      letter-spacing:.15em;
-    }
-
-    .albums-subtitle{
-      text-align:center;
-      margin-top:.5rem;
-      color:var(--text-muted);
-      font-size:.9rem;
-    }
-
-    .album-grid {
-      margin-top:2.5rem;
+    .grid{
       display:grid;
-      grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
-      gap:2rem;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap:14px;
+      margin-top:18px;
     }
+    @media (max-width: 980px){ .grid{grid-template-columns: repeat(2, minmax(0, 1fr));} }
+    @media (max-width: 640px){ .grid{grid-template-columns: 1fr;} }
 
-    .album-card {
-      background:var(--card-bg);
-      padding:1.7rem;
-      border-radius:var(--radius-xl);
-      border:1px solid var(--border-subtle);
-      box-shadow:var(--shadow-soft);
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      text-align:center;
+    .card{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:20px;
+      overflow:hidden;
+      box-shadow:0 20px 60px rgba(0,0,0,.45);
     }
-
-    .album-card img {
-      width:100%;
-      border-radius:18px;
-      margin-bottom:1rem;
-      border:1px solid rgba(255,255,255,0.12);
+    .art{
+      aspect-ratio: 16/10;
+      background:linear-gradient(135deg, rgba(28,57,168,.55), rgba(255,255,255,.06));
+      border-bottom:1px solid var(--line);
+      position:relative;
+      overflow:hidden;
+    }
+    .art img{
+      width:100%; height:100%;
+      object-fit:cover;
       display:block;
+      filter:saturate(1.02) contrast(1.02);
+      transform: scale(1.01);
     }
-
-    .album-card h2{
-      font-size:1.1rem;
-      text-transform:uppercase;
-      letter-spacing:.12em;
-      margin-bottom:.35rem;
+    .badge{
+      position:absolute; top:12px; left:12px;
+      font-size:12px; font-weight:900;
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.16);
+      background:rgba(2,6,23,.60);
+      letter-spacing:.06em;
     }
-
-    .album-card p.description{
-      font-size:.9rem;
+    .body{padding:14px 14px 16px}
+    .title{font-weight:950; letter-spacing:.03em; margin:0 0 6px}
+    .meta{color:var(--muted); font-size:13px; margin:0 0 12px; line-height:1.4}
+    .row{display:flex; align-items:center; justify-content:space-between; gap:10px;}
+    .price{font-weight:950}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(43,86,255,.7);
+      background:linear-gradient(135deg, rgba(28,57,168,.75), rgba(43,86,255,.28));
+      color:#fff;
+      text-decoration:none;
+      font-weight:950;
+      letter-spacing:.03em;
+      white-space:nowrap;
+    }
+    .btn:hover{box-shadow:0 0 0 7px rgba(43,86,255,.10)}
+    .btn.disabled{
+      pointer-events:none;
+      opacity:.55;
+      border-color:rgba(255,255,255,.22);
+      background:rgba(255,255,255,.06);
       color:#e5e7eb;
-      margin-bottom:1rem;
     }
-
-    .tracklist-box{
-      width:100%;
-      margin-top:.5rem;
-      margin-bottom:1rem;
-      padding:0.85rem 1rem;
+    .note{
+      margin-top:18px;
+      padding:14px 14px;
       border-radius:16px;
-      border:1px dashed rgba(148,163,184,.7);
-      background:rgba(2,6,23,.85);
-      text-align:left;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.55;
     }
-
-    .tracklist-header{
-      display:flex;
-      justify-content:space-between;
-      align-items:baseline;
-      margin-bottom:.25rem;
-    }
-
-    .tracklist-label{
-      font-size:.75rem;
-      text-transform:uppercase;
-      letter-spacing:.18em;
-      color:var(--text-muted);
-    }
-
-    .tracklist-note{
-      font-size:.7rem;
-      color:var(--text-muted);
-    }
-
-    .tracklist-box ol{
-      margin-top:.3rem;
-      padding-left:1.15rem;
-      font-size:.82rem;
-      color:#e2e8f0;
-    }
-
-    .tracklist-box li + li{ margin-top:.15rem; }
-
-    .actions {
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:.4rem;
-      margin-top:.2rem;
-    }
-
-    .btn-primary {
-      background:linear-gradient(135deg,#facc15,#f97316);
-      padding:.7rem 1.8rem;
-      border-radius:50px;
-      font-weight:600;
-      text-transform:uppercase;
-      letter-spacing:.15em;
-      color:#000;
+    .note b{color:var(--text)}
+    .pill{
       display:inline-block;
-      box-shadow:0 10px 25px rgba(249,115,22,.55);
-      text-decoration:none;
-      font-size:.8rem;
-    }
-
-    .btn-outline {
-      padding:.55rem 1.8rem;
-      border-radius:50px;
-      font-weight:600;
-      text-transform:uppercase;
-      letter-spacing:.15em;
-      font-size:.75rem;
-      border:1px solid rgba(148,163,184,.8);
-      color:var(--text-muted);
-      text-decoration:none;
-      background:rgba(15,23,42,.9);
-    }
-
-    .btn-outline:hover { border-color:#facc15; color:#fff; }
-
-    .purchase-note{
-      font-size:.75rem;
-      color:var(--text-muted);
-      margin-top:.2rem;
-      text-align:center;
-    }
-
-    .social-wrap { text-align:center; margin-top:3rem; }
-
-    .social-wrap p {
-      font-size:0.9rem;
-      margin-bottom:0.6rem;
-      color:#cbd5f5;
-    }
-
-    .social-icons {
-      display:flex;
-      justify-content:center;
-      gap:1.4rem;
-      font-size:1.6rem;
-    }
-
-    .social-icons a {
-      text-decoration:none;
-      filter:drop-shadow(0 0 6px rgba(250,200,20,0.4));
-    }
-
-    footer {
-      text-align:center;
-      margin-top:3rem;
-      padding:1.3rem;
-      font-size:.85rem;
-      color:#9ca3af;
-    }
-
-    @media (max-width:600px){
-      .nav{
-        flex-direction:column;
-        align-items:flex-start;
-        gap:.75rem;
-      }
-      .nav-links{
-        width:100%;
-        display:flex;
-        justify-content:flex-end;
-      }
+      padding:3px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.16);
+      background:rgba(2,6,23,.55);
+      color:var(--text);
+      font-weight:800;
+      font-size:12px;
+      letter-spacing:.05em;
+      margin-left:6px;
+      transform:translateY(-1px);
     }
   </style>
 </head>
 
 <body>
-<div class="page">
-
-  <header class="nav">
-    <div class="brand-area">
-      <div class="brand-mark">
-        <img src="/abytransparent.png" alt="Awakened By YAH Logo">
-      </div>
-      <div>
-        <div class="brand-name">Awakened By YAH</div>
-        <div class="brand-tagline">Set-Apart R&amp;B • Truth Music</div>
-      </div>
-    </div>
-
-    <nav class="nav-links">
-      <a href="/">Home</a>
-      <a href="/music.html">Music</a>
-      <a class="active" href="/albums/">Albums</a>
-    </nav>
-  </header>
-
-  <h1 class="albums-title">Albums &amp; Projects</h1>
-  <p class="albums-subtitle">Stream on SoundCloud &amp; download full projects on Gumroad.</p>
-
-  <div class="album-grid">
-
-    <div class="album-card">
-      <!-- ✅ absolute path -->
-      <img src="/kingdom-biz-cover.png" alt="Kingdom Biz: Rise of the Remnant">
-      <h2>Kingdom Biz: Rise of the Remnant</h2>
-      <p class="description">
-        A bold 5-track EP built for obedience, identity, and Kingdom focus. Heavy 808s, set-apart lyrics, and righteous energy for the remnant.
-      </p>
-
-      <div class="tracklist-box">
-        <div class="tracklist-header">
-          <span class="tracklist-label">Track Preview</span>
-          <span class="tracklist-note">Stream full list</span>
-        </div>
-        <ol>
-          <li>Walk It Out</li>
-          <li>Rise Of The Remnant</li>
-          <li>We Rise</li>
-          <li>Unbroken Frequency</li>
-          <li>Unbroken Frequency Remix</li>
-        </ol>
+  <div class="topbar">
+    <div class="inner">
+      <div class="brand">
+        <img src="/abytransparent.png" alt="Awakened By YAH" />
+        <div>AWAKENED BY YAH</div>
       </div>
 
-      <div class="actions">
-        <a href="https://on.soundcloud.com/eX6e1WIObPDW84ylYW" target="_blank" class="btn-outline" rel="noopener">
-          Listen on SoundCloud
-        </a>
-        <a href="https://remnant5.gumroad.com/l/kingdom-biz" target="_blank" class="btn-primary" rel="noopener">
-          Purchase &amp; Download
-        </a>
+      <div class="nav">
+        <a href="/music/">MUSIC</a>
+        <a class="primary" href="/downloads/">DOWNLOADS</a>
+        <a href="/account/">ACCOUNT</a>
+        <a href="/logout/">LOG OUT</a>
       </div>
-
-      <p class="purchase-note">Instant download • High-quality WAV EP</p>
-    </div>
-
-    <div class="album-card">
-      <!-- ✅ absolute path -->
-      <img src="/images/rise-of-yasharal.png" alt="The Rise of Yasharal">
-
-      <h2>The Rise of Yasharal</h2>
-      <p class="description">
-        A 12-track prophetic journey of awakening, repentance, and identity. From scattered to restored — the sound of Yasharal rising.
-      </p>
-
-      <div class="tracklist-box">
-        <div class="tracklist-header">
-          <span class="tracklist-label">Track Preview</span>
-          <span class="tracklist-note">Stream full list</span>
-        </div>
-        <ol>
-          <li>The Love I Have In Yahuah</li>
-          <li>You're With Me</li>
-          <li>Beneath Your Wings</li>
-          <li>Yahuah The Holy One</li>
-          <li>Show Me Your Heart</li>
-        </ol>
-      </div>
-
-      <div class="actions">
-        <a href="https://on.soundcloud.com/eX6e1WIObPDW84ylYW" target="_blank" class="btn-outline" rel="noopener">
-          Listen on SoundCloud
-        </a>
-        <a href="https://remnant5.gumroad.com/l/rise-of-yasharal" target="_blank" class="btn-primary" rel="noopener">
-          Purchase &amp; Download
-        </a>
-      </div>
-
-      <p class="purchase-note">12-track WAV album • Minimum price $14.99+</p>
-    </div>
-
-  </div>
-
-  <div class="social-wrap">
-    <p>Connect With Awakened By YAH</p>
-    <div class="social-icons">
-      <a href="https://on.soundcloud.com/eX6e1WIObPDW84ylYW" target="_blank" rel="noopener" title="SoundCloud">🎧</a>
-      <a href="https://www.youtube.com/@YAHUAHS_REMNANT" target="_blank" rel="noopener" title="YouTube">▶️</a>
-      <a href="https://www.tiktok.com/@mayakaalbenyasharal?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener" title="TikTok">🎵</a>
     </div>
   </div>
 
-</div>
+  <div class="wrap">
+    <h1>Downloads</h1>
+    <p class="lead">
+      Own the music. Purchase projects and download instantly.
+      <span class="pill">Fan Access = streaming only</span>
+    </p>
 
-<footer>
-  © <span id="year"></span> Awakened By YAH • Truth-Based Music<br>
-  All Rights Reserved • Built With Purpose — YAHUAH Reigns
-</footer>
+    <div class="grid">
+      <!-- ALBUM: Kingdom Biz -->
+      <div class="card">
+        <div class="art">
+          <img src="/images/kingdom-biz.png" alt="Kingdom Biz: Rise of the Remnant cover">
+          <span class="badge">ALBUM</span>
+        </div>
+        <div class="body">
+          <p class="title">Kingdom Biz: Rise of the Remnant</p>
+          <p class="meta">Project download • Supporter copy (Gumroad delivery)</p>
+          <div class="row">
+            <div class="price">$9.99</div>
+            <a class="btn" href="https://remnant5.gumroad.com/l/kingdom-biz" target="_blank" rel="noopener">
+              BUY &amp; DOWNLOAD
+            </a>
+          </div>
+        </div>
+      </div>
 
-<script>
-  document.getElementById("year").textContent = new Date().getFullYear();
-</script>
+      <!-- ALBUM: The Rise of Yasharal -->
+      <div class="card">
+        <div class="art">
+          <img src="/images/rise-of-yasharal.png" alt="The Rise of Yasharal cover">
+          <span class="badge">ALBUM</span>
+        </div>
+        <div class="body">
+          <p class="title">The Rise of Yasharal</p>
+          <p class="meta">Full album download • Flagship release (Gumroad delivery)</p>
+          <div class="row">
+            <div class="price">$14.99</div>
+            <a class="btn" href="https://remnant5.gumroad.com/l/rise-of-yasharal" target="_blank" rel="noopener">
+              BUY &amp; DOWNLOAD
+            </a>
+          </div>
+        </div>
+      </div>
 
+      <!-- SINGLES (Coming Jan 10, 2026) -->
+      <div class="card">
+        <div class="art">
+          <img src="/images/abym-cover.png" alt="Awakened By YAH">
+          <span class="badge">SINGLES</span>
+        </div>
+        <div class="body">
+          <p class="title">Singles Release</p>
+          <p class="meta">
+            Hear My Voice • Deliver Us <br>
+            Available for purchase on <b>January 10, 2026</b>.
+          </p>
+          <div class="row">
+            <div class="price">$1.99</div>
+            <span class="btn disabled">COMING JAN 10, 2026</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      <b>Release-day switch (Jan 10, 2026):</b> Replace the “COMING” button with your Gumroad single links
+      (one card per single), and you’re live in minutes.
+    </div>
+  </div>
 </body>
 </html>
