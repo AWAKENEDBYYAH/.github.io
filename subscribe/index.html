@@ -105,10 +105,6 @@
     ul{margin:0;padding-left:18px;color:var(--muted);line-height:1.6}
     .ctaRow{padding:16px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
 
-    .emailRow{
-      display:flex;flex-direction:column;gap:6px;
-      font-size:12px;color:var(--muted);font-weight:700;
-    }
     input{
       width:100%;
       padding:12px 14px;
@@ -146,6 +142,7 @@
       color:var(--muted);
       font-size:12px;
       line-height:1.45;
+      white-space:pre-wrap;
     }
     .status strong{color:var(--text)}
   </style>
@@ -156,13 +153,13 @@
 
     <div class="topbar">
       <div class="brand">
-        <img src="/abytransparent.png" alt="AWAKENED BY YAH" onerror="this.onerror=null;this.src='/abytransparent.png';">
+        <img src="/abytransparent.png" alt="AWAKENED BY YAH">
         <span>AWAKENED BY YAH</span>
       </div>
       <nav>
-        <a href="/music/" >Music</a>
-        <a href="/stream/" >Stream</a>
-        <a href="/" >Home</a>
+        <a href="/music/">Music</a>
+        <a href="/stream/">Stream</a>
+        <a href="/">Home</a>
         <a class="active" href="/subscribe/">Subscribe</a>
       </nav>
     </div>
@@ -176,10 +173,9 @@
       </div>
     </section>
 
-    <!-- Optional email (recommended) -->
     <div class="status" style="margin-top:16px">
       <strong>Email (optional but recommended):</strong>
-      We’ll pass this to Stripe Checkout so receipts and account links go to the right inbox.
+      We’ll pass this to Stripe Checkout so receipts go to the right inbox.
       <div style="margin-top:10px">
         <input id="email" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" />
       </div>
@@ -187,7 +183,6 @@
 
     <section class="grid" aria-label="Subscription Tiers">
 
-      <!-- SUPPORTER -->
       <article class="card">
         <div class="cardHead">
           <p class="tier">SUPPORTER</p>
@@ -201,11 +196,10 @@
           </ul>
         </div>
         <div class="ctaRow">
-          <button class="primary" data-price="price_1SjrAQ0J5682KmNwPnoTqk1G">Choose Supporter</button>
+          <button type="button" class="primary" data-price="price_1SjrAQ0J5682KmNwPnoTqk1G">Choose Supporter</button>
         </div>
       </article>
 
-      <!-- BUILDER -->
       <article class="card">
         <div class="cardHead">
           <p class="tier">BUILDER</p>
@@ -219,11 +213,10 @@
           </ul>
         </div>
         <div class="ctaRow">
-          <button class="primary" data-price="price_1SjrCt0J5682KmNwbF9ZrUH3">Choose Builder</button>
+          <button type="button" class="primary" data-price="price_1SjrCt0J5682KmNwbF9ZrUH3">Choose Builder</button>
         </div>
       </article>
 
-      <!-- KINGDOM PARTNER -->
       <article class="card">
         <div class="cardHead">
           <p class="tier">KINGDOM PARTNER</p>
@@ -237,7 +230,7 @@
           </ul>
         </div>
         <div class="ctaRow">
-          <button class="primary" data-price="price_1SjrEh0J5682KmNwbJrFTfhp">Choose Kingdom Partner</button>
+          <button type="button" class="primary" data-price="price_1SjrEh0J5682KmNwbJrFTfhp">Choose Kingdom Partner</button>
         </div>
       </article>
 
@@ -247,15 +240,10 @@
   </div>
 
   <script>
-    /**
-     * IMPORTANT:
-     * Your backend endpoint must be the LIVE version (live Stripe secret key),
-     * otherwise Checkout will still appear as “sandbox/test”.
-     *
-     * Replace this URL with your actual deployed function endpoint if needed.
-     * (You already have one working — keep it the same.)
-     */
-    const CHECKOUT_ENDPOINT = window.CHECKOUT_ENDPOINT || "/.netlify/functions/create-checkout-session";
+    // ✅ IMPORTANT: Use your Supabase Edge Function URL (POST only).
+    // Replace YOUR_PROJECT_REF with your actual Supabase project ref.
+    const CHECKOUT_ENDPOINT =
+      "https://YOUR_PROJECT_REF.supabase.co/functions/v1/create-checkout-session";
 
     const statusBox = document.getElementById("statusBox");
     function setStatus(msg, show=true){
@@ -271,7 +259,7 @@
       const payload = {
         priceId,
         email: email || undefined,
-        successUrl: "https://awakenedbyyahmusic.com/stream/",
+        successUrl: "https://awakenedbyyahmusic.com/success/",
         cancelUrl: "https://awakenedbyyahmusic.com/subscribe/"
       };
 
@@ -283,7 +271,7 @@
 
       const raw = await res.text();
       let data = {};
-      try{ data = JSON.parse(raw); }catch(_){}
+      try { data = JSON.parse(raw); } catch (_) {}
 
       if (!res.ok){
         const detail = data.error || data.message || raw || `Request failed (${res.status})`;
@@ -294,14 +282,16 @@
       window.location.href = data.url;
     }
 
-    document.querySelectorAll("button[data-price]").forEach(btn=>{
-      btn.addEventListener("click", async ()=>{
+    document.querySelectorAll('button[data-price]').forEach(btn=>{
+      btn.addEventListener("click", async (e)=>{
+        e.preventDefault();
+
         try{
-          document.querySelectorAll("button[data-price]").forEach(b=>b.disabled=true);
+          document.querySelectorAll('button[data-price]').forEach(b=>b.disabled=true);
           await startCheckout(btn.getAttribute("data-price"));
-        }catch(e){
-          setStatus("Checkout error: " + (e?.message || String(e)), true);
-          document.querySelectorAll("button[data-price]").forEach(b=>b.disabled=false);
+        }catch(err){
+          setStatus("Checkout error:\n" + (err?.message || String(err)), true);
+          document.querySelectorAll('button[data-price]').forEach(b=>b.disabled=false);
         }
       });
     });
