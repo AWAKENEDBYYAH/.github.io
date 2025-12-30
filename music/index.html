@@ -428,7 +428,8 @@
 
           <div class="coverBtn" data-key="rise">
             <div class="thumb">
-              <img src="/rise-of-yasharal-cover.png" alt="The Rise of Yasharal cover"
+              <!-- ✅ FIXED: correct Rise cover path -->
+              <img src="/images/rise-of-yasharal.png" alt="The Rise of Yasharal cover"
                    onerror="this.onerror=null;this.src='/abytransparent.png';">
             </div>
             <div class="coverText">
@@ -501,7 +502,7 @@
       ]
     };
 
-    // ✅ NEW: cover candidates (fixes wrong Rise cover when filename/case differs)
+    // ✅ UPDATED: Rise tries /images/rise-of-yasharal.png FIRST
     const COVER_CANDIDATES = {
       kingdombiz: [
         "/kingdom-biz-cover.png",
@@ -509,6 +510,7 @@
         "/kingdom-biz-cover.webp"
       ],
       rise: [
+        "/images/rise-of-yasharal.png",
         "/rise-of-yasharal-cover.png",
         "/Rise-of-Yasharal-Cover.png",
         "/rise-of-yasharal-cover.jpg",
@@ -530,9 +532,10 @@
       ]
     };
 
+    // ✅ UPDATED: Rise project cover uses the correct /images path
     const PROJECTS = {
       kingdombiz: { title: "Kingdom Biz", cover: "/kingdom-biz-cover.png", artist: "AWAKENED BY YAH" },
-      rise:       { title: "The Rise of Yasharal", cover: "/rise-of-yasharal-cover.png", artist: "AWAKENED BY YAH" },
+      rise:       { title: "The Rise of Yasharal", cover: "/images/rise-of-yasharal.png", artist: "AWAKENED BY YAH" },
       hear:       { title: "Hear My Voice", cover: "/hear-my-voice.png", artist: "AWAKENED BY YAH" },
       deliver:    { title: "Deliver Us", cover: "/deliver-us.png", artist: "AWAKENED BY YAH" }
     };
@@ -668,7 +671,6 @@
       imgEl.src = src;
     }
 
-    // ✅ NEW: resolve cover using candidates (fixes wrong Rise cover)
     const RESOLVED_COVERS = {};
     async function resolveCoverForKey(key){
       if (RESOLVED_COVERS[key]) return RESOLVED_COVERS[key];
@@ -894,7 +896,6 @@
       if (tracks.length) await loadIndex(0);
       updateRepeatUI();
 
-      // ✅ NEW: also correct the right-side thumbnail if it was failing
       await refreshThumbs();
     }
 
@@ -967,7 +968,6 @@
       });
     });
 
-    // ✅ NEW: refresh right-side thumbs using resolved covers
     async function refreshThumbs(){
       const btns = document.querySelectorAll(".coverBtn");
       for (const btn of btns){
@@ -980,7 +980,6 @@
       }
     }
 
-    // 45s preview + fades
     const PREVIEW_SECONDS = 45;
     const FADE_IN_SECONDS = 2;
     const FADE_OUT_SECONDS = 3;
