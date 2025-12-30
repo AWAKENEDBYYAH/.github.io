@@ -2,9 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+
   <link rel="canonical" href="https://awakenedbyyahmusic.com/" />
 
   <script>
+    // Force the clean homepage URL (prevents Google indexing /index.html as a duplicate)
     if (location.pathname.endsWith('/index.html')) {
       location.replace('/' + location.search + location.hash);
     }
@@ -14,183 +16,976 @@
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <link rel="apple-touch-icon" href="/favicon.png">
 
-  <title>AWAKENED BY YAH — Truth-Based Soul • R&B • Praise</title>
+  <title>Awakened By YAH — Truth-Based Soul • R&B • Praise</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <style>
-    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-    html, body { height:100%; }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; }
 
-    body{
-      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-      background:radial-gradient(circle at top left,#182544 0%,#050814 55%,#020308 100%);
-      color:#f9fafb;
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #182544 0%, #050814 55%, #020308 100%);
+      color: #f9fafb;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
     }
 
-    a{ color:inherit; text-decoration:none; }
+    a { color: inherit; text-decoration: none; }
 
-    .shell{
-      max-width:1200px;
-      margin:0 auto;
-      padding:2rem 1.75rem 3rem;
-    }
+    .page { min-height: 100vh; display: flex; flex-direction: column; }
+    .shell { width: 100%; max-width: 1200px; margin: 0 auto; padding: 2rem 1.75rem 3rem; }
 
     /* TOP BAR */
-    .top-bar{
-      position:relative;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      margin-bottom:1rem;
+    .top-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1.5rem; margin-bottom: 1rem;
     }
 
-    .brand-block{
-      display:flex;
-      align-items:center;
-      gap:.8rem;
+    .brand-block { display: flex; align-items: center; gap: 0.8rem; }
+    .brand-logo {
+      width: clamp(60px, 6vw, 90px); object-fit: contain;
+      filter: drop-shadow(0 6px 12px rgba(0,0,0,0.7));
     }
 
-    .brand-logo{
-      width:72px;
-      filter:drop-shadow(0 6px 12px rgba(0,0,0,.7));
-    }
-
-    .brand-title{
-      color:#fbbf24;
-      font-weight:700;
-      letter-spacing:.22em;
-      text-transform:uppercase;
-      font-size:1rem;
+    .brand-title {
+      font-size: clamp(0.95rem, 1.2vw, 1.25rem);
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #fbbf24;
+      text-shadow: 0 6px 14px rgba(0,0,0,0.8);
       display:block;
     }
 
-    .brand-subtitle{
-      font-size:.7rem;
-      letter-spacing:.18em;
-      color:#cbd5e1;
-      text-transform:uppercase;
+    .brand-subtitle {
+      font-size: clamp(0.62rem, 1vw, 0.75rem);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #cbd5e1;
+      opacity: 0.9;
+      display:block;
     }
 
-    /* ✅ PILLS – TRUE CENTER OF MENU BAR */
-    .header-tags{
-      position:absolute;
-      left:50%;
-      transform:translateX(-50%);
-      display:flex;
-      gap:.6rem;
-      white-space:nowrap;
+    /* ✅ UPDATED: center the pill buttons WITHOUT moving them higher */
+    .header-tags {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      justify-content: center; /* centered */
+      width: 100%;
     }
 
-    .pill{
-      font-size:.7rem;
-      padding:.35rem .9rem;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.2);
-      text-transform:uppercase;
-      letter-spacing:.16em;
-      background:rgba(15,23,42,.85);
-      display:flex;
-      align-items:center;
-      gap:.4rem;
-      backdrop-filter:blur(12px);
+    .pill {
+      font-size: 0.7rem; padding: 0.3rem 0.85rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.18);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      background: linear-gradient(135deg, rgba(15,23,42,0.9), rgba(15,23,42,0.4));
+      backdrop-filter: blur(14px);
+      display: inline-flex; align-items: center; gap: 0.4rem;
     }
 
-    .pill-dot{
-      width:6px;
-      height:6px;
-      border-radius:50%;
-      background:#4ade80;
+    .pill-dot { width: 6px; height: 6px; border-radius: 999px; background: #4ade80; }
+    .pill-gold { border-color: rgba(251,191,36,0.7); color: #fbbf24; }
+
+    /* QUICK LINKS */
+    /* ✅ UPDATED: center the main navigation buttons */
+    .quick-links {
+      margin-bottom: 1.75rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+      justify-content: center; /* centered */
+      text-align: center;
     }
 
-    .pill-gold{
-      border-color:rgba(251,191,36,.8);
-      color:#fbbf24;
+    .quick-links a {
+      font-size: 0.72rem; padding: 0.25rem 0.85rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.45);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #e5e7eb;
+      background: rgba(15,23,42,0.9);
+      backdrop-filter: blur(10px);
+      transition: background 0.15s ease, border-color 0.15s ease;
     }
 
-    /* QUICK LINKS – CENTERED */
-    .quick-links{
-      margin-bottom:1.75rem;
-      display:flex;
-      flex-wrap:wrap;
-      gap:.5rem;
-      justify-content:center;
+    .quick-links a:hover {
+      background: rgba(148,163,184,0.28);
+      border-color: rgba(248,250,252,0.6);
     }
 
-    .quick-links a{
-      font-size:.72rem;
-      padding:.3rem .9rem;
-      border-radius:999px;
-      border:1px solid rgba(148,163,184,.45);
-      text-transform:uppercase;
-      letter-spacing:.16em;
-      background:rgba(15,23,42,.9);
+    /* ✅ OFFICIAL CONTACT (Spotify verification link) */
+    .quick-links a.official-contact {
+      border-color: rgba(251,191,36,0.7);
+      color: #fbbf24;
+    }
+    .quick-links a.official-contact:hover {
+      background: rgba(251,191,36,0.12);
+      border-color: rgba(251,191,36,0.95);
     }
 
-    .radio-live{
-      border-color:rgba(34,197,94,.7);
+    /* ✅ ELECT SOUNDS RADIO LINKS (NON-DISRUPTIVE, VISIBLE, TOP PLACEMENT) */
+    .quick-links a.radio-live{
+      border-color: rgba(34,197,94,0.65);
       color:#bbf7d0;
     }
-
-    .radio-pop{
-      border-color:rgba(96,165,250,.7);
+    .quick-links a.radio-live:hover{
+      background: rgba(34,197,94,0.12);
+      border-color: rgba(34,197,94,1);
+    }
+    .quick-links a.radio-pop{
+      border-color: rgba(96,165,250,0.65);
       color:#dbeafe;
     }
-
-    .official-contact{
-      border-color:rgba(251,191,36,.7);
-      color:#fbbf24;
+    .quick-links a.radio-pop:hover{
+      background: rgba(96,165,250,0.12);
+      border-color: rgba(96,165,250,1);
     }
 
-    /* MOBILE */
-    @media (max-width:640px){
-      .top-bar{
-        flex-direction:column;
-        align-items:flex-start;
-        gap:.75rem;
-      }
+    /* HERO */
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.1fr);
+      gap: 2.5rem;
+      align-items: stretch;
+    }
 
-      .header-tags{
-        position:static;
-        transform:none;
-        justify-content:center;
-        width:100%;
-      }
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: minmax(0, 1fr); }
+    }
+
+    .hero-left {
+      background: radial-gradient(circle at top left, #111827 0%, #020617 70%);
+      border-radius: 26px;
+      padding: 2.25rem 2rem;
+      box-shadow: 0 26px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(148,163,184,0.06);
+    }
+
+    .eyebrow {
+      font-size: 0.82rem;
+      letter-spacing: 0.36em;
+      text-transform: uppercase;
+      color: #facc15;
+      margin-bottom: 0.6rem;
+    }
+
+    .hero-title {
+      font-size: 1.5rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+
+    .hero-title-main {
+      font-size: 2.6rem;
+      letter-spacing: 0.28em;
+      text-shadow: 0 14px 32px rgba(0,0,0,0.9);
+      display:block;
+    }
+
+    .hero-copy {
+      margin-top: 1.1rem;
+      font-size: 0.95rem;
+      max-width: 28rem;
+      color: #e5e7eb;
+    }
+
+    .hero-cta-row {
+      margin-top: 1.8rem;
+      display: flex; flex-wrap: wrap; gap: 0.9rem;
+    }
+
+    .btn {
+      padding: 0.78rem 1.6rem;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(120deg, #f59e0b, #fbbf24);
+      color: #111827;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border-color: rgba(249,250,251,0.35);
+      color: #e5e7eb;
+    }
+
+    .hero-right {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-right-inner {
+      border-radius: 26px;
+      overflow: hidden;
+      box-shadow: 0 26px 60px rgba(0,0,0,0.85), 0 0 0 1px rgba(148,163,184,0.18);
+    }
+
+    .hero-right-inner img {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+
+    /* SECTIONS */
+    .extra-section { margin-top: 2.5rem; }
+
+    .section-card {
+      background: radial-gradient(circle at top left, #111827 0%, #020617 70%);
+      border-radius: 24px;
+      padding: 1.8rem 1.6rem;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.7);
+      border: 1px solid rgba(148,163,184,0.35);
+    }
+
+    .section-title {
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      margin-bottom: 0.4rem;
+      color: #e5e7eb;
+    }
+
+    .section-kicker {
+      font-size: 0.76rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: #9ca3af;
+      margin-bottom: 0.25rem;
+    }
+
+    .section-text {
+      font-size: 0.9rem;
+      color: #e5e7eb;
+      max-width: 40rem;
+    }
+
+    /* MUSIC PLAYER + PLAYLIST */
+    .music-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.1fr);
+      gap: 2rem;
+    }
+
+    @media (max-width: 850px) {
+      .music-layout { grid-template-columns: minmax(0, 1fr); }
+    }
+
+    .player-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .now-playing-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+    }
+
+    .np-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: #9ca3af;
+      display: block;
+    }
+
+    .np-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #fbbf24;
+    }
+
+    .visualizer {
+      display: flex;
+      align-items: flex-end;
+      gap: 4px;
+      height: 26px;
+      padding: 4px 6px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,184,0.5);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.6);
+    }
+
+    .visualizer .bar {
+      width: 3px;
+      border-radius: 999px;
+      background: #fbbf24;
+      animation: bounce 0.9s infinite ease-in-out;
+      animation-play-state: paused;
+    }
+
+    .visualizer.is-playing .bar { animation-play-state: running; }
+
+    .visualizer .bar:nth-child(1) { animation-delay: 0s; }
+    .visualizer .bar:nth-child(2) { animation-delay: 0.1s; }
+    .visualizer .bar:nth-child(3) { animation-delay: 0.2s; }
+    .visualizer .bar:nth-child(4) { animation-delay: 0.3s; }
+    .visualizer .bar:nth-child(5) { animation-delay: 0.4s; }
+
+    @keyframes bounce {
+      0%, 100% { height: 4px; opacity: 0.5; }
+      50% { height: 22px; opacity: 1; }
+    }
+
+    .music-player audio {
+      width: 100%;
+      max-width: 380px;
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.7));
+    }
+
+    .music-links {
+      margin-top: 0.6rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .music-links a {
+      font-size: 0.78rem;
+      padding: 0.45rem 0.95rem;
+      border-radius: 999px;
+      border: 1px solid rgba(248,250,252,0.3);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      background: rgba(15,23,42,0.9);
+    }
+
+    /* PLAYLIST */
+    .playlist {
+      list-style: none;
+      margin-top: 0.9rem;
+      border-radius: 18px;
+      border: 1px solid rgba(148,163,184,0.5);
+      background: rgba(15,23,42,0.92);
+      box-shadow: 0 14px 30px rgba(0,0,0,0.7);
+      overflow: hidden;
+    }
+
+    .playlist-item {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      padding: 0.7rem 0.95rem;
+      cursor: pointer;
+      transition: background 0.16s ease, border-color 0.16s ease, transform 0.12s ease;
+      border-bottom: 1px solid rgba(31,41,55,0.9);
+    }
+
+    .playlist-item:last-child { border-bottom: none; }
+
+    .playlist-item:hover {
+      background: rgba(30,64,175,0.45);
+      transform: translateY(-1px);
+    }
+
+    .playlist-item.active {
+      background: linear-gradient(135deg, rgba(59,130,246,0.4), rgba(8,47,73,0.9));
+      border-color: rgba(129,140,248,0.9);
+    }
+
+    .track-index {
+      font-size: 0.78rem;
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(148,163,184,0.7);
+      color: #e5e7eb;
+      flex-shrink: 0;
+    }
+
+    .playlist-item.active .track-index {
+      background: #fbbf24;
+      color: #111827;
+      border-color: #fbbf24;
+    }
+
+    .track-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+
+    .track-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .track-tagline {
+      font-size: 0.78rem;
+      color: #9ca3af;
+    }
+
+    /* VIDEO GRID */
+    .video-grid {
+      margin-top: 1.2rem;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.2rem;
+    }
+
+    @media (max-width: 900px) {
+      .video-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 640px) {
+      .video-grid { grid-template-columns: minmax(0, 1fr); }
+    }
+
+    .video-card {
+      border-radius: 18px;
+      overflow: hidden;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,184,0.4);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.6);
+      transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+    }
+
+    .video-card a {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .video-thumb-wrap {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 16 / 9;
+    }
+
+    .video-thumb-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.22s ease;
+    }
+
+    .video-info {
+      padding: 0.85rem 1rem 1rem;
+    }
+
+    .video-info h3 {
+      font-size: 0.96rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .video-info p {
+      font-size: 0.8rem;
+      color: #9ca3af;
+    }
+
+    .video-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 34px rgba(0,0,0,0.8);
+      border-color: rgba(248,250,252,0.7);
+    }
+
+    .video-card:hover img { transform: scale(1.04); }
+
+    /* SIGNUP */
+    #signup .section-card { text-align: center; }
+
+    #signup .section-kicker,
+    #signup .section-title,
+    #signup .section-text,
+    #signup .signup-note {
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 38rem;
+    }
+
+    .signup-form {
+      margin-top: 1.1rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    .signup-note {
+      margin-top: 0.65rem;
+      font-size: 0.78rem;
+      color: #9ca3af;
+    }
+
+    /* FOOTER */
+    .site-footer {
+      margin-top: 2.8rem;
+      padding-top: 1.1rem;
+      border-top: 1px solid rgba(31,41,55,0.9);
+      font-size: 0.78rem;
+      color: #9ca3af;
+      text-align: center;
+    }
+
+    /* ✅ FOOTER SOCIAL LINKS (UP HIGHER / TIGHTER) */
+    .footer-socials{
+      margin-top: 0.25rem;
+      margin-bottom: 0.55rem;
+      display:flex;
+      justify-content:center;
+      gap:0.75rem;
+      flex-wrap:wrap;
+    }
+    .footer-socials a{
+      font-size:0.68rem;
+      padding:0.28rem 0.85rem;
+      border-radius:999px;
+      border:1px solid rgba(251,191,36,0.65);
+      text-transform:uppercase;
+      letter-spacing:0.22em;
+      color:#fbbf24;
+      background:rgba(15,23,42,0.85);
+      backdrop-filter: blur(10px);
+      transition:background .15s ease,border-color .15s ease,transform .12s ease;
+    }
+    .footer-socials a:hover{
+      background:rgba(251,191,36,0.14);
+      border-color:rgba(251,191,36,1);
+      transform:translateY(-1px);
+    }
+
+    /* ✅ SMALL FLOATING MUSIC LINK (NON-DISRUPTIVE) */
+    .music-fab{
+      position:fixed;
+      bottom:18px;
+      right:18px;
+      z-index:999;
+      padding:10px 16px;
+      border-radius:999px;
+      font-size:0.78rem;
+      font-weight:700;
+      letter-spacing:0.18em;
+      text-transform:uppercase;
+      color:#fbbf24;
+      background:rgba(15,23,42,0.85);
+      border:1px solid rgba(251,191,36,0.65);
+      backdrop-filter:blur(10px);
+      box-shadow:0 8px 24px rgba(0,0,0,0.6);
+      transition:transform .15s ease, background .15s ease, border-color .15s ease;
+    }
+    .music-fab:hover{
+      background:rgba(251,191,36,0.14);
+      border-color:rgba(251,191,36,1);
+      transform:translateY(-2px);
+    }
+
+    @media (max-width: 640px) {
+      .shell { padding-inline: 1.25rem; }
+      .top-bar { flex-direction: column; align-items: flex-start; }
+      /* ✅ UPDATED: center the pill buttons on mobile too */
+      .header-tags { justify-content: center; width: 100%; }
+      .music-fab{ bottom:14px; right:14px; padding:9px 14px; font-size:0.72rem; }
     }
   </style>
 </head>
 
 <body>
-  <main class="shell">
+  <div class="page">
+    <main class="shell">
 
-    <!-- TOP BAR -->
-    <header class="top-bar">
-      <div class="brand-block">
-        <img src="abytransparent.png" class="brand-logo" alt="AWAKENED BY YAH">
-        <div>
-          <span class="brand-title">AWAKENED BY YAH</span>
-          <span class="brand-subtitle">Truth-Based Soul</span>
+      <!-- TOP BAR -->
+      <header class="top-bar">
+        <div class="brand-block">
+          <img src="abytransparent.png" class="brand-logo" alt="Awakened By YAH logo" />
+          <div class="brand-text">
+            <span class="brand-title">AWAKENED BY YAH</span>
+            <span class="brand-subtitle">TRUTH-BASED SOUL</span>
+          </div>
         </div>
-      </div>
 
-      <!-- CENTERED PILLS -->
-      <div class="header-tags">
-        <div class="pill"><span class="pill-dot"></span>NEW MUSIC LIVE</div>
-        <div class="pill pill-gold">100% SET-APART</div>
-      </div>
-    </header>
+        <div class="header-tags">
+          <div class="pill">
+            <span class="pill-dot"></span>
+            <span>NEW MUSIC LIVE</span>
+          </div>
+          <div class="pill pill-gold">
+            <span>100% SET-APART</span>
+          </div>
+        </div>
+      </header>
 
-    <!-- NAV -->
-    <nav class="quick-links">
-      <a href="#music">Music Player</a>
-      <a href="/albums/">Albums</a>
-      <a href="#videos">Videos</a>
-      <a href="#signup">Email Signup</a>
+      <!-- QUICK LINKS -->
+      <nav class="quick-links">
+        <a href="#music">Music Player</a>
+        <a href="/albums/">Albums</a>
+        <a href="#videos">Videos</a>
+        <a href="#signup">Email Signup</a>
 
-      <a class="radio-live" href="https://elect-sounds-radio.page.radio/" target="_blank">📻 Elect Sounds Radio</a>
-      <a class="radio-pop" href="https://link.radioking.com/elect-sounds-radio" data-radio-popup>🔊 Radio Popout</a>
-      <a class="official-contact" href="mailto:yahuahsremnant@gmail.com">Official Contact</a>
-    </nav>
+        <!-- ✅ Elect Sounds Radio (BOTH LINKS, VISIBLE, NO EMBEDS) -->
+        <a class="radio-live"
+           href="https://elect-sounds-radio.page.radio/"
+           target="_blank" rel="noopener">
+          📻 Elect Sounds Radio
+        </a>
 
-  </main>
+        <a class="radio-pop"
+           href="https://link.radioking.com/elect-sounds-radio"
+           data-radio-popup="true">
+          🔊 Radio Popout
+        </a>
+
+        <!-- ✅ OFFICIAL CONTACT (Spotify verification) -->
+        <a class="official-contact"
+          href="mailto:yahuahsremnant@gmail.com?subject=Awakened%20By%20YAH%20Official%20Inquiry"
+          onclick="setTimeout(()=>window.open('https://mail.google.com/mail/?view=cm&fs=1&to=yahuahsremnant@gmail.com&su=Awakened%20By%20YAH%20Official%20Inquiry','_blank','noopener'), 150);">
+          Official Contact
+        </a>
+      </nav>
+
+      <!-- HERO -->
+      <section class="hero">
+        <div class="hero-left">
+          <p class="eyebrow">TRUTH-BASED • SET-APART</p>
+
+          <h1 class="hero-title">
+            <span>SOUL • R&amp;B •</span>
+            <span class="hero-title-main">PRAISE</span>
+          </h1>
+
+          <p class="hero-copy">
+            Welcome to the official home of <strong>Awakened By YAH</strong> — music for the
+            Remnant that refuses to compromise. Press play, feel the conviction, and let your
+            Ruah rise.
+          </p>
+
+          <div class="hero-cta-row">
+            <a href="#music" class="btn btn-primary">🎧 Listen &amp; Download</a>
+            <a href="#signup" class="btn btn-outline">Join The Remnant List</a>
+          </div>
+        </div>
+
+        <aside class="hero-right">
+          <div class="hero-right-inner">
+            <img src="abybanner.png" alt="Awakened By YAH banner" />
+          </div>
+        </aside>
+      </section>
+
+      <!-- MUSIC PLAYER + PLAYLIST -->
+      <section id="music" class="extra-section">
+        <div class="section-card music-player">
+          <p class="section-kicker">Soundtrack For The Awakened</p>
+          <h2 class="section-title">Music Player</h2>
+          <p class="section-text">
+            Rotate through a growing catalog of truth-based, set-apart soul. Tap a track,
+            watch the visualizer move, and let the message hit your Ruah.
+          </p>
+
+          <div class="music-layout">
+            <!-- LEFT: Player -->
+            <div class="player-panel">
+              <div class="now-playing-row">
+                <div>
+                  <span class="np-label">Now Playing</span>
+                  <span class="np-title" id="now-playing-title">Show Me Your Heart</span>
+                </div>
+                <div class="visualizer" id="visualizer">
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+                </div>
+              </div>
+
+              <audio id="audio-player" controls preload="metadata"></audio>
+
+              <div class="music-links">
+                <a href="https://on.soundcloud.com/i63L7q3mKa8ax5xVee" target="_blank" rel="noopener">
+                  Listen on SoundCloud
+                </a>
+              </div>
+            </div>
+
+            <!-- RIGHT: Playlist -->
+            <div>
+              <ul class="playlist" id="playlist">
+                <li class="playlist-item active"
+                    data-src="audio/show-me-your-heart.mp3"
+                    data-title="Show Me Your Heart">
+                  <span class="track-index">1</span>
+                  <div class="track-meta">
+                    <span class="track-title">Show Me Your Heart</span>
+                    <span class="track-tagline">Set-apart soul ballad for the Remnant</span>
+                  </div>
+                </li>
+
+                <li class="playlist-item"
+                    data-src="audio/werise.mp3"
+                    data-title="We Rise">
+                  <span class="track-index">2</span>
+                  <div class="track-meta">
+                    <span class="track-title">We Rise</span>
+                    <span class="track-tagline">Uplifting anthem of awakening and unity</span>
+                  </div>
+                </li>
+
+                <!-- Add more tracks here as you upload them -->
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIDEOS SECTION -->
+      <section id="videos" class="extra-section">
+        <div class="section-card">
+          <p class="section-kicker">Watch &amp; Share</p>
+          <h2 class="section-title">Videos</h2>
+          <p class="section-text">
+            Awakened By YAH music videos, and YAHUAH'S_REMNANT YOUTUBE TEACHINGS. Each card opens the video on YouTube in a new tab.
+          </p>
+
+          <div class="video-grid">
+            <div class="video-card">
+              <a href="https://youtu.be/kzfJWSSkI7M?si=XYzO2Tfy1TLmE0cG" target="_blank" rel="noopener">
+                <div class="video-thumb-wrap">
+                  <img src="https://img.youtube.com/vi/kzfJWSSkI7M/hqdefault.jpg" alt="Can This Song Change Your Life?" />
+                </div>
+                <div class="video-info">
+                  <h3>Can This Song Change Your Life?</h3>
+                  <p>Set-apart soul stirring the hearts of the Remnant.</p>
+                </div>
+              </a>
+            </div>
+
+            <div class="video-card">
+              <a href="https://youtu.be/1OAVoq37Dko?si=bDp14nQPlGLU44p1" target="_blank" rel="noopener">
+                <div class="video-thumb-wrap">
+                  <img src="https://img.youtube.com/vi/1OAVoq37Dko/hqdefault.jpg" alt="Rise Above CHALLENGES with the Power of Unity" />
+                </div>
+                <div class="video-info">
+                  <h3>Rise Above CHALLENGES with the Power of Unity</h3>
+                  <p>Music for standing together in faith and endurance.</p>
+                </div>
+              </a>
+            </div>
+
+            <div class="video-card">
+              <a href="https://youtu.be/DQJLaqlsi8E?si=81XgrXz_dDwMKyh-" target="_blank" rel="noopener">
+                <div class="video-thumb-wrap">
+                  <img src="https://img.youtube.com/vi/DQJLaqlsi8E/hqdefault.jpg" alt="Unbroken Frequency Remix" />
+                </div>
+                <div class="video-info">
+                  <h3>Unbroken Frequency Remix</h3>
+                  <p>Is this the anthem of the Remnant rising?</p>
+                </div>
+              </a>
+            </div>
+
+            <div class="video-card">
+              <a href="https://youtu.be/6QeUzd-GIm0?si=NJmNSKAA3wxF_3fD" target="_blank" rel="noopener">
+                <div class="video-thumb-wrap">
+                  <img src="https://img.youtube.com/vi/6QeUzd-GIm0/hqdefault.jpg" alt="This Song Will Touch Your Heart!" />
+                </div>
+                <div class="video-info">
+                  <h3>This Song Will Touch Your Heart!</h3>
+                  <p>A message of comfort, conviction, and hope.</p>
+                </div>
+              </a>
+            </div>
+
+            <div class="video-card">
+              <a href="https://youtu.be/2rJvyafJJoY?si=XKQ9GixFyLKxRu-L" target="_blank" rel="noopener">
+                <div class="video-thumb-wrap">
+                  <img src="https://img.youtube.com/vi/2rJvyafJJoY/hqdefault.jpg" alt="This Song Will Lift Your Spirit! (1)" />
+                </div>
+                <div class="video-info">
+                  <h3>This Song Will Lift Your Spirit! (1)</h3>
+                  <p>Uplifting praise to strengthen weary hearts.</p>
+                </div>
+              </a>
+            </div>
+
+            <div class="video-card">
+              <a href="https://youtu.be/tuINdGY_XbM?si=qIXGEpFoRrgUupHM" target="_blank" rel="noopener">
+                <div class="video-thumb-wrap">
+                  <img src="https://img.youtube.com/vi/tuINdGY_XbM/hqdefault.jpg" alt="This Song Will Lift Your Spirit! (2)" />
+                </div>
+                <div class="video-info">
+                  <h3>This Song Will Lift Your Spirit! (2)</h3>
+                  <p>Another wave of set-apart sound for Yasharal.</p>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- EMAIL SIGNUP -->
+      <section id="signup" class="extra-section">
+        <div class="section-card">
+          <p class="section-kicker">Stay Connected</p>
+          <h2 class="section-title">Email Signup</h2>
+          <p class="section-text">
+            Join the <strong>Remnant List</strong> to get early access to new releases,
+            behind-the-scenes sessions, and updates on truth-based projects from
+            Awakened By YAH.
+          </p>
+
+          <div class="signup-form">
+            <script async src="https://eocampaign1.com/form/6bc338e0-c532-11f0-9c5d-bdac12d6eac9.js"
+                    data-form="6bc338e0-c532-11f0-9c5d-bdac12d6eac9"></script>
+          </div>
+
+          <p class="signup-note">
+            Your email is submitted securely over HTTPS. No mail app needed — just enter your
+            address and join the movement.
+          </p>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="site-footer">
+        <div class="footer-socials">
+          <a href="https://open.spotify.com/artist/0u6jzM2fSRodmTq61j0z0R?si=fP3WoH4ORbuPNaazgkN0aA" target="_blank" rel="noopener">Spotify</a>
+          <a href="https://music.apple.com/us/artist/awakened-by-yah/1860666182" target="_blank" rel="noopener">Apple Music</a>
+          <a href="https://www.tiktok.com/@awakened_by_yah?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">TikTok</a>
+        </div>
+
+        <span id="year"></span> © AWAKENED BY YAH MUSIC GROUP — All Rights Reserved.
+      </footer>
+
+    </main>
+  </div>
+
+  <!-- ✅ SMALL NON-DISRUPTIVE LINK TO MUSIC PAGE (UPDATED) -->
+  <a href="/music/" class="music-fab" aria-label="Open Music Player">🎧 Music</a>
+
+  <!-- ✅ RADIO POPUP HANDLER (NO EMBED, NO LAYOUT IMPACT) -->
+  <script>
+    (function(){
+      function openRadioPopup(url){
+        // Desktop popup (no embed). Mobile tends to block popups -> fall back to new tab.
+        var w = 460, h = 720;
+        var left = Math.max(0, Math.floor((window.screen.width - w) / 2));
+        var top  = Math.max(0, Math.floor((window.screen.height - h) / 2));
+
+        var features = [
+          'popup=yes',
+          'noopener=yes',
+          'noreferrer=yes',
+          'width=' + w,
+          'height=' + h,
+          'left=' + left,
+          'top=' + top
+        ].join(',');
+
+        var win = window.open(url, 'elect_sounds_radio', features);
+
+        // If blocked, open in a normal tab
+        if (!win) {
+          window.open(url, '_blank', 'noopener');
+          return;
+        }
+        try { win.focus(); } catch(e){}
+      }
+
+      document.addEventListener('click', function(e){
+        var a = e.target.closest && e.target.closest('a[data-radio-popup="true"]');
+        if (!a) return;
+        e.preventDefault();
+        openRadioPopup(a.href);
+      });
+    })();
+  </script>
+
+  <!-- PLAYER + VISUALIZER + COPYRIGHT SCRIPT -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Set current year in footer
+      var yearSpan = document.getElementById('year');
+      if (yearSpan) {
+        yearSpan.textContent = new Date().getFullYear();
+      }
+
+      var audio = document.getElementById('audio-player');
+      var playlistEl = document.getElementById('playlist');
+      var nowPlayingTitle = document.getElementById('now-playing-title');
+      var visualizer = document.getElementById('visualizer');
+
+      if (!audio || !playlistEl) return;
+
+      var items = Array.prototype.slice.call(
+        playlistEl.querySelectorAll('.playlist-item')
+      );
+
+      function setActiveTrack(index, autoplay) {
+        var item = items[index];
+        if (!item) return;
+
+        items.forEach(function (el) { el.classList.remove('active'); });
+        item.classList.add('active');
+
+        var src = item.getAttribute('data-src');
+        var title = item.getAttribute('data-title') || 'Now Playing';
+
+        audio.src = src;
+        nowPlayingTitle.textContent = title;
+
+        if (autoplay) {
+          audio.play().catch(function (err) {
+            console.log('Playback was blocked:', err);
+          });
+        }
+      }
+
+      items.forEach(function (item, index) {
+        item.addEventListener('click', function () {
+          setActiveTrack(index, true);
+        });
+      });
+
+      audio.addEventListener('play', function () {
+        if (visualizer) visualizer.classList.add('is-playing');
+      });
+
+      function stopViz() {
+        if (visualizer) visualizer.classList.remove('is-playing');
+      }
+
+      audio.addEventListener('pause', stopViz);
+      audio.addEventListener('ended', function () {
+        stopViz();
+        var currentIndex = items.findIndex(function (el) {
+          return el.classList.contains('active');
+        });
+        var nextIndex = (currentIndex + 1) % items.length;
+        setActiveTrack(nextIndex, true);
+      });
+
+      // Initialize first track (no autoplay to respect browser rules)
+      setActiveTrack(0, false);
+    });
+  </script>
 </body>
 </html>
