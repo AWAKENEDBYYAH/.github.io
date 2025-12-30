@@ -277,7 +277,9 @@
 
       <div class="top-actions">
         <a class="btn" href="/music.html">MUSIC</a>
-        <a class="btn primary" href="/subscribe.html" id="joinBtn">JOIN & STREAM</a>
+
+        <!-- ✅ PATCH: point to folder route (works with /subscribe/index.html) -->
+        <a class="btn primary" href="/subscribe/" id="joinBtn">JOIN & STREAM</a>
       </div>
     </div>
   </div>
@@ -297,8 +299,6 @@
         <div class="pill"><div class="dot"></div><div><strong>FAN EXCLUSIVES</strong><span>Exclusive tracks and versions (optional).</span></div></div>
         <div class="pill"><div class="dot"></div><div><strong>ARTIST-OWNED</strong><span>No ads. No algorithms. No compromise.</span></div></div>
       </div>
-
-      <!-- ✅ NOTE REMOVED (no public admin hints) -->
     </section>
 
     <aside class="card">
@@ -381,24 +381,24 @@
     // =======================
     const SUPABASE_URL = "https://fgqzopgqtownfvohtlcq.supabase.co";
 
-    // Publishable key (Settings → API Keys → Publishable key)
-    // starts with sb_publishable_
+    // ✅ PATCH: stronger key validation (must start with sb_publishable_ and NOT be the placeholder)
     const SUPABASE_PUBLISHABLE_KEY = "sb_publishable__LlL7rsAYeDlub9OmvofaA_ck1tKqca";
 
     // Edge function that returns { subscribed: true/false }
     const CHECK_SUB_FN = "check-subscription";
 
-    // Where people go
-    const STREAM_PAGE = "/stream.html";
-    const SUBSCRIBE_PAGE = "/subscribe.html";
+    // ✅ PATCH: point to folder routes (works with /stream/index.html and /subscribe/index.html)
+    const STREAM_PAGE = "/stream/";
+    const SUBSCRIBE_PAGE = "/subscribe/";
 
     // ✅ Your site session key for gating/roles across pages
     const SITE_SESSION_KEY = "aby_stream_session";
 
-    // ✅ Owner allowlist (hidden from public UI)
+    // ✅ PATCH: owner allowlist updated (kept hidden from UI)
     const OWNER_EMAILS = [
       "mayakaalbenyasharal@gmail.com",
-      "dalilayah3130@gmail.com"
+      "dalilayah3130@gmail.com",
+      "yahuahsremnant@gmail.com"
     ];
 
     const $ = (id) => document.getElementById(id);
@@ -411,9 +411,15 @@
     }
 
     function missingKeyGuard(){
-      if (!SUPABASE_PUBLISHABLE_KEY || SUPABASE_PUBLISHABLE_KEY.includes("PASTE_")){
-        showToast("bad", "Supabase key missing. Paste your Publishable key (sb_publishable_...) into the page code.");
-        console.warn("Missing SUPABASE_PUBLISHABLE_KEY. Paste the sb_publishable_ key from Supabase Settings → API Keys.");
+      const k = (SUPABASE_PUBLISHABLE_KEY || "").trim();
+
+      // must look like sb_publishable_...
+      const okPrefix = k.startsWith("sb_publishable_");
+      const looksPlaceholder = k.includes("PASTE_") || k.length < 30;
+
+      if (!okPrefix || looksPlaceholder){
+        showToast("bad", "Supabase key missing/invalid. Paste your Publishable key (sb_publishable_...) into the page code.");
+        console.warn("Invalid SUPABASE_PUBLISHABLE_KEY. Use Supabase Settings → API Keys → Publishable key (sb_publishable_...).");
         return true;
       }
       return false;
@@ -424,7 +430,7 @@
       return OWNER_EMAILS.includes(e) ? "KINGDOM_PARTNER" : "Supporter";
     }
 
-    // Redirect support: login.html?redirect=/stream.html
+    // Redirect support: login.html?redirect=/stream/
     function getRedirectPath(){
       const u = new URL(window.location.href);
       const r = u.searchParams.get("redirect");
@@ -531,9 +537,12 @@
 
       try{
         const client = activeClient();
+
+        // ✅ PATCH: reset lands on /reset/ (works with /reset/index.html)
         const { error } = await client.auth.resetPasswordForEmail(email, {
-          redirectTo: window.location.origin + "/reset.html"
+          redirectTo: window.location.origin + "/reset/"
         });
+
         if (error) throw error;
         showToast("ok", "Password reset email sent. Check your inbox.");
       }catch(err){
@@ -563,12 +572,15 @@
           return;
         }
 
+        // ✅ PATCH: add Accept header + x-client-info (helps some edge setups)
         const res = await fetch(`${SUPABASE_URL}/functions/v1/${CHECK_SUB_FN}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Accept": "application/json",
             "Authorization": `Bearer ${session.access_token}`,
-            "apikey": SUPABASE_PUBLISHABLE_KEY
+            "apikey": SUPABASE_PUBLISHABLE_KEY,
+            "x-client-info": "aby-web-login"
           },
           body: JSON.stringify({})
         });
@@ -661,6 +673,7 @@
           email,
           password: pw1,
           options: {
+            // ✅ PATCH: keep signup redirect clean
             emailRedirectTo: window.location.origin + "/login.html"
           }
         });
