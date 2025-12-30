@@ -119,6 +119,24 @@
       border-color: rgba(251,191,36,0.95);
     }
 
+    /* ✅ ELECT SOUNDS RADIO LINKS (NON-DISRUPTIVE, VISIBLE, TOP PLACEMENT) */
+    .quick-links a.radio-live{
+      border-color: rgba(34,197,94,0.65);
+      color:#bbf7d0;
+    }
+    .quick-links a.radio-live:hover{
+      background: rgba(34,197,94,0.12);
+      border-color: rgba(34,197,94,1);
+    }
+    .quick-links a.radio-pop{
+      border-color: rgba(96,165,250,0.65);
+      color:#dbeafe;
+    }
+    .quick-links a.radio-pop:hover{
+      background: rgba(96,165,250,0.12);
+      border-color: rgba(96,165,250,1);
+    }
+
     /* HERO */
     .hero {
       display: grid;
@@ -611,6 +629,19 @@
         <a href="#videos">Videos</a>
         <a href="#signup">Email Signup</a>
 
+        <!-- ✅ Elect Sounds Radio (BOTH LINKS, VISIBLE, NO EMBEDS) -->
+        <a class="radio-live"
+           href="https://elect-sounds-radio.page.radio/"
+           target="_blank" rel="noopener">
+          📻 Elect Sounds Radio
+        </a>
+
+        <a class="radio-pop"
+           href="https://link.radioking.com/elect-sounds-radio"
+           data-radio-popup="true">
+          🔊 Radio Popout
+        </a>
+
         <!-- ✅ OFFICIAL CONTACT (Spotify verification) -->
         <a class="official-contact"
           href="mailto:yahuahsremnant@gmail.com?subject=Awakened%20By%20YAH%20Official%20Inquiry"
@@ -838,6 +869,44 @@
 
   <!-- ✅ SMALL NON-DISRUPTIVE LINK TO MUSIC PAGE (UPDATED) -->
   <a href="/music/" class="music-fab" aria-label="Open Music Player">🎧 Music</a>
+
+  <!-- ✅ RADIO POPUP HANDLER (NO EMBED, NO LAYOUT IMPACT) -->
+  <script>
+    (function(){
+      function openRadioPopup(url){
+        // Desktop popup (no embed). Mobile tends to block popups -> fall back to new tab.
+        var w = 460, h = 720;
+        var left = Math.max(0, Math.floor((window.screen.width - w) / 2));
+        var top  = Math.max(0, Math.floor((window.screen.height - h) / 2));
+
+        var features = [
+          'popup=yes',
+          'noopener=yes',
+          'noreferrer=yes',
+          'width=' + w,
+          'height=' + h,
+          'left=' + left,
+          'top=' + top
+        ].join(',');
+
+        var win = window.open(url, 'elect_sounds_radio', features);
+
+        // If blocked, open in a normal tab
+        if (!win) {
+          window.open(url, '_blank', 'noopener');
+          return;
+        }
+        try { win.focus(); } catch(e){}
+      }
+
+      document.addEventListener('click', function(e){
+        var a = e.target.closest && e.target.closest('a[data-radio-popup="true"]');
+        if (!a) return;
+        e.preventDefault();
+        openRadioPopup(a.href);
+      });
+    })();
+  </script>
 
   <!-- PLAYER + VISUALIZER + COPYRIGHT SCRIPT -->
   <script>
