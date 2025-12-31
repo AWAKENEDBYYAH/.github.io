@@ -1,0 +1,411 @@
+<!-- /press/index.html  |  PRESS HUB for AWAKENED BY YAH MUSIC
+     - Short + powerful (not a long page)
+     - Links out to /press/music/ and /press/media/
+     - SEO-ready + matches your dark/brand-blue style
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <title>Press & Media | AWAKENED BY YAH MUSIC</title>
+  <meta name="description" content="Official press hub for AWAKENED BY YAH MUSIC — truth-based soul & R&B artist. Bio, official links, music highlights, and media resources." />
+  <link rel="canonical" href="https://awakenedbyyahmusic.com/press/" />
+
+  <meta name="theme-color" content="#1C39A8" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Press & Media | AWAKENED BY YAH MUSIC" />
+  <meta property="og:description" content="Official press hub for AWAKENED BY YAH MUSIC — bio, official links, music highlights, and media resources." />
+  <meta property="og:url" content="https://awakenedbyyahmusic.com/press/" />
+  <meta property="og:image" content="https://awakenedbyyahmusic.com/abytransparent.png" />
+
+  <!-- Icons -->
+  <link rel="icon" type="image/png" href="/abytransparent.png">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" href="/favicon.png">
+
+  <style>
+    :root{
+      --bg:#020617;
+      --panel:rgba(255,255,255,.06);
+      --panel2:rgba(255,255,255,.04);
+      --text:#e5e7eb;
+      --muted:#94a3b8;
+      --line:rgba(255,255,255,.12);
+      --brand:#1C39A8;
+      --glow:rgba(28,57,168,.35);
+      --radius:18px;
+      --shadow: 0 18px 60px rgba(0,0,0,.45);
+      --max: 1080px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(1000px 520px at 10% -10%, rgba(28,57,168,.35), transparent 60%),
+        radial-gradient(900px 460px at 100% 10%, rgba(255,255,255,.10), transparent 55%),
+        var(--bg);
+      color:var(--text);
+      line-height:1.5;
+    }
+    a{color:inherit}
+    .skip{
+      position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden;
+    }
+    .skip:focus{
+      left:16px; top:16px; width:auto; height:auto;
+      background:#000; color:#fff; padding:10px 12px; border-radius:10px; z-index:9999;
+      border:1px solid var(--line);
+    }
+
+    header{
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(10px);
+      background: rgba(2,6,23,.72);
+      border-bottom: 1px solid var(--line);
+    }
+    .navwrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding: 14px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+    }
+    .brandLink{
+      display:flex; align-items:center; gap:10px; text-decoration:none;
+      min-width: 240px;
+    }
+    .brandLink img{
+      width:34px; height:34px; border-radius:10px;
+      box-shadow: 0 0 0 1px rgba(255,255,255,.08);
+    }
+    .brandLink strong{
+      letter-spacing:.6px;
+      text-transform: uppercase;
+      font-size: 13px;
+    }
+    nav{
+      display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;
+    }
+    .navlink{
+      text-decoration:none;
+      font-size: 13px;
+      color: var(--muted);
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      transition: .15s ease;
+      white-space: nowrap;
+    }
+    .navlink:hover{
+      color: var(--text);
+      border-color: rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+    }
+    .navlink.active{
+      color: var(--text);
+      border-color: rgba(28,57,168,.55);
+      background: rgba(28,57,168,.16);
+      box-shadow: 0 0 0 4px rgba(28,57,168,.10);
+    }
+
+    main{
+      max-width:var(--max);
+      margin: 0 auto;
+      padding: 28px 16px 80px;
+    }
+
+    .hero{
+      padding: 22px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+    .hero:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(620px 190px at 25% 0%, rgba(28,57,168,.50), transparent 60%);
+      pointer-events:none;
+    }
+    .hero > *{position:relative}
+    .eyebrow{
+      display:inline-block;
+      font-size: 12px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    h1{
+      margin: 0 0 6px;
+      font-size: clamp(28px, 4vw, 44px);
+      letter-spacing: .02em;
+    }
+    .subhead{
+      margin: 0 0 16px;
+      color: var(--muted);
+      max-width: 80ch;
+      font-size: 15px;
+    }
+    .ctaRow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-top: 12px;
+    }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      gap:10px;
+      padding: 10px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.14);
+      text-decoration:none;
+      color: var(--text);
+      background: rgba(255,255,255,.05);
+      transition: .15s ease;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,.22);
+      background: rgba(255,255,255,.07);
+    }
+    .btn.primary{
+      border-color: rgba(28,57,168,.70);
+      background: rgba(28,57,168,.22);
+      box-shadow: 0 0 0 6px rgba(28,57,168,.10);
+    }
+    .btn.primary:hover{
+      background: rgba(28,57,168,.28);
+      box-shadow: 0 0 0 8px rgba(28,57,168,.12);
+    }
+    .btn.small{padding: 8px 12px; font-size: 13px;}
+
+    .grid{
+      margin-top: 14px;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    @media (min-width: 960px){
+      .grid{grid-template-columns: 1.1fr .9fr;}
+    }
+
+    .card{
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: 0 14px 40px rgba(0,0,0,.35);
+    }
+    .kicker{
+      font-size: 12px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .card h2{margin: 0 0 10px; font-size: 18px;}
+    .card h3{
+      margin: 14px 0 8px;
+      font-size: 14px;
+      color: var(--muted);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .rule{height:1px; background: var(--line); margin: 12px 0;}
+    p{margin: 0 0 10px;}
+    .muted{color: var(--muted);}
+    .list{margin:0; padding-left:18px;}
+    .list li{margin: 6px 0;}
+    .pillRow{display:flex; flex-wrap:wrap; gap:8px; margin-top: 10px;}
+    .pill{
+      font-size: 12px;
+      color: var(--muted);
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      padding: 6px 10px;
+      border-radius: 999px;
+    }
+
+    footer{
+      max-width:var(--max);
+      margin: 30px auto 0;
+      padding: 14px 16px 32px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .footline{
+      border-top: 1px solid rgba(255,255,255,.10);
+      padding-top: 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      flex-wrap:wrap;
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip" href="#content">Skip to content</a>
+
+  <header>
+    <div class="navwrap">
+      <a class="brandLink" href="/" aria-label="Go to homepage">
+        <img src="/abytransparent.png" alt="AWAKENED BY YAH MUSIC logo" />
+        <div>
+          <strong>AWAKENED BY YAH MUSIC</strong><br>
+          <span class="muted" style="font-size:12px;">Press Hub</span>
+        </div>
+      </a>
+
+      <nav aria-label="Primary navigation">
+        <!-- Update these links to match your actual page paths -->
+        <a class="navlink" href="/music/">Music</a>
+        <a class="navlink" href="/albums/">Albums</a>
+        <a class="navlink" href="/videos/">Videos</a>
+        <a class="navlink active" href="/press/">Press</a>
+        <a class="navlink" href="/subscribe/">Subscribe</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="content">
+    <section class="hero" aria-label="Press hub hero">
+      <span class="eyebrow">Official Press Hub</span>
+      <h1>Press & Media</h1>
+      <p class="subhead">
+        Official press information and media resources for <strong>AWAKENED BY YAH MUSIC</strong>.
+        Use this hub for bios, official links, music highlights, and interviews/spotlights as they release.
+      </p>
+
+      <div class="ctaRow">
+        <a class="btn primary" href="https://awakenedbyyahmusic.com/" target="_blank" rel="noopener">
+          Official Website
+        </a>
+        <a class="btn" href="/press/music/">Press Page 2: Music</a>
+        <a class="btn" href="/press/media/">Press Page 3: Media</a>
+      </div>
+
+      <div class="pillRow" aria-label="Brand tags">
+        <span class="pill">Truth-Based</span>
+        <span class="pill">Soul</span>
+        <span class="pill">R&amp;B</span>
+        <span class="pill">Purpose-Driven</span>
+        <span class="pill">Independent Artist</span>
+      </div>
+    </section>
+
+    <section class="grid">
+      <!-- Left: Bio -->
+      <article class="card" aria-label="Artist bio">
+        <div class="kicker">About</div>
+        <h2>AWAKENED BY YAH MUSIC</h2>
+
+        <h3>Short Bio</h3>
+        <p>
+          <strong>AWAKENED BY YAH MUSIC</strong> is a truth-based soul and R&amp;B artist creating music rooted in endurance,
+          obedience, and calling on the Name of YAH. Through emotionally rich sound and purpose-driven lyrics, the music
+          speaks to the awakening of Yasharal and those walking a disciplined, set-apart path in a noisy world.
+        </p>
+
+        <h3>Long Bio</h3>
+        <p>
+          <strong>AWAKENED BY YAH MUSIC</strong> is a truth-based soul and R&amp;B artist whose music is rooted in endurance,
+          awakening, and alignment with the Word. Each song is crafted to strengthen the Remnant — those seeking truth
+          beyond tradition and walking a disciplined, set-apart path. Blending emotional depth with scripture-anchored
+          themes, AWAKENED BY YAH MUSIC delivers sound that ministers, challenges, and restores.
+        </p>
+        <p>
+          The mission is not fame, but faithfulness — using music as a tool of remembrance, encouragement, and truth in a
+          generation surrounded by noise.
+        </p>
+
+        <div class="rule"></div>
+
+        <h3>Official Link for Press</h3>
+        <p class="muted" style="margin-bottom:8px;">
+          When sharing interviews, articles, or features, link to this page:
+        </p>
+        <div class="ctaRow">
+          <a class="btn primary" href="https://awakenedbyyahmusic.com/press/" target="_blank" rel="noopener">
+            https://awakenedbyyahmusic.com/press/
+          </a>
+        </div>
+      </article>
+
+      <!-- Right: Quick facts + Platforms -->
+      <aside class="card" aria-label="Press quick facts">
+        <div class="kicker">Media Resources</div>
+        <h2>Quick Facts</h2>
+
+        <ul class="list">
+          <li><strong>Artist Name:</strong> AWAKENED BY YAH MUSIC</li>
+          <li><strong>Genres:</strong> Truth-Based Soul, R&amp;B, Praise</li>
+          <li><strong>Primary Site:</strong> awakenedbyyahmusic.com</li>
+          <li><strong>Press Hub:</strong> awakenedbyyahmusic.com/press/</li>
+        </ul>
+
+        <div class="rule"></div>
+
+        <h3>Press Pages</h3>
+        <p class="muted">Use these when you want to link to specific resources:</p>
+        <div class="ctaRow">
+          <a class="btn" href="/press/music/">Page 2: Music Highlights</a>
+          <a class="btn" href="/press/media/">Page 3: Spotlight & Interviews</a>
+        </div>
+
+        <div class="rule"></div>
+
+        <h3>Platforms</h3>
+        <p class="muted" style="margin-bottom:10px;">
+          (Optional) Add your exact profile links here.
+        </p>
+
+        <div class="ctaRow">
+          <!-- Replace # with your real links when ready -->
+          <a class="btn small" href="#" target="_blank" rel="noopener">Spotify</a>
+          <a class="btn small" href="#" target="_blank" rel="noopener">SoundCloud</a>
+          <a class="btn small" href="#" target="_blank" rel="noopener">YouTube</a>
+          <a class="btn small" href="#" target="_blank" rel="noopener">TikTok</a>
+        </div>
+
+        <div class="rule"></div>
+
+        <h3>Contact</h3>
+        <p class="muted" style="margin-bottom:6px;">
+          For interviews, features, and press inquiries:
+        </p>
+        <!-- Replace email when ready -->
+        <p style="margin:0;">
+          <strong>Email:</strong> <a href="mailto:awakenedbyyahmusic@yourdomain.com">awakenedbyyahmusic@yourdomain.com</a>
+        </p>
+      </aside>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footline">
+      <span>© <span id="y"></span> AWAKENED BY YAH MUSIC</span>
+      <span>Press Hub: <a href="/press/">awakenedbyyahmusic.com/press/</a></span>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
