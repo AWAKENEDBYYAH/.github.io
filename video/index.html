@@ -72,7 +72,7 @@
       box-shadow: 0 0 0 1px rgba(28,57,168,.15), 0 18px 60px rgba(28,57,168,.12);
     }
 
-    main{padding:30px 0 60px}
+    main{padding:30px 0 70px}
     .card{
       border-radius:var(--radius);
       border:1px solid rgba(255,255,255,.12);
@@ -80,50 +80,116 @@
       box-shadow:var(--shadow);
       overflow:hidden;
     }
-
     .hero{padding:22px}
-    h1{margin:0 0 8px;font-size:clamp(24px,3.2vw,40px);letter-spacing:.6px}
+    h1{margin:0 0 8px;font-size:clamp(26px,3.4vw,44px);letter-spacing:.6px}
     p{margin:0;color:var(--muted);line-height:1.55}
 
-    .grid{
-      margin-top:18px;
-      display:grid;
-      grid-template-columns:repeat(3,1fr);
-      gap:14px;
-    }
-    .tile{
-      padding:14px;
-      border-radius:18px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(255,255,255,.04);
-      min-height:120px;
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-    }
-    .tile b{font-size:14px;letter-spacing:.3px}
-    .tile small{color:var(--muted);line-height:1.45}
     .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
     .btn{
       display:inline-flex;align-items:center;justify-content:center;gap:10px;
       padding:12px 16px;border-radius:999px;cursor:pointer;
       border:1px solid rgba(255,255,255,.16);
       background:rgba(255,255,255,.05);
+      transition:transform .15s ease, border-color .15s ease, background .15s ease;
+      font-weight:600;
     }
+    .btn:hover{transform:translateY(-1px);border-color:rgba(255,255,255,.24);background:rgba(255,255,255,.07)}
     .btn.primary{
       background:linear-gradient(180deg, rgba(28,57,168,.55), rgba(28,57,168,.22));
       border-color:rgba(28,57,168,.55);
     }
 
-    .placeholder{
+    .sectionTitle{
+      margin: 18px 0 10px;
+      font-size: 13px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: rgba(229,231,235,.78);
+    }
+
+    /* --- video layout --- */
+    .featured{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap:14px;
+      align-items:stretch;
+    }
+    .panel{
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      padding: 14px;
+    }
+
+    .videoWrap{
+      border-radius: 16px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.25);
+    }
+    video{
+      width:100%;
+      height:auto;
+      display:block;
+      background:#000;
+    }
+
+    .meta b{display:block; font-size:15px; letter-spacing:.2px}
+    .meta small{display:block; margin-top:6px; color:var(--muted); line-height:1.5}
+
+    .grid{
+      margin-top:12px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .tile{
+      padding: 12px;
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .thumb{
+      border-radius: 14px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.25);
+    }
+    .thumb video{ border-radius:0; }
+
+    .playHint{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:center;
+      color: rgba(229,231,235,.85);
+      font-size: 13px;
+    }
+    .tag{
+      font-size:12px;
+      color: var(--muted);
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      padding: 6px 10px;
+      border-radius: 999px;
+      width: fit-content;
+    }
+
+    .note{
       margin-top:16px;
       border-top:1px solid rgba(255,255,255,.10);
-      padding-top:16px;
-      color:rgba(229,231,235,.75);
+      padding-top:14px;
+      color:rgba(229,231,235,.72);
       font-size:13px;
     }
 
-    @media (max-width: 900px){
+    @media (max-width: 980px){
+      .featured{grid-template-columns:1fr}
       .grid{grid-template-columns:1fr}
       .brand{min-width:0}
       .navlinks{justify-content:flex-start}
@@ -163,23 +229,75 @@
           <a class="btn" href="/music/">Go to Music</a>
         </div>
 
-        <div class="grid">
-          <div class="tile">
-            <b>Featured Video</b>
-            <small>Drop your main feature here (YouTube embed, MP4, or a featured reel).</small>
+        <!-- ✅ FEATURED FULL VIDEO -->
+        <div class="sectionTitle">Featured Video</div>
+        <div class="featured">
+          <div class="panel">
+            <div class="videoWrap">
+              <!-- ✅ Update src to your real filename -->
+              <video controls preload="metadata" playsinline
+                     src="/video/assets/full-video.mp4"
+                     poster="/video/assets/poster-full.jpg">
+                Sorry, your browser does not support embedded video.
+              </video>
+            </div>
           </div>
-          <div class="tile">
-            <b>Short Clips</b>
-            <small>Add 3–6 short clips as tiles with thumbnails and links.</small>
-          </div>
-          <div class="tile">
-            <b>Live Performances</b>
-            <small>Optional section for interviews, live sets, and station appearances.</small>
+
+          <div class="panel meta">
+            <b>Full Video Title</b>
+            <small>
+              Replace this text with the official title + a 1–2 sentence description.
+              You can also include a “Release date” line if you want.
+            </small>
+            <div style="height:10px"></div>
+            <div class="tag">Official Visual</div>
           </div>
         </div>
 
-        <div class="placeholder">
-          Tip: If you want, I can format this page with a clean YouTube embed grid + thumbnails once you tell me what videos to feature.
+        <!-- ✅ SHORT CLIP -->
+        <div class="sectionTitle">Short Clip</div>
+        <div class="grid">
+          <div class="tile">
+            <div class="thumb">
+              <!-- ✅ Update src to your real filename -->
+              <video controls preload="metadata" playsinline
+                     src="/video/assets/clip-1.mp4"
+                     poster="/video/assets/poster-clip.jpg">
+              </video>
+            </div>
+
+            <div class="playHint">
+              <span><strong>Clip 1</strong></span>
+              <span class="tag">Snippet</span>
+            </div>
+            <small style="color:var(--muted);line-height:1.5">
+              Add a short line describing what this clip is (hook, chorus, message, etc.).
+            </small>
+          </div>
+
+          <!-- Optional placeholders (delete if you only have 1 clip) -->
+          <div class="tile" style="opacity:.55">
+            <div class="thumb" style="aspect-ratio:16/9"></div>
+            <div class="playHint">
+              <span><strong>Clip 2</strong></span>
+              <span class="tag">Coming</span>
+            </div>
+            <small style="color:var(--muted);line-height:1.5">Drop a new clip anytime.</small>
+          </div>
+
+          <div class="tile" style="opacity:.55">
+            <div class="thumb" style="aspect-ratio:16/9"></div>
+            <div class="playHint">
+              <span><strong>Clip 3</strong></span>
+              <span class="tag">Coming</span>
+            </div>
+            <small style="color:var(--muted);line-height:1.5">Drop a new clip anytime.</small>
+          </div>
+        </div>
+
+        <div class="note">
+          ✅ If you want these to load faster: add poster images (thumbnails).  
+          If you don’t have posters yet, you can remove the <code>poster="..."</code> attributes and it will still work.
         </div>
       </section>
     </div>
