@@ -10,6 +10,13 @@
 
   <meta name="theme-color" content="#1C39A8" />
 
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Media & Interviews | AWAKENED BY YAH MUSIC" />
+  <meta property="og:description" content="Media, interviews, and spotlight features for AWAKENED BY YAH MUSIC. Official interview archive and press references." />
+  <meta property="og:url" content="https://awakenedbyyahmusic.com/press/media/" />
+  <meta property="og:image" content="https://awakenedbyyahmusic.com/press/press-hero.jpg" />
+
   <!-- Icons -->
   <link rel="icon" type="image/png" href="/abytransparent.png">
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -95,7 +102,62 @@
       background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
       border:1px solid var(--line);
       box-shadow:var(--shadow);
+      position:relative;
+      overflow:hidden;
     }
+
+    /* ✅ Match Press Hub style glow */
+    .hero:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(620px 190px at 25% 0%, rgba(28,57,168,.50), transparent 60%);
+      pointer-events:none;
+    }
+    .hero > *{position:relative}
+
+    /* ✅ HERO LAYOUT: TEXT LEFT / IMAGE RIGHT */
+    .heroTop{
+      display:grid;
+      grid-template-columns: 1fr; /* mobile */
+      gap:16px;
+      align-items:center;
+    }
+    @media (min-width: 900px){
+      .heroTop{
+        grid-template-columns: 1.25fr .75fr; /* desktop */
+        gap:18px;
+      }
+    }
+
+    /* ✅ SQUARE IMAGE CARD */
+    .heroMedia{
+      position:relative;
+      width:100%;
+      aspect-ratio: 1 / 1;
+      border-radius:18px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.04);
+      box-shadow:0 14px 40px rgba(0,0,0,.35);
+    }
+    .heroMedia img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      object-position:center 20%; /* faces a little higher */
+      display:block;
+      transform:scale(1.02);
+    }
+    .heroMedia:after{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      background:
+        radial-gradient(60% 70% at 50% 35%, rgba(28,57,168,.20), transparent 65%),
+        linear-gradient(to bottom, rgba(2,6,23,.10), rgba(2,6,23,.55));
+    }
+
     .eyebrow{
       font-size:12px;
       letter-spacing:.18em;
@@ -176,17 +238,29 @@
 <main>
 
   <section class="hero">
-    <span class="eyebrow">Press • Media • Interviews</span>
-    <h1>Media & Interviews</h1>
-    <p class="subhead">
-      This page hosts official interviews, spotlight videos, and media appearances for
-      <strong>AWAKENED BY YAH MUSIC</strong>.  
-      Media features will be published here as they are released.
-    </p>
+    <div class="heroTop">
 
-    <div class="btnrow">
-      <a class="btn primary" href="/press/">← Back to Press Hub</a>
-      <a class="btn" href="https://awakenedbyyahmusic.com/" target="_blank">Official Website</a>
+      <!-- LEFT: TEXT -->
+      <div class="heroCopy">
+        <span class="eyebrow">Press • Media • Interviews</span>
+        <h1>Media &amp; Interviews</h1>
+        <p class="subhead">
+          This page hosts official interviews, spotlight videos, and media appearances for
+          <strong>AWAKENED BY YAH MUSIC</strong>.  
+          Media features will be published here as they are released.
+        </p>
+
+        <div class="btnrow">
+          <a class="btn primary" href="/press/">← Back to Press Hub</a>
+          <a class="btn" href="https://awakenedbyyahmusic.com/" target="_blank" rel="noopener">Official Website</a>
+        </div>
+      </div>
+
+      <!-- RIGHT: SQUARE IMAGE -->
+      <div class="heroMedia" aria-label="Press hero image">
+        <img src="/press/press-hero.jpg" alt="AWAKENED BY YAH MUSIC press hero" loading="eager" />
+      </div>
+
     </div>
   </section>
 
