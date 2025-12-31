@@ -4,13 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
 
-  <title>Music Highlights | AWAKENED BY YAH MUSIC Press</title>
-  <meta name="description" content="Music highlights and featured songs from AWAKENED BY YAH MUSIC. Official press music page for embeds and references." />
+  <title>Music Highlights | AWAKENED BY YAH MUSIC</title>
+  <meta name="description" content="Press music highlights for AWAKENED BY YAH MUSIC — featured songs, embeds, and official linking references." />
   <link rel="canonical" href="https://awakenedbyyahmusic.com/press/music/" />
-
   <meta name="theme-color" content="#1C39A8" />
 
-  <!-- Icons -->
   <link rel="icon" type="image/png" href="/abytransparent.png">
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <link rel="apple-touch-icon" href="/favicon.png">
@@ -19,230 +17,279 @@
     :root{
       --bg:#020617;
       --panel:rgba(255,255,255,.06);
+      --panel2:rgba(255,255,255,.04);
       --text:#e5e7eb;
       --muted:#94a3b8;
       --line:rgba(255,255,255,.12);
       --brand:#1C39A8;
+      --glow:rgba(28,57,168,.35);
       --radius:18px;
-      --shadow:0 18px 60px rgba(0,0,0,.45);
-      --max:1080px;
+      --shadow: 0 18px 60px rgba(0,0,0,.45);
+      --max: 1080px;
     }
     *{box-sizing:border-box}
+    html,body{height:100%}
     body{
       margin:0;
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       background:
         radial-gradient(1000px 520px at 10% -10%, rgba(28,57,168,.35), transparent 60%),
         radial-gradient(900px 460px at 100% 10%, rgba(255,255,255,.10), transparent 55%),
         var(--bg);
       color:var(--text);
-      line-height:1.6;
+      line-height:1.5;
     }
-    a{color:inherit;text-decoration:none}
+    a{color:inherit}
     header{
-      position:sticky;top:0;z-index:50;
-      backdrop-filter:blur(10px);
-      background:rgba(2,6,23,.75);
-      border-bottom:1px solid var(--line);
+      position:sticky; top:0; z-index:50;
+      backdrop-filter: blur(10px);
+      background: rgba(2,6,23,.72);
+      border-bottom: 1px solid var(--line);
     }
     .navwrap{
       max-width:var(--max);
       margin:0 auto;
-      padding:14px 16px;
+      padding: 14px 16px;
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:14px;
     }
-    .brand{
-      display:flex;align-items:center;gap:10px;
+    .brandLink{
+      display:flex; align-items:center; gap:10px; text-decoration:none;
+      min-width: 240px;
     }
-    .brand img{
-      width:34px;height:34px;border-radius:10px;
+    .brandLink img{
+      width:34px; height:34px; border-radius:10px;
+      box-shadow: 0 0 0 1px rgba(255,255,255,.08);
     }
-    .brand strong{
-      font-size:13px;
+    .brandLink strong{
       letter-spacing:.6px;
-      text-transform:uppercase;
+      text-transform: uppercase;
+      font-size: 13px;
     }
-    nav{display:flex;gap:10px;flex-wrap:wrap}
+    nav{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;}
     .navlink{
-      font-size:13px;
-      padding:8px 10px;
-      border-radius:12px;
-      color:var(--muted);
-      border:1px solid transparent;
+      text-decoration:none;
+      font-size: 13px;
+      color: var(--muted);
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      transition: .15s ease;
+      white-space: nowrap;
     }
     .navlink:hover{
-      color:var(--text);
-      background:rgba(255,255,255,.05);
-      border-color:rgba(255,255,255,.12);
+      color: var(--text);
+      border-color: rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
     }
     .navlink.active{
-      color:var(--text);
-      background:rgba(28,57,168,.18);
-      border-color:rgba(28,57,168,.55);
+      color: var(--text);
+      border-color: rgba(28,57,168,.55);
+      background: rgba(28,57,168,.16);
+      box-shadow: 0 0 0 4px rgba(28,57,168,.10);
     }
 
-    main{
-      max-width:var(--max);
-      margin:0 auto;
-      padding:32px 16px 80px;
-    }
+    main{max-width:var(--max); margin: 0 auto; padding: 28px 16px 80px;}
+
     .hero{
-      padding:26px;
-      border-radius:22px;
-      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-      border:1px solid var(--line);
-      box-shadow:var(--shadow);
+      padding: 22px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
     }
+    .hero:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(620px 190px at 25% 0%, rgba(28,57,168,.50), transparent 60%);
+      pointer-events:none;
+    }
+    .hero > *{position:relative}
+
+    /* ✅ Hero layout (text left, image right) */
+    .heroRow{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 18px;
+      align-items:center;
+    }
+    @media (max-width: 920px){
+      .heroRow{grid-template-columns:1fr}
+      .heroArt{justify-self:start}
+    }
+
     .eyebrow{
-      font-size:12px;
-      letter-spacing:.18em;
-      text-transform:uppercase;
-      color:var(--muted);
+      display:inline-block;
+      font-size: 12px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
     }
     h1{
-      margin:6px 0 10px;
-      font-size:clamp(28px,4vw,44px);
+      margin: 0 0 6px;
+      font-size: clamp(28px, 4vw, 44px);
+      letter-spacing: .02em;
     }
     .subhead{
-      color:var(--muted);
-      max-width:75ch;
+      margin: 0 0 16px;
+      color: var(--muted);
+      max-width: 80ch;
+      font-size: 15px;
     }
-    .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    .ctaRow{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top: 12px;}
     .btn{
-      padding:10px 14px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(255,255,255,.05);
-      font-weight:600;
-      font-size:14px;
+      display:inline-flex; align-items:center; justify-content:center;
+      padding: 10px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.14);
+      text-decoration:none;
+      color: var(--text);
+      background: rgba(255,255,255,.05);
+      transition: .15s ease;
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,.22);
+      background: rgba(255,255,255,.07);
     }
     .btn.primary{
-      background:rgba(28,57,168,.25);
-      border-color:rgba(28,57,168,.65);
+      border-color: rgba(28,57,168,.70);
+      background: rgba(28,57,168,.22);
+      box-shadow: 0 0 0 6px rgba(28,57,168,.10);
+    }
+
+    .heroArt{
+      justify-self:end;
+      width:min(360px, 100%);
+      aspect-ratio: 1 / 1;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.14);
+      overflow:hidden;
+      background: rgba(0,0,0,.18);
+      box-shadow: 0 22px 55px rgba(0,0,0,.45);
+    }
+    .heroArt img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
     }
 
     .card{
       margin-top:18px;
-      padding:20px;
-      border-radius:18px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.05);
-      box-shadow:0 14px 40px rgba(0,0,0,.35);
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: 0 14px 40px rgba(0,0,0,.35);
     }
     .kicker{
-      font-size:12px;
-      letter-spacing:.16em;
-      text-transform:uppercase;
-      color:var(--muted);
+      font-size: 12px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
     }
-    h2{margin:8px 0 10px}
-    .song{
-      padding:16px;
-      border-radius:14px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.04);
-      margin-top:14px;
-    }
+    .rule{height:1px; background: var(--line); margin: 12px 0;}
     footer{
       max-width:var(--max);
-      margin:40px auto 0;
-      padding:16px;
-      font-size:12px;
-      color:var(--muted);
-      border-top:1px solid var(--line);
+      margin: 30px auto 0;
+      padding: 14px 16px 32px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .footline{
+      border-top: 1px solid rgba(255,255,255,.10);
+      padding-top: 14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      flex-wrap:wrap;
     }
   </style>
 </head>
 
 <body>
-
-<header>
-  <div class="navwrap">
-    <div class="brand">
-      <img src="/abytransparent.png" alt="AWAKENED BY YAH MUSIC logo">
-      <strong>AWAKENED BY YAH MUSIC</strong>
-    </div>
-
-    <nav>
-      <a class="navlink" href="/">Music Player</a>
-      <a class="navlink" href="/albums.html">Albums</a>
-      <a class="navlink" href="/#videos">Videos</a>
-      <a class="navlink" href="/#signup">Email Signup</a>
-      <a class="navlink" href="https://elect-sounds-radio.page.radio/" target="_blank" rel="noopener">
-        Elect Sounds Radio
+  <header>
+    <div class="navwrap">
+      <a class="brandLink" href="/" aria-label="Go to homepage">
+        <img src="/abytransparent.png" alt="AWAKENED BY YAH MUSIC logo" />
+        <div>
+          <strong>AWAKENED BY YAH MUSIC</strong><br>
+          <span style="font-size:12px;color:var(--muted);">Press • Music</span>
+        </div>
       </a>
-      <a class="navlink active" href="/press/music/">Music</a>
-    </nav>
-  </div>
-</header>
 
-<main>
-
-  <section class="hero">
-    <span class="eyebrow">Press • Music</span>
-    <h1>Music Highlights</h1>
-    <p class="subhead">
-      Featured songs and music highlights from <strong>AWAKENED BY YAH MUSIC</strong>.
-      This page is provided for press, bloggers, and curators to reference and embed music
-      while linking back to the official site.
-    </p>
-
-    <div class="btnrow">
-      <a class="btn primary" href="/press/">← Back to Press Hub</a>
-      <a class="btn" href="/press/media/">Media & Interviews</a>
-      <a class="btn" href="https://awakenedbyyahmusic.com/" target="_blank">Official Website</a>
+      <nav aria-label="Primary navigation">
+        <a class="navlink" href="/music/">Music</a>
+        <a class="navlink" href="/albums/">Albums</a>
+        <a class="navlink" href="/videos/">Videos</a>
+        <a class="navlink active" href="/press/">Press</a>
+        <a class="navlink" href="/subscribe/">Subscribe</a>
+      </nav>
     </div>
-  </section>
+  </header>
 
-  <section class="card">
-    <span class="kicker">Featured Songs</span>
-    <h2>Flagship Tracks</h2>
+  <main>
+    <section class="hero" aria-label="Press music hero">
+      <div class="heroRow">
+        <div>
+          <span class="eyebrow">Press • Music</span>
+          <h1>Music Highlights</h1>
+          <p class="subhead">
+            Featured songs and official music highlights from <strong>AWAKENED BY YAH MUSIC</strong>.
+            This page is for press, bloggers, and curators to reference and embed music while linking back to the official site.
+          </p>
 
-    <div class="song">
-      <strong>Deliver Us</strong>
-      <p class="subhead">
-        A prayerful anthem calling on YAH in times of pressure, endurance, and separation.
+          <div class="ctaRow">
+            <a class="btn primary" href="/press/">← Back to Press Hub</a>
+            <a class="btn" href="/press/media/">Media & Interviews</a>
+            <a class="btn" href="https://awakenedbyyahmusic.com/" target="_blank" rel="noopener">Official Website</a>
+          </div>
+        </div>
+
+        <div class="heroArt" aria-label="Press hero image">
+          <img
+            src="/press/press-hero.jpg?v=2"
+            alt="AWAKENED BY YAH MUSIC press hero"
+            loading="eager"
+            onerror="this.onerror=null;this.src='/abytransparent.png';"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- Replace/keep your existing press-music content below -->
+    <section class="card">
+      <div class="kicker">Featured Songs</div>
+      <h2 style="margin:0 0 10px;">Flagship Tracks</h2>
+      <p style="margin:0;color:var(--muted);">
+        Add your featured tracks, embeds, and short descriptions here (Spotify/SoundCloud/YouTube embeds work great).
       </p>
-    </div>
-
-    <div class="song">
-      <strong>Hear My Voice</strong>
-      <p class="subhead">
-        A heartfelt cry for divine response, rooted in faith, patience, and trust.
+      <div class="rule"></div>
+      <p style="margin:0;color:var(--muted);">
+        When sharing features, link to: <strong>https://awakenedbyyahmusic.com/press/music/</strong>
       </p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footline">
+      <span>© <span id="y"></span> AWAKENED BY YAH MUSIC</span>
+      <span>Press: <a href="/press/">awakenedbyyahmusic.com/press/</a></span>
     </div>
+  </footer>
 
-    <div class="song">
-      <strong>My Eyes Opened Wide</strong>
-      <p class="subhead">
-        A testimony of awakening — clarity, conviction, and forward movement.
-      </p>
-    </div>
-  </section>
-
-  <section class="card">
-    <span class="kicker">For Press & Curators</span>
-    <h2>Linking Instructions</h2>
-    <p class="subhead">
-      When referencing or embedding music, please link to:
-    </p>
-    <p>
-      <strong>https://awakenedbyyahmusic.com/press/music/</strong>
-    </p>
-  </section>
-
-</main>
-
-<footer>
-  © <span id="y"></span> AWAKENED BY YAH MUSIC — Press Music Page
-</footer>
-
-<script>
-  document.getElementById("y").textContent = new Date().getFullYear();
-</script>
-
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
