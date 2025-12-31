@@ -2,7 +2,7 @@
      - Short + powerful (not a long page)
      - Links out to /press/music/ and /press/media/
      - SEO-ready + matches your dark/brand-blue style
-     - ✅ Hero photo installed: /press/press-hero.jpg
+     - ✅ Square hero photo installed BESIDE the words: /press/press-hero.jpg
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -141,24 +141,37 @@
     .hero > *{position:relative}
 
     /* =========================
-       ✅ PRESS HERO IMAGE BLOCK
-       Fills the empty hero space cleanly
+       ✅ HERO LAYOUT (TEXT LEFT / IMAGE RIGHT)
     ========================= */
+    .heroTop{
+      display:grid;
+      grid-template-columns: 1fr; /* mobile default */
+      gap: 16px;
+      align-items:center;
+    }
+    @media (min-width: 900px){
+      .heroTop{
+        grid-template-columns: 1.25fr .75fr; /* desktop split */
+        gap: 18px;
+      }
+    }
+
+    /* Square image card */
     .heroMedia{
       position:relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;  /* ✅ keeps it square */
       border-radius: 18px;
       overflow:hidden;
       border: 1px solid rgba(255,255,255,.12);
       background: rgba(255,255,255,.04);
       box-shadow: 0 14px 40px rgba(0,0,0,.35);
-      height: clamp(210px, 28vw, 380px);
-      margin-bottom: 16px;
     }
     .heroMedia img{
       width:100%;
       height:100%;
-      object-fit: cover;
-      object-position: center 20%; /* adjust if needed */
+      object-fit: cover;       /* ✅ fills square clean */
+      object-position: center; /* adjust if needed */
       display:block;
       transform: scale(1.02);
     }
@@ -169,7 +182,7 @@
       pointer-events:none;
       background:
         radial-gradient(60% 70% at 50% 35%, rgba(28,57,168,.20), transparent 65%),
-        linear-gradient(to bottom, rgba(2,6,23,.15), rgba(2,6,23,.72));
+        linear-gradient(to bottom, rgba(2,6,23,.10), rgba(2,6,23,.55));
     }
 
     .eyebrow{
@@ -320,33 +333,40 @@
   <main id="content">
     <section class="hero" aria-label="Press hub hero">
 
-      <!-- ✅ HERO IMAGE (fills the empty hero area cleanly) -->
-      <div class="heroMedia" aria-label="Press hero image">
-        <img src="/press/press-hero.jpg" alt="AWAKENED BY YAH MUSIC press hero" loading="eager" />
+      <!-- ✅ TEXT + IMAGE SIDE-BY-SIDE -->
+      <div class="heroTop">
+        <!-- LEFT: Copy -->
+        <div class="heroCopy">
+          <span class="eyebrow">Official Press Hub</span>
+          <h1>Press &amp; Media</h1>
+          <p class="subhead">
+            Official press information and media resources for <strong>AWAKENED BY YAH MUSIC</strong>.
+            Use this hub for bios, official links, music highlights, and interviews/spotlights as they release.
+          </p>
+
+          <div class="ctaRow">
+            <a class="btn primary" href="https://awakenedbyyahmusic.com/" target="_blank" rel="noopener">
+              Official Website
+            </a>
+            <a class="btn" href="/press/music/">Press Page 2: Music</a>
+            <a class="btn" href="/press/media/">Press Page 3: Media</a>
+          </div>
+
+          <div class="pillRow" aria-label="Brand tags">
+            <span class="pill">Truth-Based</span>
+            <span class="pill">Soul</span>
+            <span class="pill">R&amp;B</span>
+            <span class="pill">Purpose-Driven</span>
+            <span class="pill">Independent Artist</span>
+          </div>
+        </div>
+
+        <!-- RIGHT: Square Image -->
+        <div class="heroMedia" aria-label="Press hero image">
+          <img src="/press/press-hero.jpg" alt="AWAKENED BY YAH MUSIC press hero" loading="eager" />
+        </div>
       </div>
 
-      <span class="eyebrow">Official Press Hub</span>
-      <h1>Press & Media</h1>
-      <p class="subhead">
-        Official press information and media resources for <strong>AWAKENED BY YAH MUSIC</strong>.
-        Use this hub for bios, official links, music highlights, and interviews/spotlights as they release.
-      </p>
-
-      <div class="ctaRow">
-        <a class="btn primary" href="https://awakenedbyyahmusic.com/" target="_blank" rel="noopener">
-          Official Website
-        </a>
-        <a class="btn" href="/press/music/">Press Page 2: Music</a>
-        <a class="btn" href="/press/media/">Press Page 3: Media</a>
-      </div>
-
-      <div class="pillRow" aria-label="Brand tags">
-        <span class="pill">Truth-Based</span>
-        <span class="pill">Soul</span>
-        <span class="pill">R&amp;B</span>
-        <span class="pill">Purpose-Driven</span>
-        <span class="pill">Independent Artist</span>
-      </div>
     </section>
 
     <section class="grid">
