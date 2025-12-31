@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8" />
 
+  <!-- 🔥 Preload homepage hero for cinematic intro dock -->
+  <link rel="preload" as="image" href="/intro/abybanner.png" fetchpriority="high">
+
   <link rel="canonical" href="https://awakenedbyyahmusic.com/" />
 
   <script>
@@ -18,6 +21,11 @@
 
   <title>Awakened By YAH — Truth-Based Soul • R&amp;B • Praise</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- CINZEL BOLD (intro title) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
 
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -79,9 +87,8 @@
       .header-tags{
         position:absolute;
         left:50%;
-        transform:translateX(-50%);
         top:50%;
-        transform:translate(-50%, -50%); /* keep same vertical line, just center horizontally */
+        transform:translate(-50%, -50%);
         width:auto;
         justify-content:center;
       }
@@ -103,7 +110,6 @@
     .pill-gold { border-color: rgba(251,191,36,0.7); color: #fbbf24; }
 
     /* QUICK LINKS */
-    /* ✅ FIXED: center the main navigation buttons */
     .quick-links {
       margin-bottom: 1.75rem;
       display: flex;
@@ -131,7 +137,6 @@
       border-color: rgba(248,250,252,0.6);
     }
 
-    /* ✅ PRESS LINK (NEW) */
     .quick-links a.press-link{
       border-color: rgba(28,57,168,0.75);
       color: #dbeafe;
@@ -141,7 +146,6 @@
       border-color: rgba(96,165,250,0.95);
     }
 
-    /* ✅ OFFICIAL CONTACT (Spotify verification link) */
     .quick-links a.official-contact {
       border-color: rgba(251,191,36,0.7);
       color: #fbbf24;
@@ -151,7 +155,6 @@
       border-color: rgba(251,191,36,0.95);
     }
 
-    /* ✅ ELECT SOUNDS RADIO LINKS (NON-DISRUPTIVE, VISIBLE, TOP PLACEMENT) */
     .quick-links a.radio-live{
       border-color: rgba(34,197,94,0.65);
       color:#bbf7d0;
@@ -258,13 +261,16 @@
       border-radius: 26px;
       overflow: hidden;
       box-shadow: 0 26px 60px rgba(0,0,0,0.85), 0 0 0 1px rgba(148,163,184,0.18);
+      display:flex;                 /* ✅ helps center */
+      align-items:center;           /* ✅ vertical center */
+      justify-content:center;       /* ✅ horizontal center */
     }
 
     .hero-right-inner img {
-      display: block;
-      width: 100%;
-      height: auto;
-      object-fit: contain;
+      display:block;
+      max-width:100%;
+      height:auto;
+      object-fit:contain;
     }
 
     /* SECTIONS */
@@ -568,7 +574,6 @@
       text-align: center;
     }
 
-    /* ✅ FOOTER SOCIAL LINKS (UP HIGHER / TIGHTER) */
     .footer-socials{
       margin-top: 0.25rem;
       margin-bottom: 0.55rem;
@@ -623,14 +628,295 @@
     @media (max-width: 640px) {
       .shell { padding-inline: 1.25rem; }
       .top-bar { flex-direction: column; align-items: flex-start; position:static; }
-      /* ✅ Mobile: keep pills centered, natural flow */
       .header-tags { position:static; transform:none; justify-content: center; width: 100%; }
       .music-fab{ bottom:14px; right:14px; padding:9px 14px; font-size:0.72rem; }
     }
+
+    /* ===================== CINEMATIC INTRO (HOMEPAGE) ===================== */
+    #introOverlay{
+      position:fixed;
+      inset:0;
+      z-index:99999;
+      background:#000;
+      overflow:hidden;
+    }
+    .introBg{
+      position:absolute;
+      inset:-30%;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(28,57,168,.35), transparent 45%),
+        radial-gradient(circle at 80% 70%, rgba(255,255,255,.08), transparent 55%),
+        linear-gradient(180deg,#000,#050b1f);
+      filter:blur(18px);
+      animation:drift 4.5s ease-in-out infinite alternate;
+    }
+    @keyframes drift{
+      from{transform:scale(1.1) translate(-1%,-1%);}
+      to{transform:scale(1.16) translate(1%,1%);}
+    }
+
+    .strobe{
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(1200px 700px at 50% 45%,
+          rgba(255,255,255,1),
+          rgba(255,255,255,.35) 35%,
+          rgba(0,0,0,1) 70%),
+        radial-gradient(900px 500px at 50% 45%,
+          rgba(28,57,168,.6),
+          rgba(0,0,0,0) 60%);
+      opacity:0;
+      mix-blend-mode:screen;
+      pointer-events:none;
+    }
+    .strobe.blink{animation:blink .16s ease;}
+    @keyframes blink{
+      0%{opacity:0;}
+      40%{opacity:1;}
+      100%{opacity:0;}
+    }
+
+    .titleStamp{
+      position:absolute;
+      top:9%;
+      left:50%;
+      transform:translateX(-50%);
+      display:flex;
+      align-items:center;
+      gap:0.85em;
+      font-family:'Cinzel', serif;
+      font-weight:700;
+      font-size:clamp(22px,2.8vw,40px);
+      text-transform:uppercase;
+      color:#f5f6f8;
+      opacity:0;
+      pointer-events:none;
+      white-space:nowrap;
+    }
+    .titleStamp .word{ letter-spacing:0.36em; }
+    .titleStamp.pulse{ animation:titlePulseGlow .65s ease; }
+    @keyframes titlePulseGlow{
+      0%{ opacity:0; transform:translateX(-50%) scale(.96); filter:none; }
+      30%{
+        opacity:1;
+        transform:translateX(-50%) scale(1);
+        filter:
+          drop-shadow(0 0 6px rgba(255,255,255,.55))
+          drop-shadow(0 0 14px rgba(255,255,255,.45))
+          drop-shadow(0 0 28px rgba(255,255,255,.25));
+      }
+      100%{ opacity:0; transform:translateX(-50%) scale(1.02); filter:none; }
+    }
+
+    #photoHit{
+      position:absolute;
+      width:min(560px,70vw);
+      aspect-ratio:16/10;
+      border-radius:18px;
+      overflow:hidden;
+      box-shadow:0 35px 90px rgba(0,0,0,.8);
+      opacity:0;
+      transition:opacity .4s ease, transform .9s ease;
+      will-change: transform, opacity, left, top;
+    }
+    #photoHit.show{ opacity:1; }
+    #photoHit img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      filter:contrast(1.08) saturate(1.12);
+      display:block;
+    }
+
+    #bannerReveal{
+      position:absolute;
+      left:50%;
+      top:50%;
+      transform:translate(-50%,-50%);
+      border-radius:22px;
+      overflow:hidden;
+      box-shadow:0 35px 100px rgba(0,0,0,.85);
+      opacity:0;
+      background:rgba(255,255,255,.04);
+      will-change: transform, opacity, width, height;
+    }
+    #bannerReveal.show{ opacity:1; }
+    #bannerReveal img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+    #introOverlay.fadeOut{
+      opacity:0;
+      transition:opacity .55s ease;
+      pointer-events:none;
+    }
+    @media (prefers-reduced-motion: reduce){
+      .introBg{ animation:none; }
+      #photoHit, #introOverlay.fadeOut{ transition:none; }
+    }
+    /* ===================== END INTRO ===================== */
   </style>
 </head>
 
 <body>
+  <!-- ===================== INTRO OVERLAY (runs once per session) ===================== -->
+  <div id="introOverlay" aria-hidden="true">
+    <div class="introBg"></div>
+    <div class="strobe" id="strobe"></div>
+
+    <div class="titleStamp" id="titleStamp">
+      <span class="word">AWAKENED</span>
+      <span class="word">BY</span>
+      <span class="word">YAH</span>
+    </div>
+
+    <div id="photoHit"><img id="photoImg" alt=""></div>
+
+    <div id="bannerReveal">
+      <img id="bannerImg" src="/intro/abybanner.png" alt="Final Banner">
+    </div>
+  </div>
+
+  <script>
+  (function(){
+    // 🔒 Session lock: play intro once per session
+    if (sessionStorage.getItem('aby_intro_seen')) {
+      document.getElementById('introOverlay')?.remove();
+      return;
+    }
+    sessionStorage.setItem('aby_intro_seen', 'true');
+
+    const flashImages = [
+      "/intro/flash1.jpg",
+      "/intro/flash2.jpg",
+      "/intro/flash3.jpg",
+      "/intro/flash4.jpg",
+      "/intro/flash5.jpg"
+      // If you add flash6 later:
+      // ,"/intro/flash6.jpg"
+    ];
+    const bannerPath = "/intro/abybanner.png";
+
+    const PER_PHOTO_MS = 1000; // ✅ 1 second between each image
+    const FADE_OUT_MS  = 220;
+
+    const strobe = document.getElementById('strobe');
+    const title  = document.getElementById('titleStamp');
+
+    const hit    = document.getElementById('photoHit');
+    const hitImg = document.getElementById('photoImg');
+
+    const bannerReveal = document.getElementById('bannerReveal');
+    const bannerImg    = document.getElementById('bannerImg');
+    const overlay      = document.getElementById('introOverlay');
+
+    function sleep(ms){ return new Promise(r=>setTimeout(r, ms)); }
+    function rand(min,max){ return Math.random()*(max-min)+min; }
+
+    function blink(times=1){
+      let n=0;
+      const go=()=>{
+        strobe.classList.remove('blink'); void strobe.offsetWidth; strobe.classList.add('blink');
+        title.classList.remove('pulse');  void title.offsetWidth;  title.classList.add('pulse');
+        if(++n < times) setTimeout(go, 110);
+      };
+      go();
+    }
+
+    function placeRandom(){
+      hit.style.left = rand(22, 78) + "vw";
+      hit.style.top  = rand(24, 70) + "vh";
+      hit.style.transform =
+        `translate(-50%,-50%) rotate(${rand(-6,6)}deg) scale(${rand(.96,1.03)})`;
+    }
+
+    function showHit(src){
+      hitImg.src = src;
+      placeRandom();
+      hit.classList.add('show');
+    }
+    function hideHit(){ hit.classList.remove('show'); }
+
+    async function preload(src){
+      return new Promise(res=>{
+        const im = new Image();
+        im.onload = im.onerror = res;
+        im.src = src;
+      });
+    }
+
+    function getTargetBanner(){
+      // ✅ Your real homepage banner element
+      return document.getElementById('homeHeroBanner');
+    }
+
+    function revealBannerAtHomeSize(){
+      const targetBanner = getTargetBanner();
+      if (!targetBanner) return;
+
+      const rect = targetBanner.getBoundingClientRect();
+      bannerReveal.style.width  = rect.width + "px";
+      bannerReveal.style.height = rect.height + "px";
+      bannerReveal.classList.add('show');
+    }
+
+    function dockBanner(){
+      const targetBanner = getTargetBanner();
+      if (!targetBanner) {
+        overlay.classList.add('fadeOut');
+        setTimeout(()=> overlay.remove(), 600);
+        return;
+      }
+
+      const targetRect = targetBanner.getBoundingClientRect();
+      const revealRect = bannerReveal.getBoundingClientRect();
+
+      bannerReveal.style.transition =
+        "transform 950ms cubic-bezier(.2,.9,.2,1), opacity 350ms ease";
+      bannerReveal.style.transformOrigin = "top left";
+
+      const dx = targetRect.left - revealRect.left;
+      const dy = targetRect.top  - revealRect.top;
+
+      bannerReveal.style.transform =
+        `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
+
+      setTimeout(()=>{
+        overlay.classList.add('fadeOut');
+        setTimeout(()=> overlay.remove(), 600);
+      }, 1000);
+    }
+
+    async function run(){
+      // Preload for smooth playback
+      await Promise.all(flashImages.map(preload));
+      await preload(bannerPath);
+
+      for(let i=0;i<flashImages.length;i++){
+        blink(i===0 || i===3 ? 2 : 1);
+        await sleep(90);
+        showHit(flashImages[i]);
+        await sleep(PER_PHOTO_MS);
+        hideHit();
+        await sleep(FADE_OUT_MS);
+      }
+
+      blink(2);
+      await sleep(160);
+      revealBannerAtHomeSize();
+      await sleep(650);
+      dockBanner();
+    }
+
+    // Kick after everything is ready
+    window.addEventListener('load', ()=> setTimeout(run, 120));
+  })();
+  </script>
+  <!-- ===================== END INTRO ===================== -->
+
   <div class="page">
     <main class="shell">
 
@@ -662,10 +948,8 @@
         <a href="#videos">Videos</a>
         <a href="#signup">Email Signup</a>
 
-        <!-- ✅ PRESS (NEW) -->
         <a class="press-link" href="/press/">Press</a>
 
-        <!-- ✅ Elect Sounds Radio (BOTH LINKS, VISIBLE, NO EMBEDS) -->
         <a class="radio-live"
            href="https://elect-sounds-radio.page.radio/"
            target="_blank" rel="noopener">
@@ -678,7 +962,6 @@
           🔊 Radio Popout
         </a>
 
-        <!-- ✅ OFFICIAL CONTACT (Spotify verification) -->
         <a class="official-contact"
           href="mailto:yahuahsremnant@gmail.com?subject=Awakened%20By%20YAH%20Official%20Inquiry"
           onclick="setTimeout(()=>window.open('https://mail.google.com/mail/?view=cm&fs=1&to=yahuahsremnant@gmail.com&su=Awakened%20By%20YAH%20Official%20Inquiry','_blank','noopener'), 150);">
@@ -710,7 +993,14 @@
 
         <aside class="hero-right">
           <div class="hero-right-inner">
-            <img src="abybanner.png" alt="Awakened By YAH banner" />
+            <!-- ✅ REQUIRED for intro dock + preload performance -->
+            <img
+              id="homeHeroBanner"
+              src="/intro/abybanner.png"
+              alt="Awakened By YAH banner"
+              decoding="async"
+              fetchpriority="high"
+            />
           </div>
         </aside>
       </section>
@@ -910,7 +1200,6 @@
   <script>
     (function(){
       function openRadioPopup(url){
-        // Desktop popup (no embed). Mobile tends to block popups -> fall back to new tab.
         var w = 460, h = 720;
         var left = Math.max(0, Math.floor((window.screen.width - w) / 2));
         var top  = Math.max(0, Math.floor((window.screen.height - h) / 2));
@@ -927,7 +1216,6 @@
 
         var win = window.open(url, 'elect_sounds_radio', features);
 
-        // If blocked, open in a normal tab
         if (!win) {
           window.open(url, '_blank', 'noopener');
           return;
@@ -947,7 +1235,6 @@
   <!-- PLAYER + VISUALIZER + COPYRIGHT SCRIPT -->
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      // Set current year in footer
       var yearSpan = document.getElementById('year');
       if (yearSpan) {
         yearSpan.textContent = new Date().getFullYear();
@@ -1008,7 +1295,6 @@
         setActiveTrack(nextIndex, true);
       });
 
-      // Initialize first track (no autoplay to respect browser rules)
       setActiveTrack(0, false);
     });
   </script>
