@@ -261,9 +261,9 @@
       border-radius: 26px;
       overflow: hidden;
       box-shadow: 0 26px 60px rgba(0,0,0,0.85), 0 0 0 1px rgba(148,163,184,0.18);
-      display:flex;                 /* ✅ helps center */
-      align-items:center;           /* ✅ vertical center */
-      justify-content:center;       /* ✅ horizontal center */
+      display:flex;
+      align-items:center;
+      justify-content:center;
     }
 
     .hero-right-inner img {
@@ -753,6 +753,33 @@
       transition:opacity .55s ease;
       pointer-events:none;
     }
+
+    /* ✅ INTRO SOUND BUTTON (only appears when needed) */
+    #introSoundBtn{
+      position:absolute;
+      left:50%;
+      bottom:9%;
+      transform:translateX(-50%);
+      z-index:100000;
+      display:none;
+      cursor:pointer;
+      padding:12px 16px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.20);
+      background:rgba(15,23,42,.55);
+      color:#e5e7eb;
+      font-weight:900;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      backdrop-filter: blur(10px);
+      box-shadow:0 18px 46px rgba(0,0,0,.65);
+    }
+    #introSoundBtn:hover{
+      background:rgba(15,23,42,.72);
+      border-color:rgba(251,191,36,.8);
+      color:#fbbf24;
+    }
+
     @media (prefers-reduced-motion: reduce){
       .introBg{ animation:none; }
       #photoHit, #introOverlay.fadeOut{ transition:none; }
@@ -778,6 +805,16 @@
     <div id="bannerReveal">
       <img id="bannerImg" src="/intro/abybanner.png" alt="Final Banner">
     </div>
+
+    <!-- ✅ Intro Audio (hybrid autoplay + mobile tap) -->
+    <audio id="introAudio" preload="auto" playsinline>
+      <source src="/intro/intro-stem.mp3" type="audio/mpeg" />
+    </audio>
+
+    <!-- ✅ Button shows only if autoplay is blocked OR on mobile -->
+    <button id="introSoundBtn" type="button" aria-label="Enable intro sound">
+      🔊 TAP FOR SOUND
+    </button>
   </div>
 
   <script>
@@ -795,8 +832,6 @@
       "/intro/flash3.jpg",
       "/intro/flash4.jpg",
       "/intro/flash5.jpg"
-      // If you add flash6 later:
-      // ,"/intro/flash6.jpg"
     ];
     const bannerPath = "/intro/abybanner.png";
 
@@ -810,8 +845,73 @@
     const hitImg = document.getElementById('photoImg');
 
     const bannerReveal = document.getElementById('bannerReveal');
-    const bannerImg    = document.getElementById('bannerImg');
     const overlay      = document.getElementById('introOverlay');
+
+    // ======= INTRO AUDIO (HYBRID) =======
+    const introAudio = document.getElementById('introAudio');
+    const soundBtn   = document.getElementById('introSoundBtn');
+
+    // ✅ Change button text here if you want:
+    // soundBtn.textContent = "🔊 SOUND ON";
+
+    const TARGET_VOL = 0.85;
+    const FADE_SECONDS = 1.6;
+    const isMobile = matchMedia("(pointer:coarse)").matches || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+    let fadeTimer = null;
+
+    function clearFade(){
+      if (fadeTimer){ clearInterval(fadeTimer); fadeTimer = null; }
+    }
+
+    function fadeOutAndStopIntroAudio(){
+      if (!introAudio) return;
+      clearFade();
+      try{
+        const stepMs = 50;
+        const steps = Math.max(1, Math.round((FADE_SECONDS * 1000) / stepMs));
+        const startVol = Math.max(0, Math.min(1, introAudio.volume || TARGET_VOL));
+        let i = 0;
+
+        fadeTimer = setInterval(() => {
+          i++;
+          const t = i / steps;
+          introAudio.volume = Math.max(0, startVol * (1 - t));
+          if (i >= steps) {
+            clearFade();
+            introAudio.pause();
+            introAudio.currentTime = 0;
+            introAudio.volume = TARGET_VOL;
+          }
+        }, stepMs);
+      }catch(e){}
+    }
+
+    async function tryPlayIntroAudio(){
+      if (!introAudio) return;
+      try{
+        introAudio.volume = TARGET_VOL;
+        await introAudio.play();
+        soundBtn.style.display = "none";
+      }catch(e){
+        // autoplay blocked
+        soundBtn.style.display = "inline-flex";
+      }
+    }
+
+    soundBtn.addEventListener("click", () => {
+      tryPlayIntroAudio();
+    }, { passive:true });
+
+    // Behavior:
+    // - Mobile: show tap button (no autoplay attempt)
+    // - Desktop: attempt autoplay, fallback to button if blocked
+    if (isMobile){
+      soundBtn.style.display = "inline-flex";
+    } else {
+      setTimeout(tryPlayIntroAudio, 140);
+    }
+    // ======= END INTRO AUDIO =======
 
     function sleep(ms){ return new Promise(r=>setTimeout(r, ms)); }
     function rand(min,max){ return Math.random()*(max-min)+min; }
@@ -866,6 +966,7 @@
     function dockBanner(){
       const targetBanner = getTargetBanner();
       if (!targetBanner) {
+        fadeOutAndStopIntroAudio();  // ✅ stop sound if banner missing
         overlay.classList.add('fadeOut');
         setTimeout(()=> overlay.remove(), 600);
         return;
@@ -883,6 +984,9 @@
 
       bannerReveal.style.transform =
         `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px))`;
+
+      // ✅ Fade sound out as the intro exits (feels cinematic)
+      fadeOutAndStopIntroAudio();
 
       setTimeout(()=>{
         overlay.classList.add('fadeOut');
