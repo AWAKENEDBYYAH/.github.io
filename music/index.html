@@ -164,6 +164,11 @@
       letter-spacing:.1px;
     }
     button:hover{border-color:rgba(255,255,255,.22)}
+    button:disabled{
+      opacity:.55;
+      cursor:not-allowed;
+      border-color:rgba(255,255,255,.10);
+    }
     .primary{
       background:linear-gradient(180deg, rgba(43,86,255,.95), rgba(28,57,168,.95));
       border-color:rgba(255,255,255,.14);
@@ -411,6 +416,10 @@
             <div class="leftBtns">
               <button id="prevBtn" title="Previous">⏮</button>
               <button id="playBtn" class="primary" title="Play / Pause">▶️ Play</button>
+
+              <!-- ✅ NEW: Download button (lights up only when Gumroad link exists) -->
+              <button id="dlBtn" title="Download (Gumroad)" disabled>🔒 Download</button>
+
               <button id="nextBtn" title="Next">⏭</button>
 
               <button id="repeatAllBtn" title="Repeat All (Playlist)">🔁</button>
@@ -515,6 +524,9 @@
     </div>
   </div>
 
+  <!-- ✅ Gumroad overlay (required for clean checkout modal) -->
+  <script src="https://gumroad.com/js/gumroad.js"></script>
+
   <script>
     // Encode paths safely for spaces + apostrophes on GitHub Pages
     const U = (p) => encodeURI(p).replace(/'/g, "%27");
@@ -523,7 +535,7 @@
     const params = new URLSearchParams(location.search);
     const BYPASS_GATE = params.get("skipgate") === "1";
 
-    // ✅ FINAL LIBRARY (matches your screenshots)
+    // ✅ FINAL LIBRARY
     const LIBRARY = {
       kingdombiz: {
         artist: "AWAKENED BY YAH",
@@ -581,6 +593,38 @@
       }
     };
 
+    // ===============================
+    // ✅ Gumroad per-track links
+    // We support BOTH:
+    // 1) exact key match: "rise::YAH's Chosen — The Great Gathering"
+    // 2) cleaned key match (punctuation differences)
+    // ===============================
+    const GUMROAD = {
+      // Rise of Yasharal (tracks 6–12 provided)
+      "rise::YAH's Chosen — The Great Gathering": "https://remnant5.gumroad.com/l/xfhfxh",
+      "rise::YAHUAH Is The Father's Name": "https://remnant5.gumroad.com/l/hmcnnx",
+      "rise::How Sweet Is Your Name YAHUAH": "https://remnant5.gumroad.com/l/bztji",
+      "rise::In Your Presence": "https://remnant5.gumroad.com/l/ohuhze",
+      "rise::Halal YAHUAH — We Magnify Your Name": "https://remnant5.gumroad.com/l/tvzpyu",
+      "rise::My Eyes Opened Wide": "https://remnant5.gumroad.com/l/qmxbdp",
+      "rise::Return to the Covenant": "https://remnant5.gumroad.com/l/xfscb",
+
+      // Singles provided
+      "hear::Hear My Voice": "https://remnant5.gumroad.com/l/whxxuc",
+      "deliver::Deliver Us": "https://remnant5.gumroad.com/l/qnkiie",
+
+      // ALSO accept your “parentheses style” naming just in case:
+      "rise::YAH'S CHOSEN (THE GREAT GATHERING)": "https://remnant5.gumroad.com/l/xfhfxh",
+      "rise::YAHUAH IS THE FATHER'S NAME": "https://remnant5.gumroad.com/l/hmcnnx",
+      "rise::HOW SWEET IS YOUR NAME YAHUAH": "https://remnant5.gumroad.com/l/bztji",
+      "rise::IN YOUR PRESENCE": "https://remnant5.gumroad.com/l/ohuhze",
+      "rise::HALAL YAHUAH (WE MAGNIFY YOUR NAME)": "https://remnant5.gumroad.com/l/tvzpyu",
+      "rise::MY EYES OPENED WIDE": "https://remnant5.gumroad.com/l/qmxbdp",
+      "rise::RETURN TO THE COVENANT": "https://remnant5.gumroad.com/l/xfscb",
+      "hear::HEAR MY VOICE": "https://remnant5.gumroad.com/l/whxxuc",
+      "deliver::DELIVER US": "https://remnant5.gumroad.com/l/qnkiie",
+    };
+
     const $ = (id) => document.getElementById(id);
 
     const ui = {
@@ -593,6 +637,7 @@
       list: $("plist"),
 
       play: $("playBtn"),
+      dl: $("dlBtn"),
       prev: $("prevBtn"),
       next: $("nextBtn"),
       restart: $("restartBtn"),
@@ -651,6 +696,65 @@
         endPreview();
       });
     }
+
+    // ====== Download (Gumroad) helpers ======
+    function clean(s){
+      return String(s || "")
+        .toLowerCase()
+        .replace(/[\u2013\u2014]/g, "-")     // normalize en/em dash
+        .replace(/['’]/g, "")               // drop apostrophes
+        .replace(/[^a-z0-9]+/g, " ")        // strip punctuation
+        .trim()
+        .replace(/\s+/g, " ");
+    }
+
+    function gumKeyExact(){
+      const pack = LIBRARY[key];
+      const t = pack.tracks[index];
+      return `${key}::${t?.title || ""}`;
+    }
+
+    function gumKeyClean(){
+      const pack = LIBRARY[key];
+      const t = pack.tracks[index];
+      return `${clean(key)}::${clean(t?.title || "")}`;
+    }
+
+    function getGumroadUrl(){
+      // 1) exact match (preferred)
+      const exact = GUMROAD[gumKeyExact()];
+      if (exact) return exact;
+
+      // 2) cleaned match for punctuation differences
+      const ck = gumKeyClean();
+      for (const k in GUMROAD){
+        if (clean(k) === ck) return GUMROAD[k];
+      }
+      return "";
+    }
+
+    function updateDownloadButton(){
+      if (!ui.dl) return;
+      const url = getGumroadUrl();
+      const has = typeof url === "string" && url.length > 8;
+
+      ui.dl.disabled = !has;
+      ui.dl.classList.toggle("is-active", has);
+      ui.dl.textContent = has ? "⬇️ Download" : "🔒 Download";
+      ui.dl.title = has ? "Download via Gumroad" : "Not available for download yet";
+    }
+
+    ui.dl?.addEventListener("click", ()=>{
+      const url = getGumroadUrl();
+      if (!url) return;
+
+      // Gumroad overlay checkout (clean)
+      if (window.GumroadOverlay && typeof window.GumroadOverlay.open === "function"){
+        window.GumroadOverlay.open(url);
+      } else {
+        window.location.href = url;
+      }
+    });
 
     const modal = {
       back: $("previewModal"),
@@ -729,6 +833,7 @@
           </div>`;
         ui.list.appendChild(li);
         ui.track.textContent = "Select a track";
+        updateDownloadButton();
         return;
       }
 
@@ -743,6 +848,8 @@
         li.addEventListener("click", ()=> load(i,true));
         ui.list.appendChild(li);
       });
+
+      updateDownloadButton();
     }
 
     function markActive(){
@@ -787,6 +894,8 @@
         ui.play.textContent = "▶️ Play";
         setStatus("Ready");
       }
+
+      updateDownloadButton();
     }
 
     function togglePlay(){
@@ -933,6 +1042,7 @@
         ui.play.textContent = "▶️ Play";
         ui.tNow.textContent="0:00"; ui.tDur.textContent="0:00"; ui.seek.value=0;
         render();
+        updateDownloadButton();
         setStatus("Ready");
       });
     });
@@ -940,6 +1050,7 @@
     // INIT
     setActiveCover(key);
     render();
+    updateDownloadButton();
     setStatus("Ready");
   </script>
 </body>
