@@ -485,6 +485,9 @@
     // Encode paths safely for spaces + apostrophes on GitHub Pages
     const U = (p) => encodeURI(p).replace(/'/g, "%27");
 
+    // IMPORTANT: /audio filenames use SPACES (not underscores).
+    // Keep names EXACT. Spaces are auto-encoded by U().
+
     // ✅ FINAL LIBRARY (matches your screenshots)
     const LIBRARY = {
       kingdombiz: {
@@ -571,11 +574,50 @@
     const audio = new Audio();
     audio.preload = "metadata";
 
-    let key = "kingdombiz";
-    let index = 0;
+    // ====== 45-SECOND PREVIEW GATE (Music page only) ======
+    const PREVIEW_SECONDS = 45;
+
+    const modal = {
+      back: $("previewModal"),
+      close: $("closePreviewModal"),
+      goLogin: $("goLoginBtn"),
+      keep: $("keepBrowsingBtn"),
+    };
+
+    let previewLock = false;     // once preview ends, user must pick next action
     let seeking = false;
     let repeatAll = false;
     let repeatOne = false;
+
+    let key = "kingdombiz";
+    let index = 0;
+
+    function openPreviewModal(){
+      modal.back.classList.add("show");
+      modal.back.setAttribute("aria-hidden","false");
+    }
+    function closePreviewModal(){
+      modal.back.classList.remove("show");
+      modal.back.setAttribute("aria-hidden","true");
+    }
+    function endPreview(){
+      if (previewLock) return;
+      previewLock = true;
+      audio.pause();
+      ui.play.textContent = "▶️ Play";
+      setStatus("Preview ended");
+      openPreviewModal();
+    }
+
+    // Modal actions
+    modal.close.addEventListener("click", closePreviewModal);
+    modal.keep.addEventListener("click", closePreviewModal);
+    modal.goLogin.addEventListener("click", ()=>{
+      location.href = "/login.html";
+    });
+    modal.back.addEventListener("click", (e)=>{
+      if (e.target === modal.back) closePreviewModal();
+    });
 
     function fmt(sec){
       if (!isFinite(sec)) return "0:00";
@@ -637,6 +679,10 @@
       const pack = LIBRARY[key];
       if (!pack.tracks[i]) return;
 
+      // reset preview lock for each new track
+      previewLock = false;
+      closePreviewModal();
+
       index = i;
       const t = pack.tracks[i];
 
@@ -668,6 +714,13 @@
 
     function togglePlay(){
       const pack = LIBRARY[key];
+
+      // if preview ended, show modal instead of playing
+      if (previewLock){
+        openPreviewModal();
+        return;
+      }
+
       if (!audio.src){
         if (pack.tracks.length) load(0,true);
         return;
@@ -705,6 +758,11 @@
 
     function restart(){
       if (!audio.src) return;
+
+      // restart should also restart preview window
+      previewLock = false;
+      closePreviewModal();
+
       audio.currentTime = 0;
       audio.play().catch(()=>{});
       ui.play.textContent = "⏸ Pause";
@@ -746,17 +804,27 @@
     ui.vol.addEventListener("input", ()=> audio.volume = Number(ui.vol.value)/100);
 
     audio.addEventListener("loadedmetadata", ()=> ui.tDur.textContent = fmt(audio.duration));
+
     audio.addEventListener("timeupdate", ()=>{
       if (!audio.duration) return;
+
+      // ✅ Preview gate: stop at 45 seconds
+      if (!previewLock && audio.currentTime >= PREVIEW_SECONDS){
+        endPreview();
+        return;
+      }
+
       if (!seeking){
         ui.tNow.textContent = fmt(audio.currentTime);
         ui.seek.value = Math.floor((audio.currentTime/audio.duration) * 1000);
       }
     });
+
     audio.addEventListener("ended", ()=>{
       if (repeatOne) return restart();
       next();
     });
+
     audio.addEventListener("error", ()=>{
       setStatus("Error loading file");
       console.warn("Audio failed:", audio.src);
@@ -766,6 +834,11 @@
       btn.addEventListener("click", ()=>{
         key = btn.dataset.key;
         index = 0;
+
+        // switching album should reset preview
+        previewLock = false;
+        closePreviewModal();
+
         setActiveCover(key);
         audio.pause();
         audio.src = "";
