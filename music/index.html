@@ -38,8 +38,6 @@
       overflow:hidden;
       border:1px solid rgba(255,255,255,.12);
       box-shadow:0 35px 90px rgba(0,0,0,.60);
-
-      /* ✅ IMPORTANT: Main Music page uses MUSIC BANNER ONLY (NOT press hero) */
       background:
         linear-gradient(
           180deg,
@@ -48,7 +46,6 @@
           rgba(2,6,23,.82)
         ),
         url("/music-banner.png");
-
       background-size:cover;
       background-position:center;
       margin-bottom:16px;
@@ -484,18 +481,33 @@
     </div>
   </div>
 
-  <!-- ✅ INSTALLED PLAYER SCRIPT -->
   <script>
-    // Encode paths safely for spaces/apostrophes on GitHub Pages
-    const U = (p) => encodeURI(p);
+    // Encode paths safely for spaces + apostrophes on GitHub Pages
+    const U = (p) => encodeURI(p).replace(/'/g, "%27");
 
-    // ✅ YOUR MP3 FILES (from /audio screenshot)
+    // ✅ FINAL LIBRARY (matches your screenshots)
+    // Kingdom Biz = 5 tracks (TRACK_01... files)
+    // Rise of Yasharal = 12 tracks (ROY_TRACK_01... files in /audio root)
     const LIBRARY = {
       kingdombiz: {
         artist: "AWAKENED BY YAH",
         album: "Kingdom Biz",
         project: "Kingdom Biz",
         cover: "/kingdom-biz-cover.png",
+        tracks: [
+          { title: "Walk It Out", file: U("/audio/TRACK_01_WALK IT OUT.mp3") },
+          { title: "Rise of the Remnant", file: U("/audio/TRACK_02_RISE OF THE REMNANT.mp3") },
+          { title: "We Rise", file: U("/audio/TRACK_03__WE RISE.mp3") },
+          { title: "Unbroken Frequency", file: U("/audio/TRACK_04_UNBROKEN FREQUENCY.mp3") },
+          { title: "Unbroken Frequency (Remix)", file: U("/audio/TRACK_05__UNBROKEN FREQUENCY REMIX.mp3") }
+        ]
+      },
+
+      rise: {
+        artist: "AWAKENED BY YAH",
+        album: "The Rise of Yasharal",
+        project: "The Rise of Yasharal",
+        cover: "/images/rise-of-yasharal.png",
         tracks: [
           { title: "The Love I Have In YAHUAH", file: U("/audio/ROY_TRACK_01_THE LOVE I HAVE IN YAHUAH.mp3") },
           { title: "You're With Me", file: U("/audio/ROY_TRACK_02_YOU'RE WITH ME.mp3") },
@@ -505,9 +517,13 @@
           { title: "YAH's Chosen — The Great Gathering", file: U("/audio/ROY_TRACK_06_YAHS CHOSEN THE GREAT GATHERING.mp3") },
           { title: "YAHUAH Is The Father's Name", file: U("/audio/ROY_TRACK_07_YAHUAH IS THE FATHERS NAME.mp3") },
           { title: "How Sweet Is Your Name YAHUAH", file: U("/audio/ROY_TRACK_08_HOW SWEET IS YOUR NAME YAHUAH.mp3") },
-          { title: "In Your Presence", file: U("/audio/ROY_TRACK_09_IN YOUR PRESENCE.mp3") }
+          { title: "In Your Presence", file: U("/audio/ROY_TRACK_09_IN YOUR PRESENCE.mp3") },
+          { title: "Halal YAHUAH — We Magnify Your Name", file: U("/audio/ROY_TRACK_10_HALAL YAHUAH WE MAGNIFY YOUR NAME.mp3") },
+          { title: "My Eyes Opened Wide", file: U("/audio/ROY_TRACK_11_MY EYES OPENED WIDE.mp3") },
+          { title: "Return to the Covenant", file: U("/audio/ROY_TRACK_12_RETURN TO THE COVENANT.mp3") }
         ]
       },
+
       hear: {
         artist: "AWAKENED BY YAH",
         album: "Hear My Voice",
@@ -517,6 +533,7 @@
           { title: "Hear My Voice", file: U("/audio/ABY_TRACK_01_HEAR MY VOICE.mp3") }
         ]
       },
+
       deliver: {
         artist: "AWAKENED BY YAH",
         album: "Deliver Us",
@@ -525,14 +542,6 @@
         tracks: [
           { title: "Deliver Us", file: U("/audio/ABYM_TRACK_01_DELIVER US.mp3") }
         ]
-      },
-      // Rise exists as a folder in /audio/rise-of-yasharal, but we need exact filenames to load it.
-      rise: {
-        artist: "AWAKENED BY YAH",
-        album: "The Rise of Yasharal",
-        project: "The Rise of Yasharal",
-        cover: "/images/rise-of-yasharal.png",
-        tracks: []
       }
     };
 
@@ -600,7 +609,7 @@
         li.innerHTML = `
           <div class="itemLeft">
             <p class="itemTitle">No tracks loaded</p>
-            <p class="itemSub">This album needs its filenames added</p>
+            <p class="itemSub">Track list is empty</p>
           </div>`;
         ui.list.appendChild(li);
         ui.track.textContent = "Select a track";
