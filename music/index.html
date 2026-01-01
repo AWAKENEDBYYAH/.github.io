@@ -117,6 +117,7 @@
     .album{color:var(--muted);margin:7px 0 0 0;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .track{margin:10px 0 0 0;font-weight:900;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
+    /* ✅ NEW: Instant login link under the player header (Option C) */
     .memberLine{
       margin:10px 0 0 0;
       font-size:12px;
@@ -164,11 +165,6 @@
       letter-spacing:.1px;
     }
     button:hover{border-color:rgba(255,255,255,.22)}
-    button:disabled{
-      opacity:.55;
-      cursor:not-allowed;
-      border-color:rgba(255,255,255,.10);
-    }
     .primary{
       background:linear-gradient(180deg, rgba(43,86,255,.95), rgba(28,57,168,.95));
       border-color:rgba(255,255,255,.14);
@@ -416,10 +412,6 @@
             <div class="leftBtns">
               <button id="prevBtn" title="Previous">⏮</button>
               <button id="playBtn" class="primary" title="Play / Pause">▶️ Play</button>
-
-              <!-- ✅ NEW: Download button (lights up only when Gumroad link exists) -->
-              <button id="dlBtn" title="Download (Gumroad)" disabled>🔒 Download</button>
-
               <button id="nextBtn" title="Next">⏭</button>
 
               <button id="repeatAllBtn" title="Repeat All (Playlist)">🔁</button>
@@ -524,18 +516,18 @@
     </div>
   </div>
 
-  <!-- ✅ Gumroad overlay (required for clean checkout modal) -->
-  <script src="https://gumroad.com/js/gumroad.js"></script>
-
   <script>
     // Encode paths safely for spaces + apostrophes on GitHub Pages
     const U = (p) => encodeURI(p).replace(/'/g, "%27");
 
-    // ✅ bypass flag (does NOT affect normal visitors)
+    // ✅ NEW: bypass flag (does NOT affect normal visitors)
     const params = new URLSearchParams(location.search);
     const BYPASS_GATE = params.get("skipgate") === "1";
 
-    // ✅ FINAL LIBRARY
+    // IMPORTANT: /audio filenames use SPACES (not underscores).
+    // Keep names EXACT. Spaces are auto-encoded by U().
+
+    // ✅ FINAL LIBRARY (matches your screenshots)
     const LIBRARY = {
       kingdombiz: {
         artist: "AWAKENED BY YAH",
@@ -593,38 +585,6 @@
       }
     };
 
-    // ===============================
-    // ✅ Gumroad per-track links
-    // We support BOTH:
-    // 1) exact key match: "rise::YAH's Chosen — The Great Gathering"
-    // 2) cleaned key match (punctuation differences)
-    // ===============================
-    const GUMROAD = {
-      // Rise of Yasharal (tracks 6–12 provided)
-      "rise::YAH's Chosen — The Great Gathering": "https://remnant5.gumroad.com/l/xfhfxh",
-      "rise::YAHUAH Is The Father's Name": "https://remnant5.gumroad.com/l/hmcnnx",
-      "rise::How Sweet Is Your Name YAHUAH": "https://remnant5.gumroad.com/l/bztji",
-      "rise::In Your Presence": "https://remnant5.gumroad.com/l/ohuhze",
-      "rise::Halal YAHUAH — We Magnify Your Name": "https://remnant5.gumroad.com/l/tvzpyu",
-      "rise::My Eyes Opened Wide": "https://remnant5.gumroad.com/l/qmxbdp",
-      "rise::Return to the Covenant": "https://remnant5.gumroad.com/l/xfscb",
-
-      // Singles provided
-      "hear::Hear My Voice": "https://remnant5.gumroad.com/l/whxxuc",
-      "deliver::Deliver Us": "https://remnant5.gumroad.com/l/qnkiie",
-
-      // ALSO accept your “parentheses style” naming just in case:
-      "rise::YAH'S CHOSEN (THE GREAT GATHERING)": "https://remnant5.gumroad.com/l/xfhfxh",
-      "rise::YAHUAH IS THE FATHER'S NAME": "https://remnant5.gumroad.com/l/hmcnnx",
-      "rise::HOW SWEET IS YOUR NAME YAHUAH": "https://remnant5.gumroad.com/l/bztji",
-      "rise::IN YOUR PRESENCE": "https://remnant5.gumroad.com/l/ohuhze",
-      "rise::HALAL YAHUAH (WE MAGNIFY YOUR NAME)": "https://remnant5.gumroad.com/l/tvzpyu",
-      "rise::MY EYES OPENED WIDE": "https://remnant5.gumroad.com/l/qmxbdp",
-      "rise::RETURN TO THE COVENANT": "https://remnant5.gumroad.com/l/xfscb",
-      "hear::HEAR MY VOICE": "https://remnant5.gumroad.com/l/whxxuc",
-      "deliver::DELIVER US": "https://remnant5.gumroad.com/l/qnkiie",
-    };
-
     const $ = (id) => document.getElementById(id);
 
     const ui = {
@@ -637,7 +597,6 @@
       list: $("plist"),
 
       play: $("playBtn"),
-      dl: $("dlBtn"),
       prev: $("prevBtn"),
       next: $("nextBtn"),
       restart: $("restartBtn"),
@@ -656,105 +615,6 @@
 
     // ====== 45-SECOND PREVIEW GATE (Music page only) ======
     const PREVIEW_SECONDS = 45;
-
-    // ✅ Smooth fades (cinematic)
-    const FADE_IN_MS  = 700;
-    const FADE_OUT_MS = 2000;
-    const FADE_OUT_SECONDS = FADE_OUT_MS / 1000;
-
-    let userVol = Number(ui.vol.value) / 100;
-    let isFadingOut = false;
-
-    function fadeTo(target, ms, onDone){
-      const start = audio.volume;
-      const delta = target - start;
-      const t0 = performance.now();
-
-      function step(t){
-        const p = Math.min(1, (t - t0) / ms);
-        audio.volume = start + delta * p;
-        if (p < 1) requestAnimationFrame(step);
-        else if (typeof onDone === "function") onDone();
-      }
-      requestAnimationFrame(step);
-    }
-
-    function fadeIn(){
-      audio.volume = 0;
-      fadeTo(userVol, FADE_IN_MS);
-    }
-
-    function fadeOutThenEndPreview(){
-      if (isFadingOut || previewLock) return;
-      isFadingOut = true;
-
-      fadeTo(0, FADE_OUT_MS, ()=>{
-        audio.pause();
-        audio.currentTime = Math.min(audio.currentTime, PREVIEW_SECONDS);
-        audio.volume = userVol; // restore for next play
-        isFadingOut = false;
-        endPreview();
-      });
-    }
-
-    // ====== Download (Gumroad) helpers ======
-    function clean(s){
-      return String(s || "")
-        .toLowerCase()
-        .replace(/[\u2013\u2014]/g, "-")     // normalize en/em dash
-        .replace(/['’]/g, "")               // drop apostrophes
-        .replace(/[^a-z0-9]+/g, " ")        // strip punctuation
-        .trim()
-        .replace(/\s+/g, " ");
-    }
-
-    function gumKeyExact(){
-      const pack = LIBRARY[key];
-      const t = pack.tracks[index];
-      return `${key}::${t?.title || ""}`;
-    }
-
-    function gumKeyClean(){
-      const pack = LIBRARY[key];
-      const t = pack.tracks[index];
-      return `${clean(key)}::${clean(t?.title || "")}`;
-    }
-
-    function getGumroadUrl(){
-      // 1) exact match (preferred)
-      const exact = GUMROAD[gumKeyExact()];
-      if (exact) return exact;
-
-      // 2) cleaned match for punctuation differences
-      const ck = gumKeyClean();
-      for (const k in GUMROAD){
-        if (clean(k) === ck) return GUMROAD[k];
-      }
-      return "";
-    }
-
-    function updateDownloadButton(){
-      if (!ui.dl) return;
-      const url = getGumroadUrl();
-      const has = typeof url === "string" && url.length > 8;
-
-      ui.dl.disabled = !has;
-      ui.dl.classList.toggle("is-active", has);
-      ui.dl.textContent = has ? "⬇️ Download" : "🔒 Download";
-      ui.dl.title = has ? "Download via Gumroad" : "Not available for download yet";
-    }
-
-    ui.dl?.addEventListener("click", ()=>{
-      const url = getGumroadUrl();
-      if (!url) return;
-
-      // Gumroad overlay checkout (clean)
-      if (window.GumroadOverlay && typeof window.GumroadOverlay.open === "function"){
-        window.GumroadOverlay.open(url);
-      } else {
-        window.location.href = url;
-      }
-    });
 
     const modal = {
       back: $("previewModal"),
@@ -782,6 +642,7 @@
     function endPreview(){
       if (previewLock) return;
       previewLock = true;
+      audio.pause();
       ui.play.textContent = "▶️ Play";
       setStatus("Preview ended");
       openPreviewModal();
@@ -791,6 +652,7 @@
     modal.close.addEventListener("click", closePreviewModal);
     modal.keep.addEventListener("click", closePreviewModal);
 
+    // ✅ UPDATED: login from modal uses bypass flag
     modal.goLogin.addEventListener("click", ()=>{
       location.href = "/login.html?skipgate=1";
     });
@@ -833,7 +695,6 @@
           </div>`;
         ui.list.appendChild(li);
         ui.track.textContent = "Select a track";
-        updateDownloadButton();
         return;
       }
 
@@ -848,8 +709,6 @@
         li.addEventListener("click", ()=> load(i,true));
         ui.list.appendChild(li);
       });
-
-      updateDownloadButton();
     }
 
     function markActive(){
@@ -862,8 +721,8 @@
       const pack = LIBRARY[key];
       if (!pack.tracks[i]) return;
 
+      // reset preview lock for each new track
       previewLock = false;
-      isFadingOut = false;
       closePreviewModal();
 
       index = i;
@@ -885,7 +744,6 @@
         audio.play().then(()=>{
           ui.play.textContent = "⏸ Pause";
           setStatus("Playing");
-          fadeIn(); // ✅ smooth start
         }).catch(()=>{
           ui.play.textContent = "▶️ Play";
           setStatus("Tap Play");
@@ -894,13 +752,12 @@
         ui.play.textContent = "▶️ Play";
         setStatus("Ready");
       }
-
-      updateDownloadButton();
     }
 
     function togglePlay(){
       const pack = LIBRARY[key];
 
+      // if preview ended, show modal instead of playing
       if (previewLock){
         openPreviewModal();
         return;
@@ -914,7 +771,6 @@
         audio.play().then(()=>{
           ui.play.textContent = "⏸ Pause";
           setStatus("Playing");
-          fadeIn(); // ✅ smooth resume
         }).catch(()=> setStatus("Tap Play"));
       } else {
         audio.pause();
@@ -939,18 +795,18 @@
 
       const pi = index - 1;
       if (pi >= 0) load(pi,true);
-      else { audio.currentTime = 0; audio.play().then(()=>fadeIn()).catch(()=>{}); }
+      else { audio.currentTime = 0; audio.play().catch(()=>{}); }
     }
 
     function restart(){
       if (!audio.src) return;
 
+      // restart should also restart preview window
       previewLock = false;
-      isFadingOut = false;
       closePreviewModal();
 
       audio.currentTime = 0;
-      audio.play().then(()=>fadeIn()).catch(()=>{});
+      audio.play().catch(()=>{});
       ui.play.textContent = "⏸ Pause";
       setStatus("Playing");
     }
@@ -986,29 +842,18 @@
       seeking = false;
     });
 
-    userVol = Number(ui.vol.value)/100;
-    audio.volume = userVol;
-
-    ui.vol.addEventListener("input", ()=>{
-      userVol = Number(ui.vol.value)/100;
-      if (!isFadingOut) audio.volume = userVol;
-    });
+    audio.volume = Number(ui.vol.value)/100;
+    ui.vol.addEventListener("input", ()=> audio.volume = Number(ui.vol.value)/100);
 
     audio.addEventListener("loadedmetadata", ()=> ui.tDur.textContent = fmt(audio.duration));
 
     audio.addEventListener("timeupdate", ()=>{
       if (!audio.duration) return;
 
-      // ✅ Preview gate: fade out near the end (unless bypassed)
-      if (!BYPASS_GATE && !previewLock){
-        if (!isFadingOut && audio.currentTime >= (PREVIEW_SECONDS - FADE_OUT_SECONDS)){
-          fadeOutThenEndPreview();
-          return;
-        }
-        if (audio.currentTime >= PREVIEW_SECONDS){
-          fadeOutThenEndPreview();
-          return;
-        }
+      // ✅ Preview gate: stop at 45 seconds (unless bypassed)
+      if (!BYPASS_GATE && !previewLock && audio.currentTime >= PREVIEW_SECONDS){
+        endPreview();
+        return;
       }
 
       if (!seeking){
@@ -1032,8 +877,8 @@
         key = btn.dataset.key;
         index = 0;
 
+        // switching album should reset preview
         previewLock = false;
-        isFadingOut = false;
         closePreviewModal();
 
         setActiveCover(key);
@@ -1042,7 +887,6 @@
         ui.play.textContent = "▶️ Play";
         ui.tNow.textContent="0:00"; ui.tDur.textContent="0:00"; ui.seek.value=0;
         render();
-        updateDownloadButton();
         setStatus("Ready");
       });
     });
@@ -1050,7 +894,6 @@
     // INIT
     setActiveCover(key);
     render();
-    updateDownloadButton();
     setStatus("Ready");
   </script>
 </body>
