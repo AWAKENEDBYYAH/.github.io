@@ -91,6 +91,18 @@
       border-color:rgba(28,57,168,.55);
     }
 
+    .notice{
+      margin-top:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.04);
+      border-radius:16px;
+      padding:12px 14px;
+      color:rgba(229,231,235,.9);
+      font-size:12px;
+      line-height:1.35;
+    }
+    .notice b{color:#fff}
+
     .sectionTitle{
       margin: 22px 0 10px;
       font-size: 13px;
@@ -114,7 +126,6 @@
       border-radius:16px;
       overflow:hidden;
       background:#000;
-      position:relative;
     }
     video{width:100%;display:block}
 
@@ -129,19 +140,14 @@
       background: rgba(255,255,255,.04);
       padding:12px;
     }
-
-    /* ✅ small helper notice */
-    .notice{
-      margin-top:14px;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(255,255,255,.04);
-      border-radius:16px;
-      padding:12px 14px;
-      color:rgba(229,231,235,.9);
-      font-size:12px;
-      line-height:1.35;
+    .debug{
+      margin-top:8px;
+      font-size:11px;
+      color:rgba(148,163,184,.95);
+      border-top:1px solid rgba(255,255,255,.10);
+      padding-top:8px;
+      line-height:1.25;
     }
-    .notice b{color:#fff}
 
     @media(max-width:980px){
       .featured{grid-template-columns:1fr}
@@ -180,15 +186,12 @@
         <a class="btn primary" href="/press/">← Back to Press</a>
         <a class="btn" href="/media/">Go to Media</a>
         <a class="btn" href="/music/">Go to Music</a>
-
-        <!-- ✅ NEW: one-click unmute helper -->
-        <button class="btn" id="unmuteAllBtn" type="button" title="Unmute all videos">🔊 Unmute Videos</button>
+        <button class="btn" id="fixSoundBtn" type="button">🔊 Fix Sound</button>
       </div>
 
       <div class="notice">
-        <b>If a video looks like it has “no sound”:</b> it’s usually muted in the player.
-        Click <b>🔊 Unmute Videos</b> above, then press play again.
-        If it’s still silent, the MP4 itself may have been exported without an audio track.
+        <b>If the last two videos stay muted after “Fix Sound”:</b>
+        that means the MP4s likely have <b>no audio track</b> (exported silent) or an unsupported audio codec.
       </div>
 
       <!-- FEATURED FULL VIDEO -->
@@ -214,18 +217,21 @@
           <video controls preload="metadata" playsinline
             src="/video/assets/clip-1.mp4"></video>
           <p>Clip 1</p>
+          <div class="debug" data-debug>Loading…</div>
         </div>
 
         <div class="tile">
           <video controls preload="metadata" playsinline
             src="/video/assets/MY%20EYES%20OPENED%20WIDE.mp4"></video>
           <p>MY EYES OPENED WIDE</p>
+          <div class="debug" data-debug>Loading…</div>
         </div>
 
         <div class="tile">
           <video controls preload="metadata" playsinline
             src="/video/assets/RISE%20UP.mp4"></video>
           <p>RISE UP</p>
+          <div class="debug" data-debug>Loading…</div>
         </div>
 
       </div>
@@ -235,42 +241,52 @@
 </main>
 
 <script>
-  // ✅ VIDEO SOUND FIX:
-  // Some videos end up muted in the player. This forces unmute + full volume after user interaction.
   const videos = Array.from(document.querySelectorAll("video"));
+  const debugBoxes = Array.from(document.querySelectorAll("[data-debug]"));
 
-  function forceAudioOn(v){
+  function forceSound(v){
     try{
       v.muted = false;
+      v.defaultMuted = false;
       v.volume = 1;
     }catch(e){}
   }
 
-  // Try immediately
-  videos.forEach(v => {
-    forceAudioOn(v);
+  function updateDebug(){
+    // best-effort status text per tile
+    videos.forEach((v, i) => {
+      const box = debugBoxes[i];
+      if (!box) return;
 
-    // When user plays any clip, ensure audio is on
-    v.addEventListener("play", () => forceAudioOn(v));
-
-    // If volume is dragged to 0 but not muted, bounce back (prevents “silent but not muted” edge cases)
-    v.addEventListener("volumechange", () => {
-      if (!v.muted && v.volume === 0) v.volume = 1;
-    });
-  });
-
-  // One-click unmute button
-  const unmuteBtn = document.getElementById("unmuteAllBtn");
-  if (unmuteBtn){
-    unmuteBtn.addEventListener("click", () => {
-      videos.forEach(v => forceAudioOn(v));
+      const dur = (isFinite(v.duration) && v.duration > 0) ? v.duration.toFixed(2) + "s" : "unknown";
+      box.textContent =
+        `muted=${v.muted} | volume=${Math.round(v.volume*100)}% | readyState=${v.readyState} | duration=${dur}`;
     });
   }
 
-  // First click anywhere also un-mutes everything once
-  window.addEventListener("click", () => {
-    videos.forEach(v => forceAudioOn(v));
-  }, { once:true });
+  // Always try to force sound on common events
+  videos.forEach((v) => {
+    forceSound(v);
+
+    v.addEventListener("loadedmetadata", () => { forceSound(v); updateDebug(); });
+    v.addEventListener("canplay", () => { forceSound(v); updateDebug(); });
+    v.addEventListener("play", () => { forceSound(v); updateDebug(); });
+    v.addEventListener("volumechange", () => { updateDebug(); });
+  });
+
+  function fixAll(){
+    videos.forEach(v => forceSound(v));
+    updateDebug();
+  }
+
+  // Button
+  document.getElementById("fixSoundBtn").addEventListener("click", fixAll);
+
+  // First interaction anywhere
+  window.addEventListener("pointerdown", fixAll, { once:true });
+
+  // Run once after paint
+  setTimeout(fixAll, 50);
 </script>
 </body>
 </html>
