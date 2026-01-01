@@ -190,22 +190,19 @@
       </div>
 
       <div class="notice">
-        <b>If the last two videos stay muted after “Fix Sound”:</b>
-        that means the MP4s likely have <b>no audio track</b> (exported silent) or an unsupported audio codec.
+        <b>If a video stays muted even after “Fix Sound”:</b>
+        the MP4 likely has <b>no audio track</b> or the audio codec isn’t supported.
       </div>
 
       <!-- FEATURED FULL VIDEO -->
       <div class="sectionTitle">Featured Video</div>
       <div class="featured">
         <div class="panel videoWrap">
-          <video controls preload="metadata" playsinline
-            src="/video/assets/full-video.mp4"></video>
+          <video controls preload="metadata" playsinline src="/video/assets/full-video.mp4"></video>
         </div>
         <div class="panel">
           <strong>Full Video</strong>
-          <p style="margin-top:6px">
-            Official visual presentation from AWAKENED BY YAH.
-          </p>
+          <p style="margin-top:6px">Official visual presentation from AWAKENED BY YAH.</p>
         </div>
       </div>
 
@@ -214,22 +211,21 @@
       <div class="grid">
 
         <div class="tile">
-          <video controls preload="metadata" playsinline
-            src="/video/assets/clip-1.mp4"></video>
+          <video controls preload="metadata" playsinline src="/video/assets/clip-1.mp4"></video>
           <p>Clip 1</p>
           <div class="debug" data-debug>Loading…</div>
         </div>
 
+        <!-- ✅ UPDATED: clip-2.mp4 (label stays MY EYES OPENED WIDE) -->
         <div class="tile">
-          <video controls preload="metadata" playsinline
-            src="/video/assets/MY%20EYES%20OPENED%20WIDE.mp4"></video>
+          <video controls preload="metadata" playsinline src="/video/assets/clip-2.mp4"></video>
           <p>MY EYES OPENED WIDE</p>
           <div class="debug" data-debug>Loading…</div>
         </div>
 
+        <!-- ✅ UPDATED: clip-3.mp4 (label stays RISE UP) -->
         <div class="tile">
-          <video controls preload="metadata" playsinline
-            src="/video/assets/RISE%20UP.mp4"></video>
+          <video controls preload="metadata" playsinline src="/video/assets/clip-3.mp4"></video>
           <p>RISE UP</p>
           <div class="debug" data-debug>Loading…</div>
         </div>
@@ -253,21 +249,16 @@
   }
 
   function updateDebug(){
-    // best-effort status text per tile
     videos.forEach((v, i) => {
       const box = debugBoxes[i];
       if (!box) return;
-
       const dur = (isFinite(v.duration) && v.duration > 0) ? v.duration.toFixed(2) + "s" : "unknown";
-      box.textContent =
-        `muted=${v.muted} | volume=${Math.round(v.volume*100)}% | readyState=${v.readyState} | duration=${dur}`;
+      box.textContent = `muted=${v.muted} | volume=${Math.round(v.volume*100)}% | readyState=${v.readyState} | duration=${dur}`;
     });
   }
 
-  // Always try to force sound on common events
   videos.forEach((v) => {
     forceSound(v);
-
     v.addEventListener("loadedmetadata", () => { forceSound(v); updateDebug(); });
     v.addEventListener("canplay", () => { forceSound(v); updateDebug(); });
     v.addEventListener("play", () => { forceSound(v); updateDebug(); });
@@ -279,13 +270,8 @@
     updateDebug();
   }
 
-  // Button
   document.getElementById("fixSoundBtn").addEventListener("click", fixAll);
-
-  // First interaction anywhere
   window.addEventListener("pointerdown", fixAll, { once:true });
-
-  // Run once after paint
   setTimeout(fixAll, 50);
 </script>
 </body>
