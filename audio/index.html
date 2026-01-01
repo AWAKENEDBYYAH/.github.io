@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Audio Redirect</title>
+  <script>
+    (function () {
+      var p = location.pathname;
+
+      // If someone visits /audio/ directly
+      if (p === "/audio/" || p === "/audio/index.html") {
+        location.replace("/public/audio/");
+        return;
+      }
+
+      // Redirect /audio/<file> to /public/audio/<file>
+      var rest = p.replace(/^\/audio\//, "");
+      location.replace("/public/audio/" + rest + location.search + location.hash);
+    })();
+  </script>
+</head>
+<body>Redirecting…</body>
+</html>
