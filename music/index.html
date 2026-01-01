@@ -117,7 +117,6 @@
     .album{color:var(--muted);margin:7px 0 0 0;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .track{margin:10px 0 0 0;font-weight:900;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-    /* ✅ NEW: Instant login link under the player header (Option C) */
     .memberLine{
       margin:10px 0 0 0;
       font-size:12px;
@@ -520,12 +519,9 @@
     // Encode paths safely for spaces + apostrophes on GitHub Pages
     const U = (p) => encodeURI(p).replace(/'/g, "%27");
 
-    // ✅ NEW: bypass flag (does NOT affect normal visitors)
+    // ✅ bypass flag (does NOT affect normal visitors)
     const params = new URLSearchParams(location.search);
     const BYPASS_GATE = params.get("skipgate") === "1";
-
-    // IMPORTANT: /audio filenames use SPACES (not underscores).
-    // Keep names EXACT. Spaces are auto-encoded by U().
 
     // ✅ FINAL LIBRARY (matches your screenshots)
     const LIBRARY = {
@@ -616,6 +612,46 @@
     // ====== 45-SECOND PREVIEW GATE (Music page only) ======
     const PREVIEW_SECONDS = 45;
 
+    // ✅ Smooth fades (cinematic)
+    const FADE_IN_MS  = 700;
+    const FADE_OUT_MS = 2000;
+    const FADE_OUT_SECONDS = FADE_OUT_MS / 1000;
+
+    let userVol = Number(ui.vol.value) / 100;
+    let isFadingOut = false;
+
+    function fadeTo(target, ms, onDone){
+      const start = audio.volume;
+      const delta = target - start;
+      const t0 = performance.now();
+
+      function step(t){
+        const p = Math.min(1, (t - t0) / ms);
+        audio.volume = start + delta * p;
+        if (p < 1) requestAnimationFrame(step);
+        else if (typeof onDone === "function") onDone();
+      }
+      requestAnimationFrame(step);
+    }
+
+    function fadeIn(){
+      audio.volume = 0;
+      fadeTo(userVol, FADE_IN_MS);
+    }
+
+    function fadeOutThenEndPreview(){
+      if (isFadingOut || previewLock) return;
+      isFadingOut = true;
+
+      fadeTo(0, FADE_OUT_MS, ()=>{
+        audio.pause();
+        audio.currentTime = Math.min(audio.currentTime, PREVIEW_SECONDS);
+        audio.volume = userVol; // restore for next play
+        isFadingOut = false;
+        endPreview();
+      });
+    }
+
     const modal = {
       back: $("previewModal"),
       close: $("closePreviewModal"),
@@ -642,7 +678,6 @@
     function endPreview(){
       if (previewLock) return;
       previewLock = true;
-      audio.pause();
       ui.play.textContent = "▶️ Play";
       setStatus("Preview ended");
       openPreviewModal();
@@ -652,7 +687,6 @@
     modal.close.addEventListener("click", closePreviewModal);
     modal.keep.addEventListener("click", closePreviewModal);
 
-    // ✅ UPDATED: login from modal uses bypass flag
     modal.goLogin.addEventListener("click", ()=>{
       location.href = "/login.html?skipgate=1";
     });
@@ -721,8 +755,8 @@
       const pack = LIBRARY[key];
       if (!pack.tracks[i]) return;
 
-      // reset preview lock for each new track
       previewLock = false;
+      isFadingOut = false;
       closePreviewModal();
 
       index = i;
@@ -744,6 +778,7 @@
         audio.play().then(()=>{
           ui.play.textContent = "⏸ Pause";
           setStatus("Playing");
+          fadeIn(); // ✅ smooth start
         }).catch(()=>{
           ui.play.textContent = "▶️ Play";
           setStatus("Tap Play");
@@ -757,7 +792,6 @@
     function togglePlay(){
       const pack = LIBRARY[key];
 
-      // if preview ended, show modal instead of playing
       if (previewLock){
         openPreviewModal();
         return;
@@ -771,6 +805,7 @@
         audio.play().then(()=>{
           ui.play.textContent = "⏸ Pause";
           setStatus("Playing");
+          fadeIn(); // ✅ smooth resume
         }).catch(()=> setStatus("Tap Play"));
       } else {
         audio.pause();
@@ -795,18 +830,18 @@
 
       const pi = index - 1;
       if (pi >= 0) load(pi,true);
-      else { audio.currentTime = 0; audio.play().catch(()=>{}); }
+      else { audio.currentTime = 0; audio.play().then(()=>fadeIn()).catch(()=>{}); }
     }
 
     function restart(){
       if (!audio.src) return;
 
-      // restart should also restart preview window
       previewLock = false;
+      isFadingOut = false;
       closePreviewModal();
 
       audio.currentTime = 0;
-      audio.play().catch(()=>{});
+      audio.play().then(()=>fadeIn()).catch(()=>{});
       ui.play.textContent = "⏸ Pause";
       setStatus("Playing");
     }
@@ -842,18 +877,29 @@
       seeking = false;
     });
 
-    audio.volume = Number(ui.vol.value)/100;
-    ui.vol.addEventListener("input", ()=> audio.volume = Number(ui.vol.value)/100);
+    userVol = Number(ui.vol.value)/100;
+    audio.volume = userVol;
+
+    ui.vol.addEventListener("input", ()=>{
+      userVol = Number(ui.vol.value)/100;
+      if (!isFadingOut) audio.volume = userVol;
+    });
 
     audio.addEventListener("loadedmetadata", ()=> ui.tDur.textContent = fmt(audio.duration));
 
     audio.addEventListener("timeupdate", ()=>{
       if (!audio.duration) return;
 
-      // ✅ Preview gate: stop at 45 seconds (unless bypassed)
-      if (!BYPASS_GATE && !previewLock && audio.currentTime >= PREVIEW_SECONDS){
-        endPreview();
-        return;
+      // ✅ Preview gate: fade out near the end (unless bypassed)
+      if (!BYPASS_GATE && !previewLock){
+        if (!isFadingOut && audio.currentTime >= (PREVIEW_SECONDS - FADE_OUT_SECONDS)){
+          fadeOutThenEndPreview();
+          return;
+        }
+        if (audio.currentTime >= PREVIEW_SECONDS){
+          fadeOutThenEndPreview();
+          return;
+        }
       }
 
       if (!seeking){
@@ -877,8 +923,8 @@
         key = btn.dataset.key;
         index = 0;
 
-        // switching album should reset preview
         previewLock = false;
+        isFadingOut = false;
         closePreviewModal();
 
         setActiveCover(key);
