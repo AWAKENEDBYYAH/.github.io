@@ -484,8 +484,295 @@
     </div>
   </div>
 
+  <!-- ✅ INSTALLED PLAYER SCRIPT -->
   <script>
-    /* (Your existing JS stays exactly the same) */
+    // Encode paths safely for spaces/apostrophes on GitHub Pages
+    const U = (p) => encodeURI(p);
+
+    // ✅ YOUR MP3 FILES (from /audio screenshot)
+    const LIBRARY = {
+      kingdombiz: {
+        artist: "AWAKENED BY YAH",
+        album: "Kingdom Biz",
+        project: "Kingdom Biz",
+        cover: "/kingdom-biz-cover.png",
+        tracks: [
+          { title: "The Love I Have In YAHUAH", file: U("/audio/ROY_TRACK_01_THE LOVE I HAVE IN YAHUAH.mp3") },
+          { title: "You're With Me", file: U("/audio/ROY_TRACK_02_YOU'RE WITH ME.mp3") },
+          { title: "Beneath Your Wings", file: U("/audio/ROY_TRACK_03_BENEATH YOUR WINGS.mp3") },
+          { title: "YAHUAH The Holy One of Yasharal", file: U("/audio/ROY_TRACK_04_YAHUAH THE HOLY ONE OF YASHARAL.mp3") },
+          { title: "Show Me Your Heart", file: U("/audio/ROY_TRACK_05_SHOW ME YOUR HEART.mp3") },
+          { title: "YAH's Chosen — The Great Gathering", file: U("/audio/ROY_TRACK_06_YAHS CHOSEN THE GREAT GATHERING.mp3") },
+          { title: "YAHUAH Is The Father's Name", file: U("/audio/ROY_TRACK_07_YAHUAH IS THE FATHERS NAME.mp3") },
+          { title: "How Sweet Is Your Name YAHUAH", file: U("/audio/ROY_TRACK_08_HOW SWEET IS YOUR NAME YAHUAH.mp3") },
+          { title: "In Your Presence", file: U("/audio/ROY_TRACK_09_IN YOUR PRESENCE.mp3") }
+        ]
+      },
+      hear: {
+        artist: "AWAKENED BY YAH",
+        album: "Hear My Voice",
+        project: "Hear My Voice",
+        cover: "/hear-my-voice.png",
+        tracks: [
+          { title: "Hear My Voice", file: U("/audio/ABY_TRACK_01_HEAR MY VOICE.mp3") }
+        ]
+      },
+      deliver: {
+        artist: "AWAKENED BY YAH",
+        album: "Deliver Us",
+        project: "Deliver Us",
+        cover: "/deliver-us.png",
+        tracks: [
+          { title: "Deliver Us", file: U("/audio/ABYM_TRACK_01_DELIVER US.mp3") }
+        ]
+      },
+      // Rise exists as a folder in /audio/rise-of-yasharal, but we need exact filenames to load it.
+      rise: {
+        artist: "AWAKENED BY YAH",
+        album: "The Rise of Yasharal",
+        project: "The Rise of Yasharal",
+        cover: "/images/rise-of-yasharal.png",
+        tracks: []
+      }
+    };
+
+    const $ = (id) => document.getElementById(id);
+
+    const ui = {
+      cover: $("playerCover"),
+      artist: $("playerArtist"),
+      album: $("playerAlbum"),
+      track: $("playerTrack"),
+      projectPill: $("projectPill"),
+      countPill: $("countPill"),
+      list: $("plist"),
+
+      play: $("playBtn"),
+      prev: $("prevBtn"),
+      next: $("nextBtn"),
+      restart: $("restartBtn"),
+      repAll: $("repeatAllBtn"),
+      repOne: $("repeatOneBtn"),
+      status: $("statusLabel"),
+
+      seek: $("seek"),
+      tNow: $("tNow"),
+      tDur: $("tDur"),
+      vol: $("vol")
+    };
+
+    const audio = new Audio();
+    audio.preload = "metadata";
+
+    let key = "kingdombiz";
+    let index = 0;
+    let seeking = false;
+    let repeatAll = false;
+    let repeatOne = false;
+
+    function fmt(sec){
+      if (!isFinite(sec)) return "0:00";
+      const m = Math.floor(sec/60);
+      const s = Math.floor(sec%60);
+      return `${m}:${String(s).padStart(2,"0")}`;
+    }
+    function setStatus(t){ ui.status.textContent = t; }
+
+    function setActiveCover(k){
+      document.querySelectorAll(".coverBtn").forEach(b=>{
+        b.classList.toggle("active", b.dataset.key === k);
+      });
+    }
+
+    function render(){
+      const pack = LIBRARY[key];
+      ui.artist.textContent = pack.artist;
+      ui.album.textContent = pack.album;
+      ui.projectPill.textContent = pack.project;
+      ui.cover.src = pack.cover;
+      ui.countPill.textContent = `${pack.tracks.length} tracks`;
+
+      ui.list.innerHTML = "";
+
+      if (!pack.tracks.length){
+        const li = document.createElement("li");
+        li.className = "item";
+        li.innerHTML = `
+          <div class="itemLeft">
+            <p class="itemTitle">No tracks loaded</p>
+            <p class="itemSub">This album needs its filenames added</p>
+          </div>`;
+        ui.list.appendChild(li);
+        ui.track.textContent = "Select a track";
+        return;
+      }
+
+      pack.tracks.forEach((t,i)=>{
+        const li = document.createElement("li");
+        li.className = "item" + (i===index ? " active" : "");
+        li.innerHTML = `
+          <div class="itemLeft">
+            <p class="itemTitle">${t.title}</p>
+            <p class="itemSub">${pack.album}</p>
+          </div>`;
+        li.addEventListener("click", ()=> load(i,true));
+        ui.list.appendChild(li);
+      });
+    }
+
+    function markActive(){
+      document.querySelectorAll("#plist .item").forEach((row,i)=>{
+        row.classList.toggle("active", i===index);
+      });
+    }
+
+    function load(i, autoplay){
+      const pack = LIBRARY[key];
+      if (!pack.tracks[i]) return;
+
+      index = i;
+      const t = pack.tracks[i];
+
+      ui.track.textContent = t.title;
+      audio.src = t.file;
+
+      ui.tNow.textContent = "0:00";
+      ui.tDur.textContent = "0:00";
+      ui.seek.value = 0;
+
+      render();
+      markActive();
+
+      setStatus("Loading…");
+
+      if (autoplay){
+        audio.play().then(()=>{
+          ui.play.textContent = "⏸ Pause";
+          setStatus("Playing");
+        }).catch(()=>{
+          ui.play.textContent = "▶️ Play";
+          setStatus("Tap Play");
+        });
+      } else {
+        ui.play.textContent = "▶️ Play";
+        setStatus("Ready");
+      }
+    }
+
+    function togglePlay(){
+      const pack = LIBRARY[key];
+      if (!audio.src){
+        if (pack.tracks.length) load(0,true);
+        return;
+      }
+      if (audio.paused){
+        audio.play().then(()=>{
+          ui.play.textContent = "⏸ Pause";
+          setStatus("Playing");
+        }).catch(()=> setStatus("Tap Play"));
+      } else {
+        audio.pause();
+        ui.play.textContent = "▶️ Play";
+        setStatus("Paused");
+      }
+    }
+
+    function next(){
+      const pack = LIBRARY[key];
+      if (!pack.tracks.length) return;
+
+      const ni = index + 1;
+      if (ni < pack.tracks.length) load(ni,true);
+      else if (repeatAll) load(0,true);
+      else { audio.pause(); ui.play.textContent="▶️ Play"; setStatus("Ended"); }
+    }
+
+    function prev(){
+      const pack = LIBRARY[key];
+      if (!pack.tracks.length) return;
+
+      const pi = index - 1;
+      if (pi >= 0) load(pi,true);
+      else { audio.currentTime = 0; audio.play().catch(()=>{}); }
+    }
+
+    function restart(){
+      if (!audio.src) return;
+      audio.currentTime = 0;
+      audio.play().catch(()=>{});
+      ui.play.textContent = "⏸ Pause";
+      setStatus("Playing");
+    }
+
+    ui.play.addEventListener("click", togglePlay);
+    ui.next.addEventListener("click", next);
+    ui.prev.addEventListener("click", prev);
+    ui.restart.addEventListener("click", restart);
+
+    ui.repAll.addEventListener("click", ()=>{
+      repeatAll = !repeatAll;
+      if (repeatAll) repeatOne = false;
+      ui.repAll.classList.toggle("is-active", repeatAll);
+      ui.repOne.classList.toggle("is-active", repeatOne);
+    });
+
+    ui.repOne.addEventListener("click", ()=>{
+      repeatOne = !repeatOne;
+      if (repeatOne) repeatAll = false;
+      ui.repAll.classList.toggle("is-active", repeatAll);
+      ui.repOne.classList.toggle("is-active", repeatOne);
+    });
+
+    ui.seek.addEventListener("input", ()=>{
+      seeking = true;
+      if (!audio.duration) return;
+      const t = (Number(ui.seek.value)/1000) * audio.duration;
+      ui.tNow.textContent = fmt(t);
+    });
+    ui.seek.addEventListener("change", ()=>{
+      if (!audio.duration) { seeking = false; return; }
+      audio.currentTime = (Number(ui.seek.value)/1000) * audio.duration;
+      seeking = false;
+    });
+
+    audio.volume = Number(ui.vol.value)/100;
+    ui.vol.addEventListener("input", ()=> audio.volume = Number(ui.vol.value)/100);
+
+    audio.addEventListener("loadedmetadata", ()=> ui.tDur.textContent = fmt(audio.duration));
+    audio.addEventListener("timeupdate", ()=>{
+      if (!audio.duration) return;
+      if (!seeking){
+        ui.tNow.textContent = fmt(audio.currentTime);
+        ui.seek.value = Math.floor((audio.currentTime/audio.duration) * 1000);
+      }
+    });
+    audio.addEventListener("ended", ()=>{
+      if (repeatOne) return restart();
+      next();
+    });
+    audio.addEventListener("error", ()=>{
+      setStatus("Error loading file");
+      console.warn("Audio failed:", audio.src);
+    });
+
+    document.querySelectorAll(".coverBtn").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        key = btn.dataset.key;
+        index = 0;
+        setActiveCover(key);
+        audio.pause();
+        audio.src = "";
+        ui.play.textContent = "▶️ Play";
+        ui.tNow.textContent="0:00"; ui.tDur.textContent="0:00"; ui.seek.value=0;
+        render();
+        setStatus("Ready");
+      });
+    });
+
+    // INIT
+    setActiveCover(key);
+    render();
+    setStatus("Ready");
   </script>
 </body>
 </html>
