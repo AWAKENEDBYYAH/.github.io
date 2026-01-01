@@ -55,6 +55,10 @@
       top:16px;
       left:16px;
       z-index:2;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
     }
     .musicHeroBack a{
       color:var(--text);
@@ -65,8 +69,16 @@
       background:rgba(2,6,23,.45);
       backdrop-filter: blur(6px);
       display:inline-block;
+      font-weight:900;
+      letter-spacing:.1px;
     }
     .musicHeroBack a:hover{border-color:rgba(255,255,255,.30)}
+    .musicHeroBack a.primaryLink{
+      background:linear-gradient(180deg, rgba(43,86,255,.95), rgba(28,57,168,.95));
+      border-color:rgba(255,255,255,.14);
+      box-shadow:0 0 36px rgba(28,57,168,.25);
+      padding:10px 14px;
+    }
 
     .grid{
       display:grid;
@@ -104,6 +116,21 @@
     .artist{font-weight:900;font-size:18px;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .album{color:var(--muted);margin:7px 0 0 0;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .track{margin:10px 0 0 0;font-weight:900;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+    /* ✅ NEW: Instant login link under the player header (Option C) */
+    .memberLine{
+      margin:10px 0 0 0;
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.35;
+    }
+    .memberLine a{
+      color:#c7d2fe;
+      text-decoration:none;
+      font-weight:900;
+      border-bottom:1px solid rgba(199,210,254,.35);
+    }
+    .memberLine a:hover{border-bottom-color:rgba(199,210,254,.75)}
 
     .controls{padding:14px 16px 16px}
     .barRow{
@@ -346,6 +373,9 @@
     <header class="musicHero" aria-label="Awakened By YAH Music Banner">
       <div class="musicHeroBack">
         <a href="/">← Back to Home</a>
+
+        <!-- ✅ Option A: instant bypass to login -->
+        <a class="primaryLink" href="/login.html?skipgate=1">Log In</a>
       </div>
     </header>
 
@@ -363,6 +393,11 @@
             <p class="artist" id="playerArtist">AWAKENED BY YAH</p>
             <p class="album" id="playerAlbum">Kingdom Biz</p>
             <p class="track" id="playerTrack">TRACK 01 — Select a track</p>
+
+            <!-- ✅ Option C: instant text login link -->
+            <p class="memberLine">
+              Already a member? <a href="/login.html?skipgate=1">Log in</a>
+            </p>
           </div>
         </div>
 
@@ -484,6 +519,10 @@
   <script>
     // Encode paths safely for spaces + apostrophes on GitHub Pages
     const U = (p) => encodeURI(p).replace(/'/g, "%27");
+
+    // ✅ NEW: bypass flag (does NOT affect normal visitors)
+    const params = new URLSearchParams(location.search);
+    const BYPASS_GATE = params.get("skipgate") === "1";
 
     // IMPORTANT: /audio filenames use SPACES (not underscores).
     // Keep names EXACT. Spaces are auto-encoded by U().
@@ -612,9 +651,12 @@
     // Modal actions
     modal.close.addEventListener("click", closePreviewModal);
     modal.keep.addEventListener("click", closePreviewModal);
+
+    // ✅ UPDATED: login from modal uses bypass flag
     modal.goLogin.addEventListener("click", ()=>{
-      location.href = "/login.html";
+      location.href = "/login.html?skipgate=1";
     });
+
     modal.back.addEventListener("click", (e)=>{
       if (e.target === modal.back) closePreviewModal();
     });
@@ -808,8 +850,8 @@
     audio.addEventListener("timeupdate", ()=>{
       if (!audio.duration) return;
 
-      // ✅ Preview gate: stop at 45 seconds
-      if (!previewLock && audio.currentTime >= PREVIEW_SECONDS){
+      // ✅ Preview gate: stop at 45 seconds (unless bypassed)
+      if (!BYPASS_GATE && !previewLock && audio.currentTime >= PREVIEW_SECONDS){
         endPreview();
         return;
       }
