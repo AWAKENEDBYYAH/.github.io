@@ -107,13 +107,11 @@
       color: rgba(229,231,235,.78);
     }
 
-    /* --- video layout --- */
     .featured{
       margin-top:18px;
       display:grid;
       grid-template-columns: 1.25fr .75fr;
       gap:14px;
-      align-items:stretch;
     }
     .panel{
       border-radius: 18px;
@@ -135,8 +133,8 @@
       background:#000;
     }
 
-    .meta b{display:block; font-size:15px; letter-spacing:.2px}
-    .meta small{display:block; margin-top:6px; color:var(--muted); line-height:1.5}
+    .meta b{display:block;font-size:15px}
+    .meta small{display:block;margin-top:6px;color:var(--muted)}
 
     .grid{
       margin-top:12px;
@@ -160,15 +158,12 @@
       border:1px solid rgba(255,255,255,.10);
       background: rgba(0,0,0,.25);
     }
-    .thumb video{ border-radius:0; }
 
     .playHint{
       display:flex;
       justify-content:space-between;
-      gap:10px;
       align-items:center;
-      color: rgba(229,231,235,.85);
-      font-size: 13px;
+      font-size:13px;
     }
     .tag{
       font-size:12px;
@@ -177,130 +172,77 @@
       background: rgba(255,255,255,.04);
       padding: 6px 10px;
       border-radius: 999px;
-      width: fit-content;
-    }
-
-    .note{
-      margin-top:16px;
-      border-top:1px solid rgba(255,255,255,.10);
-      padding-top:14px;
-      color:rgba(229,231,235,.72);
-      font-size:13px;
     }
 
     @media (max-width: 980px){
       .featured{grid-template-columns:1fr}
       .grid{grid-template-columns:1fr}
-      .brand{min-width:0}
-      .navlinks{justify-content:flex-start}
     }
   </style>
 </head>
 
 <body>
-  <header>
-    <div class="wrap nav">
-      <a class="brand" href="/">
-        <img src="/abytransparent.png" alt="Logo">
-        <div class="t">
-          <b>AWAKENED BY YAH</b>
-          <small>Truth-Based music</small>
-        </div>
-      </a>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="/">
+      <img src="/abytransparent.png" alt="Logo">
+      <div class="t">
+        <b>AWAKENED BY YAH</b>
+        <small>Truth-Based music</small>
+      </div>
+    </a>
+    <nav class="navlinks">
+      <a class="pill" href="/music/">Music</a>
+      <a class="pill" href="/press/">Press</a>
+      <a class="pill" href="/media/">Media</a>
+      <a class="pill primary" href="/subscribe/">Subscribe</a>
+    </nav>
+  </div>
+</header>
 
-      <nav class="navlinks" aria-label="Primary">
-        <a class="pill" href="/music/">Music</a>
-        <a class="pill" href="/press/">Press</a>
-        <a class="pill" href="/media/">Media</a>
-        <a class="pill primary" href="/subscribe/">Subscribe</a>
-      </nav>
-    </div>
-  </header>
+<main>
+  <div class="wrap">
+    <section class="card hero">
+      <h1>Video</h1>
+      <p>Official visuals, clips, and featured moments for AWAKENED BY YAH.</p>
 
-  <main>
-    <div class="wrap">
-      <section class="card hero">
-        <h1>Video</h1>
-        <p>Official visuals, clips, and featured moments for AWAKENED BY YAH.</p>
+      <div class="btnrow">
+        <a class="btn primary" href="/press/">← Back to Press</a>
+        <a class="btn" href="/media/">Go to Media</a>
+        <a class="btn" href="/music/">Go to Music</a>
+      </div>
 
-        <div class="btnrow">
-          <a class="btn primary" href="/press/">← Back to Press</a>
-          <a class="btn" href="/media/">Go to Media</a>
-          <a class="btn" href="/music/">Go to Music</a>
-        </div>
-
-        <!-- ✅ FEATURED FULL VIDEO -->
-        <div class="sectionTitle">Featured Video</div>
-        <div class="featured">
-          <div class="panel">
-            <div class="videoWrap">
-              <!-- ✅ Update src to your real filename -->
-              <video controls preload="metadata" playsinline
-                     src="/video/assets/full-video.mp4"
-                     poster="/video/assets/poster-full.jpg">
-                Sorry, your browser does not support embedded video.
-              </video>
-            </div>
-          </div>
-
-          <div class="panel meta">
-            <b>Full Video Title</b>
-            <small>
-              Replace this text with the official title + a 1–2 sentence description.
-              You can also include a “Release date” line if you want.
-            </small>
-            <div style="height:10px"></div>
-            <div class="tag">Official Visual</div>
+      <div class="sectionTitle">Featured Video</div>
+      <div class="featured">
+        <div class="panel">
+          <div class="videoWrap">
+            <video controls preload="metadata" playsinline
+                   src="/video/assets/full-video.mp4"></video>
           </div>
         </div>
 
-        <!-- ✅ SHORT CLIP -->
-        <div class="sectionTitle">Short Clip</div>
-        <div class="grid">
-          <div class="tile">
-            <div class="thumb">
-              <!-- ✅ Update src to your real filename -->
-              <video controls preload="metadata" playsinline
-                     src="/video/assets/clip-1.mp4"
-                     poster="/video/assets/poster-clip.jpg">
-              </video>
-            </div>
+        <div class="panel meta">
+          <b>Full Video</b>
+          <small>Official visual release from AWAKENED BY YAH.</small>
+          <div class="tag">Official Visual</div>
+        </div>
+      </div>
 
-            <div class="playHint">
-              <span><strong>Clip 1</strong></span>
-              <span class="tag">Snippet</span>
-            </div>
-            <small style="color:var(--muted);line-height:1.5">
-              Add a short line describing what this clip is (hook, chorus, message, etc.).
-            </small>
+      <div class="sectionTitle">Short Clip</div>
+      <div class="grid">
+        <div class="tile">
+          <div class="thumb">
+            <video controls preload="metadata" playsinline
+                   src="/video/assets/clip-1.mp4"></video>
           </div>
-
-          <!-- Optional placeholders (delete if you only have 1 clip) -->
-          <div class="tile" style="opacity:.55">
-            <div class="thumb" style="aspect-ratio:16/9"></div>
-            <div class="playHint">
-              <span><strong>Clip 2</strong></span>
-              <span class="tag">Coming</span>
-            </div>
-            <small style="color:var(--muted);line-height:1.5">Drop a new clip anytime.</small>
-          </div>
-
-          <div class="tile" style="opacity:.55">
-            <div class="thumb" style="aspect-ratio:16/9"></div>
-            <div class="playHint">
-              <span><strong>Clip 3</strong></span>
-              <span class="tag">Coming</span>
-            </div>
-            <small style="color:var(--muted);line-height:1.5">Drop a new clip anytime.</small>
+          <div class="playHint">
+            <strong>Clip 1</strong>
+            <span class="tag">Snippet</span>
           </div>
         </div>
-
-        <div class="note">
-          ✅ If you want these to load faster: add poster images (thumbnails).  
-          If you don’t have posters yet, you can remove the <code>poster="..."</code> attributes and it will still work.
-        </div>
-      </section>
-    </div>
-  </main>
+      </div>
+    </section>
+  </div>
+</main>
 </body>
 </html>
