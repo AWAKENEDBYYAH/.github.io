@@ -210,6 +210,8 @@
           <button id="btnSupporter">Founder Supporter — $5 (Monthly)</button>
           <button id="btnLockedIn">Founder Locked In — $10 (One-Time)</button>
           <button id="btnTenToes">Founder Ten Toes Down — $25 (One-Time)</button>
+
+          <!-- Tiny “version stamp” so you can see you're on the new file -->
           <div class="status" id="statusBox"></div>
         </div>
 
@@ -221,11 +223,10 @@
   </div>
 
 <script>
-  // ✅ Endpoint
   const CHECKOUT_ENDPOINT =
     "https://fgqzopgqtownfvohtlcq.supabase.co/functions/v1/create-checkout";
 
-  // ✅ PRICE IDS (single source of truth — no mismatches)
+  // ✅ SINGLE SOURCE OF TRUTH PRICE IDS
   const PRICE_SUPPORTER_MONTHLY = "price_1Slfn30J5682KmNwrjCbEgUH";
   const PRICE_LOCKED_IN_ONETIME = "price_1SldCM0J5682KmNwmPcTW4y7";
   const PRICE_TEN_TOES_DOWN_ONETIME = "price_1Sle9p0J5682KmNwEnSxm0A"; // ✅ LIVE one-time $25
@@ -248,16 +249,16 @@
     statusBox.textContent = "";
   }
 
+  // Show a small “loaded” message so you know you're seeing THIS updated file
+  showStatus(
+    "Loaded price IDs ✅\n" +
+    "Supporter: " + PRICE_SUPPORTER_MONTHLY + "\n" +
+    "Locked In: " + PRICE_LOCKED_IN_ONETIME + "\n" +
+    "Ten Toes: " + PRICE_TEN_TOES_DOWN_ONETIME
+  );
+
   async function startCheckout(priceId){
-    hideStatus();
-
     const customerEmail = (emailInput?.value || "").trim() || undefined;
-
-    showStatus(
-      "Starting checkout...\n" +
-      "priceId: " + priceId + "\n" +
-      (customerEmail ? ("email: " + customerEmail + "\n") : "")
-    );
 
     const res = await fetch(CHECKOUT_ENDPOINT, {
       method: "POST",
