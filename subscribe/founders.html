@@ -216,17 +216,18 @@
       </div>
 
       <div class="ctaRow">
-        <!-- 🔥 REPLACE THESE 3 WITH YOUR ONE-TIME FOUNDER PRICE IDs -->
+        <!-- NOTE: Supporter one-time price not created yet in Stripe -->
         <button type="button" class="primary" data-founder="true" data-price="PASTE_PRICE_ID_FOUNDER_SUPPORTER_5">Founder Supporter (One-Time)</button>
-        <button type="button" class="primary" data-founder="true" data-price="PASTE_PRICE_ID_FOUNDER_LOCKED_IN_10">Founder Locked In (One-Time)</button>
-       <button type="button" class="primary" data-founder="true" data-price="price_1S1e9p0J5682KmNwEnSxm0A">
-  Founder Ten Toes Down (One-Time)
-</button>
 
+        <!-- ✅ Locked In one-time -->
+        <button type="button" class="primary" data-founder="true" data-price="price_1SldCM0J5682KmNwmPcTW4y7">Founder Locked In (One-Time)</button>
+
+        <!-- ✅ Ten Toes Down one-time -->
+        <button type="button" class="primary" data-founder="true" data-price="price_1S1e9p0J5682KmNwEnSxm0A">Founder Ten Toes Down (One-Time)</button>
       </div>
     </section>
 
-    <!-- ✅ MONTHLY TIERS (display names updated to match your brand) -->
+    <!-- ✅ MONTHLY TIERS -->
     <section class="grid" aria-label="Subscription Tiers">
 
       <article class="card">
@@ -296,13 +297,16 @@
     const statusBox = document.getElementById("statusBox");
     const emailEl = document.getElementById("email");
     const buttons = Array.from(document.querySelectorAll("button[data-price]"));
-
     const founderSpotsText = document.getElementById("founderSpotsText");
 
     function setStatus(msg, show = true) {
       if (!statusBox) return;
       statusBox.style.display = show ? "block" : "none";
       statusBox.textContent = msg;
+    }
+
+    function looksLikePlaceholder(priceId){
+      return !priceId || priceId.startsWith("PASTE_") || priceId.includes("PASTE_PRICE_ID");
     }
 
     async function refreshFounderSpots(){
@@ -322,7 +326,6 @@
         if (typeof spotsLeft === "number") {
           if (spotsLeft <= 0) {
             if (founderSpotsText) founderSpotsText.textContent = "Founder is SOLD OUT";
-            // disable founder buttons
             document.querySelectorAll("button[data-founder='true']").forEach(b => b.disabled = true);
           } else {
             if (founderSpotsText) founderSpotsText.textContent = `${spotsLeft} of ${limit} spots left`;
@@ -352,7 +355,7 @@
         founder: !!isFounder,
         email: email || undefined,
         successUrl: "https://awakenedbyyahmusic.com/success/",
-        cancelUrl: "https://awakenedbyyahmusic.com/subscribe/"
+        cancelUrl: "https://awakenedbyyahmusic.com/subscribe/founders.html"
       };
 
       console.log("[FOUNDERS] POST →", CHECKOUT_ENDPOINT, payload);
@@ -383,6 +386,16 @@
 
         const priceId = btn.getAttribute("data-price");
         const isFounder = btn.getAttribute("data-founder") === "true";
+
+        // ✅ Prevent placeholder IDs from hitting Stripe
+        if (looksLikePlaceholder(priceId)) {
+          setStatus(
+            "Founder Supporter one-time price is not set up in Stripe yet.\n\n" +
+            "Create a $5 ONE-TIME price in Stripe → copy its price_... ID → paste it into founders.html.",
+            true
+          );
+          return;
+        }
 
         console.log("[FOUNDERS] Clicked:", { priceId, isFounder });
         setStatus("Button clicked. Starting checkout…", true);
