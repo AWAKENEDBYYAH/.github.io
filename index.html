@@ -44,6 +44,82 @@
     .page { min-height: 100vh; display: flex; flex-direction: column; }
     .shell { width: 100%; max-width: 1200px; margin: 0 auto; padding: 2rem 1.75rem 3rem; }
 
+    /* ===================== TOP SCROLLING TICKER (HOMEPAGE) ===================== */
+    :root{
+      --tickerBg: rgba(2,6,23,.74);
+      --tickerText: rgba(249,250,251,.96);
+      --tickerOrange: #f59e0b; /* orange outline */
+      --tickerLine: rgba(255,255,255,.10);
+    }
+
+    .top-ticker{
+      position: sticky;
+      top: 0;
+      z-index: 9999;
+      width: 100%;
+      background: var(--tickerBg);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--tickerLine);
+      margin-bottom: 12px; /* keeps it away from nav */
+    }
+
+    .ticker-shell{
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 10px 14px;
+    }
+
+    .ticker-frame{
+      border: 1px solid rgba(255,255,255,.14);
+      outline: 2px solid var(--tickerOrange);
+      outline-offset: -2px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(255,255,255,.04);
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+
+    .ticker-track{
+      display: flex;
+      width: max-content;
+      gap: 18px;
+      padding: 10px 0;
+      animation: tickerScroll 24s linear infinite; /* slow-medium */
+      will-change: transform;
+    }
+
+    .ticker-item{
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      white-space: nowrap;
+      padding: 0 16px;
+      color: var(--tickerText);
+      font-weight: 900;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+
+    .ticker-dot{
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--tickerOrange);
+      box-shadow: 0 0 18px rgba(245,158,11,.55);
+      flex: 0 0 auto;
+    }
+
+    @keyframes tickerScroll{
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .ticker-track{ animation: none; }
+    }
+    /* ===================== END TICKER ===================== */
+
     /* TOP BAR */
     .top-bar {
       display: flex; align-items: center; justify-content: space-between;
@@ -1100,6 +1176,31 @@
   })();
   </script>
   <!-- ===================== END INTRO ===================== -->
+
+  <!-- ✅ TOP SCROLLING TICKER (ABOVE NAVIGATION) -->
+  <div class="top-ticker" role="region" aria-label="Founders announcement">
+    <div class="ticker-shell">
+      <div class="ticker-frame">
+        <div class="ticker-track" aria-hidden="true">
+          <!-- Set A -->
+          <div class="ticker-item"><span class="ticker-dot"></span> FOUNDERS CIRCLE — EARLY ACCESS IS LIMITED TO THE FIRST 200 SUBSCRIBERS •</div>
+          <div class="ticker-item"><span class="ticker-dot"></span> FOUNDERS CIRCLE — EARLY ACCESS IS LIMITED TO THE FIRST 200 SUBSCRIBERS •</div>
+          <div class="ticker-item"><span class="ticker-dot"></span> FOUNDERS CIRCLE — EARLY ACCESS IS LIMITED TO THE FIRST 200 SUBSCRIBERS •</div>
+          <div class="ticker-item"><span class="ticker-dot"></span> FOUNDERS CIRCLE — EARLY ACCESS IS LIMITED TO THE FIRST 200 SUBSCRIBERS •</div>
+          <div class="ticker-item"><span class="ticker-dot"></span> FOUNDERS CIRCLE — EARLY ACCESS IS LIMITED TO THE FIRST 200 SUBSCRIBERS •</div>
+          <div class="ticker-item"><span class="ticker-dot"></span> FOUNDERS CIRCLE — EARLY ACCESS IS LIMITED TO THE FIRST 200 SUBSCRIBERS •</div>
+
+          <!-- Set B (duplicate for seamless loop) -->
+          <div class="ticker-item"><span class="ticker-dot"></span> FOUNDERS CIRCLE — EARLY ACCESS IS LIMITED TO THE FIRST 200 SUBSCRIBERS •</div>
+          <div class="ticker-item"><span class="ticker-dot"></span> FOUNDERS CIRCLE — EARLY ACCESS IS LIMITED TO THE FIRST 200 SUBSCRIBERS •</div>
+          <div class="ticker-item"><span class="ticker-dot"></span> FOUNDERS CIRCLE — EARLY ACCESS IS LIMITED TO THE FIRST 200 SUBSCRIBERS •</div>
+          <div class="ticker-item"><span class="ticker-dot"></span> FOUNDERS CIRCLE — EARLY ACCESS IS LIMITED TO THE FIRST 200 SUBSCRIBERS •</div>
+          <div class="ticker-item"><span class="ticker-dot"></span> FOUNDERS CIRCLE — EARLY ACCESS IS LIMITED TO THE FIRST 200 SUBSCRIBERS •</div>
+          <div class="ticker-item"><span class="ticker-dot"></span> FOUNDERS CIRCLE — EARLY ACCESS IS LIMITED TO THE FIRST 200 SUBSCRIBERS •</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="page">
     <main class="shell">
