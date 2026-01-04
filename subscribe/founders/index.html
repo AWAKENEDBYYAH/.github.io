@@ -1,1 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Founders | AWAKENED BY YAH</title>
 
+  <!-- ✅ Canonical should be the clean folder URL -->
+  <link rel="canonical" href="https://awakenedbyyahmusic.com/subscribe/founders/" />
+
+  <!-- ✅ Optional: keep URL clean if someone hits /index.html -->
+  <script>
+    if (location.pathname.endsWith("/subscribe/founders/index.html")) {
+      location.replace("/subscribe/founders/" + location.search + location.hash);
+    }
+  </script>
+
+  <link rel="icon" type="image/png" href="/abytransparent.png">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" href="/favicon.png">
+
+  <style>
+    :root{
+      --bg:#020617;
+      --text:#e5e7eb;
+      --muted:#94a3b8;
+      --line:rgba(255,255,255,.10);
+      --panel:rgba(255,255,255,.06);
+      --brand:#1C39A8;
+      --brand2:#2b56ff;
+      --radius:22px;
+      --shadow:0 22px 70px rgba(0,0,0,.55);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(1200px 700px at 10% 0%, rgba(28,57,168,.35), transparent 55%),
+        radial-gradient(900px 600px at 100% 10%, rgba(43,86,255,.25), transparent 55%),
+        var(--bg);
+      color:var(--text);
+      min-height:100vh;
+    }
+
+    .wrap{max-width:1100px;margin:0 auto;padding:18px}
+
+    .topbar{
+      display:flex;align-items:center;justify-content:space-between;gap:14px;
+      padding:10px 12px;border:1px solid var(--line);border-radius:999px;
+      background:rgba(2,6,23,.35);backdrop-filter: blur(8px);
+    }
+    .brand{
+      display:flex;align-items:center;gap:10px;
+      font-weight:950;letter-spacing:.06em;text-transform:uppercase;
+      white-space:nowrap;
+    }
+    .brand img{width:34px;height:34px;border-radius:999px}
+    nav{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+    nav a{
+      text-decoration:none; padding:8px 12px; border-radius:999px;
+      color:var(--muted); font-weight:850;
+      border:1px solid transparent;
+    }
+    nav a:hover{border-color:rgba(255,255,255,.16);color:var(--text)}
+    nav a.active{
+      color:var(--text);
+      border-color:rgba(255,255,255,.18);
+      background:rgba(255,255,255,.05);
+    }
+
+    .hero{
+      margin-top:16px;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:var(--radius);
+      overflow:hidden;
+      background:
+        linear-gradient(180deg, rgba(2,6,23,.40), rgba(2,6,23,.86)),
+        url("/music-banner.png");
+      background-size:cover;background-position:center;
+      box-shadow:var(--shadow);
+    }
+    .heroInner{padding:26px 22px}
+    h1{margin:0;font-size:34px;letter-spacing:.02em}
+    .sub{margin:10px 0 0;color:var(--muted);line-height:1.45;max-width:820px}
+
+    .card{
+      margin-top:16px;
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      box-shadow:0 18px 44px rgba(0,0,0,.40);
+      overflow:hidden;
+    }
+    .cardHead{
+      padding:14px 16px;border-bottom:1px solid var(--line);
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+    }
+    .cardHead .title{
+      margin:0;font-weight:950;font-size:14px;letter-spacing:.10em;text-transform:uppercase;
+      color:var(--text);
+    }
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:6px 10px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.16);
+      background:rgba(255,255,255,.05);
+      color:var(--text);
+      font-weight:900;letter-spacing:.04em;font-size:12px;
+      white-space:nowrap;
+    }
+
+    .content{padding:16px}
+    .field{
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.04);
+      border-radius:18px;
+      padding:14px;
+      margin-bottom:14px;
+    }
+    .label{font-weight:850;font-size:12px;color:var(--text);letter-spacing:.02em}
+    .hint{margin-top:4px;color:var(--muted);font-size:12px;line-height:1.35}
+    input{
+      margin-top:10px;
+      width:100%;
+      padding:12px 12px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(2,6,23,.55);
+      color:var(--text);
+      outline:none;
+    }
+    input::placeholder{color:rgba(148,163,184,.75)}
+    input:focus{border-color:rgba(43,86,255,.55)}
+
+    .btns{display:flex;flex-direction:column;gap:12px}
+    button{
+      width:100%;
+      border:1px solid rgba(255,255,255,.14);
+      background:linear-gradient(180deg, rgba(43,86,255,.95), rgba(28,57,168,.95));
+      color:var(--text);
+      border-radius:999px;
+      padding:14px 14px;
+      cursor:pointer;
+      font-weight:950;
+      letter-spacing:.02em;
+      box-shadow:0 18px 40px rgba(0,0,0,.35);
+    }
+    button:hover{border-color:rgba(255,255,255,.24)}
+    button:disabled{opacity:.55;cursor:not-allowed;box-shadow:none}
+
+    .status{
+      margin-top:12px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+      border-radius:18px;
+      padding:12px 14px;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.45;
+      white-space:pre-wrap;
+      display:none;
+    }
+    .status strong{color:var(--text)}
+
+    .foot{
+      margin-top:14px;
+      color:rgba(148,163,184,.9);
+      font-size:12px;
+      line-height:1.45;
+    }
+
+    @media (max-width:640px){
+      h1{font-size:28px}
+      .heroInner{padding:22px 16px}
+      .content{padding:14px}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <img src="/abytransparent.png" alt="AWAKENED BY YAH">
+        <span>AWAKENED BY YAH</span>
+      </div>
+      <nav>
+        <a href="/music/">Music</a>
+        <a href="/stream/">Stream</a>
+        <a href="/">Home</a>
+        <a class="active" href="/subscribe/">Subscribe</a>
+      </nav>
+    </div>
+
+    <section class="hero">
+      <div class="heroInner">
+        <h1>Founders — Lifetime Access</h1>
+        <p class="sub">
+          One-time founders are limited (first 200). Monthly Supporter is always available.
+        </p>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="cardHead">
+        <p class="title">FOUNDERS CHOICES</p>
+        <span class="pill">One-time founders • First 200</span>
+      </div>
+
+      <div class="content">
+        <div class="field">
+          <div class="label">Email (optional but recommended):</div>
+          <div class="hint">We’ll pass this to Stripe Checkout so receipts go to the right inbox.</div>
+          <input id="emailInput" type="email" placeholder="you@example.com" autocomplete="email" />
+        </div>
+
+        <div class="btns">
+          <button id="btnSupporter">Founder Supporter — $5 (Monthly)</button>
+          <button id="btnLockedIn">Founder Locked In — $10 (One-Time)</button>
+          <button id="btnTenToes">Founder Ten Toes Down — $25 (One-Time)</button>
+
+          <!-- Tiny “version stamp” so you can see you're on the new file -->
+          <div class="status" id="statusBox"></div>
+        </div>
+
+        <div class="foot">
+          If something fails, the error will appear above so we can fix it immediately.
+        </div>
+      </div>
+    </section>
+  </div>
+
+<script>
+  const CHECKOUT_ENDPOINT =
+    "https://fgqzopgqtownfvohtlcq.supabase.co/functions/v1/create-checkout";
+
+  // ✅ SINGLE SOURCE OF TRUTH PRICE IDS
+  const PRICE_SUPPORTER_MONTHLY = "price_1Slfn30J5682KmNwrjCbEgUH";
+  const PRICE_LOCKED_IN_ONETIME = "price_1SldCM0J5682KmNwmPcTW4y7";
+  const PRICE_TEN_TOES_DOWN_ONETIME = "price_1Slhoy0J5682KmNwrOUGgBOf"; // ✅ NEW LIVE one-time $25
+
+  const statusBox = document.getElementById("statusBox");
+  const emailInput = document.getElementById("emailInput");
+
+  const btnSupporter = document.getElementById("btnSupporter");
+  const btnLockedIn = document.getElementById("btnLockedIn");
+  const btnTenToes = document.getElementById("btnTenToes");
+
+  const allBtns = [btnSupporter, btnLockedIn, btnTenToes];
+
+  function showStatus(msg){
+    statusBox.style.display = "block";
+    statusBox.textContent = msg;
+  }
+
+  // Show a small “loaded” message so you know you're seeing THIS updated file
+  showStatus(
+    "Loaded price IDs ✅\n" +
+    "Supporter: " + PRICE_SUPPORTER_MONTHLY + "\n" +
+    "Locked In: " + PRICE_LOCKED_IN_ONETIME + "\n" +
+    "Ten Toes: " + PRICE_TEN_TOES_DOWN_ONETIME
+  );
+
+  async function startCheckout(priceId){
+    const customerEmail = (emailInput?.value || "").trim() || undefined;
+
+    const res = await fetch(CHECKOUT_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        priceId,
+        successUrl: "https://awakenedbyyahmusic.com/success/",
+        cancelUrl: "https://awakenedbyyahmusic.com/subscribe/founders/",  // ✅ CLEAN RETURN URL
+        customerEmail
+      })
+    });
+
+    const raw = await res.text();
+    let data = {};
+    try { data = JSON.parse(raw); } catch (e) {}
+
+    if (!res.ok) {
+      throw new Error(data.error || data.message || raw || ("Request failed (" + res.status + ")"));
+    }
+    if (!data.url) throw new Error("No Checkout URL returned from server.");
+
+    window.location.href = data.url;
+  }
+
+  function wire(btn, priceId){
+    btn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      try{
+        allBtns.forEach(b => b.disabled = true);
+        await startCheckout(priceId);
+      } catch(err){
+        allBtns.forEach(b => b.disabled = false);
+        showStatus("Checkout error:\n" + (err?.message || String(err)));
+      }
+    });
+  }
+
+  wire(btnSupporter, PRICE_SUPPORTER_MONTHLY);
+  wire(btnLockedIn, PRICE_LOCKED_IN_ONETIME);
+  wire(btnTenToes, PRICE_TEN_TOES_DOWN_ONETIME);
+</script>
+
+</body>
+</html>
