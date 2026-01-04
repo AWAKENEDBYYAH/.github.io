@@ -41,84 +41,91 @@
 
     a { color: inherit; text-decoration: none; }
 
-    .page { min-height: 100vh; display: flex; flex-direction: column; }
-    .shell { width: 100%; max-width: 1200px; margin: 0 auto; padding: 2rem 1.75rem 3rem; }
-
-    /* ===================== TOP SCROLLING TICKER (HOMEPAGE) ===================== */
+    /* ===================== FOUNDERS TICKER (TOP) ===================== */
     :root{
-      --tickerBg: rgba(2,6,23,.74);
-      --tickerText: rgba(249,250,251,.96);
-      --tickerOrange: #f59e0b; /* orange outline */
-      --tickerLine: rgba(255,255,255,.10);
+      --tickerH: 44px;
+      --tickerBorder: rgba(251,191,36,0.85);
+      --tickerBg: rgba(15,23,42,0.72);
+      --tickerText: #fbbf24;
     }
 
-    .top-ticker{
-      position: sticky;
-      top: 0;
-      z-index: 9999;
-      width: 100%;
+    .founders-ticker{
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--tickerH);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
       background: var(--tickerBg);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--tickerLine);
-      margin-bottom: 12px; /* keeps it away from nav */
+      border-bottom: 1px solid rgba(255,255,255,0.10);
+      backdrop-filter: blur(12px);
     }
 
-    .ticker-shell{
-      max-width: 1400px;
+    .founders-ticker .ticker-shell{
+      width: 100%;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 10px 14px;
+      padding: 0 1.25rem;
+      display: flex;
+      align-items: center;
     }
 
-    .ticker-frame{
-      border: 1px solid rgba(255,255,255,.14);
-      outline: 2px solid var(--tickerOrange);
-      outline-offset: -2px;
+    .founders-ticker .ticker-track{
+      width: 100%;
+      border: 1px solid var(--tickerBorder);
       border-radius: 999px;
       overflow: hidden;
-      background: rgba(255,255,255,.04);
-      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+      background: rgba(2,6,23,0.55);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.55);
     }
 
-    .ticker-track{
-      display: flex;
-      width: max-content;
-      gap: 18px;
-      padding: 10px 0;
-      animation: tickerScroll 24s linear infinite; /* slow-medium */
-      will-change: transform;
-    }
-
-    .ticker-item{
+    .founders-ticker .ticker-move{
       display: inline-flex;
       align-items: center;
-      gap: 10px;
+      gap: 28px;
       white-space: nowrap;
-      padding: 0 16px;
-      color: var(--tickerText);
-      font-weight: 900;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      font-size: 12px;
+      padding: 8px 14px;
+      will-change: transform;
+      animation: tickerScroll 45s linear infinite; /* ✅ SLOWED WAY DOWN */
     }
 
-    .ticker-dot{
+    .founders-ticker .ticker-move span{
+      color: var(--tickerText);
+      font-weight: 900;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+    }
+
+    .founders-ticker .dot{
       width: 7px;
       height: 7px;
       border-radius: 999px;
-      background: var(--tickerOrange);
-      box-shadow: 0 0 18px rgba(245,158,11,.55);
+      background: rgba(251,191,36,0.95);
+      box-shadow: 0 0 12px rgba(251,191,36,0.55);
       flex: 0 0 auto;
     }
 
     @keyframes tickerScroll{
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
     }
 
-    @media (prefers-reduced-motion: reduce){
-      .ticker-track{ animation: none; }
+    /* optional: pause on hover (nice on desktop) */
+    .founders-ticker:hover .ticker-move{ animation-play-state: paused; }
+
+    @media (max-width: 640px){
+      :root{ --tickerH: 48px; }
+      .founders-ticker .ticker-move span{
+        font-size: 0.68rem;
+        letter-spacing: 0.20em;
+      }
     }
     /* ===================== END TICKER ===================== */
+
+    .page { min-height: 100vh; display: flex; flex-direction: column; padding-top: var(--tickerH); }
+    .shell { width: 100%; max-width: 1200px; margin: 0 auto; padding: 2rem 1.75rem 3rem; }
 
     /* TOP BAR */
     .top-bar {
@@ -920,12 +927,28 @@
     @media (prefers-reduced-motion: reduce){
       .introBg{ animation:none; }
       #photoHit, #introOverlay.fadeOut{ transition:none; }
+      .founders-ticker .ticker-move{ animation:none; transform:none; }
     }
     /* ===================== END INTRO ===================== */
   </style>
 </head>
 
 <body>
+  <!-- ✅ TOP TICKER (away from nav, fixed at very top) -->
+  <div class="founders-ticker" aria-label="Founders circle ticker">
+    <div class="ticker-shell">
+      <div class="ticker-track">
+        <!-- duplicate content twice so the loop is seamless -->
+        <div class="ticker-move" aria-hidden="true">
+          <span>FOUNDERS CIRCLE — EARLY ACCESS IS LIMITED</span><i class="dot"></i><span>FIRST 200 SUBSCRIBERS</span><i class="dot"></i>
+          <span>FOUNDERS CIRCLE — EARLY ACCESS IS LIMITED</span><i class="dot"></i><span>FIRST 200 SUBSCRIBERS</span><i class="dot"></i>
+          <span>FOUNDERS CIRCLE — EARLY ACCESS IS LIMITED</span><i class="dot"></i><span>FIRST 200 SUBSCRIBERS</span><i class="dot"></i>
+          <span>FOUNDERS CIRCLE — EARLY ACCESS IS LIMITED</span><i class="dot"></i><span>FIRST 200 SUBSCRIBERS</span><i class="dot"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- ===================== INTRO OVERLAY (runs once per session) ===================== -->
   <div id="introOverlay" aria-hidden="true">
     <div class="introBg"></div>
@@ -1176,31 +1199,6 @@
   })();
   </script>
   <!-- ===================== END INTRO ===================== -->
-
-  <!-- ✅ TOP SCROLLING TICKER (ABOVE NAVIGATION) -->
-  <div class="top-ticker" role="region" aria-label="Founders announcement">
-    <div class="ticker-shell">
-      <div class="ticker-frame">
-        <div class="ticker-track" aria-hidden="true">
-          <!-- Set A -->
-          <div class="ticker-item"><span class="ticker-dot"></span> FOUNDERS CIRCLE — EARLY ACCESS IS LIMITED TO THE FIRST 200 SUBSCRIBERS •</div>
-          <div class="ticker-item"><span class="ticker-dot"></span> FOUNDERS CIRCLE — EARLY ACCESS IS LIMITED TO THE FIRST 200 SUBSCRIBERS •</div>
-          <div class="ticker-item"><span class="ticker-dot"></span> FOUNDERS CIRCLE — EARLY ACCESS IS LIMITED TO THE FIRST 200 SUBSCRIBERS •</div>
-          <div class="ticker-item"><span class="ticker-dot"></span> FOUNDERS CIRCLE — EARLY ACCESS IS LIMITED TO THE FIRST 200 SUBSCRIBERS •</div>
-          <div class="ticker-item"><span class="ticker-dot"></span> FOUNDERS CIRCLE — EARLY ACCESS IS LIMITED TO THE FIRST 200 SUBSCRIBERS •</div>
-          <div class="ticker-item"><span class="ticker-dot"></span> FOUNDERS CIRCLE — EARLY ACCESS IS LIMITED TO THE FIRST 200 SUBSCRIBERS •</div>
-
-          <!-- Set B (duplicate for seamless loop) -->
-          <div class="ticker-item"><span class="ticker-dot"></span> FOUNDERS CIRCLE — EARLY ACCESS IS LIMITED TO THE FIRST 200 SUBSCRIBERS •</div>
-          <div class="ticker-item"><span class="ticker-dot"></span> FOUNDERS CIRCLE — EARLY ACCESS IS LIMITED TO THE FIRST 200 SUBSCRIBERS •</div>
-          <div class="ticker-item"><span class="ticker-dot"></span> FOUNDERS CIRCLE — EARLY ACCESS IS LIMITED TO THE FIRST 200 SUBSCRIBERS •</div>
-          <div class="ticker-item"><span class="ticker-dot"></span> FOUNDERS CIRCLE — EARLY ACCESS IS LIMITED TO THE FIRST 200 SUBSCRIBERS •</div>
-          <div class="ticker-item"><span class="ticker-dot"></span> FOUNDERS CIRCLE — EARLY ACCESS IS LIMITED TO THE FIRST 200 SUBSCRIBERS •</div>
-          <div class="ticker-item"><span class="ticker-dot"></span> FOUNDERS CIRCLE — EARLY ACCESS IS LIMITED TO THE FIRST 200 SUBSCRIBERS •</div>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <div class="page">
     <main class="shell">
