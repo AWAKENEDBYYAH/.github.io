@@ -207,21 +207,9 @@
         </div>
 
         <div class="btns">
-          <!-- SUPPORTER (monthly) -->
-          <button data-price="price_1Slfn30J5682KmNwrjCbEgUH" data-label="SUPPORTER">
-            Founder Supporter — $5 (Monthly)
-          </button>
-
-          <!-- LOCKED IN (one-time) -->
-          <button data-price="price_1SldCM0J5682KmNwmPcTW4y7" data-label="LOCKED IN">
-            Founder Locked In — $10 (One-Time)
-          </button>
-
-          <!-- TEN TOES DOWN (one-time) -->
-          <button data-price="price_1Sle9p0J5682KmNwEnSxm0A" data-label="TEN TOES DOWN">
-            Founder Ten Toes Down — $25 (One-Time)
-          </button>
-
+          <button id="btnSupporter">Founder Supporter — $5 (Monthly)</button>
+          <button id="btnLockedIn">Founder Locked In — $10 (One-Time)</button>
+          <button id="btnTenToes">Founder Ten Toes Down — $25 (One-Time)</button>
           <div class="status" id="statusBox"></div>
         </div>
 
@@ -233,12 +221,23 @@
   </div>
 
 <script>
+  // ✅ Endpoint
   const CHECKOUT_ENDPOINT =
     "https://fgqzopgqtownfvohtlcq.supabase.co/functions/v1/create-checkout";
 
+  // ✅ PRICE IDS (single source of truth — no mismatches)
+  const PRICE_SUPPORTER_MONTHLY = "price_1Slfn30J5682KmNwrjCbEgUH";
+  const PRICE_LOCKED_IN_ONETIME = "price_1SldCM0J5682KmNwmPcTW4y7";
+  const PRICE_TEN_TOES_DOWN_ONETIME = "price_1Sle9p0J5682KmNwEnSxm0A"; // ✅ LIVE one-time $25
+
   const statusBox = document.getElementById("statusBox");
   const emailInput = document.getElementById("emailInput");
-  const buttons = Array.from(document.querySelectorAll("button[data-price]"));
+
+  const btnSupporter = document.getElementById("btnSupporter");
+  const btnLockedIn = document.getElementById("btnLockedIn");
+  const btnTenToes = document.getElementById("btnTenToes");
+
+  const allBtns = [btnSupporter, btnLockedIn, btnTenToes];
 
   function showStatus(msg){
     statusBox.style.display = "block";
@@ -283,20 +282,22 @@
     window.location.href = data.url;
   }
 
-  buttons.forEach(btn => {
+  function wire(btn, priceId){
     btn.addEventListener("click", async (e) => {
       e.preventDefault();
-      const priceId = btn.getAttribute("data-price");
-
       try{
-        buttons.forEach(b => b.disabled = true);
+        allBtns.forEach(b => b.disabled = true);
         await startCheckout(priceId);
       } catch(err){
-        buttons.forEach(b => b.disabled = false);
+        allBtns.forEach(b => b.disabled = false);
         showStatus("Checkout error:\n" + (err?.message || String(err)));
       }
     });
-  });
+  }
+
+  wire(btnSupporter, PRICE_SUPPORTER_MONTHLY);
+  wire(btnLockedIn, PRICE_LOCKED_IN_ONETIME);
+  wire(btnTenToes, PRICE_TEN_TOES_DOWN_ONETIME);
 </script>
 
 </body>
