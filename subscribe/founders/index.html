@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Founders | AWAKENED BY YAH</title>
 
-  <!-- ✅ Canonical should be the clean folder URL -->
-  <link rel="canonical" href="https://awakenedbyyahmusic.com/subscribe/founders/" />
+  <!-- ✅ Canonical should match THIS folder page -->
+  <link rel="canonical" href="https://awakenedbyyahmusic.com/founders/" />
 
-  <!-- ✅ Optional: keep URL clean if someone hits /index.html -->
+  <!-- ✅ Keep URL clean if someone hits /index.html -->
   <script>
-    if (location.pathname.endsWith("/subscribe/founders/index.html")) {
-      location.replace("/subscribe/founders/" + location.search + location.hash);
+    if (location.pathname.endsWith("/founders/index.html")) {
+      location.replace("/founders/" + location.search + location.hash);
     }
   </script>
 
@@ -95,6 +95,7 @@
     .cardHead{
       padding:14px 16px;border-bottom:1px solid var(--line);
       display:flex;align-items:center;justify-content:space-between;gap:10px;
+      flex-wrap:wrap;
     }
     .cardHead .title{
       margin:0;font-weight:950;font-size:14px;letter-spacing:.10em;text-transform:uppercase;
@@ -109,6 +110,7 @@
       font-weight:900;letter-spacing:.04em;font-size:12px;
       white-space:nowrap;
     }
+    .pill small{color:rgba(148,163,184,.95);font-weight:850;letter-spacing:.03em}
 
     .content{padding:16px}
     .field{
@@ -205,7 +207,10 @@
     <section class="card">
       <div class="cardHead">
         <p class="title">FOUNDERS CHOICES</p>
-        <span class="pill">One-time founders • First 200</span>
+        <!-- ✅ "Spots-left" UI (auto switches to SOLD OUT when the server says it's full) -->
+        <span class="pill" id="foundersPill">
+          Founders Circle <small>•</small> <span id="spotsText">Limited to 200</span>
+        </span>
       </div>
 
       <div class="content">
@@ -217,8 +222,8 @@
 
         <div class="btns">
           <button id="btnSupporter">Founder Supporter — $5 (Monthly)</button>
-          <button id="btnLockedIn">Founder Locked In — $10 (One-Time)</button>
-          <button id="btnTenToes">Founder Ten Toes Down — $25 (One-Time)</button>
+          <button id="btnLockedIn" data-founder="true">Founder Locked In — $10 (One-Time)</button>
+          <button id="btnTenToes" data-founder="true">Founder Ten Toes Down — $25 (One-Time)</button>
 
           <!-- Hidden by default; only shows errors -->
           <div class="status" id="statusBox"></div>
@@ -236,20 +241,25 @@
     "https://fgqzopgqtownfvohtlcq.supabase.co/functions/v1/create-checkout";
 
   // ✅ Supabase Publishable (anon) key (required for Edge Function auth)
-  const SUPABASE_ANON_KEY = "sb_publishable__LlL7rsAYeDlub9OmvofaA_ck1tKqca";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZncXpvcGdxdG93bmZ2b2h0bGNxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYyOTY4OTQsImV4cCI6MjA4MTg3Mjg5NH0.cotpbt4Uct49E9VNz4zAhmLMlv8by2A7wNMY4syVMRQ";
 
   // ✅ SINGLE SOURCE OF TRUTH PRICE IDS
   const PRICE_SUPPORTER_MONTHLY = "price_1Slfn30J5682KmNwrjCbEgUH";
   const PRICE_LOCKED_IN_ONETIME = "price_1SldCM0J5682KmNwmPcTW4y7";
   const PRICE_TEN_TOES_DOWN_ONETIME = "price_1Slhoy0J5682KmNwrOUGgBOf"; // ✅ one-time $25
 
+  // ✅ UI refs
   const statusBox = document.getElementById("statusBox");
   const emailInput = document.getElementById("emailInput");
+
+  const foundersPill = document.getElementById("foundersPill");
+  const spotsText = document.getElementById("spotsText");
 
   const btnSupporter = document.getElementById("btnSupporter");
   const btnLockedIn = document.getElementById("btnLockedIn");
   const btnTenToes = document.getElementById("btnTenToes");
 
+  const founderBtns = [btnLockedIn, btnTenToes];
   const allBtns = [btnSupporter, btnLockedIn, btnTenToes];
 
   function showStatus(msg){
@@ -261,8 +271,35 @@
     statusBox.textContent = "";
   }
 
-  // ✅ Start hidden (notes removed). We'll only show this box on errors.
+  // ✅ Start hidden — only show on error
   hideStatus();
+
+  function setFounderSoldOut(){
+    // Pill update
+    spotsText.textContent = "SOLD OUT";
+    foundersPill.style.borderColor = "rgba(255,255,255,.22)";
+    foundersPill.style.background = "rgba(255,255,255,.07)";
+
+    // Buttons update
+    founderBtns.forEach(btn => {
+      btn.disabled = true;
+      btn.textContent = "SOLD OUT — Founder Circle Full";
+    });
+  }
+
+  // Detect founder-full errors (covers different server error phrasings)
+  function isFounderFullError(message){
+    const m = String(message || "").toLowerCase();
+    return (
+      m.includes("founder limit") ||
+      m.includes("founders limit") ||
+      m.includes("limit reached") ||
+      m.includes("sold out") ||
+      m.includes("founder cap") ||
+      m.includes("founders cap") ||
+      m.includes("full") && m.includes("founder")
+    );
+  }
 
   async function startCheckout(priceId){
     hideStatus();
@@ -279,7 +316,7 @@
       body: JSON.stringify({
         priceId,
         successUrl: "https://awakenedbyyahmusic.com/success/",
-        cancelUrl: "https://awakenedbyyahmusic.com/subscribe/founders/",
+        cancelUrl: "https://awakenedbyyahmusic.com/founders/",
         customerEmail
       })
     });
@@ -289,7 +326,8 @@
     try { data = JSON.parse(raw); } catch (e) {}
 
     if (!res.ok) {
-      throw new Error(data.error || data.message || raw || ("Request failed (" + res.status + ")"));
+      const msg = data.error || data.message || raw || ("Request failed (" + res.status + ")");
+      throw new Error(msg);
     }
     if (!data.url) throw new Error("No Checkout URL returned from server.");
 
@@ -303,8 +341,17 @@
         allBtns.forEach(b => b.disabled = true);
         await startCheckout(priceId);
       } catch(err){
+        // Re-enable buttons by default...
         allBtns.forEach(b => b.disabled = false);
-        showStatus("Checkout error:\n" + (err?.message || String(err)));
+
+        const msg = (err?.message || String(err));
+
+        // ✅ If founders are full, lock founders buttons permanently on this page load
+        if (isFounderFullError(msg)) {
+          setFounderSoldOut();
+        }
+
+        showStatus("Checkout error:\n" + msg);
       }
     });
   }
