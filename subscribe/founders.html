@@ -12,13 +12,8 @@
 
   <style>
     :root{
-      --bg:#020617;
-      --text:#e5e7eb;
-      --muted:#94a3b8;
-      --line:rgba(255,255,255,.10);
-      --brand:#1C39A8;
-      --brand2:#2b56ff;
-      --radius:22px;
+      --bg:#020617; --text:#e5e7eb; --muted:#94a3b8; --line:rgba(255,255,255,.10);
+      --brand:#1C39A8; --brand2:#2b56ff; --radius:22px;
     }
     *{box-sizing:border-box}
     body{
@@ -29,40 +24,17 @@
         radial-gradient(900px 600px at 100% 10%, rgba(43,86,255,.25), transparent 55%),
         var(--bg);
       color:var(--text);
+      min-height:100vh;
     }
     .wrap{max-width:1100px;margin:0 auto;padding:18px}
-    .topbar{
-      display:flex;align-items:center;justify-content:space-between;
-      padding:10px 12px;border:1px solid var(--line);border-radius:999px;
-      background:rgba(2,6,23,.35);backdrop-filter: blur(8px);
-    }
-    .brand{display:flex;align-items:center;gap:10px;font-weight:900}
-    .brand img{width:34px;height:34px;border-radius:999px}
-    nav a{
-      text-decoration:none;padding:8px 12px;border-radius:999px;
-      color:var(--muted);font-weight:800
-    }
-    nav a.active{color:var(--text)}
-    .hero{
-      margin-top:16px;border-radius:22px;overflow:hidden;
-      background:linear-gradient(180deg, rgba(2,6,23,.35), rgba(2,6,23,.82)),
-      url("/music-banner.png");background-size:cover;
-    }
-    .heroInner{padding:26px}
-    .grid{display:grid;gap:14px;margin-top:16px}
-    .card{border:1px solid var(--line);border-radius:22px;background:rgba(255,255,255,.05)}
-    .cardHead{padding:16px;border-bottom:1px solid var(--line)}
-    .tier{font-weight:950;letter-spacing:.08em}
-    .price{font-size:26px;font-weight:950;margin-top:8px}
-    .ctaRow{padding:16px;display:flex;flex-direction:column;gap:10px}
+    .hero{margin-top:16px;border:1px solid var(--line);border-radius:var(--radius);padding:26px}
+    .card{margin-top:16px;border:1px solid var(--line);border-radius:var(--radius);padding:16px}
     button{
-      border-radius:999px;padding:12px;font-weight:950;
+      width:100%;margin:8px 0;
+      padding:14px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.15);
       background:linear-gradient(180deg,#2b56ff,#1C39A8);
-      color:white;border:none;cursor:pointer
-    }
-    .badge{
-      display:inline-block;padding:6px 10px;border-radius:999px;
-      border:1px solid rgba(255,255,255,.2);font-weight:900;font-size:12px
+      color:#fff;font-weight:900;cursor:pointer;
     }
   </style>
 </head>
@@ -70,44 +42,34 @@
 <body>
 <div class="wrap">
 
-  <div class="topbar">
-    <div class="brand">
-      <img src="/abytransparent.png" alt="">
-      <span>AWAKENED BY YAH</span>
-    </div>
-    <nav>
-      <a href="/">Home</a>
-      <a href="/music/">Music</a>
-      <a class="active" href="/subscribe/">Subscribe</a>
-    </nav>
-  </div>
-
   <section class="hero">
-    <div class="heroInner">
-      <h1>Founders — Lifetime Access</h1>
-      <p>One-time payment. First 200 only.</p>
-      <span class="badge" id="founderSpotsText">Checking founder spots…</span>
-    </div>
+    <h1>Founders — Lifetime Access</h1>
+    <p>One-time payment • First 200 only</p>
   </section>
 
-  <section class="card" style="margin-top:16px">
-    <div class="cardHead">
-      <p class="tier">FOUNDERS</p>
-    </div>
+  <section class="card">
 
-    <div class="ctaRow">
-      <button data-founder="true" data-price="price_1Slfn30J5682KmNwrjCbEgUH">
-        Founder Supporter — $5 (One-Time)
-      </button>
+    <!-- SUPPORTER -->
+    <button
+      data-founder="true"
+      data-price="price_1Slfn30J5682KmNwrjCbEgUH">
+      Founder Supporter — $5 (Monthly)
+    </button>
 
-      <button data-founder="true" data-price="price_1SldCM0J5682KmNwmPcTW4y7">
-        Founder Locked In — $10 (One-Time)
-      </button>
+    <!-- LOCKED IN -->
+    <button
+      data-founder="true"
+      data-price="price_1SldCM0J5682KmNwmPcTW4y7">
+      Founder Locked In — $10 (One-Time)
+    </button>
 
-      <button data-founder="true" data-price="price_1S1e9p0J5682KmNwEnSxm0A">
-        Founder Ten Toes Down — $25 (One-Time)
-      </button>
-    </div>
+    <!-- TEN TOES DOWN (FIXED: lowercase L) -->
+    <button
+      data-founder="true"
+      data-price="price_1Sle9p0J5682KmNwEnSxm0A">
+      Founder Ten Toes Down — $25 (One-Time)
+    </button>
+
   </section>
 
 </div>
@@ -117,21 +79,21 @@ const CHECKOUT_ENDPOINT =
   "https://fgqzopgqtownfvohtlcq.supabase.co/functions/v1/create-checkout";
 
 document.querySelectorAll("button[data-price]").forEach(btn=>{
-  btn.onclick = async ()=>{
+  btn.addEventListener("click", async ()=>{
+    const priceId = btn.dataset.price;
     const res = await fetch(CHECKOUT_ENDPOINT,{
       method:"POST",
       headers:{ "Content-Type":"application/json" },
       body:JSON.stringify({
-        priceId: btn.dataset.price,
-        founder: btn.dataset.founder === "true",
+        priceId,
         successUrl:"https://awakenedbyyahmusic.com/success/",
-        cancelUrl:"https://awakenedbyyahmusic.com/subscribe/"
+        cancelUrl:"https://awakenedbyyahmusic.com/subscribe/founders.html"
       })
     });
     const data = await res.json();
-    if(data.url) location.href = data.url;
-    else alert("Checkout error");
-  }
+    if(!res.ok) return alert("Checkout error");
+    window.location.href = data.url;
+  });
 });
 </script>
 
