@@ -12,10 +12,18 @@
 
   <style>
     :root{
-      --bg:#020617; --text:#e5e7eb; --muted:#94a3b8; --line:rgba(255,255,255,.10);
-      --brand:#1C39A8; --brand2:#2b56ff; --radius:22px;
+      --bg:#020617;
+      --text:#e5e7eb;
+      --muted:#94a3b8;
+      --line:rgba(255,255,255,.10);
+      --panel:rgba(255,255,255,.06);
+      --brand:#1C39A8;
+      --brand2:#2b56ff;
+      --radius:22px;
+      --shadow:0 18px 60px rgba(0,0,0,.55);
     }
     *{box-sizing:border-box}
+    html,body{height:100%}
     body{
       margin:0;
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
@@ -25,76 +33,258 @@
         var(--bg);
       color:var(--text);
       min-height:100vh;
+      overflow-x:hidden; /* ✅ prevents sideways cut-off */
+      overflow-y:auto;   /* ✅ ensures the rest of the page shows */
     }
-    .wrap{max-width:1100px;margin:0 auto;padding:18px}
-    .hero{margin-top:16px;border:1px solid var(--line);border-radius:var(--radius);padding:26px}
-    .card{margin-top:16px;border:1px solid var(--line);border-radius:var(--radius);padding:16px}
-    button{
-      width:100%;margin:8px 0;
-      padding:14px;border-radius:999px;
-      border:1px solid rgba(255,255,255,.15);
-      background:linear-gradient(180deg,#2b56ff,#1C39A8);
-      color:#fff;font-weight:900;cursor:pointer;
+    .wrap{max-width:1100px;margin:0 auto;padding:18px 18px 44px}
+    .topbar{
+      display:flex;align-items:center;justify-content:space-between;gap:14px;
+      padding:10px 12px;border:1px solid rgba(255,255,255,.14);border-radius:999px;
+      background:rgba(2,6,23,.35);backdrop-filter: blur(8px);
+      box-shadow:0 10px 30px rgba(0,0,0,.25);
+    }
+    .brand{
+      display:flex;align-items:center;gap:10px;font-weight:950;letter-spacing:.04em;
+    }
+    .brand img{width:36px;height:36px;border-radius:999px}
+    nav{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+    nav a{
+      text-decoration:none; padding:8px 12px; border-radius:999px;
+      color:var(--muted); font-weight:850;
+      border:1px solid transparent;
+      background:transparent;
+      white-space:nowrap;
+    }
+    nav a:hover{border-color:rgba(255,255,255,.16);color:var(--text)}
+    nav a.active{
+      color:var(--text);
+      border-color:rgba(255,255,255,.18);
+      background:rgba(255,255,255,.05);
+    }
+
+    .hero{
+      margin-top:16px;
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:var(--radius);
+      overflow:hidden;
+      background:
+        linear-gradient(180deg, rgba(2,6,23,.35), rgba(2,6,23,.82)),
+        url("/music-banner.png");
+      background-size:cover;
+      background-position:center;
+      box-shadow:0 35px 90px rgba(0,0,0,.55);
+    }
+    .heroInner{padding:26px 22px}
+    h1{margin:0;font-size:34px;letter-spacing:.02em}
+    .sub{margin:10px 0 0;color:var(--muted);line-height:1.45;max-width:780px}
+
+    .grid{
+      margin-top:16px;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:16px;
+    }
+
+    .card{
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow:0 18px 44px rgba(0,0,0,.40);
+      overflow:hidden;
+    }
+    .cardHead{padding:16px;border-bottom:1px solid var(--line)}
+    .tier{
+      margin:0;
+      font-weight:950;
+      font-size:14px;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+    }
+
+    .sectionPad{padding:16px}
+    .field{
+      margin-top:10px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.04);
+      border-radius:16px;
+      padding:12px;
+    }
+    .field label{display:block;font-size:12px;color:var(--muted);margin-bottom:8px;font-weight:800}
+    .field input{
+      width:100%;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(2,6,23,.45);
+      color:var(--text);
+      border-radius:999px;
+      padding:12px 14px;
+      outline:none;
+      font-weight:700;
+    }
+
+    .btn{
+      width:100%;
+      border:1px solid rgba(255,255,255,.14);
+      background:linear-gradient(180deg, rgba(43,86,255,.95), rgba(28,57,168,.95));
+      color:var(--text);
+      border-radius:999px;
+      padding:14px 14px;
+      cursor:pointer;
+      font-weight:950;
+      letter-spacing:.02em;
+      margin-top:10px;
+    }
+    .btn:hover{border-color:rgba(255,255,255,.22)}
+    .btn:disabled{opacity:.55;cursor:not-allowed}
+
+    .status{
+      margin-top:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+      border-radius:18px;
+      padding:12px 14px;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.45;
+      white-space:pre-wrap;
+      display:none;
+    }
+    .status strong{color:var(--text)}
+    .note{
+      margin-top:10px;
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.5;
     }
   </style>
 </head>
 
 <body>
-<div class="wrap">
+  <div class="wrap">
 
-  <section class="hero">
-    <h1>Founders — Lifetime Access</h1>
-    <p>One-time payment • First 200 only</p>
-  </section>
+    <div class="topbar">
+      <div class="brand">
+        <img src="/abytransparent.png" alt="AWAKENED BY YAH">
+        <span>AWAKENED BY YAH</span>
+      </div>
+      <nav>
+        <a href="/music/">Music</a>
+        <a href="/stream/">Stream</a>
+        <a href="/">Home</a>
+        <a class="active" href="/subscribe/">Subscribe</a>
+      </nav>
+    </div>
 
-  <section class="card">
+    <section class="hero">
+      <div class="heroInner">
+        <h1>Founders — Lifetime Access</h1>
+        <p class="sub">One-time payment options for founders. First 200 only.</p>
+      </div>
+    </section>
 
-    <!-- SUPPORTER -->
-    <button
-      data-founder="true"
-      data-price="price_1Slfn30J5682KmNwrjCbEgUH">
-      Founder Supporter — $5 (Monthly)
-    </button>
+    <div class="grid">
 
-    <!-- LOCKED IN -->
-    <button
-      data-founder="true"
-      data-price="price_1SldCM0J5682KmNwmPcTW4y7">
-      Founder Locked In — $10 (One-Time)
-    </button>
+      <!-- Email box (matches your full subscribe layout) -->
+      <section class="card">
+        <div class="cardHead">
+          <p class="tier">Email (optional but recommended)</p>
+        </div>
+        <div class="sectionPad">
+          <div class="field">
+            <label>We’ll pass this to Stripe Checkout so receipts go to the right inbox.</label>
+            <input id="customerEmail" type="email" placeholder="you@example.com" autocomplete="email" />
+          </div>
+          <div class="note">
+            Tip: If you leave it blank, Stripe will still let you enter an email at checkout.
+          </div>
+        </div>
+      </section>
 
-    <!-- TEN TOES DOWN (FIXED: lowercase L) -->
-    <button
-      data-founder="true"
-      data-price="price_1Sle9p0J5682KmNwEnSxm0A">
-      Founder Ten Toes Down — $25 (One-Time)
-    </button>
+      <!-- Founders buttons -->
+      <section class="card">
+        <div class="cardHead">
+          <p class="tier">Founders choices</p>
+        </div>
+        <div class="sectionPad">
 
-  </section>
+          <button class="btn" data-price="price_1Slfn30J5682KmNwrjCbEgUH">
+            Founder Supporter — $5 (Monthly)
+          </button>
 
-</div>
+          <button class="btn" data-price="price_1SldCM0J5682KmNwmPcTW4y7">
+            Founder Locked In — $10 (One-Time)
+          </button>
+
+          <!-- ✅ FIXED: lowercase "l" -->
+          <button class="btn" data-price="price_1Sle9p0J5682KmNwEnSxm0A">
+            Founder Ten Toes Down — $25 (One-Time)
+          </button>
+
+          <div class="status" id="statusBox"></div>
+
+        </div>
+      </section>
+
+    </div>
+
+  </div>
 
 <script>
-const CHECKOUT_ENDPOINT =
-  "https://fgqzopgqtownfvohtlcq.supabase.co/functions/v1/create-checkout";
+  const CHECKOUT_ENDPOINT =
+    "https://fgqzopgqtownfvohtlcq.supabase.co/functions/v1/create-checkout";
 
-document.querySelectorAll("button[data-price]").forEach(btn=>{
-  btn.addEventListener("click", async ()=>{
-    const priceId = btn.dataset.price;
-    const res = await fetch(CHECKOUT_ENDPOINT,{
-      method:"POST",
-      headers:{ "Content-Type":"application/json" },
-      body:JSON.stringify({
+  const statusBox = document.getElementById("statusBox");
+  const emailEl = document.getElementById("customerEmail");
+  const buttons = Array.from(document.querySelectorAll("button[data-price]"));
+
+  function setStatus(msg, show=true){
+    statusBox.style.display = show ? "block" : "none";
+    statusBox.textContent = msg;
+  }
+
+  async function startCheckout(priceId){
+    const customerEmail = emailEl && emailEl.value ? emailEl.value.trim() : undefined;
+
+    setStatus(
+      `Starting checkout...\npriceId: ${priceId}\nemail: ${customerEmail || "(none)"}`,
+      true
+    );
+
+    const res = await fetch(CHECKOUT_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type":"application/json" },
+      body: JSON.stringify({
         priceId,
-        successUrl:"https://awakenedbyyahmusic.com/success/",
-        cancelUrl:"https://awakenedbyyahmusic.com/subscribe/founders.html"
+        successUrl: "https://awakenedbyyahmusic.com/success/",
+        cancelUrl: "https://awakenedbyyahmusic.com/subscribe/founders.html",
+        customerEmail
       })
     });
-    const data = await res.json();
-    if(!res.ok) return alert("Checkout error");
+
+    const raw = await res.text();
+    let data = {};
+    try { data = JSON.parse(raw); } catch(_){}
+
+    if (!res.ok) {
+      throw new Error(data.error || data.message || raw || `Request failed (${res.status})`);
+    }
+    if (!data.url) throw new Error("No Checkout URL returned from server.");
     window.location.href = data.url;
+  }
+
+  buttons.forEach(btn => {
+    btn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      const priceId = btn.getAttribute("data-price");
+
+      try{
+        buttons.forEach(b => b.disabled = true);
+        await startCheckout(priceId);
+      } catch(err){
+        buttons.forEach(b => b.disabled = false);
+        setStatus("Checkout error:\n" + (err?.message || String(err)), true);
+      }
+    });
   });
-});
 </script>
 
 </body>
