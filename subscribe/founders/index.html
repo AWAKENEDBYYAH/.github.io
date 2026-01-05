@@ -191,7 +191,9 @@
         <a href="/music/">Music</a>
         <a href="/stream/">Stream</a>
         <a href="/">Home</a>
-        <a class="active" href="/subscribe/">Subscribe</a>
+
+        <!-- ✅ FIXED: Subscribe points to THIS founders page -->
+        <a class="active" href="/subscribe/founders/">Subscribe</a>
       </nav>
     </div>
 
@@ -297,7 +299,7 @@
       m.includes("sold out") ||
       m.includes("founder cap") ||
       m.includes("founders cap") ||
-      m.includes("full") && m.includes("founder")
+      (m.includes("full") && m.includes("founder"))
     );
   }
 
@@ -316,7 +318,7 @@
       body: JSON.stringify({
         priceId,
         successUrl: "https://awakenedbyyahmusic.com/success/",
-        cancelUrl: "https://awakenedbyyahmusic.com/founders/",
+        cancelUrl: "https://awakenedbyyahmusic.com/subscribe/founders/",
         customerEmail
       })
     });
