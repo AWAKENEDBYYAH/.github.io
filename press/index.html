@@ -4,6 +4,7 @@
      - SEO-ready + matches your dark/brand-blue style
      - ✅ Square hero photo installed BESIDE the words: /press/press-hero.jpg
      - ✅ ADDED: Press Release section + jump button + copy link button
+     - ✅ UPDATED: ESR attribution (Issued by Elect Sounds Radio + links)
 -->
 <!DOCTYPE html>
 <html lang="en">
@@ -400,8 +401,6 @@
             </a>
             <a class="btn" href="/press/music/">Press Page 2: Music</a>
             <a class="btn" href="/press/media/">Press Page 3: Media</a>
-
-            <!-- ✅ NEW: Jump to Press Release -->
             <a class="btn gold" href="#press-release">Press Release</a>
           </div>
 
@@ -421,7 +420,6 @@
     </section>
 
     <section class="grid">
-      <!-- Left: Bio -->
       <article class="card" aria-label="Artist bio">
         <div class="kicker">About</div>
         <h2>AWAKENED BY YAH MUSIC</h2>
@@ -458,7 +456,6 @@
         </div>
       </article>
 
-      <!-- Right: Quick facts + Platforms -->
       <aside class="card" aria-label="Press quick facts">
         <div class="kicker">Media Resources</div>
         <h2>Quick Facts</h2>
@@ -520,6 +517,21 @@
           <a class="btn" href="mailto:yahuahsremnant@gmail.com?subject=Press%20Inquiry%20—%20AWAKENED%20BY%20YAH">Press Inquiry</a>
         </div>
       </div>
+
+      <!-- ✅ ADDED: ESR ATTRIBUTION SO IT'S CLEAR WHO ISSUED THE PRESS RELEASE -->
+      <div class="rule"></div>
+      <p class="muted" style="font-size:13px; line-height:1.65; margin-bottom:10px;">
+        <strong>FOR IMMEDIATE RELEASE</strong><br>
+        <strong>Issued by:</strong> Elect Sounds Radio (ESR)<br>
+        <strong>Official website:</strong>
+        <a href="https://electsoundsradio.com/" target="_blank" rel="noopener">electsoundsradio.com</a><br>
+        <strong>ESR Radio stream:</strong>
+        <a href="https://elect-sounds-radio.page.radio/" target="_blank" rel="noopener">Elect Sounds Radio — Official Stream</a><br>
+        <strong>Feature:</strong> On-air interview &amp; artist spotlight<br>
+        <strong>Subject:</strong> AWAKENED BY YAH MUSIC (Mayaka’al Ben Yasharal)
+      </p>
+      <div class="rule"></div>
+      <!-- ✅ END ESR ATTRIBUTION -->
 
       <p>
         <strong>Mayaka’al Ben Yasharal</strong>, founder and visionary behind <strong>AWAKENED BY YAH</strong>,
@@ -632,7 +644,6 @@
           btn.textContent = "Copied ✓";
           setTimeout(()=> btn.textContent = "Copy Link", 1400);
         }catch(e){
-          // fallback
           var ta = document.createElement('textarea');
           ta.value = link;
           document.body.appendChild(ta);
