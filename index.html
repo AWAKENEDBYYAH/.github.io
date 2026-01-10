@@ -334,46 +334,29 @@
       color: #e5e7eb;
     }
 
-    /* ✅ SUPPORT PATH (HERO) — subtle, non-disruptive */
-    .support-path{
-      margin-top: 1rem;
-      padding-top: 0.85rem;
+    /* ===================== SUPPORT THE WORK (HERO MICRO-CTA) ===================== */
+    .support-work{
+      margin-top: 1.15rem;
+      padding-top: 1.05rem;
       border-top: 1px solid rgba(148,163,184,0.18);
-      display:flex;
-      flex-direction:column;
-      gap:0.75rem;
-      max-width: 28rem;
     }
-    .support-path p{
-      font-size: 0.86rem;
-      color: rgba(229,231,235,0.9);
-      letter-spacing: 0.02em;
-      line-height: 1.55;
+    .support-work p{
+      font-size: 0.92rem;
+      color: rgba(229,231,235,0.92);
+      max-width: 32rem;
     }
-    .support-path .btn-support{
-      align-self: flex-start;
-      padding: 0.68rem 1.25rem;
-      font-size: 0.82rem;
-      font-weight: 800;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      border-radius: 999px;
-      background: rgba(15,23,42,0.75);
-      border: 1px solid rgba(251,191,36,0.55);
+    .support-work .support-btn{
+      margin-top: 0.75rem;
+      display: inline-flex;
+      border-color: rgba(251,191,36,0.70);
       color: #fbbf24;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 10px 22px rgba(0,0,0,0.55);
-      transition: background .15s ease, border-color .15s ease, transform .12s ease;
-      display:inline-flex;
-      align-items:center;
-      gap:0.55rem;
-      white-space: nowrap;
+      background: rgba(15,23,42,0.55);
     }
-    .support-path .btn-support:hover{
+    .support-work .support-btn:hover{
       background: rgba(251,191,36,0.12);
-      border-color: rgba(251,191,36,0.95);
-      transform: translateY(-1px);
+      border-color: rgba(251,191,36,1);
     }
+    /* ===================== END SUPPORT CTA ===================== */
 
     .hero-right {
       display: flex;
@@ -754,7 +737,6 @@
       .top-bar { flex-direction: column; align-items: flex-start; position:static; }
       .header-tags { position:static; transform:none; justify-content: center; width: 100%; }
       .music-fab{ bottom:14px; right:14px; padding:9px 14px; font-size:0.72rem; }
-      .support-path{ max-width: 100%; }
     }
 
     /* ===================== CINEMATIC INTRO (HOMEPAGE) ===================== */
@@ -1317,16 +1299,13 @@
             <a href="#signup" class="btn btn-outline">Join The Remnant List</a>
           </div>
 
-          <!-- ✅ HIGH-CONVERSION ENTRY PATH (non-disruptive) -->
-          <div class="support-path" aria-label="Support the work">
-            <p>
-              If this music speaks to you,<br>
-              support the work and help carry the message forward.
-            </p>
-            <a class="btn-support" href="/subscribe/" aria-label="Support the work (Subscribe)">
-              SUPPORT THE WORK
-            </a>
+          <!-- ✅ NEW: SUPPORT THE WORK (links ONLY to Founders page) -->
+          <div class="support-work" aria-label="Support the work">
+            <p>If this music speaks to you,<br>support the work and help carry the message forward.</p>
+            <a href="/subscribe/founders/" class="btn btn-outline support-btn">SUPPORT THE WORK</a>
           </div>
+          <!-- ✅ END NEW SUPPORT CTA -->
+
         </div>
 
         <aside class="hero-right">
