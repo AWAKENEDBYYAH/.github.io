@@ -1,7 +1,3 @@
-<!-- stream/index.html (Fan Streaming Sanctuary for AWAKENED BY YAH)
-     - Protected: requires aby_stream_session from login.html
-     - Redirects to /login.html if not logged in (unless YAKA access is enabled)
--->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +8,7 @@
   <link rel="icon" type="image/png" href="/abytransparent.png">
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <link rel="apple-touch-icon" href="/favicon.png">
-  <link rel="canonical" href="https://awakenedbyyahmusic.com/stream.html" />
+  <link rel="canonical" href="https://awakenedbyyahmusic.com/stream/" />
 
   <style>
     :root{
@@ -92,10 +88,6 @@
       box-shadow: 0 0 28px rgba(43,86,255,.18);
     }
     .btn.primary:hover{border-color:rgba(43,86,255,.65);}
-    .btn.danger{
-      border-color: rgba(239,68,68,.35);
-      background: rgba(239,68,68,.10);
-    }
 
     .wrap{
       max-width:1200px; margin:0 auto;
@@ -340,17 +332,6 @@
     }
     .mini.on{border-color: rgba(43,86,255,.65); box-shadow: 0 0 0 4px rgba(43,86,255,.10);}
 
-    .fine{
-      margin-top:10px;
-      font-size:12px;
-      color:var(--muted);
-      line-height:1.35;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.03);
-      border-radius: 16px;
-      padding:12px;
-    }
-
     footer{
       max-width:1200px; margin:0 auto;
       padding:0 18px 26px;
@@ -373,15 +354,13 @@
         </div>
         <div class="brand-title">
           <strong>AWAKENED BY YAH</strong>
-          <span>STREAM (FAN ACCESS)</span>
+          <span>FREE STREAMING • FULL SONGS</span>
         </div>
       </a>
 
       <div class="top-actions">
-        <a class="btn" href="/music.html">MUSIC</a>
-        <a class="btn primary" href="/downloads/">DOWNLOADS</a>
-        <a class="btn" href="/login.html" title="Go to login page">ACCOUNT</a>
-        <button class="btn danger" id="logoutBtn" type="button">LOG OUT</button>
+        <a class="btn" href="/music/">MUSIC</a>
+        <a class="btn primary" href="/downloads/">BUY / DOWNLOAD</a>
       </div>
     </div>
   </div>
@@ -389,19 +368,19 @@
   <main class="wrap">
     <section class="panel">
       <div class="hero">
-        <div class="tag" id="accessTag">🔒 FAN ACCESS • FULL STREAMING</div>
+        <div class="tag" id="accessTag">🎧 FREE STREAMING • UNLIMITED</div>
         <h1 id="welcome">Welcome.</h1>
         <p class="sub">
-          You are inside the listening sanctuary of <strong>AWAKENED BY YAH</strong>.
-          Stream full-length music, hear early releases first, and support the sound directly—ad-free and distraction-free.
+          Stream full-length music from <strong>AWAKENED BY YAH</strong> — no tiers, no restrictions.
+          If you want to support, you can buy and download individual tracks or full projects.
         </p>
 
         <div class="cta-download">
           <p class="cta-text">
-            Own the music you’re streaming.
-            <span class="cta-sub">Download full projects — keep forever.</span>
+            Want to own it?
+            <span class="cta-sub">Buy & download — keep forever.</span>
           </p>
-          <a href="/downloads/" class="cta-btn">GO TO DOWNLOADS</a>
+          <a href="/downloads/" class="cta-btn">GO TO BUY / DOWNLOAD</a>
         </div>
       </div>
 
@@ -423,11 +402,6 @@
       </div>
 
       <div class="tracklist" id="tracklist"></div>
-
-      <div class="fine">
-        <strong>Note:</strong> This is a protected fan page. If someone is not logged in, they will be redirected to
-        <code>/login.html</code>.
-      </div>
     </aside>
   </main>
 
@@ -436,83 +410,8 @@
   </footer>
 
   <script>
-    // =========================
-    // YAKA UNLIMITED ACCESS
-    // =========================
-    const YAKA_PASSCODE = "YAKA-ACCESS-2025";
-    const YAKA_KEY = "yaka_unlimited_access";
-
-    function setYakaAccess(){ localStorage.setItem(YAKA_KEY, "1"); }
-    function hasYakaAccess(){ return localStorage.getItem(YAKA_KEY) === "1"; }
-
-    (function handleYakaQueryParam(){
-      const url = new URL(window.location.href);
-      const yaka = url.searchParams.get("yaka");
-      if (yaka && yaka === YAKA_PASSCODE) {
-        setYakaAccess();
-        url.searchParams.delete("yaka");
-        window.history.replaceState({}, document.title, url.toString());
-      }
-    })();
-
-    // ====== AUTH GUARD ======
-    const SESSION_KEY = "aby_stream_session";
-    function getSession() {
-      const a = localStorage.getItem(SESSION_KEY);
-      const b = sessionStorage.getItem(SESSION_KEY);
-      try { return JSON.parse(a || b || "null"); } catch { return null; }
-    }
-
-    const session = getSession();
-    const isYaka = hasYakaAccess();
-
-    // ✅ Allow YAKA always
-    if (!isYaka && (!session || !session.email)) {
-      window.location.replace("/login.html");
-    }
-
     const $ = (id) => document.getElementById(id);
     $("yr").textContent = new Date().getFullYear();
-
-    // =========================
-    // KINGDOM PARTNERS (FREE DOWNLOADS via Gumroad 100% off link)
-    // =========================
-    const PARTNER_DISCOUNT_CODE = "KINGDOMPARTNER"; // <-- change to your real code
-
-    function isKingdomPartner(sess){
-      const r = String(sess?.role || "").toLowerCase();
-      return r.includes("partner");
-    }
-
-    const isPartner = (!isYaka && isKingdomPartner(session));
-
-    function gumroadDiscountedUrl(url, discountCode){
-      if (!url || !discountCode) return url;
-      if (url.endsWith("/" + discountCode)) return url;
-      return url.replace(/\/+$/,"") + "/" + encodeURIComponent(discountCode);
-    }
-
-    // Show correct welcome & tag
-    if (isYaka) {
-      $("accessTag").textContent = "👑 YAKA ACCESS • UNLIMITED STREAMING";
-      $("welcome").textContent = "Welcome, YAKA.";
-    } else if (isPartner) {
-      $("accessTag").textContent = "💙 KINGDOM PARTNER • STREAMING + FREE DOWNLOADS";
-      const email = (session?.email || "").toString();
-      const name = email ? email.split("@")[0] : "Partner";
-      $("welcome").textContent = `Welcome, ${name} (KINGDOM PARTNER).`;
-    } else {
-      const email = (session?.email || "").toString();
-      const role = (session?.role || "").toString();
-      const displayName = email ? email.split("@")[0] : "Supporter";
-      $("welcome").textContent = `Welcome, ${displayName}${role ? " (" + role + ")" : ""}.`;
-    }
-
-    $("logoutBtn").addEventListener("click", () => {
-      localStorage.removeItem(SESSION_KEY);
-      sessionStorage.removeItem(SESSION_KEY);
-      window.location.href = "/login.html";
-    });
 
     function escapeHTML(str) {
       return String(str)
@@ -531,7 +430,7 @@
       }
     }
 
-    // ====== TRACK LISTS (TITLES STORED IN ALL CAPS) ======
+    // ====== TRACK LISTS ======
     const kingdomBizTracks = [
       { title: "WALK IT OUT", subtitle: "KINGDOM BIZ", src: "/audio/TRACK 01_WALK IT OUT.mp3" },
       { title: "RISE OF THE REMNANT", subtitle: "KINGDOM BIZ", src: "/audio/TRACK 02_RISE OF THE REMNANT.mp3" },
@@ -551,10 +450,7 @@
       { title: "HOW SWEET IS YOUR NAME YAHUAH", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 08_HOW SWEET IS YOUR NAME YAHUAH.mp3" },
       { title: "IN YOUR PRESENCE", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 09_IN YOUR PRESENCE.mp3" },
       { title: "HALAL YAHUAH (WE MAGNIFY YOUR NAME)", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 10_HALAL YAHUAH WE MAGNIFY YOUR NAME.mp3" },
-
-      <!-- ✅ FIXED TRACK 11 -->
       { title: "MY EYES OPENED WIDE", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 11_MY EYES OPENED WIDE.mp3" },
-
       { title: "RETURN TO THE COVENANT", subtitle: "THE RISE OF YASHARAL", src: "/audio/ROY_TRACK 12_RETURN TO THE COVENANT.mp3" }
     ];
 
@@ -589,32 +485,32 @@
     const COVER_ROY = "/images/rise-of-yasharal.png?v=3";
     const COVER_KB  = "/images/kingdom-biz.png?v=3";
 
-    // ====== LIBRARY ======
+    // ====== LIBRARY (FREE STREAMING) ======
     const library = [
       {
         id: "fan-exclusives",
-        title: "FAN EXCLUSIVES",
-        subtitle: "Supporter Vault • Bonus Access",
-        badge: "EXCLUSIVE",
+        title: "SINGLES & EXTRAS",
+        subtitle: "Free streaming • Optional buy",
+        badge: "SINGLES",
         cover: COVER_FAN,
         tracks: [
-          { title: "HEAR MY VOICE", subtitle: "FAN EXCLUSIVE", src: "/audio/ABY_TRACK 01_HEAR MY VOICE.mp3" },
-          { title: "DELIVER US", subtitle: "FAN EXCLUSIVE", src: "/audio/ABYM_TRACK 01_DELIVER US.mp3" }
+          { title: "HEAR MY VOICE", subtitle: "SINGLE", src: "/audio/ABY_TRACK 01_HEAR MY VOICE.mp3" },
+          { title: "DELIVER US", subtitle: "SINGLE", src: "/audio/ABYM_TRACK 01_DELIVER US.mp3" }
         ]
       },
       {
         id: "rise-of-yasharal",
         title: "THE RISE OF YASHARAL",
-        subtitle: "Full Album • Fan Streaming",
-        badge: "FULL ALBUM",
+        subtitle: "Full album • Free streaming",
+        badge: "ALBUM",
         cover: COVER_ROY,
         tracks: riseOfYasharalTracks
       },
       {
         id: "kingdom-biz",
         title: "KINGDOM BIZ: RISE OF THE REMNANT",
-        subtitle: "Full Album • Fan Streaming",
-        badge: "FULL ALBUM",
+        subtitle: "Full album • Free streaming",
+        badge: "ALBUM",
         cover: COVER_KB,
         tracks: kingdomBizTracks
       }
@@ -690,18 +586,8 @@
         el.className = "track";
         el.dataset.index = i;
 
-        const baseBuyLink = TRACK_BUY_LINKS[t.title] || null;
-
-        // If Partner + link exists, use discounted Gumroad link for free checkout
-        const partnerLink = (isPartner && baseBuyLink)
-          ? gumroadDiscountedUrl(baseBuyLink, PARTNER_DISCOUNT_CODE)
-          : null;
-
-        const effectiveLink = partnerLink || baseBuyLink || null;
-
-        const tooltip = !baseBuyLink
-          ? "Coming soon"
-          : (isPartner ? "Free download (Kingdom Partner)" : "Buy & Download");
+        const buyLink = TRACK_BUY_LINKS[t.title] || null;
+        const tooltip = buyLink ? "Buy & Download" : "Coming soon";
 
         el.innerHTML = `
           <div class="n">${i+1}</div>
@@ -711,28 +597,23 @@
           </div>
           <div class="track-actions">
             <button
-              class="buy-btn ${effectiveLink ? "" : "disabled"}"
+              class="buy-btn ${buyLink ? "" : "disabled"}"
               title="${escapeHTML(tooltip)}"
               type="button"
-              aria-label="${effectiveLink ? escapeHTML(tooltip) : "Coming soon"}: ${escapeHTML(t.title)}"
+              aria-label="${escapeHTML(tooltip)}: ${escapeHTML(t.title)}"
             >⬇️</button>
           </div>
         `;
 
-        // play track when clicking main row (but not button)
         el.addEventListener("click", (e) => {
           if (e.target.closest(".buy-btn")) return;
           playTrack(i);
         });
 
-        // buy/download button (always POS via Gumroad; no direct file downloads here)
         el.querySelector(".buy-btn").addEventListener("click", (e) => {
           e.stopPropagation();
-          if (!effectiveLink) {
-            alert("This track will be available soon.");
-            return;
-          }
-          window.open(effectiveLink, "_blank", "noopener");
+          if (!buyLink) { alert("This track will be available soon."); return; }
+          window.open(buyLink, "_blank", "noopener");
         });
 
         tracklistEl.appendChild(el);
