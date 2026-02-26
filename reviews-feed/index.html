@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AWAKENED BY YAH – Reviews</title>
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #111;
+    color: #fff;
+    margin: 0;
+    padding: 40px 20px;
+  }
+
+  h1 {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .reviews-summary {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 18px;
+  }
+
+  #reviewsList {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .review-card {
+    background: #1c1c1c;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid #333;
+  }
+
+  .review-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .review-stars {
+    color: gold;
+    font-size: 18px;
+  }
+
+  .review-body {
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+
+  .review-time {
+    font-size: 12px;
+    opacity: 0.6;
+  }
+</style>
+</head>
+<body>
+
+<h1>Music Reviews</h1>
+
+<section id="reviews">
+  <div class="reviews-summary">
+    <div><strong>Average:</strong> <span id="avgRating">—</span></div>
+    <div><strong>Total Reviews:</strong> <span id="reviewCount">—</span></div>
+  </div>
+
+  <div id="reviewsList"></div>
+</section>
+
+<script>
+  const REVIEWS_API_URL = "https://script.google.com/macros/s/AKfycbx8RWBIITbfUTsbhyqR9E5CX4oHytHFHDkHjl5og1ZBQrSa_fsrYLrx3fMWiIR99_1x/exec";
+
+  function stars(n) {
+    const full = "★★★★★";
+    const empty = "☆☆☆☆☆";
+    n = Math.max(0, Math.min(5, Number(n) || 0));
+    return full.slice(0, n) + empty.slice(n);
+  }
+
+  function escapeHtml(str) {
+    return String(str).replace(/[&<>"']/g, s => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+    }[s]));
+  }
+
+  async function loadReviews() {
+    try {
+      const res = await fetch(REVIEWS_API_URL, { cache: "no-store" });
+      const data = await res.json();
+
+      document.getElementById("avgRating").textContent =
+        data.count ? `${data.average} / 5` : "No reviews yet";
+
+      document.getElementById("reviewCount").textContent = data.count ?? 0;
+
+      const list = document.getElementById("reviewsList");
+
+      if (!data.reviews || data.reviews.length === 0) {
+        list.innerHTML = "<p style='text-align:center;'>No reviews yet. Be the first to leave one!</p>";
+        return;
+      }
+
+      list.innerHTML = data.reviews.map(r => `
+        <article class="review-card">
+          <div class="review-top">
+            <strong>${escapeHtml(r.name)}</strong>
+            <span class="review-stars">${stars(r.rating)}</span>
+          </div>
+          <div class="review-body">${escapeHtml(r.review)}</div>
+          <div class="review-time">${escapeHtml(r.timestamp)}</div>
+        </article>
+      `).join("");
+    } catch (err) {
+      console.error(err);
+      document.getElementById("reviewsList").innerHTML =
+        "<p style='text-align:center;'>Could not load reviews right now.</p>";
+    }
+  }
+
+  loadReviews();
+
+  // Auto refresh every 15 seconds
+  setInterval(loadReviews, 15000);
+</script>
+
+</body>
+</html>
