@@ -6,6 +6,9 @@
   <!-- 🔥 Preload homepage hero for cinematic intro dock -->
   <link rel="preload" as="image" href="/intro/abybanner.png" fetchpriority="high">
 
+  <!-- ✅ NEW: Preload ambient site audio -->
+  <link rel="preload" as="audio" href="/audio/site-ambient.mp3" type="audio/mpeg">
+
   <link rel="canonical" href="https://awakenedbyyahmusic.com/" />
 
   <script>
@@ -1515,6 +1518,141 @@
 
   <!-- ✅ SMALL NON-DISRUPTIVE LINK TO MUSIC PAGE (UPDATED) -->
   <a href="/music/" class="music-fab" aria-label="Open Music Player">🎧 Music</a>
+
+  <!-- ===================== NEW: AMBIENT HOMEPAGE LOOP (AUTO FADE-IN) ===================== -->
+  <audio id="siteAmbient" preload="auto" loop playsinline>
+    <source src="/audio/site-ambient.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+  (function(){
+    const ambient = document.getElementById('siteAmbient');
+    if (!ambient) return;
+
+    const player = document.getElementById('audio-player'); // main music player on page
+    const introAudio = document.getElementById('introAudio');
+
+    const MAX_VOL = 0.16;     // subtle ambiance
+    const IN_STEP = 0.01;     // fade in speed
+    const OUT_STEP = 0.02;    // fade out speed
+    const TICK_MS = 120;
+
+    let fadeTimer = null;
+    let startedOnce = false;
+
+    function clearFade(){
+      if (fadeTimer){ clearInterval(fadeTimer); fadeTimer = null; }
+    }
+
+    function fadeTo(target, step, after){
+      clearFade();
+      fadeTimer = setInterval(() => {
+        let v = Number(ambient.volume);
+        if (Number.isNaN(v)) v = 0;
+
+        if (v < target) v = Math.min(target, v + step);
+        else v = Math.max(target, v - step);
+
+        ambient.volume = v;
+
+        if (Math.abs(v - target) <= 0.001){
+          ambient.volume = target;
+          clearFade();
+          if (target === 0){
+            try { ambient.pause(); } catch(e){}
+          }
+          if (after) after();
+        }
+      }, TICK_MS);
+    }
+
+    function playAmbient(){
+      // Don't start if main player is actively playing
+      if (player && !player.paused) return;
+
+      try{
+        ambient.muted = true;   // helps autoplay
+        ambient.volume = 0;
+      }catch(e){}
+
+      const p = ambient.play();
+      if (p && typeof p.then === "function"){
+        p.then(() => {
+          startedOnce = true;
+          try { ambient.muted = false; } catch(e){}
+          fadeTo(MAX_VOL, IN_STEP);
+        }).catch(() => {
+          // Autoplay blocked (mobile): enable on first user interaction
+          const unlock = () => {
+            document.removeEventListener('click', unlock);
+            document.removeEventListener('touchstart', unlock);
+            playAmbient();
+          };
+          document.addEventListener('click', unlock, { once:true, passive:true });
+          document.addEventListener('touchstart', unlock, { once:true, passive:true });
+        });
+      }
+    }
+
+    function stopAmbient(){
+      // fade out then pause
+      fadeTo(0, OUT_STEP);
+    }
+
+    function introOverlayExists(){
+      return !!document.getElementById('introOverlay');
+    }
+
+    function startWhenIntroDone(){
+      if (!introOverlayExists()){
+        playAmbient();
+        return;
+      }
+
+      // Wait until intro overlay is removed, then start ambient
+      const obs = new MutationObserver(() => {
+        if (!introOverlayExists()){
+          obs.disconnect();
+          playAmbient();
+        }
+      });
+      obs.observe(document.body, { childList:true, subtree:true });
+    }
+
+    // If intro audio plays later, stop ambient (safety)
+    if (introAudio){
+      introAudio.addEventListener('play', stopAmbient);
+    }
+
+    // Main player: if user plays a track, stop ambient
+    if (player){
+      player.addEventListener('play', stopAmbient);
+      // If they pause/finish, bring ambient back
+      player.addEventListener('pause', () => setTimeout(playAmbient, 450));
+      player.addEventListener('ended', () => setTimeout(playAmbient, 450));
+    }
+
+    // If user changes tabs, pause ambient; resume when back (if main player not playing)
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden){
+        try { ambient.pause(); } catch(e){}
+      } else {
+        if (player && !player.paused) return;
+        // resume gently
+        if (startedOnce) {
+          try { ambient.volume = 0; } catch(e){}
+          playAmbient();
+        } else {
+          startWhenIntroDone();
+        }
+      }
+    });
+
+    // Start sequence
+    startWhenIntroDone();
+  })();
+  </script>
+  <!-- ===================== END AMBIENT LOOP ===================== -->
 
   <!-- ✅ RADIO POPUP HANDLER (NO EMBED, NO LAYOUT IMPACT) -->
   <script>
