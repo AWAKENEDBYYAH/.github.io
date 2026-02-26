@@ -117,7 +117,7 @@
     .album{color:var(--muted);margin:7px 0 0 0;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .track{margin:10px 0 0 0;font-weight:900;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-    /* ✅ NEW: Instant login link under the player header (Option C) */
+    /* ✅ Optional member line (kept, but does not gate anything) */
     .memberLine{
       margin:10px 0 0 0;
       font-size:12px;
@@ -293,77 +293,6 @@
     .coverText{min-width:0}
     .coverName{margin:0;font-weight:900;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .coverMeta{margin:6px 0 0 0;color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-
-    .modalBack{
-      position:fixed; inset:0;
-      background: rgba(2,6,23,.70);
-      backdrop-filter: blur(10px);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      z-index:9999;
-      padding:18px;
-    }
-    .modal{
-      width:min(560px, 100%);
-      border-radius: 22px;
-      border:1px solid rgba(255,255,255,.14);
-      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
-      box-shadow: 0 30px 90px rgba(0,0,0,.55);
-      overflow:hidden;
-      position:relative;
-    }
-    .modalHead{
-      padding:16px 16px 10px;
-      border-bottom:1px solid rgba(255,255,255,.10);
-      background: radial-gradient(700px 240px at 20% 0%, rgba(43,86,255,.22), transparent 55%),
-                  radial-gradient(700px 240px at 80% 20%, rgba(28,57,168,.22), transparent 55%);
-    }
-    .modalHead strong{
-      letter-spacing:.06em;
-      display:block;
-      font-size:14px;
-    }
-    .modalHead span{
-      display:block;
-      margin-top:6px;
-      color:var(--muted);
-      font-size:12px;
-      line-height:1.35;
-    }
-    .modalBody{padding:14px 16px 16px}
-    .modalBtns{
-      display:flex; gap:10px; flex-wrap:wrap;
-      margin-top:12px;
-    }
-    .mBtn{
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      color: var(--text);
-      padding:10px 14px;
-      border-radius: 999px;
-      cursor:pointer;
-      font-weight:900;
-      letter-spacing:.02em;
-    }
-    .mBtn:hover{border-color:rgba(255,255,255,.22)}
-    .mBtn.primary{
-      background: linear-gradient(180deg, rgba(43,86,255,.95), rgba(28,57,168,.95));
-      box-shadow:0 0 36px rgba(28,57,168,.28);
-    }
-    .xBtn{
-      position:absolute; top:10px; right:10px;
-      width:38px; height:38px;
-      display:grid; place-items:center;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(2,6,23,.35);
-      cursor:pointer;
-      color: var(--text);
-      font-weight:900;
-    }
-    .xBtn:hover{border-color:rgba(255,255,255,.24)}
-    .modalBack.show{display:flex}
   </style>
 </head>
 
@@ -374,8 +303,8 @@
       <div class="musicHeroBack">
         <a href="/">← Back to Home</a>
 
-        <!-- ✅ Option A: instant bypass to login -->
-        <a class="primaryLink" href="/login.html?skipgate=1">Log In</a>
+        <!-- Optional: keep login link (does NOT affect streaming) -->
+        <a class="primaryLink" href="/login.html">Log In</a>
       </div>
     </header>
 
@@ -394,9 +323,8 @@
             <p class="album" id="playerAlbum">Kingdom Biz</p>
             <p class="track" id="playerTrack">TRACK 01 — Select a track</p>
 
-            <!-- ✅ Option C: instant text login link -->
             <p class="memberLine">
-              Already a member? <a href="/login.html?skipgate=1">Log in</a>
+              Want member access later? <a href="/login.html">Log in</a>
             </p>
           </div>
         </div>
@@ -498,31 +426,9 @@
     </div>
   </div>
 
-  <div class="modalBack" id="previewModal" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-label="Preview ended">
-      <button class="xBtn" id="closePreviewModal" type="button" aria-label="Close">✕</button>
-      <div class="modalHead">
-        <strong>PREVIEW ENDED</strong>
-        <span>
-          You just heard a 45-second preview. Unlock full streaming inside the Sanctuary.
-        </span>
-      </div>
-      <div class="modalBody">
-        <div class="modalBtns">
-          <button class="mBtn primary" id="goLoginBtn" type="button">Unlock Full Streaming</button>
-          <button class="mBtn" id="keepBrowsingBtn" type="button">Keep Browsing</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <script>
     // Encode paths safely for spaces + apostrophes on GitHub Pages
     const U = (p) => encodeURI(p).replace(/'/g, "%27");
-
-    // ✅ NEW: bypass flag (does NOT affect normal visitors)
-    const params = new URLSearchParams(location.search);
-    const BYPASS_GATE = params.get("skipgate") === "1";
 
     // IMPORTANT: /audio filenames use SPACES (not underscores).
     // Keep names EXACT. Spaces are auto-encoded by U().
@@ -613,53 +519,12 @@
     const audio = new Audio();
     audio.preload = "metadata";
 
-    // ====== 45-SECOND PREVIEW GATE (Music page only) ======
-    const PREVIEW_SECONDS = 45;
-
-    const modal = {
-      back: $("previewModal"),
-      close: $("closePreviewModal"),
-      goLogin: $("goLoginBtn"),
-      keep: $("keepBrowsingBtn"),
-    };
-
-    let previewLock = false;     // once preview ends, user must pick next action
     let seeking = false;
     let repeatAll = false;
     let repeatOne = false;
 
     let key = "kingdombiz";
     let index = 0;
-
-    function openPreviewModal(){
-      modal.back.classList.add("show");
-      modal.back.setAttribute("aria-hidden","false");
-    }
-    function closePreviewModal(){
-      modal.back.classList.remove("show");
-      modal.back.setAttribute("aria-hidden","true");
-    }
-    function endPreview(){
-      if (previewLock) return;
-      previewLock = true;
-      audio.pause();
-      ui.play.textContent = "▶️ Play";
-      setStatus("Preview ended");
-      openPreviewModal();
-    }
-
-    // Modal actions
-    modal.close.addEventListener("click", closePreviewModal);
-    modal.keep.addEventListener("click", closePreviewModal);
-
-    // ✅ UPDATED: login from modal uses bypass flag
-    modal.goLogin.addEventListener("click", ()=>{
-      location.href = "/login.html?skipgate=1";
-    });
-
-    modal.back.addEventListener("click", (e)=>{
-      if (e.target === modal.back) closePreviewModal();
-    });
 
     function fmt(sec){
       if (!isFinite(sec)) return "0:00";
@@ -721,10 +586,6 @@
       const pack = LIBRARY[key];
       if (!pack.tracks[i]) return;
 
-      // reset preview lock for each new track
-      previewLock = false;
-      closePreviewModal();
-
       index = i;
       const t = pack.tracks[i];
 
@@ -756,12 +617,6 @@
 
     function togglePlay(){
       const pack = LIBRARY[key];
-
-      // if preview ended, show modal instead of playing
-      if (previewLock){
-        openPreviewModal();
-        return;
-      }
 
       if (!audio.src){
         if (pack.tracks.length) load(0,true);
@@ -800,10 +655,6 @@
 
     function restart(){
       if (!audio.src) return;
-
-      // restart should also restart preview window
-      previewLock = false;
-      closePreviewModal();
 
       audio.currentTime = 0;
       audio.play().catch(()=>{});
@@ -850,12 +701,6 @@
     audio.addEventListener("timeupdate", ()=>{
       if (!audio.duration) return;
 
-      // ✅ Preview gate: stop at 45 seconds (unless bypassed)
-      if (!BYPASS_GATE && !previewLock && audio.currentTime >= PREVIEW_SECONDS){
-        endPreview();
-        return;
-      }
-
       if (!seeking){
         ui.tNow.textContent = fmt(audio.currentTime);
         ui.seek.value = Math.floor((audio.currentTime/audio.duration) * 1000);
@@ -876,10 +721,6 @@
       btn.addEventListener("click", ()=>{
         key = btn.dataset.key;
         index = 0;
-
-        // switching album should reset preview
-        previewLock = false;
-        closePreviewModal();
 
         setActiveCover(key);
         audio.pause();
