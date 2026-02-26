@@ -3,79 +3,459 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AWAKENED BY YAH – Reviews</title>
+<link rel="canonical" href="https://awakenedbyyahmusic.com/reviews-feed/" />
+
+<link rel="icon" type="image/png" href="/images/aby-official-logo.png">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="apple-touch-icon" href="/favicon.png">
+
+<title>Reviews Feed — AWAKENED BY YAH</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
 
 <style>
-  body {
-    font-family: Arial, sans-serif;
-    background: #111;
-    color: #fff;
-    margin: 0;
-    padding: 40px 20px;
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  html, body { height:100%; }
+  body{
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    color:#f9fafb;
+    background:
+      radial-gradient(1000px 600px at 12% 8%, rgba(28,57,168,.35), transparent 60%),
+      radial-gradient(900px 520px at 88% 18%, rgba(251,191,36,.12), transparent 55%),
+      radial-gradient(circle at top left, #182544 0%, #050814 55%, #020308 100%);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.6;
+    padding: 28px 16px 48px;
+  }
+  a{ color:inherit; text-decoration:none; }
+
+  :root{
+    --gold:#fbbf24;
+    --gold2:#f59e0b;
+    --card: radial-gradient(circle at top left, rgba(17,24,39,.92) 0%, rgba(2,6,23,.92) 70%);
+    --stroke: rgba(148,163,184,0.35);
+    --muted:#94a3b8;
+    --ok:#34d399;
+    --bad:#fb7185;
   }
 
-  h1 {
-    text-align: center;
-    margin-bottom: 30px;
-  }
-
-  .reviews-summary {
-    text-align: center;
-    margin-bottom: 30px;
-    font-size: 18px;
-  }
-
-  #reviewsList {
-    max-width: 800px;
+  .wrap{
+    width:100%;
+    max-width: 1100px;
     margin: 0 auto;
   }
 
-  .review-card {
-    background: #1c1c1c;
-    border-radius: 10px;
-    padding: 20px;
-    margin-bottom: 20px;
-    border: 1px solid #333;
+  /* Top bar */
+  .topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-bottom: 16px;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .brand img{
+    width:56px;
+    filter: drop-shadow(0 10px 18px rgba(0,0,0,0.75));
+  }
+  .brand .t1{
+    font-weight:900;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    color: var(--gold);
+    font-size: .95rem;
+    display:block;
+  }
+  .brand .t2{
+    font-size:.72rem;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:#cbd5e1;
+    opacity:.9;
+    display:block;
+  }
+  .nav{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .pill{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding: .48rem .86rem;
+    border-radius:999px;
+    font-size:.70rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    border:1px solid rgba(148,163,184,.42);
+    background: rgba(15,23,42,.78);
+    backdrop-filter: blur(10px);
+    transition: all .18s ease;
+    white-space: nowrap;
+  }
+  .pill:hover{
+    transform: translateY(-1px);
+    background: rgba(148,163,184,.18);
+    border-color: rgba(248,250,252,.6);
+  }
+  .pill.gold{
+    border-color: rgba(251,191,36,.65);
+    color: var(--gold);
+  }
+  .pill.gold:hover{
+    background: rgba(251,191,36,.12);
+    border-color: rgba(251,191,36,1);
   }
 
-  .review-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  /* Hero Card */
+  .hero{
+    position: relative;
+    background: var(--card);
+    border: 1px solid var(--stroke);
+    border-radius: 26px;
+    box-shadow: 0 24px 70px rgba(0,0,0,.72);
+    padding: 22px 18px 18px;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:"";
+    position:absolute;
+    inset:-2px;
+    background:
+      radial-gradient(520px 220px at 10% 0%, rgba(251,191,36,.15), transparent 60%),
+      radial-gradient(640px 280px at 90% 10%, rgba(28,57,168,.25), transparent 65%);
+    pointer-events:none;
+  }
+  .heroInner{ position:relative; }
+
+  .kicker{
+    font-size:.76rem;
+    letter-spacing:.24em;
+    text-transform:uppercase;
+    color:#9ca3af;
+    margin-bottom: 6px;
+  }
+  h1{
+    font-family: 'Cinzel', serif;
+    font-weight:700;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    font-size: 1.35rem;
+    margin-bottom: 8px;
+  }
+  .sub{
+    color:#e5e7eb;
+    max-width: 52rem;
+    font-size: .95rem;
+  }
+
+  .toolsRow{
+    margin-top: 14px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:.55rem;
+    padding: .72rem 1.05rem;
+    border-radius: 999px;
+    font-size: .78rem;
+    font-weight: 900;
+    letter-spacing:.16em;
+    text-transform: uppercase;
+    border:1px solid transparent;
+    cursor:pointer;
+    transition: all .18s ease;
+    user-select:none;
+  }
+  .btn.primary{
+    background: linear-gradient(120deg, var(--gold2), var(--gold));
+    color:#111827;
+  }
+  .btn.primary:hover{ transform: translateY(-1px); }
+  .btn.outline{
+    background: rgba(15,23,42,.6);
+    border-color: rgba(148,163,184,.45);
+    color:#e5e7eb;
+  }
+  .btn.outline:hover{
+    transform: translateY(-1px);
+    background: rgba(148,163,184,.15);
+    border-color: rgba(248,250,252,.6);
+  }
+
+  .status{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+    font-size:.85rem;
+    color:#cbd5e1;
+  }
+  .badge{
+    border:1px solid rgba(148,163,184,.45);
+    border-radius: 999px;
+    padding: .22rem .62rem;
+    font-size:.70rem;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    background: rgba(15,23,42,.75);
+    color:#cbd5e1;
+  }
+  .badge.ok{ border-color: rgba(52,211,153,.55); color: var(--ok); }
+  .badge.bad{ border-color: rgba(251,113,133,.55); color: var(--bad); }
+
+  /* Summary tiles */
+  .summary{
+    margin-top: 14px;
+    display:grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+  @media (max-width: 860px){ .summary{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
+  @media (max-width: 520px){ .summary{ grid-template-columns: minmax(0,1fr); } }
+
+  .tile{
+    background: rgba(15,23,42,.78);
+    border:1px solid rgba(148,163,184,.35);
+    border-radius: 18px;
+    padding: 14px 14px;
+    box-shadow: 0 12px 30px rgba(0,0,0,.55);
+  }
+  .tile .label{
+    color: #9ca3af;
+    font-size: .70rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .tile .value{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:10px;
+  }
+  .big{
+    font-size: 1.15rem;
+    font-weight: 900;
+    letter-spacing: .04em;
+  }
+  .mini{
+    font-size:.75rem;
+    color: var(--muted);
+    letter-spacing:.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* Reviews list */
+  .listWrap{
+    margin-top: 16px;
+  }
+  .list{
+    margin-top: 14px;
+    display:grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  @media (max-width: 860px){ .list{ grid-template-columns: minmax(0,1fr); } }
+
+  .review-card{
+    background: rgba(15,23,42,0.90);
+    border:1px solid rgba(148,163,184,0.35);
+    border-radius: 18px;
+    padding: 14px;
+    box-shadow: 0 14px 34px rgba(0,0,0,0.60);
+    position:relative;
+    overflow:hidden;
+  }
+  .review-card::before{
+    content:"";
+    position:absolute;
+    left:-40px; top:-40px;
+    width:160px; height:160px;
+    background: radial-gradient(circle, rgba(251,191,36,.14), transparent 65%);
+    transform: rotate(20deg);
+    pointer-events:none;
+  }
+
+  .review-top{
+    position:relative;
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .who{
+    font-weight: 900;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    font-size: .86rem;
+  }
+  .trackPill{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    margin-top: 6px;
+    padding: .22rem .62rem;
+    border-radius: 999px;
+    border:1px solid rgba(251,191,36,.40);
+    background: rgba(251,191,36,.10);
+    color: var(--gold);
+    font-size:.66rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    max-width: 100%;
+  }
+  .trackPill span{
+    white-space: nowrap;
+    overflow:hidden;
+    text-overflow: ellipsis;
+    max-width: 34ch;
+  }
+
+  .review-stars{
+    color: var(--gold);
+    font-size: 1.05rem;
+    letter-spacing:.14em;
+    white-space: nowrap;
+    text-shadow: 0 0 14px rgba(251,191,36,.20);
+  }
+
+  .review-body{
+    position:relative;
+    color:#e5e7eb;
+    font-size: .94rem;
+    line-height: 1.55;
+    border-left: 2px solid rgba(251,191,36,.60);
+    padding-left: 10px;
     margin-bottom: 10px;
   }
 
-  .review-stars {
-    color: gold;
-    font-size: 18px;
+  .review-time{
+    position:relative;
+    font-size: .74rem;
+    color: #9ca3af;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    flex-wrap:wrap;
+    opacity:.95;
   }
 
-  .review-body {
-    margin-bottom: 8px;
-    line-height: 1.5;
+  .empty, .error{
+    text-align:center;
+    padding: 18px 10px;
+    color:#cbd5e1;
   }
 
-  .review-time {
-    font-size: 12px;
-    opacity: 0.6;
+  .footer{
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(31,41,55,.9);
+    text-align:center;
+    color:#9ca3af;
+    font-size:.78rem;
+    letter-spacing:.10em;
   }
 </style>
 </head>
+
 <body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <img src="/images/aby-official-logo.png" alt="AWAKENED BY YAH logo">
+        <div>
+          <span class="t1">AWAKENED BY YAH</span>
+          <span class="t2">Reviews Feed • Music Only</span>
+        </div>
+      </div>
 
-<h1>Music Reviews</h1>
+      <div class="nav">
+        <a class="pill" href="/">Home</a>
+        <a class="pill" href="/music/">Music</a>
+        <a class="pill" href="/albums/">Albums</a>
+        <a class="pill gold" href="/reviews/">Ratings</a>
+      </div>
+    </div>
 
-<section id="reviews">
-  <div class="reviews-summary">
-    <div><strong>Average:</strong> <span id="avgRating">—</span></div>
-    <div><strong>Total Reviews:</strong> <span id="reviewCount">—</span></div>
+    <section class="hero">
+      <div class="heroInner">
+        <p class="kicker">Real feedback • Real impact</p>
+        <h1>Reviews Feed</h1>
+        <p class="sub">This is the live feed of listener reviews being submitted on the Ratings page. Refresh any time to see the latest comments.</p>
+
+        <div class="toolsRow">
+          <div class="status">
+            <span class="badge" id="apiBadge">API: checking…</span>
+            <span id="statusText">Loading…</span>
+          </div>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn outline" id="refreshBtn" type="button">↻ Refresh</button>
+            <a class="btn primary" href="/reviews/">⭐ Rate a Track</a>
+          </div>
+        </div>
+
+        <div class="summary">
+          <div class="tile">
+            <div class="label">Average rating</div>
+            <div class="value">
+              <div class="big" id="avgRating">—</div>
+              <div class="mini">out of 5</div>
+            </div>
+          </div>
+
+          <div class="tile">
+            <div class="label">Total reviews</div>
+            <div class="value">
+              <div class="big" id="reviewCount">—</div>
+              <div class="mini">all time</div>
+            </div>
+          </div>
+
+          <div class="tile">
+            <div class="label">Auto refresh</div>
+            <div class="value">
+              <div class="big">15s</div>
+              <div class="mini">live</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="listWrap">
+          <div class="list" id="reviewsList"></div>
+        </div>
+
+        <div class="footer">
+          <span id="year"></span> © AWAKENED BY YAH MUSIC GROUP — All Rights Reserved.
+        </div>
+      </div>
+    </section>
   </div>
-
-  <div id="reviewsList"></div>
-</section>
 
 <script>
   const REVIEWS_API_URL = "https://script.google.com/macros/s/AKfycbx8RWBIITbfUTsbhyqR9E5CX4oHytHFHDkHjl5og1ZBQrSa_fsrYLrx3fMWiIR99_1x/exec";
+
+  const $ = (id) => document.getElementById(id);
 
   function stars(n) {
     const full = "★★★★★";
@@ -85,49 +465,84 @@
   }
 
   function escapeHtml(str) {
-    return String(str).replace(/[&<>"']/g, s => ({
+    return String(str ?? "").replace(/[&<>"']/g, s => ({
       "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
     }[s]));
   }
 
+  function setStatus(msg, ok=true){
+    $("statusText").textContent = msg;
+    const badge = $("apiBadge");
+    badge.textContent = ok ? "API: connected" : "API: error";
+    badge.className = "badge " + (ok ? "ok" : "bad");
+  }
+
+  function safeVal(v, fallback="—"){
+    if (v === null || v === undefined) return fallback;
+    const s = String(v).trim();
+    return s ? s : fallback;
+  }
+
   async function loadReviews() {
     try {
+      setStatus("Fetching latest reviews…", true);
       const res = await fetch(REVIEWS_API_URL, { cache: "no-store" });
+      if (!res.ok) throw new Error("Bad response");
       const data = await res.json();
 
-      document.getElementById("avgRating").textContent =
-        data.count ? `${data.average} / 5` : "No reviews yet";
+      // Summary
+      const avgText = (data.count ? `${safeVal(data.average, "0")} / 5` : "No reviews yet");
+      $("avgRating").textContent = avgText;
+      $("reviewCount").textContent = (data.count ?? 0);
 
-      document.getElementById("reviewCount").textContent = data.count ?? 0;
-
-      const list = document.getElementById("reviewsList");
+      const list = $("reviewsList");
 
       if (!data.reviews || data.reviews.length === 0) {
-        list.innerHTML = "<p style='text-align:center;'>No reviews yet. Be the first to leave one!</p>";
+        list.innerHTML = `<div class="empty">No reviews yet. Be the first to leave one on the Ratings page.</div>`;
+        setStatus("No reviews yet.", true);
         return;
       }
 
-      list.innerHTML = data.reviews.map(r => `
-        <article class="review-card">
-          <div class="review-top">
-            <strong>${escapeHtml(r.name)}</strong>
-            <span class="review-stars">${stars(r.rating)}</span>
-          </div>
-          <div class="review-body">${escapeHtml(r.review)}</div>
-          <div class="review-time">${escapeHtml(r.timestamp)}</div>
-        </article>
-      `).join("");
+      list.innerHTML = data.reviews.map(r => {
+        const who = escapeHtml(r.name || "Listener");
+        const rating = Number(r.rating || 0);
+        const review = escapeHtml(r.review || "");
+        const ts = escapeHtml(r.timestamp || "");
+        const track = escapeHtml(r.track || r.song || r.title || "—");
+
+        return `
+          <article class="review-card">
+            <div class="review-top">
+              <div>
+                <div class="who">${who}</div>
+                <div class="trackPill">🎵 <span>${track}</span></div>
+              </div>
+              <div class="review-stars" title="${rating} / 5">${stars(rating)}</div>
+            </div>
+            <div class="review-body">${review || "—"}</div>
+            <div class="review-time">
+              <span>Most recent</span>
+              <span>${ts}</span>
+            </div>
+          </article>
+        `;
+      }).join("");
+
+      setStatus("Reviews updated.", true);
+
     } catch (err) {
       console.error(err);
-      document.getElementById("reviewsList").innerHTML =
-        "<p style='text-align:center;'>Could not load reviews right now.</p>";
+      $("reviewsList").innerHTML = `<div class="error">Could not load reviews right now. Try again in a moment.</div>`;
+      setStatus("Could not load reviews.", false);
     }
   }
 
-  loadReviews();
-
-  // Auto refresh every 15 seconds
-  setInterval(loadReviews, 15000);
+  document.addEventListener("DOMContentLoaded", () => {
+    $("year").textContent = new Date().getFullYear();
+    $("refreshBtn").addEventListener("click", loadReviews);
+    loadReviews();
+    setInterval(loadReviews, 15000);
+  });
 </script>
 
 </body>
