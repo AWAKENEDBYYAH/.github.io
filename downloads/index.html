@@ -69,16 +69,6 @@
       border-color:rgba(43,86,255,.7);
       background:linear-gradient(135deg, rgba(28,57,168,.75), rgba(43,86,255,.28));
     }
-    .nav .account{
-      border:1px solid rgba(43,86,255,.7);
-      background:linear-gradient(135deg, rgba(28,57,168,.75), rgba(43,86,255,.28));
-      color:#fff;
-      font-weight:900;
-    }
-    .nav .danger{
-      border-color: rgba(239,68,68,.35);
-      background: rgba(239,68,68,.10);
-    }
 
     .wrap{max-width:1100px; margin:0 auto; padding:26px 18px 60px;}
     h1{margin:0 0 8px; font-size:34px; letter-spacing:.03em}
@@ -169,10 +159,7 @@
 
       <div class="nav">
         <a href="/music/">MUSIC</a>
-
         <a class="primary" href="/downloads/">DOWNLOADS</a>
-        <a class="account" href="/login.html" title="Go to login page">ACCOUNT</a>
-        <button class="danger" id="logoutBtn" type="button" title="Log out">LOG OUT</button>
       </div>
     </div>
   </div>
@@ -227,8 +214,7 @@
           <p class="title">The Rise of Yasharal</p>
           <p class="meta">Full album download • ZIP (all tracks)</p>
           <div class="row">
-           <div class="price">$14.99</div>
-
+            <div class="price">$14.99</div>
             <a class="btn" href="https://remnant5.gumroad.com/l/rise-of-yasharal" target="_blank" rel="noopener">BUY ALBUM</a>
           </div>
         </div>
@@ -257,15 +243,5 @@
       After purchase, Gumroad delivers the file automatically.
     </div>
   </div>
-
-  <script>
-    // ✅ Real logout for your fan session
-    const SESSION_KEY = "aby_stream_session";
-    document.getElementById("logoutBtn").addEventListener("click", () => {
-      localStorage.removeItem(SESSION_KEY);
-      sessionStorage.removeItem(SESSION_KEY);
-      window.location.href = "/login.html";
-    });
-  </script>
 </body>
 </html>
