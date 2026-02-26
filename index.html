@@ -197,7 +197,7 @@
 
     /* QUICK LINKS */
     .quick-links {
-      margin-bottom: 1.75rem;
+      margin-bottom: 1.1rem; /* tightened slightly to make room for buy bar */
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
@@ -257,6 +257,74 @@
       background: rgba(96,165,250,0.12);
       border-color: rgba(96,165,250,1);
     }
+
+    /* ===================== NEW: BATTLEFIELD BUY BAR ===================== */
+    .bf-buybar{
+      margin: 0 auto 1.35rem;
+      max-width: 1200px;
+      border-radius: 999px;
+      border: 1px solid rgba(251,191,36,0.35);
+      background: rgba(15,23,42,0.65);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 14px 34px rgba(0,0,0,0.55);
+      overflow: hidden;
+    }
+    .bf-buybar__inner{
+      padding: 12px 14px;
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .bf-buybar__left{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .bf-buybar__title{
+      font-weight: 900;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #fbbf24;
+      font-size: 0.78rem;
+      white-space: nowrap;
+    }
+    .bf-buybar__sub{
+      color: rgba(229,231,235,.88);
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.95;
+    }
+    .bf-buybar__btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 900;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      background: linear-gradient(120deg, #f59e0b, #fbbf24);
+      color: #111827;
+      border: 1px solid rgba(0,0,0,0.12);
+      transition: transform .15s ease, filter .15s ease;
+      white-space: nowrap;
+    }
+    .bf-buybar__btn:hover{
+      transform: translateY(-1px);
+      filter: brightness(1.04);
+    }
+    @media (max-width: 640px){
+      .bf-buybar{ border-radius: 18px; }
+      .bf-buybar__inner{ align-items:flex-start; }
+      .bf-buybar__title{ font-size: 0.74rem; }
+      .bf-buybar__sub{ font-size: 0.76rem; }
+    }
+    /* ===================== END BUY BAR ===================== */
 
     /* HERO */
     .hero {
@@ -382,6 +450,78 @@
       height:auto;
       object-fit:contain;
     }
+
+    /* ===================== NEW: FEATURED RELEASE CARD (UNDER HERO) ===================== */
+    .bf-feature{
+      margin-top: 1.25rem;
+    }
+    .bf-feature .bf-card{
+      background: radial-gradient(circle at top left, #111827 0%, #020617 70%);
+      border-radius: 24px;
+      padding: 1.35rem 1.4rem;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.7);
+      border: 1px solid rgba(148,163,184,0.35);
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .bf-feature .bf-kicker{
+      font-size: 0.74rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: #9ca3af;
+      margin-bottom: 0.2rem;
+    }
+    .bf-feature .bf-title{
+      font-size: 1.05rem;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: #e5e7eb;
+      margin-bottom: 0.35rem;
+    }
+    .bf-feature .bf-desc{
+      font-size: 0.9rem;
+      color: rgba(229,231,235,0.92);
+      max-width: 44rem;
+    }
+    .bf-feature .bf-actions{
+      display:flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .bf-feature .bf-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 900;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      border: 1px solid rgba(249,250,251,0.22);
+      background: rgba(15,23,42,0.85);
+      color: #e5e7eb;
+      transition: transform .15s ease, background .15s ease, border-color .15s ease;
+      white-space: nowrap;
+    }
+    .bf-feature .bf-btn:hover{
+      transform: translateY(-1px);
+      background: rgba(148,163,184,0.20);
+      border-color: rgba(248,250,252,0.55);
+    }
+    .bf-feature .bf-btn--gold{
+      background: linear-gradient(120deg, #f59e0b, #fbbf24);
+      color: #111827;
+      border-color: rgba(0,0,0,0.12);
+    }
+    .bf-feature .bf-btn--gold:hover{
+      background: linear-gradient(120deg, #fbbf24, #f59e0b);
+      border-color: rgba(0,0,0,0.20);
+    }
+    /* ===================== END FEATURED RELEASE ===================== */
 
     /* SECTIONS */
     .extra-section { margin-top: 2.5rem; }
@@ -1281,6 +1421,21 @@
         </a>
       </nav>
 
+      <!-- ✅ NEW: BATTLEFIELD BUY BAR (HIGH VISIBILITY, CLEAN) -->
+      <div class="bf-buybar" role="region" aria-label="The Battlefield physical editions">
+        <div class="bf-buybar__inner">
+          <div class="bf-buybar__left">
+            <strong class="bf-buybar__title">THE BATTLEFIELD — PHYSICAL</strong>
+            <span class="bf-buybar__sub">Official CD + 12&quot; Vinyl • Ships worldwide</span>
+          </div>
+          <a class="bf-buybar__btn"
+             href="https://elasticstage.com/awakened-by-yah/releases/the-battlefield-album"
+             target="_blank" rel="noopener">
+            ORDER CD / VINYL
+          </a>
+        </div>
+      </div>
+
       <!-- HERO -->
       <section class="hero">
         <div class="hero-left">
@@ -1322,6 +1477,28 @@
             />
           </div>
         </aside>
+      </section>
+
+      <!-- ✅ NEW: FEATURED RELEASE CARD (DIRECT PURCHASE UNDER “ALBUM CARD” FEEL) -->
+      <section class="bf-feature" aria-label="Featured release: The Battlefield">
+        <div class="bf-card">
+          <div>
+            <p class="bf-kicker">Featured Release</p>
+            <h2 class="bf-title">THE BATTLEFIELD</h2>
+            <p class="bf-desc">
+              Own the official physical edition — CD + booklet or 12&quot; vinyl. Worldwide shipping available.
+            </p>
+          </div>
+
+          <div class="bf-actions">
+            <a class="bf-btn" href="/albums/">View Albums</a>
+            <a class="bf-btn bf-btn--gold"
+               href="https://elasticstage.com/awakened-by-yah/releases/the-battlefield-album"
+               target="_blank" rel="noopener">
+              Buy CD / Vinyl
+            </a>
+          </div>
+        </div>
       </section>
 
       <!-- MUSIC PLAYER + PLAYLIST -->
