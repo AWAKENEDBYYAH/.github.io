@@ -18,13 +18,12 @@ function normalizeKey(value) {
     .replace(/_+/g, "_");
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+function buildTracks() {
   const grid = document.getElementById("tracksGrid");
-  const status = document.getElementById("status");
-
   if (!grid) return;
 
-  // Build track cards first
+  grid.innerHTML = "";
+
   TRACKS.forEach(track => {
     const key = normalizeKey(track);
 
@@ -48,43 +47,48 @@ document.addEventListener("DOMContentLoaded", () => {
 
     grid.appendChild(card);
   });
+}
 
-  // Now fetch ratings
+function applyRatings(data) {
+  if (!data) return;
+
+  Object.keys(data).forEach(trackKey => {
+    const trackData = data[trackKey];
+    const card = document.querySelector(`[data-track="${trackKey}"]`);
+    if (!card) return;
+
+    const avgEl = card.querySelector(".rating-average");
+    const countEl = card.querySelector(".rating-count");
+    const reviewEl = card.querySelector(".latest-review");
+
+    if (avgEl)
+      avgEl.textContent = `${trackData.average.toFixed(1)} ★`;
+
+    if (countEl)
+      countEl.textContent =
+        `(${trackData.count} RATING${trackData.count > 1 ? "S" : ""})`;
+
+    if (reviewEl && trackData.latestComment) {
+      reviewEl.innerHTML = `
+        "${trackData.latestComment}"
+        <small>${trackData.latestName}</small>
+      `;
+    }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const status = document.getElementById("status");
+
+  buildTracks();
+
   fetch(API_URL)
     .then(res => res.json())
     .then(data => {
-      if (!data) {
-        status.textContent = "No ratings yet.";
-        return;
-      }
-
-      Object.keys(data).forEach(trackKey => {
-        const trackData = data[trackKey];
-        const card = document.querySelector(`[data-track="${trackKey}"]`);
-        if (!card) return;
-
-        const avgEl = card.querySelector(".rating-average");
-        const countEl = card.querySelector(".rating-count");
-        const reviewEl = card.querySelector(".latest-review");
-
-        if (avgEl)
-          avgEl.textContent = `${trackData.average.toFixed(1)} ★`;
-
-        if (countEl)
-          countEl.textContent =
-            `(${trackData.count} RATING${trackData.count > 1 ? "S" : ""})`;
-
-        if (reviewEl && trackData.latestComment) {
-          reviewEl.innerHTML = `
-            "${trackData.latestComment}"
-            <small>${trackData.latestName}</small>
-          `;
-        }
-      });
-
-      status.textContent = "";
+      applyRatings(data);
+      if (status) status.textContent = "";
     })
     .catch(() => {
-      status.textContent = "Unable to load ratings.";
+      if (status) status.textContent = "";
     });
 });
