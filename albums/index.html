@@ -161,11 +161,22 @@
     .title{font-weight:950; letter-spacing:.03em; margin:0 0 6px}
     .meta{color:var(--muted); font-size:13px; margin:0 0 12px; line-height:1.45}
     .tracks{color:var(--muted); font-size:13px; margin:10px 0 0; line-height:1.6}
-    .row{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:12px;}
+
+    .row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-top:12px;
+    }
     .price{font-weight:950}
+
+    /* UPDATED: allow wrapping for long button text */
     .btn{
-      display:inline-flex; align-items:center; justify-content:center;
-      padding:10px 12px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:10px 14px;
       border-radius:14px;
       border:1px solid rgba(43,86,255,.7);
       background:linear-gradient(135deg, rgba(28,57,168,.75), rgba(43,86,255,.28));
@@ -173,7 +184,10 @@
       text-decoration:none;
       font-weight:950;
       letter-spacing:.03em;
-      white-space:nowrap;
+      text-align:center;
+      line-height:1.2;
+      white-space:normal;     /* ✅ wrap */
+      max-width:180px;        /* ✅ prevents overflow */
     }
     .btn:hover{box-shadow:0 0 0 7px rgba(43,86,255,.10)}
     .btn.disabled{
@@ -183,6 +197,7 @@
       background:rgba(255,255,255,.06);
       color:#e5e7eb;
     }
+
     .pill{
       display:inline-block;
       padding:3px 10px;
@@ -295,7 +310,7 @@
 
           <div class="row">
             <div class="price">Release: 03/14/2026</div>
-            <span class="btn disabled">PRE-ORDERS OPENING SOON</span>
+            <span class="btn disabled">PRE-ORDERS<br>OPENING SOON</span>
           </div>
         </div>
       </div>
