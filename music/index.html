@@ -302,7 +302,7 @@
 
           <div class="meta">
             <p class="artist" id="playerArtist">AWAKENED BY YAH</p>
-            <p class="album" id="playerAlbum">The Battlefield</p>
+            <p class="album" id="playerAlbum">The Battlefield (2026)</p>
             <p class="track" id="playerTrack">TRACK 01 — Select a track</p>
           </div>
         </div>
@@ -363,7 +363,7 @@
                    onerror="this.onerror=null;this.src='/abytransparent.png';">
             </div>
             <div class="coverText">
-              <p class="coverName">The Battlefield</p>
+              <p class="coverName">The Battlefield (2026)</p>
               <p class="coverMeta">Album</p>
             </div>
           </div>
@@ -374,7 +374,7 @@
                    onerror="this.onerror=null;this.src='/abytransparent.png';">
             </div>
             <div class="coverText">
-              <p class="coverName">Kingdom Biz</p>
+              <p class="coverName">Kingdom Biz (2025)</p>
               <p class="coverMeta">Album</p>
             </div>
           </div>
@@ -385,7 +385,7 @@
                    onerror="this.onerror=null;this.src='/abytransparent.png';">
             </div>
             <div class="coverText">
-              <p class="coverName">The Rise of Yasharal</p>
+              <p class="coverName">The Rise of Yasharal (2025)</p>
               <p class="coverMeta">Album</p>
             </div>
           </div>
@@ -402,6 +402,7 @@
       battlefield: {
         artist: "AWAKENED BY YAH",
         album: "The Battlefield",
+        year: 2026,
         project: "The Battlefield",
         cover: "/images/the-battlefield.png",
         tracks: [
@@ -421,6 +422,7 @@
       kingdombiz: {
         artist: "AWAKENED BY YAH",
         album: "Kingdom Biz",
+        year: 2025,
         project: "Kingdom Biz",
         cover: "/kingdom-biz-cover.png",
         tracks: [
@@ -435,6 +437,7 @@
       rise: {
         artist: "AWAKENED BY YAH",
         album: "The Rise of Yasharal",
+        year: 2025,
         project: "The Rise of Yasharal",
         cover: "/images/rise-of-yasharal.png",
         tracks: [
@@ -507,7 +510,10 @@
     function render(){
       const pack = LIBRARY[key];
       ui.artist.textContent = pack.artist;
-      ui.album.textContent = pack.album;
+
+      // ✅ album + year
+      ui.album.textContent = pack.album + (pack.year ? ` (${pack.year})` : "");
+
       ui.projectPill.textContent = pack.project;
       ui.cover.src = pack.cover;
       ui.countPill.textContent = `${pack.tracks.length} tracks`;
