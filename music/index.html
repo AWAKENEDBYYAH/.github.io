@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- ✅ Correct canonical for folder-based page -->
   <link rel="canonical" href="https://awakenedbyyahmusic.com/music/" />
-
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Music | Awakened By YAH</title>
@@ -73,12 +71,6 @@
       letter-spacing:.1px;
     }
     .musicHeroBack a:hover{border-color:rgba(255,255,255,.30)}
-    .musicHeroBack a.primaryLink{
-      background:linear-gradient(180deg, rgba(43,86,255,.95), rgba(28,57,168,.95));
-      border-color:rgba(255,255,255,.14);
-      box-shadow:0 0 36px rgba(28,57,168,.25);
-      padding:10px 14px;
-    }
 
     .grid{
       display:grid;
@@ -113,10 +105,9 @@
     }
     .cover img{width:100%;height:100%;object-fit:cover;display:block}
     .meta{min-width:0}
-    .artist{font-weight:900;font-size:18px;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .album{color:var(--muted);margin:7px 0 0 0;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .track{margin:10px 0 0 0;font-weight:900;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-
+    .artist{font-weight:900;font-size:18px;margin:0}
+    .album{color:var(--muted);margin:7px 0 0 0;font-size:14px}
+    .track{margin:10px 0 0 0;font-weight:900;font-size:16px}
 
     .controls{padding:14px 16px 16px}
     .barRow{
@@ -135,52 +126,11 @@
       cursor:pointer;
       border:1px solid rgba(255,255,255,.18);
     }
-    .btnRow{
-      display:flex;align-items:center;justify-content:space-between;gap:12px;
-      margin-top:10px;flex-wrap:wrap;
-    }
-    .leftBtns,.rightBtns{display:flex;align-items:center;gap:10px}
-    button{
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.06);
-      color:var(--text);
-      border-radius:999px;
-      padding:10px 14px;
-      cursor:pointer;
-      font-weight:900;
-      letter-spacing:.1px;
-    }
-    button:hover{border-color:rgba(255,255,255,.22)}
-    .primary{
-      background:linear-gradient(180deg, rgba(43,86,255,.95), rgba(28,57,168,.95));
-      border-color:rgba(255,255,255,.14);
-      box-shadow:0 0 36px rgba(28,57,168,.35);
-      padding:10px 18px;
-    }
-    .tinyLabel{color:var(--muted);font-size:12px;margin-left:6px}
-    .vol{width:170px;display:flex;align-items:center;gap:10px}
-    .vol input{flex:1}
-
-    button.is-active{
-      border-color: rgba(43,86,255,.70);
-      background: rgba(28,57,168,.22);
-      box-shadow: 0 0 18px rgba(28,57,168,.22);
-    }
 
     .playlist{
       border-top:1px solid var(--line);
       background: rgba(0,0,0,.18);
       padding:12px;
-    }
-    .plistHead{
-      display:flex;align-items:center;justify-content:space-between;gap:12px;
-      padding:0 2px 10px;
-      color:var(--muted);font-size:12px;
-    }
-    .pill{
-      display:inline-block;padding:4px 10px;border-radius:999px;
-      border:1px solid var(--line);background:rgba(255,255,255,.04);
-      margin-right:6px
     }
     .plist{
       list-style:none;
@@ -193,114 +143,34 @@
       overflow:auto;
     }
     .item{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
       padding:10px 12px;
       border-radius:16px;
       border:1px solid rgba(255,255,255,.10);
       background:rgba(255,255,255,.03);
       cursor:pointer;
-      user-select:none;
     }
-    .item:hover{border-color:rgba(255,255,255,.18)}
     .item.active{
       border-color:rgba(28,57,168,.70);
       background:rgba(28,57,168,.18);
-      box-shadow:0 0 20px rgba(28,57,168,.18);
     }
-    .itemLeft{
-      min-width:0;
-      display:flex;
-      flex-direction:column;
-      gap:4px;
-    }
-    .itemTitle{
-      margin:0;
-      font-weight:900;
-      font-size:13px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-    .itemSub{
-      margin:0;
-      color:var(--muted);
-      font-size:12px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-
-    .coversCard{
-      border:1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
-      border-radius: var(--radius);
-      overflow:hidden;
-      box-shadow: 0 18px 44px rgba(0,0,0,.40);
-    }
-    .coversHead{
-      padding:14px;
-      border-bottom:1px solid var(--line);
-      display:flex;justify-content:space-between;gap:10px;align-items:center;
-      background:rgba(255,255,255,.03);
-    }
-    .coversHead h2{margin:0;font-size:15px;letter-spacing:.2px}
-    .hint{color:var(--muted);font-size:12px}
-
-    .coverGrid{
-      padding:14px;
-      display:grid;
-      grid-template-columns:1fr;
-      gap:12px;
-    }
-    .coverBtn{
-      display:flex;gap:12px;align-items:center;
-      padding:12px;
-      border-radius:18px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.04);
-      cursor:pointer;
-      user-select:none;
-    }
-    .coverBtn:hover{border-color:rgba(255,255,255,.20)}
-    .coverBtn.active{
-      border-color:rgba(28,57,168,.70);
-      background:rgba(28,57,168,.18);
-      box-shadow:0 0 28px rgba(28,57,168,.22);
-    }
-    .thumb{
-      width:76px;height:76px;border-radius:16px;overflow:hidden;
-      border:1px solid var(--line);flex:0 0 auto;
-      background:#111827;
-    }
-    .thumb img{width:100%;height:100%;object-fit:cover;display:block}
-    .coverText{min-width:0}
-    .coverName{margin:0;font-weight:900;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .coverMeta{margin:6px 0 0 0;color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   </style>
 </head>
 
 <body>
   <div class="wrap">
 
-    <header class="musicHero" aria-label="Awakened By YAH Music Banner">
+    <header class="musicHero">
       <div class="musicHeroBack">
         <a href="/">← Back to Home</a>
-
-        <!-- Optional: keep login link (does NOT affect streaming) -->
-        
       </div>
     </header>
 
     <div class="grid">
-      <section class="playerCard" aria-label="Music Player">
+      <section class="playerCard">
         <div class="playerHead">
           <div class="cover">
             <img id="playerCover"
                  src="/kingdom-biz-cover.png"
-                 alt="Project cover"
                  onerror="this.onerror=null;this.src='/abytransparent.png';" />
           </div>
 
@@ -308,10 +178,6 @@
             <p class="artist" id="playerArtist">AWAKENED BY YAH</p>
             <p class="album" id="playerAlbum">Kingdom Biz</p>
             <p class="track" id="playerTrack">TRACK 01 — Select a track</p>
-
-            <p class="memberLine">
-              Want member access later? <a href="/login.html">Log in</a>
-            </p>
           </div>
         </div>
 
@@ -321,407 +187,14 @@
             <input id="seek" class="seek" type="range" min="0" max="1000" value="0" />
             <span id="tDur">0:00</span>
           </div>
-
-          <div class="btnRow">
-            <div class="leftBtns">
-              <button id="prevBtn" title="Previous">⏮</button>
-              <button id="playBtn" class="primary" title="Play / Pause">▶️ Play</button>
-              <button id="nextBtn" title="Next">⏭</button>
-
-              <button id="repeatAllBtn" title="Repeat All (Playlist)">🔁</button>
-              <button id="repeatOneBtn" title="Repeat 1 (Current Track)">🔂</button>
-
-              <span class="tinyLabel" id="statusLabel">Ready</span>
-            </div>
-
-            <div class="rightBtns">
-              <button id="restartBtn" title="Restart">⟲ Restart</button>
-              <div class="vol">
-                <span class="tinyLabel">Vol</span>
-                <input id="vol" class="seek" type="range" min="0" max="100" value="85" />
-              </div>
-            </div>
-          </div>
+          <button id="playBtn">▶️ Play</button>
         </div>
 
         <div class="playlist">
-          <div class="plistHead">
-            <div>
-              <span class="pill" id="projectPill">Kingdom Biz</span>
-              <span class="pill" id="countPill">0 tracks</span>
-            </div>
-            <div class="hint">Click a track to play</div>
-          </div>
-
-          <ul id="plist" class="plist" aria-label="Playlist"></ul>
+          <ul id="plist" class="plist"></ul>
         </div>
       </section>
-
-      <aside class="coversCard" aria-label="Albums & Singles">
-        <div class="coversHead">
-          <h2>Albums & Singles</h2>
-          <div class="hint">Click a cover to load</div>
-        </div>
-
-        <div class="coverGrid">
-          <div class="coverBtn active" data-key="kingdombiz">
-            <div class="thumb">
-              <img src="/kingdom-biz-cover.png" alt="Kingdom Biz cover"
-                   onerror="this.onerror=null;this.src='/abytransparent.png';">
-            </div>
-            <div class="coverText">
-              <p class="coverName">Kingdom Biz</p>
-              <p class="coverMeta">Album</p>
-            </div>
-          </div>
-
-          <div class="coverBtn" data-key="rise">
-            <div class="thumb">
-              <img src="/images/rise-of-yasharal.png" alt="The Rise of Yasharal cover"
-                   onerror="this.onerror=null;this.src='/abytransparent.png';">
-            </div>
-            <div class="coverText">
-              <p class="coverName">The Rise of Yasharal</p>
-              <p class="coverMeta">Album</p>
-            </div>
-          </div>
-
-          <div class="coverBtn" data-key="hear">
-            <div class="thumb">
-              <img src="/hear-my-voice.png" alt="Hear My Voice cover"
-                   onerror="this.onerror=null;this.src='/abytransparent.png';">
-            </div>
-            <div class="coverText">
-              <p class="coverName">Hear My Voice</p>
-              <p class="coverMeta">Single</p>
-            </div>
-          </div>
-
-          <div class="coverBtn" data-key="deliver">
-            <div class="thumb">
-              <img src="/deliver-us.png" alt="Deliver Us cover"
-                   onerror="this.onerror=null;this.src='/abytransparent.png';">
-            </div>
-            <div class="coverText">
-              <p class="coverName">Deliver Us</p>
-              <p class="coverMeta">Single</p>
-            </div>
-          </div>
-        </div>
-      </aside>
     </div>
   </div>
-
-  <script>
-    // Encode paths safely for spaces + apostrophes on GitHub Pages
-    const U = (p) => encodeURI(p).replace(/'/g, "%27");
-
-    // IMPORTANT: /audio filenames use SPACES (not underscores).
-    // Keep names EXACT. Spaces are auto-encoded by U().
-
-    // ✅ FINAL LIBRARY (matches your screenshots)
-    const LIBRARY = {
-      kingdombiz: {
-        artist: "AWAKENED BY YAH",
-        album: "Kingdom Biz",
-        project: "Kingdom Biz",
-        cover: "/kingdom-biz-cover.png",
-        tracks: [
-          { title: "Walk It Out", file: U("/audio/TRACK 01_WALK IT OUT.mp3") },
-          { title: "Rise of the Remnant", file: U("/audio/TRACK 02_RISE OF THE REMNANT.mp3") },
-          { title: "We Rise", file: U("/audio/TRACK 03__WE RISE.mp3") },
-          { title: "Unbroken Frequency", file: U("/audio/TRACK 04_UNBROKEN FREQUENCY.mp3") },
-          { title: "Unbroken Frequency (Remix)", file: U("/audio/TRACK 05__UNBROKEN FREQUENCY REMIX.mp3") }
-        ]
-      },
-
-      rise: {
-        artist: "AWAKENED BY YAH",
-        album: "The Rise of Yasharal",
-        project: "The Rise of Yasharal",
-        cover: "/images/rise-of-yasharal.png",
-        tracks: [
-          { title: "The Love I Have In YAHUAH", file: U("/audio/ROY_TRACK 01_THE LOVE I HAVE IN YAHUAH.mp3") },
-          { title: "You're With Me", file: U("/audio/ROY_TRACK 02_YOU'RE WITH ME.mp3") },
-          { title: "Beneath Your Wings", file: U("/audio/ROY_TRACK 03_BENEATH YOUR WINGS.mp3") },
-          { title: "YAHUAH The Holy One of Yasharal", file: U("/audio/ROY_TRACK 04_YAHUAH THE HOLY ONE OF YASHARAL.mp3") },
-          { title: "Show Me Your Heart", file: U("/audio/ROY_TRACK 05_SHOW ME YOUR HEART.mp3") },
-          { title: "YAH's Chosen — The Great Gathering", file: U("/audio/ROY_TRACK 06_YAHS CHOSEN THE GREAT GATHERING.mp3") },
-          { title: "YAHUAH Is The Father's Name", file: U("/audio/ROY_TRACK 07_YAHUAH IS THE FATHERS NAME.mp3") },
-          { title: "How Sweet Is Your Name YAHUAH", file: U("/audio/ROY_TRACK 08_HOW SWEET IS YOUR NAME YAHUAH.mp3") },
-          { title: "In Your Presence", file: U("/audio/ROY_TRACK 09_IN YOUR PRESENCE.mp3") },
-          { title: "Halal YAHUAH — We Magnify Your Name", file: U("/audio/ROY_TRACK 10_HALAL YAHUAH WE MAGNIFY YOUR NAME.mp3") },
-          { title: "My Eyes Opened Wide", file: U("/audio/ROY_TRACK 11_MY EYES OPENED WIDE.mp3") },
-          { title: "Return to the Covenant", file: U("/audio/ROY_TRACK 12_RETURN TO THE COVENANT.mp3") }
-        ]
-      },
-
-      hear: {
-        artist: "AWAKENED BY YAH",
-        album: "Hear My Voice",
-        project: "Hear My Voice",
-        cover: "/hear-my-voice.png",
-        tracks: [
-          { title: "Hear My Voice", file: U("/audio/ABY_TRACK 01_HEAR MY VOICE.mp3") }
-        ]
-      },
-
-      deliver: {
-        artist: "AWAKENED BY YAH",
-        album: "Deliver Us",
-        project: "Deliver Us",
-        cover: "/deliver-us.png",
-        tracks: [
-          { title: "Deliver Us", file: U("/audio/ABYM_TRACK 01_DELIVER US.mp3") }
-        ]
-      }
-    };
-
-    const $ = (id) => document.getElementById(id);
-
-    const ui = {
-      cover: $("playerCover"),
-      artist: $("playerArtist"),
-      album: $("playerAlbum"),
-      track: $("playerTrack"),
-      projectPill: $("projectPill"),
-      countPill: $("countPill"),
-      list: $("plist"),
-
-      play: $("playBtn"),
-      prev: $("prevBtn"),
-      next: $("nextBtn"),
-      restart: $("restartBtn"),
-      repAll: $("repeatAllBtn"),
-      repOne: $("repeatOneBtn"),
-      status: $("statusLabel"),
-
-      seek: $("seek"),
-      tNow: $("tNow"),
-      tDur: $("tDur"),
-      vol: $("vol")
-    };
-
-    const audio = new Audio();
-    audio.preload = "metadata";
-
-    let seeking = false;
-    let repeatAll = false;
-    let repeatOne = false;
-
-    let key = "kingdombiz";
-    let index = 0;
-
-    function fmt(sec){
-      if (!isFinite(sec)) return "0:00";
-      const m = Math.floor(sec/60);
-      const s = Math.floor(sec%60);
-      return `${m}:${String(s).padStart(2,"0")}`;
-    }
-    function setStatus(t){ ui.status.textContent = t; }
-
-    function setActiveCover(k){
-      document.querySelectorAll(".coverBtn").forEach(b=>{
-        b.classList.toggle("active", b.dataset.key === k);
-      });
-    }
-
-    function render(){
-      const pack = LIBRARY[key];
-      ui.artist.textContent = pack.artist;
-      ui.album.textContent = pack.album;
-      ui.projectPill.textContent = pack.project;
-      ui.cover.src = pack.cover;
-      ui.countPill.textContent = `${pack.tracks.length} tracks`;
-
-      ui.list.innerHTML = "";
-
-      if (!pack.tracks.length){
-        const li = document.createElement("li");
-        li.className = "item";
-        li.innerHTML = `
-          <div class="itemLeft">
-            <p class="itemTitle">No tracks loaded</p>
-            <p class="itemSub">Track list is empty</p>
-          </div>`;
-        ui.list.appendChild(li);
-        ui.track.textContent = "Select a track";
-        return;
-      }
-
-      pack.tracks.forEach((t,i)=>{
-        const li = document.createElement("li");
-        li.className = "item" + (i===index ? " active" : "");
-        li.innerHTML = `
-          <div class="itemLeft">
-            <p class="itemTitle">${t.title}</p>
-            <p class="itemSub">${pack.album}</p>
-          </div>`;
-        li.addEventListener("click", ()=> load(i,true));
-        ui.list.appendChild(li);
-      });
-    }
-
-    function markActive(){
-      document.querySelectorAll("#plist .item").forEach((row,i)=>{
-        row.classList.toggle("active", i===index);
-      });
-    }
-
-    function load(i, autoplay){
-      const pack = LIBRARY[key];
-      if (!pack.tracks[i]) return;
-
-      index = i;
-      const t = pack.tracks[i];
-
-      ui.track.textContent = t.title;
-      audio.src = t.file;
-
-      ui.tNow.textContent = "0:00";
-      ui.tDur.textContent = "0:00";
-      ui.seek.value = 0;
-
-      render();
-      markActive();
-
-      setStatus("Loading…");
-
-      if (autoplay){
-        audio.play().then(()=>{
-          ui.play.textContent = "⏸ Pause";
-          setStatus("Playing");
-        }).catch(()=>{
-          ui.play.textContent = "▶️ Play";
-          setStatus("Tap Play");
-        });
-      } else {
-        ui.play.textContent = "▶️ Play";
-        setStatus("Ready");
-      }
-    }
-
-    function togglePlay(){
-      const pack = LIBRARY[key];
-
-      if (!audio.src){
-        if (pack.tracks.length) load(0,true);
-        return;
-      }
-      if (audio.paused){
-        audio.play().then(()=>{
-          ui.play.textContent = "⏸ Pause";
-          setStatus("Playing");
-        }).catch(()=> setStatus("Tap Play"));
-      } else {
-        audio.pause();
-        ui.play.textContent = "▶️ Play";
-        setStatus("Paused");
-      }
-    }
-
-    function next(){
-      const pack = LIBRARY[key];
-      if (!pack.tracks.length) return;
-
-      const ni = index + 1;
-      if (ni < pack.tracks.length) load(ni,true);
-      else if (repeatAll) load(0,true);
-      else { audio.pause(); ui.play.textContent="▶️ Play"; setStatus("Ended"); }
-    }
-
-    function prev(){
-      const pack = LIBRARY[key];
-      if (!pack.tracks.length) return;
-
-      const pi = index - 1;
-      if (pi >= 0) load(pi,true);
-      else { audio.currentTime = 0; audio.play().catch(()=>{}); }
-    }
-
-    function restart(){
-      if (!audio.src) return;
-
-      audio.currentTime = 0;
-      audio.play().catch(()=>{});
-      ui.play.textContent = "⏸ Pause";
-      setStatus("Playing");
-    }
-
-    ui.play.addEventListener("click", togglePlay);
-    ui.next.addEventListener("click", next);
-    ui.prev.addEventListener("click", prev);
-    ui.restart.addEventListener("click", restart);
-
-    ui.repAll.addEventListener("click", ()=>{
-      repeatAll = !repeatAll;
-      if (repeatAll) repeatOne = false;
-      ui.repAll.classList.toggle("is-active", repeatAll);
-      ui.repOne.classList.toggle("is-active", repeatOne);
-    });
-
-    ui.repOne.addEventListener("click", ()=>{
-      repeatOne = !repeatOne;
-      if (repeatOne) repeatAll = false;
-      ui.repAll.classList.toggle("is-active", repeatAll);
-      ui.repOne.classList.toggle("is-active", repeatOne);
-    });
-
-    ui.seek.addEventListener("input", ()=>{
-      seeking = true;
-      if (!audio.duration) return;
-      const t = (Number(ui.seek.value)/1000) * audio.duration;
-      ui.tNow.textContent = fmt(t);
-    });
-    ui.seek.addEventListener("change", ()=>{
-      if (!audio.duration) { seeking = false; return; }
-      audio.currentTime = (Number(ui.seek.value)/1000) * audio.duration;
-      seeking = false;
-    });
-
-    audio.volume = Number(ui.vol.value)/100;
-    ui.vol.addEventListener("input", ()=> audio.volume = Number(ui.vol.value)/100);
-
-    audio.addEventListener("loadedmetadata", ()=> ui.tDur.textContent = fmt(audio.duration));
-
-    audio.addEventListener("timeupdate", ()=>{
-      if (!audio.duration) return;
-
-      if (!seeking){
-        ui.tNow.textContent = fmt(audio.currentTime);
-        ui.seek.value = Math.floor((audio.currentTime/audio.duration) * 1000);
-      }
-    });
-
-    audio.addEventListener("ended", ()=>{
-      if (repeatOne) return restart();
-      next();
-    });
-
-    audio.addEventListener("error", ()=>{
-      setStatus("Error loading file");
-      console.warn("Audio failed:", audio.src);
-    });
-
-    document.querySelectorAll(".coverBtn").forEach(btn=>{
-      btn.addEventListener("click", ()=>{
-        key = btn.dataset.key;
-        index = 0;
-
-        setActiveCover(key);
-        audio.pause();
-        audio.src = "";
-        ui.play.textContent = "▶️ Play";
-        ui.tNow.textContent="0:00"; ui.tDur.textContent="0:00"; ui.seek.value=0;
-        render();
-        setStatus("Ready");
-      });
-    });
-
-    // INIT
-    setActiveCover(key);
-    render();
-    setStatus("Ready");
-  </script>
 </body>
 </html>
