@@ -262,7 +262,7 @@
     <a class="pill" href="/">Home</a>
     <a class="pill" href="/music/">Music</a>
     <a class="pill" href="/albums/">Albums</a>
-    <a class="pill gold" id="rateBtnTop" href="#" style="display:none;">⭐ Rate a Track</a>
+    <a class="pill gold" id="rateBtnTop" href="#">⭐ Rate a Track</a>
   </div>
 </div>
 
@@ -274,7 +274,7 @@
   </p>
 
   <div class="ctaRow">
-    <a class="btn primary" id="rateBtn" href="#" style="display:none;">⭐ Rate a Track</a>
+    <a class="btn primary" id="rateBtn" href="#">⭐ Rate a Track</a>
   </div>
 
   <div class="status" id="status">Loading ratings…</div>
@@ -288,29 +288,25 @@
 </main>
 </div>
 
-<!-- Keep this tiny inline script for year + button wiring -->
 <script>
-  // Optional: add your Google Form link later and the buttons will appear automatically.
-  const FORM_URL = ""; // e.g. "https://forms.gle/XXXX"
+  // ✅ Your real Google Form link (cleaned)
+  const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLScKCEixkRagcsf_XVLsQAc3RdvB3gFZCcrRlLnnm-AlTMihkA/viewform";
 
   document.addEventListener("DOMContentLoaded", () => {
     const yearEl = document.getElementById("year");
     if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-    const btns = ["rateBtn", "rateBtnTop"].map(id => document.getElementById(id)).filter(Boolean);
-
-    if (FORM_URL) {
-      btns.forEach(b => {
-        b.href = FORM_URL;
-        b.target = "_blank";
-        b.rel = "noopener";
-        b.style.display = "";
-      });
-    }
+    ["rateBtn", "rateBtnTop"].forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.href = FORM_URL;
+      el.target = "_blank";
+      el.rel = "noopener";
+    });
   });
 </script>
 
-<!-- This loads your ratings engine from reviews/script.js -->
+<!-- Ratings engine -->
 <script src="script.js"></script>
 
 </body>
