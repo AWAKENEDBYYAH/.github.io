@@ -201,6 +201,7 @@
       font-size:1rem;
       letter-spacing:.12em;
       color:var(--gold);
+      white-space:nowrap;
     }
 
     .meta{
@@ -261,7 +262,7 @@
     <a class="pill" href="/">Home</a>
     <a class="pill" href="/music/">Music</a>
     <a class="pill" href="/albums/">Albums</a>
-    <a class="pill gold" id="rateBtnTop" href="#">⭐ Rate a Track</a>
+    <a class="pill gold" id="rateBtnTop" href="#" style="display:none;">⭐ Rate a Track</a>
   </div>
 </div>
 
@@ -273,7 +274,7 @@
   </p>
 
   <div class="ctaRow">
-    <a class="btn primary" id="rateBtn" href="#">⭐ Rate a Track</a>
+    <a class="btn primary" id="rateBtn" href="#" style="display:none;">⭐ Rate a Track</a>
   </div>
 
   <div class="status" id="status">Loading ratings…</div>
@@ -287,114 +288,30 @@
 </main>
 </div>
 
+<!-- Keep this tiny inline script for year + button wiring -->
 <script>
-const FORM_URL = "PASTE_YOUR_GOOGLE_FORM_LINK_HERE";
-const API_URL  = "PASTE_YOUR_APPS_SCRIPT_JSON_URL_HERE";
+  // Optional: add your Google Form link later and the buttons will appear automatically.
+  const FORM_URL = ""; // e.g. "https://forms.gle/XXXX"
 
-const TRACKS = [
-  "Hidden With You",
-  "Think About Me",
-  "Not My Will",
-  "The Secret Place",
-  "Ten Toes Down",
-  "Sound The Shupar",
-  "Show Me Your Heart",
-  "We Rise",
-  "Unbroken Frequency Remix",
-  "The Love I Have In YAHUAH"
-];
+  document.addEventListener("DOMContentLoaded", () => {
+    const yearEl = document.getElementById("year");
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-const $ = id => document.getElementById(id);
+    const btns = ["rateBtn", "rateBtnTop"].map(id => document.getElementById(id)).filter(Boolean);
 
-function starString(avg){
-  const filled = Math.round(avg);
-  return "★★★★★".slice(0, filled) + "☆☆☆☆☆".slice(0, 5-filled);
-}
-
-function buildEmpty(){
-  const grid = $("tracksGrid");
-  grid.innerHTML="";
-  TRACKS.forEach(t=>{
-    grid.innerHTML+=`
-      <div class="trackCard" data-track="${t}">
-        <div class="trackName">${t}</div>
-        <div class="starsRow">
-          <div class="stars">☆☆☆☆☆</div>
-          <div class="meta">0.0 / 5 • 0 ratings</div>
-        </div>
-        <div class="quote">No ratings yet — be the first to rate this track.</div>
-      </div>`;
+    if (FORM_URL) {
+      btns.forEach(b => {
+        b.href = FORM_URL;
+        b.target = "_blank";
+        b.rel = "noopener";
+        b.style.display = "";
+      });
+    }
   });
-}
-
-function wireButtons(){
-  ["rateBtn","rateBtnTop"].forEach(id=>{
-    const el=$(id);
-    if(!el) return;
-    el.href=FORM_URL;
-    el.target="_blank";
-    el.rel="noopener";
-  });
-}
-
-async function loadRatings(){
-  buildEmpty();
-  wireButtons();
-
-  if(API_URL.includes("PASTE_")){
-    $("status").innerHTML="Ready. Connect your API to auto-load ratings.";
-    return;
-  }
-
-  try{
-    const res=await fetch(API_URL,{cache:"no-store"});
-    const data=await res.json();
-    const rows=data.rows||[];
-
-    const agg={};
-    TRACKS.forEach(t=>agg[t]={sum:0,count:0,quote:null,name:null});
-
-    rows.forEach(r=>{
-      const t=r.track;
-      const s=Number(r.stars);
-      if(agg[t] && s>=1 && s<=5){
-        agg[t].sum+=s;
-        agg[t].count++;
-        if(r.comment){
-          agg[t].quote=r.comment;
-          agg[t].name=r.name;
-        }
-      }
-    });
-
-    let total=0;
-
-    TRACKS.forEach(t=>{
-      const a=agg[t];
-      total+=a.count;
-      if(a.count>0){
-        const avg=a.sum/a.count;
-        const card=document.querySelector(`[data-track="${t}"]`);
-        card.querySelector(".stars").textContent=starString(avg);
-        card.querySelector(".meta").textContent=`${avg.toFixed(1)} / 5 • ${a.count} rating${a.count===1?"":"s"}`;
-        if(a.quote){
-          card.querySelector(".quote").innerHTML=`${a.quote}${a.name?`<small>— ${a.name}</small>`:""}`;
-        }
-      }
-    });
-
-    $("status").innerHTML=`Loaded ${total} ratings.`;
-
-  }catch(e){
-    $("status").innerHTML="Could not load ratings.";
-  }
-}
-
-document.addEventListener("DOMContentLoaded",()=>{
-  $("year").textContent=new Date().getFullYear();
-  loadRatings();
-});
 </script>
+
+<!-- This loads your ratings engine from reviews/script.js -->
+<script src="script.js"></script>
 
 </body>
 </html>
