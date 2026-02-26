@@ -18,13 +18,15 @@
   <style>
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
     html, body { height:100%; }
+
     body{
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background: radial-gradient(circle at top left, #182544 0%, #050814 55%, #020308 100%);
       color: #f9fafb;
-      line-height: 1.6;
+      line-height:1.6;
       -webkit-font-smoothing: antialiased;
     }
+
     a{ color:inherit; text-decoration:none; }
 
     :root{
@@ -34,9 +36,8 @@
     }
 
     .page{ min-height:100vh; display:flex; flex-direction:column; }
-    .shell{ width:100%; max-width:1100px; margin:0 auto; padding: 2.25rem 1.5rem 3rem; }
+    .shell{ width:100%; max-width:1100px; margin:0 auto; padding:2.25rem 1.5rem 3rem; }
 
-    /* Top mini header */
     .top{
       display:flex;
       align-items:center;
@@ -45,11 +46,10 @@
       margin-bottom:1.25rem;
       flex-wrap:wrap;
     }
-    .brand{
-      display:flex; align-items:center; gap:.8rem;
-    }
+
+    .brand{ display:flex; align-items:center; gap:.8rem; }
     .brand img{
-      width:58px; height:auto;
+      width:58px;
       filter: drop-shadow(0 6px 12px rgba(0,0,0,0.7));
     }
     .brand .t1{
@@ -69,9 +69,8 @@
       display:block;
     }
 
-    .navpills{
-      display:flex; gap:.5rem; flex-wrap:wrap;
-    }
+    .navpills{ display:flex; gap:.5rem; flex-wrap:wrap; }
+
     .pill{
       font-size:0.72rem;
       padding:0.25rem 0.85rem;
@@ -81,7 +80,7 @@
       letter-spacing:0.16em;
       background: rgba(15,23,42,0.9);
       backdrop-filter: blur(10px);
-      transition: background .15s ease, border-color .15s ease, transform .12s ease;
+      transition: all .15s ease;
       white-space:nowrap;
     }
     .pill:hover{
@@ -100,10 +99,10 @@
 
     .card{
       background: var(--card);
-      border-radius: 24px;
-      padding: 1.7rem 1.5rem;
-      box-shadow: 0 18px 40px rgba(0,0,0,0.7);
-      border: 1px solid var(--stroke);
+      border-radius:24px;
+      padding:1.7rem 1.5rem;
+      box-shadow:0 18px 40px rgba(0,0,0,0.7);
+      border:1px solid var(--stroke);
     }
 
     .kicker{
@@ -113,6 +112,7 @@
       color:#9ca3af;
       margin-bottom:.25rem;
     }
+
     h1{
       font-family:'Cinzel', serif;
       font-weight:700;
@@ -121,22 +121,23 @@
       font-size:1.45rem;
       margin-bottom:.35rem;
     }
+
     .sub{
       color:#e5e7eb;
-      max-width: 48rem;
+      max-width:48rem;
       font-size:0.95rem;
     }
 
     .ctaRow{
       margin-top:1.2rem;
       display:flex; gap:.75rem; flex-wrap:wrap;
-      align-items:center;
     }
+
     .btn{
       display:inline-flex;
       align-items:center;
       gap:.55rem;
-      padding: 0.78rem 1.25rem;
+      padding:0.78rem 1.25rem;
       border-radius:999px;
       font-size:0.86rem;
       font-weight:800;
@@ -144,76 +145,79 @@
       text-transform:uppercase;
       border:1px solid transparent;
       cursor:pointer;
-      user-select:none;
-      white-space:nowrap;
     }
+
     .btn.primary{
-      background: linear-gradient(120deg, #f59e0b, #fbbf24);
-      color: #111827;
+      background: linear-gradient(120deg,#f59e0b,#fbbf24);
+      color:#111827;
     }
+
     .btn.outline{
       background: rgba(15,23,42,0.55);
       border-color: rgba(251,191,36,0.7);
       color: var(--gold);
     }
+
     .btn.outline:hover{
       background: rgba(251,191,36,0.12);
       border-color: rgba(251,191,36,1);
     }
 
     .grid{
-      margin-top: 1.25rem;
+      margin-top:1.25rem;
       display:grid;
-      grid-template-columns: repeat(3, minmax(0,1fr));
-      gap: 1rem;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:1rem;
     }
-    @media (max-width: 980px){ .grid{ grid-template-columns: repeat(2, minmax(0,1fr)); } }
-    @media (max-width: 640px){ .grid{ grid-template-columns: minmax(0,1fr); } }
+
+    @media (max-width:980px){ .grid{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+    @media (max-width:640px){ .grid{ grid-template-columns:minmax(0,1fr); } }
 
     .trackCard{
       background: rgba(15,23,42,0.9);
       border:1px solid rgba(148,163,184,0.40);
-      border-radius: 18px;
-      overflow:hidden;
-      box-shadow: 0 12px 28px rgba(0,0,0,0.6);
-      padding: 1rem 1rem 1.05rem;
+      border-radius:18px;
+      padding:1rem;
+      box-shadow:0 12px 28px rgba(0,0,0,0.6);
     }
+
     .trackName{
-      font-size: 0.98rem;
-      font-weight: 900;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: .35rem;
+      font-size:0.98rem;
+      font-weight:900;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+      margin-bottom:.35rem;
     }
+
     .starsRow{
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:.75rem;
-      flex-wrap:wrap;
       margin-bottom:.5rem;
+      flex-wrap:wrap;
     }
+
     .stars{
-      font-size: 1rem;
-      letter-spacing: .12em;
-      color: var(--gold);
-      text-shadow: 0 8px 18px rgba(0,0,0,0.6);
-      white-space:nowrap;
+      font-size:1rem;
+      letter-spacing:.12em;
+      color:var(--gold);
     }
+
     .meta{
-      font-size: 0.78rem;
+      font-size:0.78rem;
       color:#9ca3af;
-      letter-spacing: 0.10em;
-      text-transform: uppercase;
+      letter-spacing:0.10em;
+      text-transform:uppercase;
     }
+
     .quote{
       margin-top:.65rem;
       font-size:0.9rem;
       color:#e5e7eb;
-      border-left: 2px solid rgba(251,191,36,0.75);
+      border-left:2px solid rgba(251,191,36,0.75);
       padding-left:.75rem;
-      opacity:.95;
     }
+
     .quote small{
       display:block;
       margin-top:.35rem;
@@ -224,18 +228,16 @@
     }
 
     .status{
-      margin-top: 1rem;
+      margin-top:1rem;
       font-size:0.85rem;
       color:#cbd5e1;
-      opacity:.9;
     }
-    .status strong{ color: var(--gold); }
 
     .footer{
-      margin-top: 2rem;
-      padding-top: 1rem;
-      border-top: 1px solid rgba(31,41,55,0.9);
-      font-size: 0.78rem;
+      margin-top:2rem;
+      padding-top:1rem;
+      border-top:1px solid rgba(31,41,55,0.9);
+      font-size:0.78rem;
       color:#9ca3af;
       text-align:center;
     }
@@ -243,204 +245,156 @@
 </head>
 
 <body>
-  <div class="page">
-    <main class="shell">
+<div class="page">
+<main class="shell">
 
-      <div class="top">
-        <div class="brand">
-          <img src="/images/aby-official-logo.png" alt="AWAKENED BY YAH logo">
-          <div>
-            <span class="t1">AWAKENED BY YAH</span>
-            <span class="t2">Listener Ratings • Music Only</span>
-          </div>
-        </div>
-
-        <div class="navpills">
-          <a class="pill" href="/">Home</a>
-          <a class="pill" href="/music/">Music</a>
-          <a class="pill" href="/albums/">Albums</a>
-          <a class="pill gold" id="rateBtnTop" href="#">⭐ Rate a Track</a>
-        </div>
-      </div>
-
-      <section class="card">
-        <p class="kicker">Real feedback • Real impact</p>
-        <h1>Listener Ratings</h1>
-        <p class="sub">
-          This page updates automatically. Ratings are for <strong>music only</strong>.
-          If a track strengthened you, lifted you, or spoke to your Ruah — leave a rating.
-        </p>
-
-        <div class="ctaRow">
-          <a class="btn primary" id="rateBtn" href="#">⭐ Rate a Track</a>
-          <a class="btn outline" href="/support/">Support the Work</a>
-        </div>
-
-        <div class="status" id="status">Loading ratings…</div>
-
-        <div class="grid" id="tracksGrid"></div>
-      </section>
-
-      <footer class="footer">
-        <span id="year"></span> © AWAKENED BY YAH MUSIC GROUP — All Rights Reserved.
-      </footer>
-
-    </main>
+<div class="top">
+  <div class="brand">
+    <img src="/images/aby-official-logo.png" alt="AWAKENED BY YAH logo">
+    <div>
+      <span class="t1">AWAKENED BY YAH</span>
+      <span class="t2">Listener Ratings • Music Only</span>
+    </div>
   </div>
 
-  <script>
-    // ===========================
-    // ✅ CONFIG (PASTE YOUR LINKS)
-    // ===========================
-    const FORM_URL = "PASTE_YOUR_GOOGLE_FORM_LINK_HERE";
-    const API_URL  = "PASTE_YOUR_APPS_SCRIPT_JSON_URL_HERE";
+  <div class="navpills">
+    <a class="pill" href="/">Home</a>
+    <a class="pill" href="/music/">Music</a>
+    <a class="pill" href="/albums/">Albums</a>
+    <a class="pill gold" id="rateBtnTop" href="#">⭐ Rate a Track</a>
+  </div>
+</div>
 
-    // Tracks you want displayed (controls ordering + keeps layout stable)
-    const TRACKS = [
-      "Think About Me",
-      "Not My Will",
-      "The Secret Place",
-      "Hidden With You"
-    ];
+<section class="card">
+  <p class="kicker">Real feedback • Real impact</p>
+  <h1>Listener Ratings</h1>
+  <p class="sub">
+    This page updates automatically. Ratings are for <strong>music only</strong>.
+  </p>
 
-    // How many quotes to show per track
-    const MAX_QUOTES_PER_TRACK = 1;
+  <div class="ctaRow">
+    <a class="btn primary" id="rateBtn" href="#">⭐ Rate a Track</a>
+  </div>
 
-    // ===========================
-    // Helpers
-    // ===========================
-    const $ = (id) => document.getElementById(id);
+  <div class="status" id="status">Loading ratings…</div>
+  <div class="grid" id="tracksGrid"></div>
+</section>
 
-    function setYear(){
-      const y = $("year");
-      if (y) y.textContent = new Date().getFullYear();
-    }
+<footer class="footer">
+  <span id="year"></span> © AWAKENED BY YAH MUSIC GROUP — All Rights Reserved.
+</footer>
 
-    function starString(avg){
-      // avg is 0-5, we display filled stars based on rounding to nearest half visually is overkill.
-      // We'll round to nearest whole for the "stars" line, but still show the numeric avg in meta.
-      const filled = Math.round(avg);
-      const empty = 5 - filled;
-      return "★★★★★".slice(0, filled) + "☆☆☆☆☆".slice(0, empty);
-    }
+</main>
+</div>
 
-    function safeText(v){
-      return String(v || "").replace(/[<>]/g, "");
-    }
+<script>
+const FORM_URL = "PASTE_YOUR_GOOGLE_FORM_LINK_HERE";
+const API_URL  = "PASTE_YOUR_APPS_SCRIPT_JSON_URL_HERE";
 
-    function buildEmptyCards(){
-      const grid = $("tracksGrid");
-      grid.innerHTML = "";
-      TRACKS.forEach(name => {
-        const div = document.createElement("div");
-        div.className = "trackCard";
-        div.dataset.track = name;
-        div.innerHTML = `
-          <div class="trackName">${safeText(name)}</div>
-          <div class="starsRow">
-            <div class="stars">☆☆☆☆☆</div>
-            <div class="meta">0.0 / 5 • 0 ratings</div>
-          </div>
-          <div class="quote">No ratings yet — be the first to rate this track.</div>
-        `;
-        grid.appendChild(div);
-      });
-    }
+const TRACKS = [
+  "Hidden With You",
+  "Think About Me",
+  "Not My Will",
+  "The Secret Place",
+  "Ten Toes Down",
+  "Sound The Shupar",
+  "Show Me Your Heart",
+  "We Rise",
+  "Unbroken Frequency Remix",
+  "The Love I Have In YAHUAH"
+];
 
-    function updateCard(trackName, avg, count, quote, quoteBy){
-      const card = document.querySelector(`.trackCard[data-track="${CSS.escape(trackName)}"]`);
-      if (!card) return;
+const $ = id => document.getElementById(id);
 
-      const starsEl = card.querySelector(".stars");
-      const metaEl  = card.querySelector(".meta");
-      const quoteEl = card.querySelector(".quote");
+function starString(avg){
+  const filled = Math.round(avg);
+  return "★★★★★".slice(0, filled) + "☆☆☆☆☆".slice(0, 5-filled);
+}
 
-      starsEl.textContent = starString(avg);
-      metaEl.textContent = `${avg.toFixed(1)} / 5 • ${count} rating${count === 1 ? "" : "s"}`;
+function buildEmpty(){
+  const grid = $("tracksGrid");
+  grid.innerHTML="";
+  TRACKS.forEach(t=>{
+    grid.innerHTML+=`
+      <div class="trackCard" data-track="${t}">
+        <div class="trackName">${t}</div>
+        <div class="starsRow">
+          <div class="stars">☆☆☆☆☆</div>
+          <div class="meta">0.0 / 5 • 0 ratings</div>
+        </div>
+        <div class="quote">No ratings yet — be the first to rate this track.</div>
+      </div>`;
+  });
+}
 
-      if (quote){
-        quoteEl.innerHTML = `${safeText(quote)}${quoteBy ? `<small>${safeText(quoteBy)}</small>` : ""}`;
-      } else {
-        quoteEl.textContent = "No comment left — rating received.";
+function wireButtons(){
+  ["rateBtn","rateBtnTop"].forEach(id=>{
+    const el=$(id);
+    if(!el) return;
+    el.href=FORM_URL;
+    el.target="_blank";
+    el.rel="noopener";
+  });
+}
+
+async function loadRatings(){
+  buildEmpty();
+  wireButtons();
+
+  if(API_URL.includes("PASTE_")){
+    $("status").innerHTML="Ready. Connect your API to auto-load ratings.";
+    return;
+  }
+
+  try{
+    const res=await fetch(API_URL,{cache:"no-store"});
+    const data=await res.json();
+    const rows=data.rows||[];
+
+    const agg={};
+    TRACKS.forEach(t=>agg[t]={sum:0,count:0,quote:null,name:null});
+
+    rows.forEach(r=>{
+      const t=r.track;
+      const s=Number(r.stars);
+      if(agg[t] && s>=1 && s<=5){
+        agg[t].sum+=s;
+        agg[t].count++;
+        if(r.comment){
+          agg[t].quote=r.comment;
+          agg[t].name=r.name;
+        }
       }
-    }
-
-    function wireRateButtons(){
-      const a1 = $("rateBtn");
-      const a2 = $("rateBtnTop");
-      [a1,a2].forEach(a => {
-        if (!a) return;
-        a.href = FORM_URL;
-        a.target = "_blank";
-        a.rel = "noopener";
-      });
-    }
-
-    // ===========================
-    // Load + aggregate
-    // Expected JSON format from Apps Script:
-    // { rows: [ { track:"Think About Me", stars:5, comment:"...", name:"..." }, ... ] }
-    // ===========================
-    async function loadRatings(){
-      buildEmptyCards();
-      wireRateButtons();
-
-      if (!API_URL || API_URL.includes("PASTE_")){
-        $("status").innerHTML = `✅ Page is ready. <strong>Paste your API URL</strong> to auto-load ratings.`;
-        return;
-      }
-
-      try{
-        const res = await fetch(API_URL, { cache: "no-store" });
-        if (!res.ok) throw new Error("Network response not ok");
-        const data = await res.json();
-        const rows = Array.isArray(data.rows) ? data.rows : [];
-
-        // Aggregate per track
-        const agg = {};
-        TRACKS.forEach(t => agg[t] = { sum:0, count:0, quotes:[] });
-
-        rows.forEach(r => {
-          const track = (r.track || "").trim();
-          if (!agg[track]) return;
-
-          const stars = Number(r.stars);
-          if (!Number.isFinite(stars) || stars < 1 || stars > 5) return;
-
-          agg[track].sum += stars;
-          agg[track].count += 1;
-
-          const c = (r.comment || "").trim();
-          if (c) agg[track].quotes.push({
-            comment: c,
-            name: (r.name || "").trim()
-          });
-        });
-
-        // Update UI
-        let total = 0;
-        TRACKS.forEach(t => {
-          const a = agg[t];
-          total += a.count;
-          if (a.count > 0){
-            const avg = a.sum / a.count;
-            const latestQuote = a.quotes.slice(-MAX_QUOTES_PER_TRACK)[0];
-            updateCard(t, avg, a.count, latestQuote?.comment, latestQuote?.name ? `— ${latestQuote.name}` : "");
-          }
-        });
-
-        $("status").innerHTML = `✅ Loaded <strong>${total}</strong> rating${total===1?"":"s"} from listeners.`;
-
-      }catch(e){
-        console.error(e);
-        $("status").innerHTML = `⚠️ Couldn’t load ratings yet. Check your API URL + sharing settings.`;
-      }
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      setYear();
-      loadRatings();
     });
-  </script>
+
+    let total=0;
+
+    TRACKS.forEach(t=>{
+      const a=agg[t];
+      total+=a.count;
+      if(a.count>0){
+        const avg=a.sum/a.count;
+        const card=document.querySelector(`[data-track="${t}"]`);
+        card.querySelector(".stars").textContent=starString(avg);
+        card.querySelector(".meta").textContent=`${avg.toFixed(1)} / 5 • ${a.count} rating${a.count===1?"":"s"}`;
+        if(a.quote){
+          card.querySelector(".quote").innerHTML=`${a.quote}${a.name?`<small>— ${a.name}</small>`:""}`;
+        }
+      }
+    });
+
+    $("status").innerHTML=`Loaded ${total} ratings.`;
+
+  }catch(e){
+    $("status").innerHTML="Could not load ratings.";
+  }
+}
+
+document.addEventListener("DOMContentLoaded",()=>{
+  $("year").textContent=new Date().getFullYear();
+  loadRatings();
+});
+</script>
+
 </body>
 </html>
