@@ -295,16 +295,15 @@
         <div class="playerHead">
           <div class="cover">
             <img id="playerCover"
-                 src="/kingdom-biz-cover.png"
+                 src="/images/the-battlefield.png"
                  alt="Project cover"
                  onerror="this.onerror=null;this.src='/abytransparent.png';" />
           </div>
 
           <div class="meta">
             <p class="artist" id="playerArtist">AWAKENED BY YAH</p>
-            <p class="album" id="playerAlbum">Kingdom Biz</p>
+            <p class="album" id="playerAlbum">The Battlefield</p>
             <p class="track" id="playerTrack">TRACK 01 — Select a track</p>
-            <!-- ✅ removed member login line -->
           </div>
         </div>
 
@@ -340,7 +339,7 @@
         <div class="playlist">
           <div class="plistHead">
             <div>
-              <span class="pill" id="projectPill">Kingdom Biz</span>
+              <span class="pill" id="projectPill">The Battlefield</span>
               <span class="pill" id="countPill">0 tracks</span>
             </div>
             <div class="hint">Click a track to play</div>
@@ -350,14 +349,26 @@
         </div>
       </section>
 
-      <aside class="coversCard" aria-label="Albums & Singles">
+      <aside class="coversCard" aria-label="Albums">
         <div class="coversHead">
-          <h2>Albums & Singles</h2>
+          <h2>Albums</h2>
           <div class="hint">Click a cover to load</div>
         </div>
 
         <div class="coverGrid">
-          <div class="coverBtn active" data-key="kingdombiz">
+          <!-- Battlefield (default/active) -->
+          <div class="coverBtn active" data-key="battlefield">
+            <div class="thumb">
+              <img src="/images/the-battlefield.png" alt="The Battlefield cover"
+                   onerror="this.onerror=null;this.src='/abytransparent.png';">
+            </div>
+            <div class="coverText">
+              <p class="coverName">The Battlefield</p>
+              <p class="coverMeta">Album</p>
+            </div>
+          </div>
+
+          <div class="coverBtn" data-key="kingdombiz">
             <div class="thumb">
               <img src="/kingdom-biz-cover.png" alt="Kingdom Biz cover"
                    onerror="this.onerror=null;this.src='/abytransparent.png';">
@@ -378,28 +389,6 @@
               <p class="coverMeta">Album</p>
             </div>
           </div>
-
-          <div class="coverBtn" data-key="hear">
-            <div class="thumb">
-              <img src="/hear-my-voice.png" alt="Hear My Voice cover"
-                   onerror="this.onerror=null;this.src='/abytransparent.png';">
-            </div>
-            <div class="coverText">
-              <p class="coverName">Hear My Voice</p>
-              <p class="coverMeta">Single</p>
-            </div>
-          </div>
-
-          <div class="coverBtn" data-key="deliver">
-            <div class="thumb">
-              <img src="/deliver-us.png" alt="Deliver Us cover"
-                   onerror="this.onerror=null;this.src='/abytransparent.png';">
-            </div>
-            <div class="coverText">
-              <p class="coverName">Deliver Us</p>
-              <p class="coverMeta">Single</p>
-            </div>
-          </div>
         </div>
       </aside>
     </div>
@@ -410,6 +399,25 @@
     const U = (p) => encodeURI(p).replace(/'/g, "%27");
 
     const LIBRARY = {
+      battlefield: {
+        artist: "AWAKENED BY YAH",
+        album: "The Battlefield",
+        project: "The Battlefield",
+        cover: "/images/the-battlefield.png",
+        tracks: [
+          { title: "Hear My Voice", file: U("/audio/the-battlefield/01-hear-my-voice.mp3") },
+          { title: "The Secret Place", file: U("/audio/the-battlefield/02-the-secret-place.mp3") },
+          { title: "The Lamp", file: U("/audio/the-battlefield/03-the-lamp.mp3") },
+          { title: "Not My Will", file: U("/audio/the-battlefield/04-not-my-will.mp3") },
+          { title: "Think About Me", file: U("/audio/the-battlefield/05-think-about-me.mp3") },
+          { title: "Counted Righteous", file: U("/audio/the-battlefield/06-counted-righteous.mp3") },
+          { title: "Sound The Shupar", file: U("/audio/the-battlefield/07-sound-the-shupar.mp3") },
+          { title: "Deliver Us", file: U("/audio/the-battlefield/08-deliver-us.mp3") },
+          { title: "Ten Toes Down", file: U("/audio/the-battlefield/09-ten-toes-down.mp3") },
+          { title: "Hidden With You", file: U("/audio/the-battlefield/10-hidden-with-you.mp3") }
+        ]
+      },
+
       kingdombiz: {
         artist: "AWAKENED BY YAH",
         album: "Kingdom Biz",
@@ -442,26 +450,6 @@
           { title: "Halal YAHUAH — We Magnify Your Name", file: U("/audio/ROY_TRACK 10_HALAL YAHUAH WE MAGNIFY YOUR NAME.mp3") },
           { title: "My Eyes Opened Wide", file: U("/audio/ROY_TRACK 11_MY EYES OPENED WIDE.mp3") },
           { title: "Return to the Covenant", file: U("/audio/ROY_TRACK 12_RETURN TO THE COVENANT.mp3") }
-        ]
-      },
-
-      hear: {
-        artist: "AWAKENED BY YAH",
-        album: "Hear My Voice",
-        project: "Hear My Voice",
-        cover: "/hear-my-voice.png",
-        tracks: [
-          { title: "Hear My Voice", file: U("/audio/ABY_TRACK 01_HEAR MY VOICE.mp3") }
-        ]
-      },
-
-      deliver: {
-        artist: "AWAKENED BY YAH",
-        album: "Deliver Us",
-        project: "Deliver Us",
-        cover: "/deliver-us.png",
-        tracks: [
-          { title: "Deliver Us", file: U("/audio/ABYM_TRACK 01_DELIVER US.mp3") }
         ]
       }
     };
@@ -498,7 +486,8 @@
     let repeatAll = false;
     let repeatOne = false;
 
-    let key = "kingdombiz";
+    // ✅ default to The Battlefield
+    let key = "battlefield";
     let index = 0;
 
     function fmt(sec){
