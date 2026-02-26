@@ -26,78 +26,38 @@
       line-height:1.6;
       -webkit-font-smoothing: antialiased;
     }
-
     a{ color:inherit; text-decoration:none; }
 
     :root{
       --gold:#fbbf24;
       --card: radial-gradient(circle at top left, #111827 0%, #020617 70%);
       --stroke: rgba(148,163,184,0.35);
-      --danger: #fb7185;
-      --ok: #34d399;
+      --ok:#34d399;
+      --bad:#fb7185;
     }
 
     .page{ min-height:100vh; display:flex; flex-direction:column; }
     .shell{ width:100%; max-width:1100px; margin:0 auto; padding:2.25rem 1.5rem 3rem; }
 
-    .top{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:1rem;
-      margin-bottom:1.25rem;
-      flex-wrap:wrap;
-    }
-
+    .top{ display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:1.25rem; flex-wrap:wrap; }
     .brand{ display:flex; align-items:center; gap:.8rem; }
-    .brand img{
-      width:58px;
-      filter: drop-shadow(0 6px 12px rgba(0,0,0,0.7));
-    }
-    .brand .t1{
-      font-weight:800;
-      letter-spacing:.22em;
-      text-transform:uppercase;
-      color: var(--gold);
-      font-size:.95rem;
-      display:block;
-    }
-    .brand .t2{
-      font-size:.70rem;
-      letter-spacing:.18em;
-      text-transform:uppercase;
-      color:#cbd5e1;
-      opacity:.9;
-      display:block;
-    }
+    .brand img{ width:58px; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.7)); }
+    .brand .t1{ font-weight:800; letter-spacing:.22em; text-transform:uppercase; color: var(--gold); font-size:.95rem; display:block; }
+    .brand .t2{ font-size:.70rem; letter-spacing:.18em; text-transform:uppercase; color:#cbd5e1; opacity:.9; display:block; }
 
     .navpills{ display:flex; gap:.5rem; flex-wrap:wrap; }
-
     .pill{
-      font-size:0.72rem;
-      padding:0.25rem 0.85rem;
-      border-radius:999px;
+      font-size:0.72rem; padding:0.25rem 0.85rem; border-radius:999px;
       border:1px solid rgba(148,163,184,0.45);
-      text-transform:uppercase;
-      letter-spacing:0.16em;
+      text-transform:uppercase; letter-spacing:0.16em;
       background: rgba(15,23,42,0.9);
       backdrop-filter: blur(10px);
       transition: all .15s ease;
       white-space:nowrap;
     }
-    .pill:hover{
-      background: rgba(148,163,184,0.22);
-      border-color: rgba(248,250,252,0.6);
-      transform: translateY(-1px);
-    }
-    .pill.gold{
-      border-color: rgba(251,191,36,0.7);
-      color: var(--gold);
-    }
-    .pill.gold:hover{
-      background: rgba(251,191,36,0.12);
-      border-color: rgba(251,191,36,1);
-    }
+    .pill:hover{ background: rgba(148,163,184,0.22); border-color: rgba(248,250,252,0.6); transform: translateY(-1px); }
+    .pill.gold{ border-color: rgba(251,191,36,0.7); color: var(--gold); }
+    .pill.gold:hover{ background: rgba(251,191,36,0.12); border-color: rgba(251,191,36,1); }
 
     .card{
       background: var(--card);
@@ -107,14 +67,7 @@
       border:1px solid var(--stroke);
     }
 
-    .kicker{
-      font-size:0.76rem;
-      letter-spacing:0.24em;
-      text-transform:uppercase;
-      color:#9ca3af;
-      margin-bottom:.25rem;
-    }
-
+    .kicker{ font-size:0.76rem; letter-spacing:0.24em; text-transform:uppercase; color:#9ca3af; margin-bottom:.25rem; }
     h1{
       font-family:'Cinzel', serif;
       font-weight:700;
@@ -123,129 +76,26 @@
       font-size:1.45rem;
       margin-bottom:.35rem;
     }
+    .sub{ color:#e5e7eb; max-width:48rem; font-size:0.95rem; }
 
-    .sub{
-      color:#e5e7eb;
-      max-width:48rem;
-      font-size:0.95rem;
-    }
-
-    .ctaRow{
-      margin-top:1.2rem;
-      display:flex; gap:.75rem; flex-wrap:wrap;
-      align-items:center;
-    }
+    .ctaRow{ margin-top:1.2rem; display:flex; gap:.75rem; flex-wrap:wrap; align-items:center; }
 
     .btn{
-      display:inline-flex;
-      align-items:center;
-      gap:.55rem;
-      padding:0.78rem 1.25rem;
-      border-radius:999px;
-      font-size:0.86rem;
-      font-weight:800;
-      letter-spacing:0.18em;
-      text-transform:uppercase;
-      border:1px solid transparent;
-      cursor:pointer;
+      display:inline-flex; align-items:center; gap:.55rem;
+      padding:0.78rem 1.25rem; border-radius:999px;
+      font-size:0.86rem; font-weight:800; letter-spacing:0.18em; text-transform:uppercase;
+      border:1px solid transparent; cursor:pointer;
     }
-
-    .btn.primary{
-      background: linear-gradient(120deg,#f59e0b,#fbbf24);
-      color:#111827;
-    }
-
+    .btn.primary{ background: linear-gradient(120deg,#f59e0b,#fbbf24); color:#111827; }
     .btn.outline{
       background: rgba(15,23,42,0.55);
       border-color: rgba(251,191,36,0.7);
       color: var(--gold);
     }
-    .btn.outline:hover{
-      background: rgba(251,191,36,0.12);
-      border-color: rgba(251,191,36,1);
-    }
+    .btn.outline:hover{ background: rgba(251,191,36,0.12); border-color: rgba(251,191,36,1); }
+    .btn.small{ padding:.55rem .9rem; font-size:.72rem; letter-spacing:.14em; }
 
-    .btn.small{
-      padding:.55rem .9rem;
-      font-size:.72rem;
-      letter-spacing:.14em;
-    }
-
-    .grid{
-      margin-top:1.25rem;
-      display:grid;
-      grid-template-columns:repeat(3,minmax(0,1fr));
-      gap:1rem;
-    }
-
-    @media (max-width:980px){ .grid{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
-    @media (max-width:640px){ .grid{ grid-template-columns:minmax(0,1fr); } }
-
-    .trackCard{
-      background: rgba(15,23,42,0.9);
-      border:1px solid rgba(148,163,184,0.40);
-      border-radius:18px;
-      padding:1rem;
-      box-shadow:0 12px 28px rgba(0,0,0,0.6);
-    }
-
-    .trackName{
-      font-size:0.98rem;
-      font-weight:900;
-      letter-spacing:0.08em;
-      text-transform:uppercase;
-      margin-bottom:.35rem;
-    }
-
-    .starsRow{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      margin-bottom:.5rem;
-      gap:.75rem;
-      flex-wrap:wrap;
-    }
-
-    .stars{
-      font-size:1rem;
-      letter-spacing:.12em;
-      color:var(--gold);
-      white-space:nowrap;
-    }
-
-    .meta{
-      font-size:0.78rem;
-      color:#9ca3af;
-      letter-spacing:0.10em;
-      text-transform:uppercase;
-    }
-
-    .quote{
-      margin-top:.65rem;
-      font-size:0.9rem;
-      color:#e5e7eb;
-      border-left:2px solid rgba(251,191,36,0.75);
-      padding-left:.75rem;
-    }
-
-    .quote small{
-      display:block;
-      margin-top:.35rem;
-      color:#9ca3af;
-      font-size:0.78rem;
-      letter-spacing:.12em;
-      text-transform:uppercase;
-    }
-
-    .status{
-      margin-top:1rem;
-      font-size:0.85rem;
-      color:#cbd5e1;
-      display:flex;
-      gap:.5rem;
-      flex-wrap:wrap;
-      align-items:center;
-    }
+    .status{ margin-top:1rem; font-size:0.85rem; color:#cbd5e1; display:flex; gap:.5rem; flex-wrap:wrap; align-items:center; }
     .badge{
       border:1px solid rgba(148,163,184,0.45);
       border-radius:999px;
@@ -257,16 +107,36 @@
       color:#cbd5e1;
     }
     .badge.ok{ border-color: rgba(52,211,153,.55); color: var(--ok); }
-    .badge.bad{ border-color: rgba(251,113,133,.55); color: var(--danger); }
+    .badge.bad{ border-color: rgba(251,113,133,.55); color: var(--bad); }
 
-    .footer{
-      margin-top:2rem;
-      padding-top:1rem;
-      border-top:1px solid rgba(31,41,55,0.9);
-      font-size:0.78rem;
-      color:#9ca3af;
-      text-align:center;
+    .grid{ margin-top:1.25rem; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1rem; }
+    @media (max-width:980px){ .grid{ grid-template-columns:repeat(2,minmax(0,1fr)); } }
+    @media (max-width:640px){ .grid{ grid-template-columns:minmax(0,1fr); } }
+
+    .trackCard{
+      background: rgba(15,23,42,0.9);
+      border:1px solid rgba(148,163,184,0.40);
+      border-radius:18px;
+      padding:1rem;
+      box-shadow:0 12px 28px rgba(0,0,0,0.6);
     }
+    .trackName{ font-size:0.98rem; font-weight:900; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:.35rem; }
+
+    .starsRow{ display:flex; align-items:center; justify-content:space-between; margin-bottom:.5rem; gap:.75rem; flex-wrap:wrap; }
+    .stars{ font-size:1rem; letter-spacing:.12em; color:var(--gold); white-space:nowrap; }
+    .meta{ font-size:0.78rem; color:#9ca3af; letter-spacing:0.10em; text-transform:uppercase; }
+
+    .quote{
+      margin-top:.65rem; font-size:0.9rem; color:#e5e7eb;
+      border-left:2px solid rgba(251,191,36,0.75);
+      padding-left:.75rem;
+    }
+    .quote small{
+      display:block; margin-top:.35rem; color:#9ca3af;
+      font-size:0.78rem; letter-spacing:.12em; text-transform:uppercase;
+    }
+
+    .footer{ margin-top:2rem; padding-top:1rem; border-top:1px solid rgba(31,41,55,0.9); font-size:0.78rem; color:#9ca3af; text-align:center; }
   </style>
 </head>
 
@@ -294,17 +164,15 @@
 <section class="card">
   <p class="kicker">Real feedback • Real impact</p>
   <h1>Listener Ratings</h1>
-  <p class="sub">
-    Ratings update automatically. Select a track and submit a 1–5 rating.
-  </p>
+  <p class="sub">Ratings update automatically. Select a track and submit a 1–5 rating.</p>
 
   <div class="ctaRow">
     <button class="btn primary" id="openRater" type="button">⭐ Rate a Track</button>
     <button class="btn outline small" id="refreshBtn" type="button">↻ Refresh</button>
   </div>
 
-  <div class="status" id="status">
-    <span class="badge" id="apiBadge">API: not set</span>
+  <div class="status">
+    <span class="badge ok" id="apiBadge">API: connected</span>
     <span id="statusText">Loading ratings…</span>
   </div>
 
@@ -318,7 +186,7 @@
 </main>
 </div>
 
-<!-- Simple modal (no dependencies) -->
+<!-- Modal -->
 <div id="modal" style="position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.65);padding:1rem;z-index:9999;">
   <div style="width:100%;max-width:520px;background:rgba(15,23,42,.98);border:1px solid rgba(148,163,184,.45);border-radius:18px;box-shadow:0 22px 60px rgba(0,0,0,.8);padding:1rem;">
     <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;">
@@ -348,17 +216,10 @@
 </div>
 
 <script>
-  /***************
-   * CONFIG
-   ***************/
-  // ✅ Paste your deployed Apps Script Web App /exec URL here:
-  // Example: https://script.google.com/macros/s/AKfycbxxxxxxxxxxxxxxxxxxxxxxxx/exec
-  const APPS_SCRIPT_URL = "";  // <-- REQUIRED
+  // ✅ Your Apps Script Web App
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw2ncd5fg6mDIC8FrIZN7ps7g-v0fk3qLZMll7dqa4FY5OMcFSgv2YBphTS_4WI7-wY/exec";
 
-  // ✅ Keep your Google Form link if you still want it for backup (optional)
-  const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLScKCEixkRagcsf_XVLsQAc3RdvB3gFZCcrRlLnnm-AlTMihkA/viewform";
-
-  // ✅ Tracks shown on the ratings page
+  // Tracks you want displayed
   const TRACKS = [
     "THE SECRET PLACE",
     "THINK ABOUT ME",
@@ -368,22 +229,14 @@
     "SOUND THE SHUPAR"
   ];
 
-  /***************
-   * UI HELPERS
-   ***************/
   const $ = (id) => document.getElementById(id);
 
-  function setStatus(msg, ok=null){
-    $("statusText").textContent = msg;
-    const badge = $("apiBadge");
-    if (!APPS_SCRIPT_URL){
-      badge.textContent = "API: not set";
-      badge.className = "badge bad";
-      return;
-    }
-    badge.textContent = "API: connected";
-    badge.className = "badge ok";
-    if (ok === false) badge.className = "badge bad";
+  function setStatus(msg){ $("statusText").textContent = msg; }
+
+  function escapeHtml(str){
+    return String(str || "").replace(/[&<>"']/g, (m) => ({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+    })[m]);
   }
 
   function starsFromAvg(avg){
@@ -393,32 +246,22 @@
     return "★".repeat(full) + (half ? "⯨" : "") + "☆".repeat(empty);
   }
 
-  function safeNum(n, fallback=0){
-    const x = Number(n);
-    return Number.isFinite(x) ? x : fallback;
-  }
-
-  /***************
-   * RENDER GRID
-   ***************/
   function renderGrid(ratingsMap){
     const grid = $("tracksGrid");
     grid.innerHTML = "";
 
     TRACKS.forEach(track => {
       const data = ratingsMap?.[track] || { avg: 0, count: 0, lastComment: "" };
-
-      const avg = safeNum(data.avg, 0);
-      const count = Math.max(0, parseInt(data.count || 0, 10) || 0);
+      const avg = Number(data.avg || 0);
+      const count = Number(data.count || 0);
       const comment = (data.lastComment || "").trim();
 
       const card = document.createElement("div");
       card.className = "trackCard";
-
       card.innerHTML = `
         <div class="trackName">${track}</div>
         <div class="starsRow">
-          <div class="stars" aria-label="Average rating">${count ? starsFromAvg(avg) : "☆☆☆☆☆"}</div>
+          <div class="stars">${count ? starsFromAvg(avg) : "☆☆☆☆☆"}</div>
           <div class="meta">${count ? (avg.toFixed(1) + " / 5 • " + count + " vote" + (count===1?"":"s")) : "No ratings yet"}</div>
         </div>
         <div class="quote">
@@ -426,84 +269,74 @@
           <small>${comment ? "Most recent comment" : "Your rating will appear here"}</small>
         </div>
       `;
-
       grid.appendChild(card);
     });
   }
 
-  function escapeHtml(str){
-    return str.replace(/[&<>"']/g, (m) => ({
-      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-    })[m]);
+  // ✅ JSONP loader (avoids CORS)
+  function jsonp(url){
+    return new Promise((resolve, reject) => {
+      const cb = "cb_" + Math.random().toString(36).slice(2);
+      const script = document.createElement("script");
+      const sep = url.includes("?") ? "&" : "?";
+      script.src = `${url}${sep}callback=${cb}`;
+
+      const timeout = setTimeout(() => {
+        cleanup();
+        reject(new Error("JSONP timeout"));
+      }, 12000);
+
+      window[cb] = (data) => {
+        cleanup();
+        resolve(data);
+      };
+
+      function cleanup(){
+        clearTimeout(timeout);
+        delete window[cb];
+        script.remove();
+      }
+
+      script.onerror = () => { cleanup(); reject(new Error("JSONP load failed")); };
+      document.body.appendChild(script);
+    });
   }
 
-  /***************
-   * API CALLS
-   ***************/
-  async function apiGetRatings(){
-    if (!APPS_SCRIPT_URL) {
-      setStatus("API is not set yet. Add your Apps Script /exec URL in the code.", false);
-      renderGrid({});
-      return;
-    }
-
+  async function loadRatings(){
     setStatus("Fetching latest ratings…");
     try{
-      const url = APPS_SCRIPT_URL + "?action=ratings";
-      const res = await fetch(url, { method:"GET", cache:"no-store" });
-      if (!res.ok) throw new Error("HTTP " + res.status);
-      const json = await res.json();
-      if (!json || json.ok !== true) throw new Error("Bad JSON response");
-      renderGrid(json.data || {});
+      const data = await jsonp(`${APPS_SCRIPT_URL}?action=ratings`);
+      if (!data || data.ok !== true) throw new Error("Bad response");
+      renderGrid(data.data || {});
       setStatus("Ratings updated.");
     }catch(err){
       console.error(err);
-      setStatus("Could not load ratings (check API deploy permissions).", false);
       renderGrid({});
+      setStatus("Could not load ratings (check Apps Script deploy / code).");
     }
   }
 
-  async function apiSubmitRating(track, rating, comment){
-    if (!APPS_SCRIPT_URL) {
-      throw new Error("APPS_SCRIPT_URL not set");
-    }
-
-    const payload = {
+  async function submitRating(track, rating, comment){
+    const qs = new URLSearchParams({
       action: "rate",
       track,
-      rating,
+      rating: String(rating),
       comment: comment || "",
-      source: "awakenedbyyahmusic.com/reviews",
-      ts: Date.now()
-    };
+      source: "awakenedbyyahmusic.com/reviews"
+    }).toString();
 
-    const res = await fetch(APPS_SCRIPT_URL, {
-      method: "POST",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify(payload)
-    });
-
-    if (!res.ok) throw new Error("HTTP " + res.status);
-    const json = await res.json();
-    if (!json || json.ok !== true) throw new Error("Bad JSON response");
-    return json;
+    const data = await jsonp(`${APPS_SCRIPT_URL}?${qs}`);
+    if (!data || data.ok !== true) throw new Error("Submit failed");
+    return data;
   }
 
-  /***************
-   * MODAL + STAR PICKER
-   ***************/
-  function openModal(){
-    $("modal").style.display = "flex";
-    $("modalMsg").textContent = "";
-  }
-  function closeModal(){
-    $("modal").style.display = "none";
-  }
+  function openModal(){ $("modal").style.display = "flex"; $("modalMsg").textContent = ""; }
+  function closeModal(){ $("modal").style.display = "none"; }
 
   function initStarPicker(){
     let selected = 0;
-
     const el = $("starPicker");
+
     const draw = (hover=0) => {
       const n = hover || selected;
       el.innerHTML = "";
@@ -530,18 +363,12 @@
     });
 
     draw(0);
-
-    return () => selected; // getter
+    return () => selected;
   }
 
-  /***************
-   * INIT
-   ***************/
   document.addEventListener("DOMContentLoaded", () => {
-    const yearEl = $("year");
-    if (yearEl) yearEl.textContent = new Date().getFullYear();
+    $("year").textContent = new Date().getFullYear();
 
-    // fill track dropdown
     const sel = $("trackSelect");
     TRACKS.forEach(t => {
       const opt = document.createElement("option");
@@ -552,49 +379,34 @@
 
     const getRating = initStarPicker();
 
-    // buttons
     $("openRater").addEventListener("click", openModal);
     $("openRaterTop").addEventListener("click", (e) => { e.preventDefault(); openModal(); });
     $("closeModal").addEventListener("click", closeModal);
     $("cancelRating").addEventListener("click", closeModal);
-    $("refreshBtn").addEventListener("click", apiGetRatings);
+    $("refreshBtn").addEventListener("click", loadRatings);
 
-    // submit
     $("submitRating").addEventListener("click", async () => {
       const track = sel.value;
       const rating = getRating();
       const comment = $("comment").value.trim();
 
-      if (!track) {
-        $("modalMsg").textContent = "Select a track.";
-        return;
-      }
-      if (rating < 1 || rating > 5) {
-        $("modalMsg").textContent = "Pick a star rating (1–5).";
-        return;
-      }
+      if (!track) return $("modalMsg").textContent = "Select a track.";
+      if (rating < 1 || rating > 5) return $("modalMsg").textContent = "Pick a star rating (1–5).";
 
       $("modalMsg").textContent = "Submitting…";
       try{
-        await apiSubmitRating(track, rating, comment);
+        await submitRating(track, rating, comment);
         $("modalMsg").textContent = "✅ Submitted! Refreshing…";
         $("comment").value = "";
-        setTimeout(() => closeModal(), 650);
-        await apiGetRatings();
+        setTimeout(closeModal, 600);
+        await loadRatings();
       }catch(err){
         console.error(err);
-        // fallback: open the Google Form if API not set / fails
-        if (!APPS_SCRIPT_URL && FORM_URL) {
-          $("modalMsg").innerHTML = `API not set. Opening Google Form as backup…`;
-          window.open(FORM_URL, "_blank", "noopener");
-          return;
-        }
-        $("modalMsg").textContent = "❌ Submit failed. Check API deploy permissions or URL.";
+        $("modalMsg").textContent = "❌ Submit failed. Check your Apps Script code + redeploy.";
       }
     });
 
-    // initial load
-    apiGetRatings();
+    loadRatings();
   });
 </script>
 </body>
