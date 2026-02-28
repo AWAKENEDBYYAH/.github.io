@@ -103,6 +103,8 @@
       background: linear-gradient(180deg, rgba(28,57,168,.18), transparent);
       border-bottom:1px solid var(--line);
     }
+
+    /* ===== Cover box ===== */
     .cover{
       width:160px;height:160px;border-radius:18px;flex:0 0 auto;
       background:#111827;
@@ -110,8 +112,44 @@
       box-shadow: 0 0 0 6px rgba(28,57,168,.12), 0 0 32px var(--glow);
       overflow:hidden;
       display:flex;align-items:center;justify-content:center;
+      position:relative; /* ✅ needed for glow ring */
+      isolation:isolate;
     }
-    .cover img{width:100%;height:100%;object-fit:cover;display:block}
+    .cover img{width:100%;height:100%;object-fit:cover;display:block;position:relative;z-index:2}
+
+    /* ===== OPTION A: Audio-reactive ambient glow ring ===== */
+    .glowRing{
+      position:absolute;
+      inset:-12px;
+      border-radius:26px;
+      pointer-events:none;
+      opacity:0;
+      transform:scale(.985);
+      transition:opacity .22s ease, transform .22s ease;
+
+      /* glow / light show */
+      filter: blur(11px);
+      background: conic-gradient(
+        from var(--h, 0deg),
+        rgba(255,0,200,.82),
+        rgba(43,86,255,.88),
+        rgba(0,255,200,.72),
+        rgba(255,200,0,.78),
+        rgba(255,0,200,.82)
+      );
+      mix-blend-mode: screen;
+
+      box-shadow:
+        0 0 calc(14px + var(--g, 0px)) rgba(43,86,255,.28),
+        0 0 calc(28px + var(--g, 0px)) rgba(28,57,168,.34),
+        0 0 calc(48px + var(--g, 0px)) rgba(0,255,200,.16);
+      z-index:1;
+    }
+    .cover.is-playing .glowRing{
+      opacity:.95;
+      transform:scale(1);
+    }
+
     .meta{min-width:0}
     .artist{font-weight:900;font-size:18px;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .album{color:var(--muted);margin:7px 0 0 0;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -293,7 +331,8 @@
     <div class="grid">
       <section class="playerCard" aria-label="Music Player">
         <div class="playerHead">
-          <div class="cover">
+          <div class="cover" id="coverBox">
+            <div class="glowRing" id="glowRing" aria-hidden="true"></div>
             <img id="playerCover"
                  src="/images/the-battlefield.png"
                  alt="Project cover"
@@ -460,6 +499,9 @@
     const $ = (id) => document.getElementById(id);
 
     const ui = {
+      coverBox: $("coverBox"),
+      glowRing: $("glowRing"),
+
       cover: $("playerCover"),
       artist: $("playerArtist"),
       album: $("playerAlbum"),
@@ -492,6 +534,71 @@
     // ✅ default to The Battlefield
     let key = "battlefield";
     let index = 0;
+
+    /* =========================
+       OPTION A: Reactive Glow
+       ========================= */
+    let ctx = null;
+    let analyser = null;
+    let data = null;
+    let sourceNode = null;
+    let raf = null;
+
+    function stopGlow(){
+      if (raf) cancelAnimationFrame(raf);
+      raf = null;
+      ui.coverBox.classList.remove("is-playing");
+      ui.glowRing.style.setProperty("--g","0px");
+      ui.glowRing.style.setProperty("--h","0deg");
+    }
+
+    async function startGlow(){
+      // Must be user-gesture initiated (your Play button qualifies)
+      if (!ctx){
+        ctx = new (window.AudioContext || window.webkitAudioContext)();
+        analyser = ctx.createAnalyser();
+        analyser.fftSize = 1024;
+        data = new Uint8Array(analyser.frequencyBinCount);
+
+        sourceNode = ctx.createMediaElementSource(audio);
+        sourceNode.connect(analyser);
+        analyser.connect(ctx.destination);
+      }
+
+      if (ctx.state === "suspended") {
+        try { await ctx.resume(); } catch(e){}
+      }
+
+      ui.coverBox.classList.add("is-playing");
+
+      const tick = () => {
+        analyser.getByteFrequencyData(data);
+
+        // Mid-band energy (voice/presence zone)
+        const start = Math.floor(data.length * 0.10);
+        const end   = Math.floor(data.length * 0.45);
+
+        let sum = 0;
+        for (let i = start; i < end; i++) sum += data[i];
+        const avg = sum / (end - start); // 0..255
+
+        // Noise gate + normalize to 0..1
+        const amp = Math.max(0, (avg - 22) / 230);
+
+        const glowPx = (amp * 34).toFixed(1);
+        const hueDeg = (performance.now() * (0.02 + amp * 0.08)) % 360;
+
+        ui.glowRing.style.setProperty("--g", glowPx + "px");
+        ui.glowRing.style.setProperty("--h", hueDeg + "deg");
+
+        raf = requestAnimationFrame(tick);
+      };
+
+      stopGlow();        // resets + cancels any old loop
+      ui.coverBox.classList.add("is-playing");
+      tick();
+    }
+    /* ========================= */
 
     function fmt(sec){
       if (!isFinite(sec)) return "0:00";
@@ -572,16 +679,19 @@
       setStatus("Loading…");
 
       if (autoplay){
-        audio.play().then(()=>{
+        audio.play().then(async ()=>{
           ui.play.textContent = "⏸ Pause";
           setStatus("Playing");
+          await startGlow(); // ✅ start reactive glow when playback starts
         }).catch(()=>{
           ui.play.textContent = "▶️ Play";
           setStatus("Tap Play");
+          stopGlow();
         });
       } else {
         ui.play.textContent = "▶️ Play";
         setStatus("Ready");
+        stopGlow();
       }
     }
 
@@ -593,14 +703,16 @@
         return;
       }
       if (audio.paused){
-        audio.play().then(()=>{
+        audio.play().then(async ()=>{
           ui.play.textContent = "⏸ Pause";
           setStatus("Playing");
+          await startGlow(); // ✅ start glow on play
         }).catch(()=> setStatus("Tap Play"));
       } else {
         audio.pause();
         ui.play.textContent = "▶️ Play";
         setStatus("Paused");
+        stopGlow(); // ✅ stop glow on pause
       }
     }
 
@@ -611,7 +723,7 @@
       const ni = index + 1;
       if (ni < pack.tracks.length) load(ni,true);
       else if (repeatAll) load(0,true);
-      else { audio.pause(); ui.play.textContent="▶️ Play"; setStatus("Ended"); }
+      else { audio.pause(); ui.play.textContent="▶️ Play"; setStatus("Ended"); stopGlow(); }
     }
 
     function prev(){
@@ -620,14 +732,14 @@
 
       const pi = index - 1;
       if (pi >= 0) load(pi,true);
-      else { audio.currentTime = 0; audio.play().catch(()=>{}); }
+      else { audio.currentTime = 0; audio.play().then(startGlow).catch(()=>{}); }
     }
 
     function restart(){
       if (!audio.src) return;
 
       audio.currentTime = 0;
-      audio.play().catch(()=>{});
+      audio.play().then(startGlow).catch(()=>{});
       ui.play.textContent = "⏸ Pause";
       setStatus("Playing");
     }
@@ -678,12 +790,16 @@
     });
 
     audio.addEventListener("ended", ()=>{
+      stopGlow(); // ✅ stop glow at end; next() may start it again
       if (repeatOne) return restart();
       next();
     });
 
+    audio.addEventListener("pause", ()=> stopGlow());
+
     audio.addEventListener("error", ()=>{
       setStatus("Error loading file");
+      stopGlow();
       console.warn("Audio failed:", audio.src);
     });
 
@@ -699,6 +815,7 @@
         ui.tNow.textContent="0:00"; ui.tDur.textContent="0:00"; ui.seek.value=0;
         render();
         setStatus("Ready");
+        stopGlow(); // ✅ stop glow when switching albums
       });
     });
 
@@ -706,6 +823,7 @@
     setActiveCover(key);
     render();
     setStatus("Ready");
+    stopGlow();
   </script>
 </body>
 </html>
