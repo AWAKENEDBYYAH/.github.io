@@ -1962,39 +1962,70 @@
   </script>
 
   <!-- ===================== FIREBASE (SAFE / MODULAR / GLOBAL HANDLE) ===================== -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getDatabase } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+ <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import {
+    getDatabase,
+    ref,
+    onValue,
+    set,
+    onDisconnect,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-    // ✅ Paste your real values here later
-    const firebaseConfig = {
-      apiKey: "AIzaSyC8aLmUsgCS92SFwpt2LWMhyKJrwPDDplo",
-      authDomain: "awakened-by-yah-live.firebaseapp.com",
-      projectId: "awakened-by-yah-live",
-      storageBucket: "awakened-by-yah-live.appspot.com",
-      messagingSenderId: "753674439301",
-      appId: "1:753674439301:web:49cda8cacb13699778f7ec"
-    };
+  // 🔐 Your Firebase config
+  const firebaseConfig = {
+    apiKey: "AIzaSyC8aLmUsgCS92SFwpt2LWMhyKJrwPDDplo",
+    appId: "1:753674439301:web:49cda8cacb13699778f7ec",
+    authDomain: "awakened-by-yah-live.firebaseapp.com",
+    projectId: "awakened-by-yah-live",
+    storageBucket: "awakened-by-yah-live.appspot.com",
+    messagingSenderId: "753674439301"
+  };
 
-    try {
-      const app = initializeApp(firebaseConfig);
-      const auth = getAuth(app);
-      const database = getDatabase(app);
+  // 🚀 Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
 
-      // ✅ Make Firebase available to non-module scripts if needed
-      window.ABY_FIREBASE = { app, auth, database };
+  // 🆔 Unique session ID (per browser tab)
+  const sid = sessionStorage.getItem("aby_sid") || crypto.randomUUID();
+  sessionStorage.setItem("aby_sid", sid);
 
-      console.log("🔥 Firebase READY:", {
-        projectId: firebaseConfig.projectId,
-        hasApiKey: !!firebaseConfig.apiKey && firebaseConfig.apiKey !== "YOUR_API_KEY",
-        hasAppId: !!firebaseConfig.appId && firebaseConfig.appId !== "YOUR_APP_ID"
-      });
-    } catch (err) {
-      console.warn("⚠️ Firebase failed to initialize (site will still run):", err);
-    }
-  </script>
+  const myRef = ref(db, `presence/${sid}`);
+
+  // 👥 Mark this visitor as online
+  await set(myRef, {
+    online: true,
+    ts: serverTimestamp(),
+    path: location.pathname
+  });
+
+  // ❌ Remove visitor when tab closes
+  onDisconnect(myRef).remove();
+
+  // 🔄 Listen for live visitor changes
+  const liveCountEl = document.getElementById("liveCount");
+
+  onValue(ref(db, "presence"), (snap) => {
+    const val = snap.val() || {};
+    const count = Object.keys(val).length;
+    if (liveCountEl) liveCountEl.textContent = count;
+  });
+
+  console.log("👥 Live tracker running");
+</script>
   <!-- ===================== END FIREBASE ===================== -->
-
+<!-- ✅ LIVE VISITORS BADGE -->
+<div id="liveBadge" style="
+  position:fixed; left:16px; bottom:16px; z-index:9999;
+  background:rgba(15,23,42,.88); border:1px solid rgba(251,191,36,.55);
+  color:#fbbf24; padding:10px 14px; border-radius:999px;
+  font:800 12px/1 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  letter-spacing:.18em; text-transform:uppercase;
+  backdrop-filter: blur(10px);
+  box-shadow:0 14px 34px rgba(0,0,0,.6);
+">
+  👥 <span id="liveCount">0</span> LIVE NOW
+</div>
 </body>
 </html>
