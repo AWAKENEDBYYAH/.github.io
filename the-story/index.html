@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>THE STORY | AWAKENED BY YAH</title>
+
+<link rel="icon" type="image/png" href="/abytransparent.png">
+
+<style>
+:root{
+  --bg:#020617;
+  --text:#ffffff;
+  --muted:#94a3b8;
+  --overlay:rgba(2,6,23,.75);
+  --accent:rgba(43,86,255,.85);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  overflow:hidden;
+}
+
+/* Top Nav */
+.topbar{
+  position:fixed;
+  top:0;
+  width:100%;
+  z-index:20;
+  background:rgba(2,6,23,.85);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(255,255,255,.1);
+}
+
+.topbar-inner{
+  max-width:1100px;
+  margin:auto;
+  padding:14px 18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:900;
+  letter-spacing:.08em;
+}
+
+.brand img{
+  width:34px;
+  border-radius:8px;
+}
+
+.nav a{
+  text-decoration:none;
+  color:white;
+  margin-left:10px;
+  padding:8px 14px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.15);
+  font-weight:800;
+  font-size:14px;
+}
+
+.nav a.active{
+  background:linear-gradient(135deg, rgba(28,57,168,.8), rgba(43,86,255,.3));
+  border-color:rgba(43,86,255,.7);
+}
+
+/* Slide container */
+.slideshow{
+  position:relative;
+  height:100vh;
+  width:100%;
+}
+
+.slide{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  transition:opacity 2s ease-in-out;
+}
+
+.slide.active{
+  opacity:1;
+}
+
+.slide img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transform:scale(1.1);
+  animation:zoom 15s ease forwards;
+}
+
+@keyframes zoom{
+  from{transform:scale(1.1);}
+  to{transform:scale(1.2);}
+}
+
+.overlay{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg, rgba(0,0,0,.3), rgba(0,0,0,.85));
+}
+
+.content{
+  position:absolute;
+  bottom:12%;
+  left:8%;
+  max-width:700px;
+  opacity:0;
+  transform:translateY(20px);
+  transition:opacity 2s ease, transform 2s ease;
+}
+
+.slide.active .content{
+  opacity:1;
+  transform:translateY(0);
+}
+
+h1{
+  font-size:46px;
+  letter-spacing:.05em;
+  margin-bottom:12px;
+}
+
+h2{
+  font-size:14px;
+  letter-spacing:.15em;
+  color:var(--muted);
+  margin-bottom:16px;
+}
+
+p{
+  font-size:17px;
+  line-height:1.7;
+  color:#e5e7eb;
+}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <img src="/abytransparent.png">
+      AWAKENED BY YAH
+    </div>
+    <div class="nav">
+      <a href="/">HOME</a>
+      <a href="/music/">MUSIC</a>
+      <a href="/albums/">ALBUMS</a>
+      <a href="/the-story/" class="active">THE STORY</a>
+    </div>
+  </div>
+</div>
+
+<div class="slideshow" id="slideshow">
+
+  <!-- Slide 1 -->
+  <div class="slide active">
+    <img src="/images/story/01.jpg">
+    <div class="overlay"></div>
+    <div class="content">
+      <h2>THE BEGINNING</h2>
+      <h1>Two Voices. One Assignment.</h1>
+      <p>AWAKENED BY YAH was formed with intention — not to blend into culture, but to awaken through sound.</p>
+    </div>
+  </div>
+
+  <!-- Slide 2 -->
+  <div class="slide">
+    <img src="/images/story/02.jpg">
+    <div class="overlay"></div>
+    <div class="content">
+      <h2>URIYAH</h2>
+      <h1>Conviction in Every Line.</h1>
+      <p>Uriyah carries the weight of message with steadiness — grounded, deliberate, and uncompromising.</p>
+    </div>
+  </div>
+
+  <!-- Slide 3 -->
+  <div class="slide">
+    <img src="/images/story/03.jpg">
+    <div class="overlay"></div>
+    <div class="content">
+      <h2>ZAPANYAH</h2>
+      <h1>Clarity with Fire.</h1>
+      <p>A voice that moves with purpose — not for applause, but to deliver signal through rhythm.</p>
+    </div>
+  </div>
+
+  <!-- Slide 4 -->
+  <div class="slide">
+    <img src="/images/story/04.jpg">
+    <div class="overlay"></div>
+    <div class="content">
+      <h2>THE SOUND</h2>
+      <h1>Cinematic. Intentional. Alive.</h1>
+      <p>Every album is crafted to feel immersive — a soundtrack for the awakened.</p>
+    </div>
+  </div>
+
+  <!-- Slide 5 -->
+  <div class="slide">
+    <img src="/images/story/05.jpg">
+    <div class="overlay"></div>
+    <div class="content">
+      <h2>THE BATTLEFIELD</h2>
+      <h1>Music for the Real Fight.</h1>
+      <p>Not entertainment. Alignment. Every track is built for clarity and strength.</p>
+    </div>
+  </div>
+
+  <!-- Slide 6 -->
+  <div class="slide">
+    <img src="/images/story/06.jpg">
+    <div class="overlay"></div>
+    <div class="content">
+      <h2>THE MISSION</h2>
+      <h1>Awaken Through Sound.</h1>
+      <p>If you hear it, you’re meant to. AWAKENED BY YAH is more than music — it’s movement.</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+let current = 0;
+
+function nextSlide(){
+  slides[current].classList.remove('active');
+  current = (current + 1) % slides.length;
+  slides[current].classList.add('active');
+}
+
+setInterval(nextSlide, 9000); // 9 seconds per slide
+</script>
+
+</body>
+</html>
