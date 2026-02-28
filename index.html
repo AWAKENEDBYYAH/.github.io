@@ -1,3 +1,5 @@
+
+You said:
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,7 +34,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
 
   <style>
-    /* (YOUR EXISTING CSS — UNCHANGED) */
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { height: 100%; }
 
@@ -46,6 +47,7 @@
 
     a { color: inherit; text-decoration: none; }
 
+    /* ===================== FOUNDERS TICKER (TOP) ===================== */
     :root{
       --tickerH: 44px;
       --tickerBorder: rgba(251,191,36,0.85);
@@ -91,7 +93,7 @@
       white-space: nowrap;
       padding: 8px 14px;
       will-change: transform;
-      animation: tickerScroll 45s linear infinite;
+      animation: tickerScroll 45s linear infinite; /* ✅ SLOWED WAY DOWN */
     }
 
     .founders-ticker .ticker-move span{
@@ -116,6 +118,7 @@
       100% { transform: translateX(-50%); }
     }
 
+    /* optional: pause on hover (nice on desktop) */
     .founders-ticker:hover .ticker-move{ animation-play-state: paused; }
 
     @media (max-width: 640px){
@@ -125,10 +128,12 @@
         letter-spacing: 0.20em;
       }
     }
+    /* ===================== END TICKER ===================== */
 
     .page { min-height: 100vh; display: flex; flex-direction: column; padding-top: var(--tickerH); }
     .shell { width: 100%; max-width: 1200px; margin: 0 auto; padding: 2rem 1.75rem 3rem; }
 
+    /* TOP BAR */
     .top-bar {
       display: flex; align-items: center; justify-content: space-between;
       gap: 1.5rem; margin-bottom: 1rem;
@@ -192,8 +197,9 @@
     .pill-dot { width: 6px; height: 6px; border-radius: 999px; background: #4ade80; }
     .pill-gold { border-color: rgba(251,191,36,0.7); color: #fbbf24; }
 
+    /* QUICK LINKS */
     .quick-links {
-      margin-bottom: 1.1rem;
+      margin-bottom: 1.1rem; /* tightened slightly to make room for buy bar */
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
@@ -254,26 +260,855 @@
       border-color: rgba(96,165,250,1);
     }
 
-    .quick-links a.reviews-link,
-    .quick-links a.story-link{
-      border-color: rgba(251,191,36,0.7);
-      color: #fbbf24;
+    /* ===================== NEW: BATTLEFIELD BUY BAR ===================== */
+    .bf-buybar{
+      margin: 0 auto 1.35rem;
+      max-width: 1200px;
+      border-radius: 999px;
+      border: 1px solid rgba(251,191,36,0.35);
+      background: rgba(15,23,42,0.65);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 14px 34px rgba(0,0,0,0.55);
+      overflow: hidden;
     }
-    .quick-links a.reviews-link:hover,
-    .quick-links a.story-link:hover{
+    .bf-buybar__inner{
+      padding: 12px 14px;
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .bf-buybar__left{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .bf-buybar__title{
+      font-weight: 900;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #fbbf24;
+      font-size: 0.78rem;
+      white-space: nowrap;
+    }
+    .bf-buybar__sub{
+      color: rgba(229,231,235,.88);
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.95;
+    }
+    .bf-buybar__btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 900;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      background: linear-gradient(120deg, #f59e0b, #fbbf24);
+      color: #111827;
+      border: 1px solid rgba(0,0,0,0.12);
+      transition: transform .15s ease, filter .15s ease;
+      white-space: nowrap;
+    }
+    .bf-buybar__btn:hover{
+      transform: translateY(-1px);
+      filter: brightness(1.04);
+    }
+    @media (max-width: 640px){
+      .bf-buybar{ border-radius: 18px; }
+      .bf-buybar__inner{ align-items:flex-start; }
+      .bf-buybar__title{ font-size: 0.74rem; }
+      .bf-buybar__sub{ font-size: 0.76rem; }
+    }
+    /* ===================== END BUY BAR ===================== */
+
+    /* HERO */
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.1fr);
+      gap: 2.5rem;
+      align-items: stretch;
+    }
+
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: minmax(0, 1fr); }
+    }
+
+    .hero-left {
+      background: radial-gradient(circle at top left, #111827 0%, #020617 70%);
+      border-radius: 26px;
+      padding: 2.25rem 2rem;
+      box-shadow: 0 26px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(148,163,184,0.06);
+    }
+
+    .eyebrow {
+      font-size: 0.82rem;
+      letter-spacing: 0.36em;
+      text-transform: uppercase;
+      color: #facc15;
+      margin-bottom: 0.6rem;
+    }
+
+    .hero-title {
+      font-size: 1.5rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+
+    .hero-title-main {
+      font-size: 2.6rem;
+      letter-spacing: 0.28em;
+      text-shadow: 0 14px 32px rgba(0,0,0,0.9);
+      display:block;
+    }
+
+    .hero-copy {
+      margin-top: 1.1rem;
+      font-size: 0.95rem;
+      max-width: 28rem;
+      color: #e5e7eb;
+    }
+
+    .hero-cta-row {
+      margin-top: 1.8rem;
+      display: flex; flex-wrap: wrap; gap: 0.9rem;
+    }
+
+    .btn {
+      padding: 0.78rem 1.6rem;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(120deg, #f59e0b, #fbbf24);
+      color: #111827;
+    }
+
+    .btn-outline {
+      background: transparent;
+      border-color: rgba(249,250,251,0.35);
+      color: #e5e7eb;
+    }
+
+    /* ===================== SUPPORT THE WORK (HERO MICRO-CTA) ===================== */
+    .support-work{
+      margin-top: 1.15rem;
+      padding-top: 1.05rem;
+      border-top: 1px solid rgba(148,163,184,0.18);
+    }
+    .support-work p{
+      font-size: 0.92rem;
+      color: rgba(229,231,235,0.92);
+      max-width: 32rem;
+    }
+    .support-work .support-btn{
+      margin-top: 0.75rem;
+      display: inline-flex;
+      border-color: rgba(251,191,36,0.70);
+      color: #fbbf24;
+      background: rgba(15,23,42,0.55);
+    }
+    .support-work .support-btn:hover{
       background: rgba(251,191,36,0.12);
       border-color: rgba(251,191,36,1);
     }
+    /* ===================== END SUPPORT CTA ===================== */
 
-    /* (REST OF YOUR CSS CONTINUES UNCHANGED...) */
-    /* ⬇️ IMPORTANT: I’m not altering the rest of your file. Keep it exactly as you provided. */
+    .hero-right {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-right-inner {
+      border-radius: 26px;
+      overflow: hidden;
+      box-shadow: 0 26px 60px rgba(0,0,0,0.85), 0 0 0 1px rgba(148,163,184,0.18);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .hero-right-inner img {
+      display:block;
+      max-width:100%;
+      height:auto;
+      object-fit:contain;
+    }
+
+    /* ===================== NEW: FEATURED RELEASE CARD (UNDER HERO) ===================== */
+    .bf-feature{
+      margin-top: 1.25rem;
+    }
+    .bf-feature .bf-card{
+      background: radial-gradient(circle at top left, #111827 0%, #020617 70%);
+      border-radius: 24px;
+      padding: 1.35rem 1.4rem;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.7);
+      border: 1px solid rgba(148,163,184,0.35);
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .bf-feature .bf-kicker{
+      font-size: 0.74rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: #9ca3af;
+      margin-bottom: 0.2rem;
+    }
+    .bf-feature .bf-title{
+      font-size: 1.05rem;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: #e5e7eb;
+      margin-bottom: 0.35rem;
+    }
+    .bf-feature .bf-desc{
+      font-size: 0.9rem;
+      color: rgba(229,231,235,0.92);
+      max-width: 44rem;
+    }
+    .bf-feature .bf-actions{
+      display:flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .bf-feature .bf-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 900;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      border: 1px solid rgba(249,250,251,0.22);
+      background: rgba(15,23,42,0.85);
+      color: #e5e7eb;
+      transition: transform .15s ease, background .15s ease, border-color .15s ease;
+      white-space: nowrap;
+    }
+    .bf-feature .bf-btn:hover{
+      transform: translateY(-1px);
+      background: rgba(148,163,184,0.20);
+      border-color: rgba(248,250,252,0.55);
+    }
+    .bf-feature .bf-btn--gold{
+      background: linear-gradient(120deg, #f59e0b, #fbbf24);
+      color: #111827;
+      border-color: rgba(0,0,0,0.12);
+    }
+    .bf-feature .bf-btn--gold:hover{
+      background: linear-gradient(120deg, #fbbf24, #f59e0b);
+      border-color: rgba(0,0,0,0.20);
+    }
+    /* ===================== END FEATURED RELEASE ===================== */
+
+    /* SECTIONS */
+    .extra-section { margin-top: 2.5rem; }
+
+    .section-card {
+      background: radial-gradient(circle at top left, #111827 0%, #020617 70%);
+      border-radius: 24px;
+      padding: 1.8rem 1.6rem;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.7);
+      border: 1px solid rgba(148,163,184,0.35);
+    }
+
+    .section-title {
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      margin-bottom: 0.4rem;
+      color: #e5e7eb;
+    }
+
+    .section-kicker {
+      font-size: 0.76rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: #9ca3af;
+      margin-bottom: 0.25rem;
+    }
+
+    .section-text {
+      font-size: 0.9rem;
+      color: #e5e7eb;
+      max-width: 40rem;
+    }
+
+    /* MUSIC PLAYER + PLAYLIST */
+    .music-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.1fr);
+      gap: 2rem;
+    }
+
+    @media (max-width: 850px) {
+      .music-layout { grid-template-columns: minmax(0, 1fr); }
+    }
+
+    .player-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .now-playing-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+    }
+
+    .np-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: #9ca3af;
+      display: block;
+    }
+
+    .np-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #fbbf24;
+    }
+
+    .visualizer {
+      display: flex;
+      align-items: flex-end;
+      gap: 4px;
+      height: 26px;
+      padding: 4px 6px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,184,0.5);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.6);
+    }
+
+    .visualizer .bar {
+      width: 3px;
+      border-radius: 999px;
+      background: #fbbf24;
+      animation: bounce 0.9s infinite ease-in-out;
+      animation-play-state: paused;
+    }
+
+    .visualizer.is-playing .bar { animation-play-state: running; }
+
+    .visualizer .bar:nth-child(1) { animation-delay: 0s; }
+    .visualizer .bar:nth-child(2) { animation-delay: 0.1s; }
+    .visualizer .bar:nth-child(3) { animation-delay: 0.2s; }
+    .visualizer .bar:nth-child(4) { animation-delay: 0.3s; }
+    .visualizer .bar:nth-child(5) { animation-delay: 0.4s; }
+
+    @keyframes bounce {
+      0%, 100% { height: 4px; opacity: 0.5; }
+      50% { height: 22px; opacity: 1; }
+    }
+
+    .music-player audio {
+      width: 100%;
+      max-width: 380px;
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.7));
+    }
+
+    .music-links {
+      margin-top: 0.6rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .music-links a {
+      font-size: 0.78rem;
+      padding: 0.45rem 0.95rem;
+      border-radius: 999px;
+      border: 1px solid rgba(248,250,252,0.3);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      background: rgba(15,23,42,0.9);
+    }
+
+    /* PLAYLIST */
+    .playlist {
+      list-style: none;
+      margin-top: 0.9rem;
+      border-radius: 18px;
+      border: 1px solid rgba(148,163,184,0.5);
+      background: rgba(15,23,42,0.92);
+      box-shadow: 0 14px 30px rgba(0,0,0,0.7);
+      overflow: hidden;
+    }
+
+    .playlist-item {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      padding: 0.7rem 0.95rem;
+      cursor: pointer;
+      transition: background 0.16s ease, border-color 0.16s ease, transform 0.12s ease;
+      border-bottom: 1px solid rgba(31,41,55,0.9);
+    }
+
+    .playlist-item:last-child { border-bottom: none; }
+
+    .playlist-item:hover {
+      background: rgba(30,64,175,0.45);
+      transform: translateY(-1px);
+    }
+
+    .playlist-item.active {
+      background: linear-gradient(135deg, rgba(59,130,246,0.4), rgba(8,47,73,0.9));
+      border-color: rgba(129,140,248,0.9);
+    }
+
+    .track-index {
+      font-size: 0.78rem;
+      width: 22px;
+      height: 22px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(148,163,184,0.7);
+      color: #e5e7eb;
+      flex-shrink: 0;
+    }
+
+    .playlist-item.active .track-index {
+      background: #fbbf24;
+      color: #111827;
+      border-color: #fbbf24;
+    }
+
+    .track-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+
+    .track-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .track-tagline {
+      font-size: 0.78rem;
+      color: #9ca3af;
+    }
+
+    /* VIDEO GRID */
+    .video-grid {
+      margin-top: 1.2rem;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.2rem;
+    }
+
+    @media (max-width: 900px) {
+      .video-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 640px) {
+      .video-grid { grid-template-columns: minmax(0, 1fr); }
+    }
+
+    .video-card {
+      border-radius: 18px;
+      overflow: hidden;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,184,0.4);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.6);
+      transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+    }
+
+    .video-card a {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .video-thumb-wrap {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 16 / 9;
+    }
+
+    .video-thumb-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.22s ease;
+    }
+
+    .video-info {
+      padding: 0.85rem 1rem 1rem;
+    }
+
+    .video-info h3 {
+      font-size: 0.96rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .video-info p {
+      font-size: 0.8rem;
+      color: #9ca3af;
+    }
+
+    .video-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 34px rgba(0,0,0,0.8);
+      border-color: rgba(248,250,252,0.7);
+    }
+
+    .video-card:hover img { transform: scale(1.04); }
+
+    /* SIGNUP */
+    #signup .section-card { text-align: center; }
+
+    #signup .section-kicker,
+    #signup .section-title,
+    #signup .section-text,
+    #signup .signup-note {
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 38rem;
+    }
+
+    .signup-form {
+      margin-top: 1.1rem;
+      display: flex;
+      justify-content: center;
+    }
+
+    .signup-note {
+      margin-top: 0.65rem;
+      font-size: 0.78rem;
+      color: #9ca3af;
+    }
+
+    /* FOOTER */
+    .site-footer {
+      margin-top: 2.8rem;
+      padding-top: 1.1rem;
+      border-top: 1px solid rgba(31,41,55,0.9);
+      font-size: 0.78rem;
+      color: #9ca3af;
+      text-align: center;
+    }
+
+    .footer-socials{
+      margin-top: 0.25rem;
+      margin-bottom: 0.55rem;
+      display:flex;
+      justify-content:center;
+      gap:0.75rem;
+      flex-wrap:wrap;
+    }
+    .footer-socials a{
+      font-size:0.68rem;
+      padding:0.28rem 0.85rem;
+      border-radius:999px;
+      border:1px solid rgba(251,191,36,0.65);
+      text-transform:uppercase;
+      letter-spacing:0.22em;
+      color:#fbbf24;
+      background:rgba(15,23,42,0.85);
+      backdrop-filter: blur(10px);
+      transition:background .15s ease,border-color .15s ease,transform .12s ease;
+    }
+    .footer-socials a:hover{
+      background:rgba(251,191,36,0.14);
+      border-color:rgba(251,191,36,1);
+      transform:translateY(-1px);
+    }
+
+    /* ✅ SMALL FLOATING MUSIC LINK (NON-DISRUPTIVE) */
+    .music-fab{
+      position:fixed;
+      bottom:18px;
+      right:18px;
+      z-index:999;
+      padding:10px 16px;
+      border-radius:999px;
+      font-size:0.78rem;
+      font-weight:700;
+      letter-spacing:0.18em;
+      text-transform:uppercase;
+      color:#fbbf24;
+      background:rgba(15,23,42,0.85);
+      border:1px solid rgba(251,191,36,0.65);
+      backdrop-filter:blur(10px);
+      box-shadow:0 8px 24px rgba(0,0,0,0.6);
+      transition:transform .15s ease, background .15s ease, border-color .15s ease;
+    }
+    .music-fab:hover{
+      background:rgba(251,191,36,0.14);
+      border-color:rgba(251,191,36,1);
+      transform:translateY(-2px);
+    }
+
+    @media (max-width: 640px) {
+      .shell { padding-inline: 1.25rem; }
+      .top-bar { flex-direction: column; align-items: flex-start; position:static; }
+      .header-tags { position:static; transform:none; justify-content: center; width: 100%; }
+      .music-fab{ bottom:14px; right:14px; padding:9px 14px; font-size:0.72rem; }
+    }
+
+    /* ===================== CINEMATIC INTRO (HOMEPAGE) ===================== */
+    #introOverlay{
+      position:fixed;
+      inset:0;
+      z-index:99999;
+      background:#000;
+      overflow:hidden;
+      touch-action: manipulation;
+    }
+    .introBg{
+      position:absolute;
+      inset:-30%;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(28,57,168,.35), transparent 45%),
+        radial-gradient(circle at 80% 70%, rgba(255,255,255,.08), transparent 55%),
+        linear-gradient(180deg,#000,#050b1f);
+      filter:blur(18px);
+      animation:drift 4.5s ease-in-out infinite alternate;
+    }
+    @keyframes drift{
+      from{transform:scale(1.1) translate(-1%,-1%);}
+      to{transform:scale(1.16) translate(1%,1%);}
+    }
+
+    .strobe{
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(1200px 700px at 50% 45%,
+          rgba(255,255,255,1),
+          rgba(255,255,255,.35) 35%,
+          rgba(0,0,0,1) 70%),
+        radial-gradient(900px 500px at 50% 45%,
+          rgba(28,57,168,.6),
+          rgba(0,0,0,0) 60%);
+      opacity:0;
+      mix-blend-mode:screen;
+      pointer-events:none;
+    }
+    .strobe.blink{animation:blink .16s ease;}
+    @keyframes blink{
+      0%{opacity:0;}
+      40%{opacity:1;}
+      100%{opacity:0;}
+    }
+
+    .titleStamp{
+      position:absolute;
+      top:9%;
+      left:50%;
+      transform:translateX(-50%);
+      display:flex;
+      align-items:center;
+      gap:0.85em;
+      font-family:'Cinzel', serif;
+      font-weight:700;
+      font-size:clamp(22px,2.8vw,40px);
+      text-transform:uppercase;
+      color:#f5f6f8;
+      opacity:0;
+      pointer-events:none;
+      white-space:nowrap;
+    }
+    .titleStamp .word{ letter-spacing:0.36em; }
+    .titleStamp.pulse{ animation:titlePulseGlow .65s ease; }
+    @keyframes titlePulseGlow{
+      0%{ opacity:0; transform:translateX(-50%) scale(.96); filter:none; }
+      30%{
+        opacity:1;
+        transform:translateX(-50%) scale(1);
+        filter:
+          drop-shadow(0 0 6px rgba(255,255,255,.55))
+          drop-shadow(0 0 14px rgba(255,255,255,.45))
+          drop-shadow(0 0 28px rgba(255,255,255,.25));
+      }
+      100%{ opacity:0; transform:translateX(-50%) scale(1.02); filter:none; }
+    }
+
+    #photoHit{
+      position:absolute;
+      width:min(560px,70vw);
+      aspect-ratio:16/10;
+      border-radius:18px;
+      overflow:hidden;
+      box-shadow:0 35px 90px rgba(0,0,0,.8);
+      opacity:0;
+      transition:opacity .28s ease, transform .65s ease;
+      will-change: transform, opacity, left, top;
+    }
+    #photoHit.show{ opacity:1; }
+    #photoHit img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      filter:contrast(1.08) saturate(1.12);
+      display:block;
+    }
+
+    #bannerReveal{
+      position:absolute;
+      left:50%;
+      top:50%;
+      transform:translate(-50%,-50%);
+      border-radius:22px;
+      overflow:hidden;
+      box-shadow:0 35px 100px rgba(0,0,0,.85);
+      opacity:0;
+      background:rgba(255,255,255,.04);
+      will-change: transform, opacity, width, height;
+    }
+    #bannerReveal.show{ opacity:1; }
+    #bannerReveal img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+    #introOverlay.fadeOut{
+      opacity:0;
+      transition:opacity .55s ease;
+      pointer-events:none;
+    }
+
+    /* ✅ Subtle sound hint (replaces ugly button on mobile) */
+    #soundHint{
+      position:absolute;
+      left:50%;
+      bottom:8%;
+      transform:translateX(-50%);
+      z-index:100000;
+      display:none;
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(15,23,42,.45);
+      color:rgba(229,231,235,.92);
+      font-weight:900;
+      letter-spacing:.22em;
+      text-transform:uppercase;
+      backdrop-filter: blur(10px);
+      box-shadow:0 18px 46px rgba(0,0,0,.55);
+      pointer-events:none; /* tap anywhere */
+      animation:pulseHint 2.1s ease-in-out infinite;
+    }
+    @keyframes pulseHint{
+      0%,100%{ opacity:.35; transform:translateX(-50%) scale(.98); }
+      50%{ opacity:1; transform:translateX(-50%) scale(1); }
+    }
+
+    /* ✅ Keep desktop button available if needed */
+    #introSoundBtn{
+      position:absolute;
+      left:50%;
+      bottom:9%;
+      transform:translateX(-50%);
+      z-index:100000;
+      display:none;
+      cursor:pointer;
+      padding:12px 16px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.20);
+      background:rgba(15,23,42,.55);
+      color:#e5e7eb;
+      font-weight:900;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      backdrop-filter: blur(10px);
+      box-shadow:0 18px 46px rgba(0,0,0,.65);
+    }
+    #introSoundBtn:hover{
+      background:rgba(15,23,42,.72);
+      border-color:rgba(251,191,36,.8);
+      color:#fbbf24;
+    }
+
+    /* ===== MOBILE INTRO BOOST (make every transition obvious) ===== */
+    @media (max-width: 640px){
+      .introBg{ filter: blur(12px); }
+
+      .strobe.blink{ animation: blinkMobile .22s ease; }
+      @keyframes blinkMobile{
+        0%{opacity:0;}
+        35%{opacity:1;}
+        100%{opacity:0;}
+      }
+
+      #photoHit{
+        width: 92vw;
+        max-width: 92vw;
+        border-radius: 16px;
+        box-shadow: 0 28px 70px rgba(0,0,0,.85);
+        transition: opacity .22s ease, transform .50s ease;
+      }
+
+      #bannerReveal{
+        width: 94vw !important;
+        max-width: 94vw !important;
+        border-radius: 18px;
+      }
+
+      .titleStamp{
+        top: 10%;
+        font-size: 22px;
+      }
+
+      /* Hide the button on mobile, show the hint instead */
+      #introSoundBtn{ display:none !important; }
+      #soundHint{ display:inline-flex; }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .introBg{ animation:none; }
+      #photoHit, #introOverlay.fadeOut{ transition:none; }
+      .founders-ticker .ticker-move{ animation:none; transform:none; }
+    }
+    /* ===================== END INTRO ===================== */
   </style>
 </head>
 
 <body>
+  <!-- ✅ TOP TICKER (away from nav, fixed at very top) -->
   <div class="founders-ticker" aria-label="Founders circle ticker">
     <div class="ticker-shell">
       <div class="ticker-track">
+        <!-- duplicate content twice so the loop is seamless -->
         <div class="ticker-move" aria-hidden="true">
           <span>🎧 UNLIMITED STREAMING</span><i class="dot"></i><span>⬇️ OWN THE MUSIC</span><i class="dot"></i><span>🔥 SUPPORT THE MOVEMENT</span><i class="dot"></i>
           <span>🎧 UNLIMITED STREAMING</span><i class="dot"></i><span>⬇️ OWN THE MUSIC</span><i class="dot"></i><span>🔥 SUPPORT THE MOVEMENT</span><i class="dot"></i>
@@ -284,14 +1119,264 @@
     </div>
   </div>
 
-  <!-- (YOUR INTRO OVERLAY + SCRIPTS UNCHANGED) -->
-  <!-- ✅ KEEP ALL YOUR INTRO OVERLAY CODE EXACTLY AS YOU POSTED -->
+  <!-- ===================== INTRO OVERLAY (runs once per session) ===================== -->
+  <div id="introOverlay" aria-hidden="true">
+    <div class="introBg"></div>
+    <div class="strobe" id="strobe"></div>
+
+    <div class="titleStamp" id="titleStamp">
+      <span class="word">AWAKENED</span>
+      <span class="word">BY</span>
+      <span class="word">YAH</span>
+    </div>
+
+    <div id="photoHit"><img id="photoImg" alt=""></div>
+
+    <div id="bannerReveal">
+      <img id="bannerImg" src="/intro/abybanner.png" alt="Final Banner">
+    </div>
+
+    <!-- ✅ Intro Audio (hybrid autoplay + mobile tap) -->
+    <audio id="introAudio" preload="auto" playsinline>
+      <source src="/intro/intro_stem.wav" type="audio/wav" />
+    </audio>
+
+    <!-- ✅ Mobile hint (tap anywhere) -->
+    <div id="soundHint">TAP TO ENABLE SOUND</div>
+
+    <!-- ✅ Desktop fallback button (only appears if autoplay blocked) -->
+    <button id="introSoundBtn" type="button" aria-label="Enable intro sound">
+      🔊 TAP FOR SOUND
+    </button>
+  </div>
+
+  <script>
+  (function(){
+    // 🔒 Session lock: play intro once per session
+    if (sessionStorage.getItem('aby_intro_seen')) {
+      document.getElementById('introOverlay')?.remove();
+      return;
+    }
+    sessionStorage.setItem('aby_intro_seen', 'true');
+
+    const flashImages = [
+      "/intro/flash1.jpg",
+      "/intro/flash2.jpg",
+      "/intro/flash3.jpg",
+      "/intro/flash4.jpg",
+      "/intro/flash5.jpg"
+    ];
+    const bannerPath = "/intro/abybanner.png";
+
+    const isMobile = matchMedia("(max-width: 640px)").matches
+      || (matchMedia("(pointer:coarse)").matches || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent));
+
+    // Slower on mobile so people actually SEE the transitions
+    const PER_PHOTO_MS = isMobile ? 1350 : 1000;
+    const FADE_OUT_MS  = isMobile ? 160  : 220;
+
+    const strobe = document.getElementById('strobe');
+    const title  = document.getElementById('titleStamp');
+
+    const hit    = document.getElementById('photoHit');
+    const hitImg = document.getElementById('photoImg');
+
+    const bannerReveal = document.getElementById('bannerReveal');
+    const overlay      = document.getElementById('introOverlay');
+
+    // ======= INTRO AUDIO (HYBRID) =======
+    const introAudio = document.getElementById('introAudio');
+    const soundBtn   = document.getElementById('introSoundBtn');
+    const soundHint  = document.getElementById('soundHint');
+
+    const TARGET_VOL = 0.85;
+    const FADE_SECONDS = 1.6;
+    let fadeTimer = null;
+
+    function clearFade(){
+      if (fadeTimer){ clearInterval(fadeTimer); fadeTimer = null; }
+    }
+
+    function fadeOutAndStopIntroAudio(){
+      if (!introAudio) return;
+      clearFade();
+      try{
+        const stepMs = 50;
+        const steps = Math.max(1, Math.round((FADE_SECONDS * 1000) / stepMs));
+        const startVol = Math.max(0, Math.min(1, introAudio.volume || TARGET_VOL));
+        let i = 0;
+
+        fadeTimer = setInterval(() => {
+          i++;
+          const t = i / steps;
+          introAudio.volume = Math.max(0, startVol * (1 - t));
+          if (i >= steps) {
+            clearFade();
+            introAudio.pause();
+            introAudio.currentTime = 0;
+            introAudio.volume = TARGET_VOL;
+          }
+        }, stepMs);
+      }catch(e){}
+    }
+
+    async function tryPlayIntroAudio(){
+      if (!introAudio) return;
+      try{
+        introAudio.volume = TARGET_VOL;
+        await introAudio.play();
+        if (soundBtn) soundBtn.style.display = "none";
+        if (soundHint) soundHint.style.opacity = "0";
+      }catch(e){
+        // autoplay blocked (desktop)
+        if (!isMobile && soundBtn) soundBtn.style.display = "inline-flex";
+      }
+    }
+
+    // Desktop: attempt autoplay, fallback to button
+    if (!isMobile){
+      setTimeout(tryPlayIntroAudio, 140);
+      if (soundBtn){
+        soundBtn.addEventListener("click", tryPlayIntroAudio, { passive:true });
+      }
+    }
+
+    // Mobile: tap anywhere to enable sound (hint shows)
+    if (isMobile){
+      const unlock = () => { tryPlayIntroAudio(); };
+      overlay.addEventListener("click", unlock, { passive:true });
+      overlay.addEventListener("touchstart", unlock, { passive:true });
+    }
+    // ======= END INTRO AUDIO =======
+
+    function sleep(ms){ return new Promise(r=>setTimeout(r, ms)); }
+    function rand(min,max){ return Math.random()*(max-min)+min; }
+
+    function blink(times=1){
+      let n=0;
+      const go=()=>{
+        strobe.classList.remove('blink'); void strobe.offsetWidth; strobe.classList.add('blink');
+        title.classList.remove('pulse');  void title.offsetWidth;  title.classList.add('pulse');
+        if(++n < times) setTimeout(go, 110);
+      };
+      go();
+    }
+
+    function placeRandom(){
+      if (isMobile){
+        // Keep it centered and strong on phones
+        hit.style.left = "50vw";
+        hit.style.top  = "54vh";
+        hit.style.transform =
+          translate(-50%,-50%) rotate(${rand(-2,2)}deg) scale(${rand(1.02,1.06)});
+        return;
+      }
+
+      hit.style.left = rand(22, 78) + "vw";
+      hit.style.top  = rand(24, 70) + "vh";
+      hit.style.transform =
+        translate(-50%,-50%) rotate(${rand(-6,6)}deg) scale(${rand(.96,1.03)});
+    }
+
+    function showHit(src){
+      hitImg.src = src;
+      placeRandom();
+      hit.classList.add('show');
+
+      // Mobile punch-in for visibility
+      if (isMobile){
+        hit.style.transform += " scale(1.02)";
+        setTimeout(()=> {
+          hit.style.transform = hit.style.transform.replace(" scale(1.02)"," scale(1.05)");
+        }, 60);
+      }
+    }
+    function hideHit(){ hit.classList.remove('show'); }
+
+    async function preload(src){
+      return new Promise(res=>{
+        const im = new Image();
+        im.onload = im.onerror = res;
+        im.src = src;
+      });
+    }
+
+    function getTargetBanner(){
+      return document.getElementById('homeHeroBanner');
+    }
+
+    function revealBannerAtHomeSize(){
+      const targetBanner = getTargetBanner();
+      if (!targetBanner) return;
+
+      const rect = targetBanner.getBoundingClientRect();
+      bannerReveal.style.width  = rect.width + "px";
+      bannerReveal.style.height = rect.height + "px";
+      bannerReveal.classList.add('show');
+    }
+
+    function dockBanner(){
+      const targetBanner = getTargetBanner();
+      if (!targetBanner) {
+        fadeOutAndStopIntroAudio();
+        overlay.classList.add('fadeOut');
+        setTimeout(()=> overlay.remove(), 600);
+        return;
+      }
+
+      const targetRect = targetBanner.getBoundingClientRect();
+      const revealRect = bannerReveal.getBoundingClientRect();
+
+      bannerReveal.style.transition =
+        "transform 950ms cubic-bezier(.2,.9,.2,1), opacity 350ms ease";
+      bannerReveal.style.transformOrigin = "top left";
+
+      const dx = targetRect.left - revealRect.left;
+      const dy = targetRect.top  - revealRect.top;
+
+      bannerReveal.style.transform =
+        translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px));
+
+      fadeOutAndStopIntroAudio();
+
+      setTimeout(()=>{
+        overlay.classList.add('fadeOut');
+        setTimeout(()=> overlay.remove(), 600);
+      }, 1000);
+    }
+
+    async function run(){
+      await Promise.all(flashImages.map(preload));
+      await preload(bannerPath);
+
+      for(let i=0;i<flashImages.length;i++){
+        blink(i===0 || i===3 ? 2 : 1);
+        await sleep(90);
+        showHit(flashImages[i]);
+        await sleep(PER_PHOTO_MS);
+        hideHit();
+        await sleep(FADE_OUT_MS);
+      }
+
+      blink(2);
+      await sleep(160);
+      revealBannerAtHomeSize();
+      await sleep(650);
+      dockBanner();
+    }
+
+    window.addEventListener('load', ()=> setTimeout(run, 120));
+  })();
+  </script>
+  <!-- ===================== END INTRO ===================== -->
 
   <div class="page">
     <main class="shell">
 
+      <!-- TOP BAR -->
       <header class="top-bar">
         <div class="brand-block">
+          <!-- ✅ UPDATED: new official logo path, absolute so it works from any folder page -->
           <img src="/images/aby-official-logo.png" class="brand-logo" alt="AWAKENED BY YAH logo" />
           <div class="brand-text">
             <span class="brand-title">AWAKENED BY YAH</span>
@@ -310,15 +1395,10 @@
         </div>
       </header>
 
-      <!-- ✅ QUICK LINKS (FIXED + EXPLICIT HOME) -->
+      <!-- QUICK LINKS -->
       <nav class="quick-links">
-        <a href="/" aria-label="Home">Home</a>
         <a href="#music">Music Player</a>
         <a href="/albums/">Albums</a>
-
-        <a class="story-link" href="/the-story/">📜 The Story</a>
-        <a class="reviews-link" href="/reviews/">⭐ Listener Ratings</a>
-
         <a href="#videos">Videos</a>
         <a href="#signup">Email Signup</a>
 
@@ -343,12 +1423,517 @@
         </a>
       </nav>
 
-      <!-- ✅ KEEP THE REST OF YOUR HOMEPAGE EXACTLY AS YOU PASTED IT -->
-      <!-- (Everything after this point remains unchanged from your file) -->
+      <!-- ✅ NEW: BATTLEFIELD BUY BAR (HIGH VISIBILITY, CLEAN) -->
+      <div class="bf-buybar" role="region" aria-label="The Battlefield physical editions">
+        <div class="bf-buybar__inner">
+          <div class="bf-buybar__left">
+            <strong class="bf-buybar__title">THE BATTLEFIELD — PHYSICAL</strong>
+            <span class="bf-buybar__sub">Official CD + 12&quot; Vinyl • Ships worldwide</span>
+          </div>
+          <a class="bf-buybar__btn"
+             href="https://elasticstage.com/awakened-by-yah/releases/the-battlefield-album"
+             target="_blank" rel="noopener">
+            ORDER CD / VINYL
+          </a>
+        </div>
+      </div>
+
+      <!-- HERO -->
+      <section class="hero">
+        <div class="hero-left">
+          <p class="eyebrow">TRUTH-BASED • SET-APART</p>
+
+          <h1 class="hero-title">
+            <span>SOUL • R&amp;B •</span>
+            <span class="hero-title-main">PRAISE</span>
+          </h1>
+
+          <p class="hero-copy">
+            Welcome to the official home of <strong>Awakened By YAH</strong> — music for the
+            Remnant that refuses to compromise. Press play, feel the conviction, and let your
+            Ruah rise.
+          </p>
+
+          <div class="hero-cta-row">
+            <a href="#music" class="btn btn-primary">🎧 Listen &amp; Download</a>
+            <a href="#signup" class="btn btn-outline">Join The Remnant List</a>
+          </div>
+
+          <!-- ✅ NEW: SUPPORT THE WORK (links ONLY to Founders page) -->
+          <div class="support-work" aria-label="Support the work">
+            <p>If this music speaks to you,<br>support the work and help carry the message forward.</p>
+            <a href="/subscribe/founders/" class="btn btn-outline support-btn">SUPPORT THE WORK</a>
+          </div>
+          <!-- ✅ END NEW SUPPORT CTA -->
+
+        </div>
+
+        <aside class="hero-right">
+          <div class="hero-right-inner">
+            <img
+              id="homeHeroBanner"
+              src="/intro/abybanner.png"
+              alt="Awakened By YAH banner"
+              decoding="async"
+              fetchpriority="high"
+            />
+          </div>
+        </aside>
+      </section>
+
+      <!-- ✅ NEW: FEATURED RELEASE CARD (DIRECT PURCHASE UNDER “ALBUM CARD” FEEL) -->
+      <section class="bf-feature" aria-label="Featured release: The Battlefield">
+        <div class="bf-card">
+          <div>
+            <p class="bf-kicker">Featured Release</p>
+            <h2 class="bf-title">THE BATTLEFIELD</h2>
+            <p class="bf-desc">
+              Own the official physical edition — CD + booklet or 12&quot; vinyl. Worldwide shipping available.
+            </p>
+          </div>
+
+          <div class="bf-actions">
+            <a class="bf-btn" href="/albums/">View Albums</a>
+            <a class="bf-btn bf-btn--gold"
+               href="https://elasticstage.com/awakened-by-yah/releases/the-battlefield-album"
+               target="_blank" rel="noopener">
+              Buy CD / Vinyl
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- MUSIC PLAYER + PLAYLIST -->
+      <section id="music" class="extra-section">
+        <div class="section-card music-player">
+          <p class="section-kicker">Soundtrack For The Awakened</p>
+          <h2 class="section-title">Music Player</h2>
+          <p class="section-text">
+            Rotate through a growing catalog of truth-based, set-apart soul. Tap a track,
+            watch the visualizer move, and let the message hit your Ruah.
+          </p>
+
+          <div class="music-layout">
+            <div class="player-panel">
+              <div class="now-playing-row">
+                <div>
+                  <span class="np-label">Now Playing</span>
+                  <span class="np-title" id="now-playing-title">Show Me Your Heart</span>
+                </div>
+                <div class="visualizer" id="visualizer">
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+                </div>
+              </div>
+
+              <audio id="audio-player" controls preload="metadata"></audio>
+
+              <div class="music-links">
+                <a href="https://on.soundcloud.com/i63L7q3mKa8ax5xVee" target="_blank" rel="noopener">
+                  Listen on SoundCloud
+                </a>
+              </div>
+            </div>
+
+            <div>
+              <ul class="playlist" id="playlist">
+                <li class="playlist-item active"
+                    data-src="audio/show-me-your-heart.mp3"
+                    data-title="Show Me Your Heart">
+                  <span class="track-index">1</span>
+                  <div class="track-meta">
+                    <span class="track-title">Show Me Your Heart</span>
+                    <span class="track-tagline">Set-apart soul ballad for the Remnant</span>
+                  </div>
+                </li>
+
+                <li class="playlist-item"
+                    data-src="audio/werise.mp3"
+                    data-title="We Rise">
+                  <span class="track-index">2</span>
+                  <div class="track-meta">
+                    <span class="track-title">We Rise</span>
+                    <span class="track-tagline">Uplifting anthem of awakening and unity</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIDEOS SECTION -->
+      <section id="videos" class="extra-section">
+        <div class="section-card">
+          <p class="section-kicker">Watch &amp; Share</p>
+          <h2 class="section-title">Videos</h2>
+          <p class="section-text">
+            Awakened By YAH music videos, and YAHUAH'S_REMNANT YOUTUBE TEACHINGS. Each card opens the video on YouTube in a new tab.
+          </p>
+
+          <div class="video-grid">
+
+            <!-- ✅ KEEP: 1OAVoq37Dko -->
+            <div class="video-card">
+              <a href="https://youtu.be/1OAVoq37Dko?si=bDp14nQPlGLU44p1" target="_blank" rel="noopener">
+                <div class="video-thumb-wrap">
+                  <img src="https://img.youtube.com/vi/1OAVoq37Dko/hqdefault.jpg" alt="Rise Above CHALLENGES with the Power of Unity" />
+                </div>
+                <div class="video-info">
+                  <h3>Rise Above CHALLENGES with the Power of Unity</h3>
+                  <p>Music for standing together in faith and endurance.</p>
+                </div>
+              </a>
+            </div>
+
+            <!-- ✅ KEEP: DQJLaqlsi8E -->
+            <div class="video-card">
+              <a href="https://youtu.be/DQJLaqlsi8E?si=81XgrXz_dDwMKyh-" target="_blank" rel="noopener">
+                <div class="video-thumb-wrap">
+                  <img src="https://img.youtube.com/vi/DQJLaqlsi8E/hqdefault.jpg" alt="Unbroken Frequency Remix" />
+                </div>
+                <div class="video-info">
+                  <h3>Unbroken Frequency Remix</h3>
+                  <p>Is this the anthem of the Remnant rising?</p>
+                </div>
+              </a>
+            </div>
+
+            <!-- ✅ KEEP: 6QeUzd-GIm0 -->
+            <div class="video-card">
+              <a href="https://youtu.be/6QeUzd-GIm0?si=NJmNSKAA3wxF_3fD" target="_blank" rel="noopener">
+                <div class="video-thumb-wrap">
+                  <img src="https://img.youtube.com/vi/6QeUzd-GIm0/hqdefault.jpg" alt="This Song Will Touch Your Heart!" />
+                </div>
+                <div class="video-info">
+                  <h3>This Song Will Touch Your Heart!</h3>
+                  <p>A message of comfort, conviction, and hope.</p>
+                </div>
+              </a>
+            </div>
+
+            <!-- ✅ NEW (FIRST of replacements): THINK ABOUT ME -->
+            <div class="video-card">
+              <a href="https://youtu.be/hTG-AkjUjnk?si=pd2MjDtr_9Cp7aK1" target="_blank" rel="noopener">
+                <div class="video-thumb-wrap">
+                  <img src="https://img.youtube.com/vi/hTG-AkjUjnk/hqdefault.jpg" alt="Think About Me" />
+                </div>
+                <div class="video-info">
+                  <h3>Think About Me</h3>
+                  <p>Before the day ends… reach out. Love is intentional.</p>
+                </div>
+              </a>
+            </div>
+
+            <!-- ✅ NEW (SECOND TO LAST): NOT MY WILL -->
+            <div class="video-card">
+              <a href="https://youtu.be/wQFPnR_yma4?si=LeEB5n2JOb3F4jdJ" target="_blank" rel="noopener">
+                <div class="video-thumb-wrap">
+                  <img src="https://img.youtube.com/vi/wQFPnR_yma4/hqdefault.jpg" alt="Not My Will" />
+                </div>
+                <div class="video-info">
+                  <h3>Not My Will</h3>
+                  <p>A surrender anthem — obedience over emotion.</p>
+                </div>
+              </a>
+            </div>
+
+            <!-- ✅ NEW (LAST): THE SECRET PLACE -->
+            <div class="video-card">
+              <a href="https://youtu.be/DSLxl34PhHQ?si=z26IcbZ4dEErW3mX" target="_blank" rel="noopener">
+                <div class="video-thumb-wrap">
+                  <img src="https://img.youtube.com/vi/DSLxl34PhHQ/hqdefault.jpg" alt="The Secret Place" />
+                </div>
+                <div class="video-info">
+                  <h3>The Secret Place</h3>
+                  <p>Enter the covering — peace, refuge, and presence.</p>
+                </div>
+              </a>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- EMAIL SIGNUP -->
+      <section id="signup" class="extra-section">
+        <div class="section-card">
+          <p class="section-kicker">Stay Connected</p>
+          <h2 class="section-title">Email Signup</h2>
+          <p class="section-text">
+            Join the <strong>Remnant List</strong> to get early access to new releases,
+            behind-the-scenes sessions, and updates on truth-based projects from
+            Awakened By YAH.
+          </p>
+
+          <div class="signup-form">
+            <script async src="https://eocampaign1.com/form/6bc338e0-c532-11f0-9c5d-bdac12d6eac9.js"
+                    data-form="6bc338e0-c532-11f0-9c5d-bdac12d6eac9"></script>
+          </div>
+
+          <p class="signup-note">
+            Your email is submitted securely over HTTPS. No mail app needed — just enter your
+            address and join the movement.
+          </p>
+        </div>
+      </section>
+
+      <!-- FOOTER -->
+      <footer class="site-footer">
+        <div class="footer-socials">
+          <a href="https://open.spotify.com/artist/0u6jzM2fSRodmTq61j0z0R?si=fP3WoH4ORbuPNaazgkN0aA" target="_blank" rel="noopener">Spotify</a>
+          <a href="https://music.apple.com/us/artist/awakened-by-yah/1860666182" target="_blank" rel="noopener">Apple Music</a>
+          <a href="https://www.tiktok.com/@awakened_by_yah?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">TikTok</a>
+        </div>
+
+        <span id="year"></span> © AWAKENED BY YAH MUSIC GROUP — All Rights Reserved.
+      </footer>
 
     </main>
   </div>
 
-  <!-- ✅ KEEP YOUR SCRIPTS EXACTLY AS-IS -->
+  <!-- ✅ SMALL NON-DISRUPTIVE LINK TO MUSIC PAGE (UPDATED) -->
+  <a href="/music/" class="music-fab" aria-label="Open Music Player">🎧 Music</a>
+
+  <!-- ===================== NEW: AMBIENT HOMEPAGE LOOP (AUTO FADE-IN) ===================== -->
+  <audio id="siteAmbient" preload="auto" loop playsinline>
+    <source src="/audio/site-ambient.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+  (function(){
+    const ambient = document.getElementById('siteAmbient');
+    if (!ambient) return;
+
+    const player = document.getElementById('audio-player'); // main music player on page
+    const introAudio = document.getElementById('introAudio');
+
+    const MAX_VOL = 0.16;     // subtle ambiance
+    const IN_STEP = 0.01;     // fade in speed
+    const OUT_STEP = 0.02;    // fade out speed
+    const TICK_MS = 120;
+
+    let fadeTimer = null;
+    let startedOnce = false;
+
+    function clearFade(){
+      if (fadeTimer){ clearInterval(fadeTimer); fadeTimer = null; }
+    }
+
+    function fadeTo(target, step, after){
+      clearFade();
+      fadeTimer = setInterval(() => {
+        let v = Number(ambient.volume);
+        if (Number.isNaN(v)) v = 0;
+
+        if (v < target) v = Math.min(target, v + step);
+        else v = Math.max(target, v - step);
+
+        ambient.volume = v;
+
+        if (Math.abs(v - target) <= 0.001){
+          ambient.volume = target;
+          clearFade();
+          if (target === 0){
+            try { ambient.pause(); } catch(e){}
+          }
+          if (after) after();
+        }
+      }, TICK_MS);
+    }
+
+    function playAmbient(){
+      // Don't start if main player is actively playing
+      if (player && !player.paused) return;
+
+      try{
+        ambient.muted = true;   // helps autoplay
+        ambient.volume = 0;
+      }catch(e){}
+
+      const p = ambient.play();
+      if (p && typeof p.then === "function"){
+        p.then(() => {
+          startedOnce = true;
+          try { ambient.muted = false; } catch(e){}
+          fadeTo(MAX_VOL, IN_STEP);
+        }).catch(() => {
+          // Autoplay blocked (mobile): enable on first user interaction
+          const unlock = () => {
+            document.removeEventListener('click', unlock);
+            document.removeEventListener('touchstart', unlock);
+            playAmbient();
+          };
+          document.addEventListener('click', unlock, { once:true, passive:true });
+          document.addEventListener('touchstart', unlock, { once:true, passive:true });
+        });
+      }
+    }
+
+    function stopAmbient(){
+      // fade out then pause
+      fadeTo(0, OUT_STEP);
+    }
+
+    function introOverlayExists(){
+      return !!document.getElementById('introOverlay');
+    }
+
+    function startWhenIntroDone(){
+      if (!introOverlayExists()){
+        playAmbient();
+        return;
+      }
+
+      // Wait until intro overlay is removed, then start ambient
+      const obs = new MutationObserver(() => {
+        if (!introOverlayExists()){
+          obs.disconnect();
+          playAmbient();
+        }
+      });
+      obs.observe(document.body, { childList:true, subtree:true });
+    }
+
+    // If intro audio plays later, stop ambient (safety)
+    if (introAudio){
+      introAudio.addEventListener('play', stopAmbient);
+    }
+
+    // Main player: if user plays a track, stop ambient
+    if (player){
+      player.addEventListener('play', stopAmbient);
+      // If they pause/finish, bring ambient back
+      player.addEventListener('pause', () => setTimeout(playAmbient, 450));
+      player.addEventListener('ended', () => setTimeout(playAmbient, 450));
+    }
+
+    // If user changes tabs, pause ambient; resume when back (if main player not playing)
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden){
+        try { ambient.pause(); } catch(e){}
+      } else {
+        if (player && !player.paused) return;
+        // resume gently
+        if (startedOnce) {
+          try { ambient.volume = 0; } catch(e){}
+          playAmbient();
+        } else {
+          startWhenIntroDone();
+        }
+      }
+    });
+
+    // Start sequence
+    startWhenIntroDone();
+  })();
+  </script>
+  <!-- ===================== END AMBIENT LOOP ===================== -->
+
+  <!-- ✅ RADIO POPUP HANDLER (NO EMBED, NO LAYOUT IMPACT) -->
+  <script>
+    (function(){
+      function openRadioPopup(url){
+        var w = 460, h = 720;
+        var left = Math.max(0, Math.floor((window.screen.width - w) / 2));
+        var top  = Math.max(0, Math.floor((window.screen.height - h) / 2));
+
+        var features = [
+          'popup=yes',
+          'noopener=yes',
+          'noreferrer=yes',
+          'width=' + w,
+          'height=' + h,
+          'left=' + left,
+          'top=' + top
+        ].join(',');
+
+        var win = window.open(url, 'elect_sounds_radio', features);
+
+        if (!win) {
+          window.open(url, '_blank', 'noopener');
+          return;
+        }
+        try { win.focus(); } catch(e){}
+      }
+
+      document.addEventListener('click', function(e){
+        var a = e.target.closest && e.target.closest('a[data-radio-popup="true"]');
+        if (!a) return;
+        e.preventDefault();
+        openRadioPopup(a.href);
+      });
+    })();
+  </script>
+
+  <!-- PLAYER + VISUALIZER + COPYRIGHT SCRIPT -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var yearSpan = document.getElementById('year');
+      if (yearSpan) {
+        yearSpan.textContent = new Date().getFullYear();
+      }
+
+      var audio = document.getElementById('audio-player');
+      var playlistEl = document.getElementById('playlist');
+      var nowPlayingTitle = document.getElementById('now-playing-title');
+      var visualizer = document.getElementById('visualizer');
+
+      if (!audio || !playlistEl) return;
+
+      var items = Array.prototype.slice.call(
+        playlistEl.querySelectorAll('.playlist-item')
+      );
+
+      function setActiveTrack(index, autoplay) {
+        var item = items[index];
+        if (!item) return;
+
+        items.forEach(function (el) { el.classList.remove('active'); });
+        item.classList.add('active');
+
+        var src = item.getAttribute('data-src');
+        var title = item.getAttribute('data-title') || 'Now Playing';
+
+        audio.src = src;
+        nowPlayingTitle.textContent = title;
+
+        if (autoplay) {
+          audio.play().catch(function (err) {
+            console.log('Playback was blocked:', err);
+          });
+        }
+      }
+
+      items.forEach(function (item, index) {
+        item.addEventListener('click', function () {
+          setActiveTrack(index, true);
+        });
+      });
+
+      audio.addEventListener('play', function () {
+        if (visualizer) visualizer.classList.add('is-playing');
+      });
+
+      function stopViz() {
+        if (visualizer) visualizer.classList.remove('is-playing');
+      }
+
+      audio.addEventListener('pause', stopViz);
+      audio.addEventListener('ended', function () {
+        stopViz();
+        var currentIndex = items.findIndex(function (el) {
+          return el.classList.contains('active');
+        });
+        var nextIndex = (currentIndex + 1) % items.length;
+        setActiveTrack(nextIndex, true);
+      });
+
+      setActiveTrack(0, false);
+    });
+  </script>
 </body>
 </html>
