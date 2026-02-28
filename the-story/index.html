@@ -81,15 +81,18 @@ body{
   width:100%;
 }
 
+/* ✅ ensure slides layer correctly */
 .slide{
   position:absolute;
   inset:0;
   opacity:0;
   transition:opacity 2s ease-in-out;
+  z-index:1;
 }
 
 .slide.active{
   opacity:1;
+  z-index:2;
 }
 
 .slide img{
@@ -100,6 +103,9 @@ body{
   object-fit:cover;
   transform:scale(1.1);
   animation:zoom 15s ease forwards;
+
+  /* ✅ helps prevent “later slides not painting” issues */
+  will-change: transform, opacity;
 }
 
 @keyframes zoom{
@@ -154,7 +160,7 @@ p{
 <div class="topbar">
   <div class="topbar-inner">
     <div class="brand">
-      <img src="/abytransparent.png">
+      <img src="/abytransparent.png" alt="Awakened By YAH">
       AWAKENED BY YAH
     </div>
     <div class="nav">
@@ -170,7 +176,7 @@ p{
 
   <!-- Slide 1 -->
   <div class="slide active">
-    <img src="/images/story/01.jpg">
+    <img src="/images/story/01.jpg" alt="Story 01">
     <div class="overlay"></div>
     <div class="content">
       <h2>THE BEGINNING</h2>
@@ -181,7 +187,7 @@ p{
 
   <!-- Slide 2 -->
   <div class="slide">
-    <img src="/images/story/02.jpg">
+    <img src="/images/story/02.jpg" alt="Story 02">
     <div class="overlay"></div>
     <div class="content">
       <h2>URIYAH</h2>
@@ -192,7 +198,7 @@ p{
 
   <!-- Slide 3 -->
   <div class="slide">
-    <img src="/images/story/03.jpg">
+    <img src="/images/story/03.jpg" alt="Story 03">
     <div class="overlay"></div>
     <div class="content">
       <h2>ZAPANYAH</h2>
@@ -203,7 +209,7 @@ p{
 
   <!-- Slide 4 -->
   <div class="slide">
-    <img src="/images/story/04.jpg">
+    <img src="/images/story/04.jpg" alt="Story 04">
     <div class="overlay"></div>
     <div class="content">
       <h2>THE SOUND</h2>
@@ -214,7 +220,7 @@ p{
 
   <!-- Slide 5 -->
   <div class="slide">
-    <img src="/images/story/05.jpg">
+    <img src="/images/story/05.jpg" alt="Story 05">
     <div class="overlay"></div>
     <div class="content">
       <h2>THE BATTLEFIELD</h2>
@@ -225,7 +231,7 @@ p{
 
   <!-- Slide 6 -->
   <div class="slide">
-    <img src="/images/story/06.jpg">
+    <img src="/images/story/06.jpg" alt="Story 06">
     <div class="overlay"></div>
     <div class="content">
       <h2>THE MISSION</h2>
@@ -237,16 +243,40 @@ p{
 </div>
 
 <script>
-const slides = document.querySelectorAll('.slide');
-let current = 0;
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  let current = 0;
 
-function nextSlide(){
-  slides[current].classList.remove('active');
-  current = (current + 1) % slides.length;
-  slides[current].classList.add('active');
-}
+  function restartZoom(slide){
+    const img = slide.querySelector('img');
+    if(!img) return;
 
-setInterval(nextSlide, 9000); // 9 seconds per slide
+    // Force restart the CSS zoom animation each time the slide becomes active
+    img.style.animation = 'none';
+    void img.offsetHeight; // force reflow
+    img.style.animation = '';
+  }
+
+  function showSlide(i){
+    slides.forEach((s, idx) => {
+      s.classList.remove('active');
+      s.style.zIndex = (idx === i) ? 2 : 1;
+    });
+
+    const next = slides[i];
+    restartZoom(next);
+    next.classList.add('active');
+  }
+
+  function nextSlide(){
+    current = (current + 1) % slides.length;
+    showSlide(current);
+  }
+
+  // Start
+  showSlide(current);
+
+  // 9 seconds per slide (keep same timing)
+  setInterval(nextSlide, 9000);
 </script>
 
 </body>
