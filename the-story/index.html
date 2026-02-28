@@ -1,382 +1,253 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>THE STORY | AWAKENED BY YAH</title>
 
-  <!-- ✅ Canonical for STORY page -->
-  <link rel="canonical" href="https://awakenedbyyahmusic.com/the-story/" />
+<link rel="icon" type="image/png" href="/abytransparent.png">
 
-  <script>
-    // ✅ Force clean STORY URL (prevents /the-story/index.html duplicate)
-    if (location.pathname.endsWith('/the-story/index.html')) {
-      location.replace('/the-story/' + location.search + location.hash);
-    }
-  </script>
+<style>
+:root{
+  --bg:#020617;
+  --text:#ffffff;
+  --muted:#94a3b8;
+  --overlay:rgba(2,6,23,.75);
+  --accent:rgba(43,86,255,.85);
+}
 
-  <link rel="icon" type="image/png" href="/images/aby-official-logo.png">
-  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+*{box-sizing:border-box;margin:0;padding:0}
 
-  <title>The Story | AWAKENED BY YAH</title>
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  overflow:hidden;
+}
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
+/* Top Nav */
+.topbar{
+  position:fixed;
+  top:0;
+  width:100%;
+  z-index:20;
+  background:rgba(2,6,23,.85);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(255,255,255,.1);
+}
 
-  <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { height: 100%; }
+.topbar-inner{
+  max-width:1100px;
+  margin:auto;
+  padding:14px 18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
 
-    body{
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top left, #182544 0%, #050814 55%, #020308 100%);
-      color:#f9fafb;
-      line-height:1.6;
-      -webkit-font-smoothing: antialiased;
-    }
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:900;
+  letter-spacing:.08em;
+}
 
-    a{ color:inherit; text-decoration:none; }
+.brand img{
+  width:34px;
+  border-radius:8px;
+}
 
-    :root{
-      --tickerH: 44px;
-      --tickerBorder: rgba(251,191,36,0.85);
-      --tickerBg: rgba(15,23,42,0.72);
-      --tickerText: #fbbf24;
-    }
+.nav a{
+  text-decoration:none;
+  color:white;
+  margin-left:10px;
+  padding:8px 14px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.15);
+  font-weight:800;
+  font-size:14px;
+}
 
-    .founders-ticker{
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      height: var(--tickerH);
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      overflow: hidden;
-      background: var(--tickerBg);
-      border-bottom: 1px solid rgba(255,255,255,0.10);
-      backdrop-filter: blur(12px);
-    }
-    .founders-ticker .ticker-shell{
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 1.25rem;
-      display: flex;
-      align-items: center;
-    }
-    .founders-ticker .ticker-track{
-      width: 100%;
-      border: 1px solid var(--tickerBorder);
-      border-radius: 999px;
-      overflow: hidden;
-      background: rgba(2,6,23,0.55);
-      box-shadow: 0 10px 24px rgba(0,0,0,0.55);
-    }
-    .founders-ticker .ticker-move{
-      display: inline-flex;
-      align-items: center;
-      gap: 28px;
-      white-space: nowrap;
-      padding: 8px 14px;
-      will-change: transform;
-      animation: tickerScroll 45s linear infinite;
-    }
-    .founders-ticker .ticker-move span{
-      color: var(--tickerText);
-      font-weight: 900;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      font-size: 0.72rem;
-    }
-    .founders-ticker .dot{
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: rgba(251,191,36,0.95);
-      box-shadow: 0 0 12px rgba(251,191,36,0.55);
-      flex: 0 0 auto;
-    }
-    @keyframes tickerScroll{
-      0%   { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-    .founders-ticker:hover .ticker-move{ animation-play-state: paused; }
+.nav a.active{
+  background:linear-gradient(135deg, rgba(28,57,168,.8), rgba(43,86,255,.3));
+  border-color:rgba(43,86,255,.7);
+}
 
-    @media (max-width: 640px){
-      :root{ --tickerH: 48px; }
-      .founders-ticker .ticker-move span{ font-size: 0.68rem; letter-spacing: 0.20em; }
-    }
+/* Slide container */
+.slideshow{
+  position:relative;
+  height:100vh;
+  width:100%;
+}
 
-    .page{ min-height:100vh; padding-top: var(--tickerH); }
-    .shell{ width:100%; max-width:1100px; margin:0 auto; padding: 2rem 1.75rem 3rem; }
+.slide{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  transition:opacity 2s ease-in-out;
+}
 
-    .top{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 1.2rem;
-      flex-wrap: wrap;
-      margin-bottom: 1rem;
-    }
+.slide.active{
+  opacity:1;
+}
 
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:.85rem;
-    }
-    .brand img{
-      width:72px;
-      height:auto;
-      filter: drop-shadow(0 6px 12px rgba(0,0,0,0.7));
-    }
-    .brand h1{
-      font-family: "Cinzel", serif;
-      letter-spacing:.22em;
-      text-transform: uppercase;
-      color:#fbbf24;
-      font-size: 1.05rem;
-      line-height: 1.1;
-    }
-    .brand .sub{
-      display:block;
-      margin-top:.25rem;
-      color:#cbd5e1;
-      letter-spacing:.18em;
-      text-transform: uppercase;
-      font-size:.72rem;
-      opacity:.92;
-      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-    }
+.slide img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transform:scale(1.1);
+  animation:zoom 15s ease forwards;
+}
 
-    .nav{
-      display:flex;
-      flex-wrap:wrap;
-      gap:.5rem;
-      justify-content:center;
-      width:100%;
-    }
-    @media (min-width: 860px){
-      .nav{ width:auto; justify-content:flex-end; }
-    }
+@keyframes zoom{
+  from{transform:scale(1.1);}
+  to{transform:scale(1.2);}
+}
 
-    .nav a{
-      font-size: 0.72rem;
-      padding: 0.28rem 0.95rem;
-      border-radius: 999px;
-      border: 1px solid rgba(148,163,184,0.45);
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      color: #e5e7eb;
-      background: rgba(15,23,42,0.9);
-      backdrop-filter: blur(10px);
-      transition: background .15s ease, border-color .15s ease, transform .12s ease;
-      white-space:nowrap;
-    }
-    .nav a:hover{
-      background: rgba(148,163,184,0.28);
-      border-color: rgba(248,250,252,0.6);
-      transform: translateY(-1px);
-    }
-    .nav a.active{
-      border-color: rgba(251,191,36,0.9);
-      color: #fbbf24;
-      background: rgba(251,191,36,0.10);
-    }
+.overlay{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(180deg, rgba(0,0,0,.3), rgba(0,0,0,.85));
+}
 
-    .card{
-      margin-top: 1.25rem;
-      background: radial-gradient(circle at top left, #111827 0%, #020617 70%);
-      border-radius: 26px;
-      padding: 2.1rem 2rem;
-      box-shadow: 0 26px 60px rgba(0,0,0,0.7), 0 0 0 1px rgba(148,163,184,0.10);
-      border: 1px solid rgba(148,163,184,0.28);
-    }
+.content{
+  position:absolute;
+  bottom:12%;
+  left:8%;
+  max-width:700px;
+  opacity:0;
+  transform:translateY(20px);
+  transition:opacity 2s ease, transform 2s ease;
+}
 
-    .kicker{
-      font-size:.78rem;
-      letter-spacing:.32em;
-      text-transform: uppercase;
-      color:#facc15;
-      margin-bottom:.65rem;
-    }
+.slide.active .content{
+  opacity:1;
+  transform:translateY(0);
+}
 
-    .title{
-      font-size: clamp(1.6rem, 3vw, 2.4rem);
-      letter-spacing:.22em;
-      text-transform: uppercase;
-      margin-bottom: .65rem;
-      text-shadow: 0 14px 32px rgba(0,0,0,0.9);
-    }
+h1{
+  font-size:46px;
+  letter-spacing:.05em;
+  margin-bottom:12px;
+}
 
-    .copy{
-      max-width: 62rem;
-      color: rgba(229,231,235,0.95);
-      font-size: 1rem;
-      margin-top: .8rem;
-    }
+h2{
+  font-size:14px;
+  letter-spacing:.15em;
+  color:var(--muted);
+  margin-bottom:16px;
+}
 
-    .divider{
-      margin: 1.6rem 0 1.3rem;
-      border: none;
-      height: 1px;
-      background: rgba(148,163,184,0.22);
-    }
-
-    .grid{
-      margin-top: 1.1rem;
-      display:grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 1rem;
-    }
-    @media (max-width: 900px){
-      .grid{ grid-template-columns: 1fr; }
-    }
-
-    .mini{
-      border-radius: 18px;
-      border: 1px solid rgba(148,163,184,0.28);
-      background: rgba(15,23,42,0.78);
-      padding: 1.15rem 1.1rem;
-    }
-    .mini h3{
-      color:#fbbf24;
-      letter-spacing:.18em;
-      text-transform: uppercase;
-      font-size: .9rem;
-      margin-bottom: .35rem;
-    }
-    .mini p{
-      color: rgba(229,231,235,0.90);
-      font-size: .92rem;
-    }
-
-    .ctaRow{
-      margin-top: 1.35rem;
-      display:flex;
-      flex-wrap:wrap;
-      gap:.8rem;
-      align-items:center;
-    }
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding: 12px 16px;
-      border-radius: 999px;
-      font-size: .78rem;
-      font-weight: 900;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-      border: 1px solid rgba(249,250,251,0.22);
-      background: rgba(15,23,42,0.85);
-      color: #e5e7eb;
-      transition: transform .15s ease, filter .15s ease, background .15s ease, border-color .15s ease;
-      white-space: nowrap;
-    }
-    .btn:hover{
-      transform: translateY(-1px);
-      background: rgba(148,163,184,0.20);
-      border-color: rgba(248,250,252,0.55);
-    }
-    .btnGold{
-      background: linear-gradient(120deg, #f59e0b, #fbbf24);
-      color: #111827;
-      border-color: rgba(0,0,0,0.12);
-    }
-    .btnGold:hover{ filter: brightness(1.04); }
-
-    .footer{
-      margin-top: 2.2rem;
-      padding-top: 1.1rem;
-      border-top: 1px solid rgba(31,41,55,0.9);
-      font-size: 0.78rem;
-      color: #9ca3af;
-      text-align: center;
-    }
-  </style>
+p{
+  font-size:17px;
+  line-height:1.7;
+  color:#e5e7eb;
+}
+</style>
 </head>
 
 <body>
-  <div class="founders-ticker" aria-label="Founders circle ticker">
-    <div class="ticker-shell">
-      <div class="ticker-track">
-        <div class="ticker-move" aria-hidden="true">
-          <span>🎧 UNLIMITED STREAMING</span><i class="dot"></i><span>⬇️ OWN THE MUSIC</span><i class="dot"></i><span>🔥 SUPPORT THE MOVEMENT</span><i class="dot"></i>
-          <span>🎧 UNLIMITED STREAMING</span><i class="dot"></i><span>⬇️ OWN THE MUSIC</span><i class="dot"></i><span>🔥 SUPPORT THE MOVEMENT</span><i class="dot"></i>
-          <span>🎧 UNLIMITED STREAMING</span><i class="dot"></i><span>⬇️ OWN THE MUSIC</span><i class="dot"></i><span>🔥 SUPPORT THE MOVEMENT</span><i class="dot"></i>
-          <span>🎧 UNLIMITED STREAMING</span><i class="dot"></i><span>⬇️ OWN THE MUSIC</span><i class="dot"></i><span>🔥 SUPPORT THE MOVEMENT</span><i class="dot"></i>
-        </div>
-      </div>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <img src="/abytransparent.png">
+      AWAKENED BY YAH
+    </div>
+    <div class="nav">
+      <a href="/">HOME</a>
+      <a href="/music/">MUSIC</a>
+      <a href="/albums/">ALBUMS</a>
+      <a href="/the-story/" class="active">THE STORY</a>
+    </div>
+  </div>
+</div>
+
+<div class="slideshow" id="slideshow">
+
+  <!-- Slide 1 -->
+  <div class="slide active">
+    <img src="/images/story/01.jpg">
+    <div class="overlay"></div>
+    <div class="content">
+      <h2>THE BEGINNING</h2>
+      <h1>Two Voices. One Assignment.</h1>
+      <p>AWAKENED BY YAH was formed with intention — not to blend into culture, but to awaken through sound.</p>
     </div>
   </div>
 
-  <div class="page">
-    <main class="shell">
-
-      <div class="top">
-        <div class="brand">
-          <img src="/images/aby-official-logo.png" alt="AWAKENED BY YAH logo">
-          <div>
-            <h1>AWAKENED BY YAH</h1>
-            <span class="sub">THE STORY</span>
-          </div>
-        </div>
-
-        <nav class="nav" aria-label="Site navigation">
-          <a href="/">Home</a>
-          <a href="/albums/">Albums</a>
-          <a href="/the-story/" class="active">📜 The Story</a>
-          <a href="/reviews/">⭐ Listener Ratings</a>
-          <a href="/press/">Press</a>
-        </nav>
-      </div>
-
-      <section class="card" aria-label="The Story">
-        <p class="kicker">WHY THIS MUSIC EXISTS</p>
-        <h2 class="title">THE STORY</h2>
-
-        <p class="copy">
-          <strong>AWAKENED BY YAH</strong> is truth-based soul — music built to strengthen the Remnant,
-          stir conviction, and restore focus in a noisy world.
-        </p>
-        <p class="copy">
-          This isn’t just entertainment. These songs are messages — written to encourage obedience,
-          endurance, and remembrance… and to keep hearts aligned when the pressure rises.
-        </p>
-
-        <hr class="divider">
-
-        <div class="grid">
-          <div class="mini">
-            <h3>THE SOUND</h3>
-            <p>Soul • R&amp;B • Praise — music that carries truth with warmth, grit, and purpose.</p>
-          </div>
-          <div class="mini">
-            <h3>THE MISSION</h3>
-            <p>To uplift, correct, and strengthen through sound — without compromise.</p>
-          </div>
-          <div class="mini">
-            <h3>THE MOVEMENT</h3>
-            <p>Not hype. Not trends. A Remnant built on truth, walking set-apart.</p>
-          </div>
-        </div>
-
-        <div class="ctaRow">
-          <a class="btn btnGold" href="/albums/">🎧 Go To Albums</a>
-          <a class="btn" href="/reviews/">⭐ Read Listener Ratings</a>
-          <a class="btn" href="/subscribe/founders/">🔥 Support The Work</a>
-        </div>
-      </section>
-
-      <footer class="footer">
-        <span id="year"></span> © AWAKENED BY YAH MUSIC GROUP — All Rights Reserved.
-      </footer>
-
-    </main>
+  <!-- Slide 2 -->
+  <div class="slide">
+    <img src="/images/story/02.jpg">
+    <div class="overlay"></div>
+    <div class="content">
+      <h2>URIYAH</h2>
+      <h1>Conviction in Every Line.</h1>
+      <p>Uriyah carries the weight of message with steadiness — grounded, deliberate, and uncompromising.</p>
+    </div>
   </div>
 
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
+  <!-- Slide 3 -->
+  <div class="slide">
+    <img src="/images/story/03.jpg">
+    <div class="overlay"></div>
+    <div class="content">
+      <h2>ZAPANYAH</h2>
+      <h1>Clarity with Fire.</h1>
+      <p>A voice that moves with purpose — not for applause, but to deliver signal through rhythm.</p>
+    </div>
+  </div>
+
+  <!-- Slide 4 -->
+  <div class="slide">
+    <img src="/images/story/04.jpg">
+    <div class="overlay"></div>
+    <div class="content">
+      <h2>THE SOUND</h2>
+      <h1>Cinematic. Intentional. Alive.</h1>
+      <p>Every album is crafted to feel immersive — a soundtrack for the awakened.</p>
+    </div>
+  </div>
+
+  <!-- Slide 5 -->
+  <div class="slide">
+    <img src="/images/story/05.jpg">
+    <div class="overlay"></div>
+    <div class="content">
+      <h2>THE BATTLEFIELD</h2>
+      <h1>Music for the Real Fight.</h1>
+      <p>Not entertainment. Alignment. Every track is built for clarity and strength.</p>
+    </div>
+  </div>
+
+  <!-- Slide 6 -->
+  <div class="slide">
+    <img src="/images/story/06.jpg">
+    <div class="overlay"></div>
+    <div class="content">
+      <h2>THE MISSION</h2>
+      <h1>Awaken Through Sound.</h1>
+      <p>If you hear it, you’re meant to. AWAKENED BY YAH is more than music — it’s movement.</p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+let current = 0;
+
+function nextSlide(){
+  slides[current].classList.remove('active');
+  current = (current + 1) % slides.length;
+  slides[current].classList.add('active');
+}
+
+setInterval(nextSlide, 9000); // 9 seconds per slide
+</script>
+
 </body>
 </html>
