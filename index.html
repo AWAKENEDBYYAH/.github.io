@@ -1968,6 +1968,7 @@
     getDatabase,
     ref,
     onValue,
+    get,
     set,
     onDisconnect,
     serverTimestamp
@@ -1975,42 +1976,112 @@
 
   // 🔐 Your Firebase config
   const firebaseConfig = {
-    apiKey: "AIzaSyC8aLmUsgCS92SFwpt2LWMhyKJrwPDDplo",
-    appId: "1:753674439301:web:49cda8cacb13699778f7ec",
+    apiKey: "YOUR_API_KEY",
+    appId: "YOUR_APP_ID",
     authDomain: "awakened-by-yah-live.firebaseapp.com",
     projectId: "awakened-by-yah-live",
     storageBucket: "awakened-by-yah-live.appspot.com",
-    messagingSenderId: "753674439301"
+    messagingSenderId: "YOUR_MESSAGING_ID"
   };
 
-  // 🚀 Initialize Firebase
   const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
+  const db  = getDatabase(app);
 
-  // 🆔 Unique session ID (per browser tab)
+  // ---------- IDs ----------
+  const uid = localStorage.getItem("aby_uid") || crypto.randomUUID();
+  localStorage.setItem("aby_uid", uid);
+
   const sid = sessionStorage.getItem("aby_sid") || crypto.randomUUID();
   sessionStorage.setItem("aby_sid", sid);
 
-  const myRef = ref(db, `presence/${sid}`);
+  // ---------- Date key ----------
+  const d = new Date();
+  const dateKey = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
 
-  // 👥 Mark this visitor as online
-  await set(myRef, {
+  // ---------- Presence (LIVE NOW + page) ----------
+  const myPresenceRef = ref(db, `presence/${sid}`);
+  await set(myPresenceRef, {
     online: true,
+    uid,
     ts: serverTimestamp(),
     path: location.pathname
   });
+  onDisconnect(myPresenceRef).remove();
 
-  // ❌ Remove visitor when tab closes
-  onDisconnect(myRef).remove();
+  // ---------- TODAY Unique (write uid + count keys) ----------
+  const todayUidsPath = `stats/daily/${dateKey}/uids`;
+  const todayUidRef   = ref(db, `${todayUidsPath}/${uid}`);
 
-  // 🔄 Listen for live visitor changes
-  const liveCountEl = document.getElementById("liveCount");
+  try{
+    await set(todayUidRef, true);
+    console.log("✅ TODAY uid written:", uid);
+  }catch(e){
+    console.warn("❌ TODAY uid write failed:", e);
+  }
 
+  // ---------- UI ----------
+  const liveCountEl    = document.getElementById("liveCount");
+  const todayUniqueEl  = document.getElementById("todayUnique");
+  const livePagesEl    = document.getElementById("livePages");
+
+  // LIVE + PAGES
   onValue(ref(db, "presence"), (snap) => {
     const val = snap.val() || {};
-    const count = Object.keys(val).length;
-    if (liveCountEl) liveCountEl.textContent = count;
+    const sessions = Object.values(val);
+
+    if (liveCountEl) liveCountEl.textContent = String(sessions.length);
+
+    const byPath = {};
+    for (const s of sessions){
+      const p = (s && s.path) ? s.path : "/";
+      byPath[p] = (byPath[p] || 0) + 1;
+    }
+
+    if (livePagesEl){
+      const entries = Object.entries(byPath).sort((a,b)=>b[1]-a[1]).slice(0, 6);
+      livePagesEl.innerHTML = entries.length ? entries.map(([p,c]) => `
+        <div style="
+          display:flex; justify-content:space-between; align-items:center;
+          border:1px solid rgba(148,163,184,.18);
+          background:rgba(15,23,42,.55);
+          border-radius:12px;
+          padding:8px 10px;
+          color:#e5e7eb;
+          font-weight:700;
+          letter-spacing:.06em;
+        ">
+          <span style="max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+            ${p}
+          </span>
+          <span style="color:#fbbf24; font-weight:900; letter-spacing:.12em;">
+            ${c}
+          </span>
+        </div>
+      `).join("") : `<div style="color:#94a3b8; font-size:12px;">No active sessions yet.</div>`;
+    }
   });
+
+  // TODAY (counts keys)
+  onValue(ref(db, todayUidsPath), (snap) => {
+    const uids = snap.val() || {};
+    const n = Object.keys(uids).length;
+    if (todayUniqueEl) todayUniqueEl.textContent = String(n);
+    console.log("📊 TODAY unique count:", n);
+  });
+
+  // ---------- Panel toggle ----------
+  const badge = document.getElementById("liveBadge");
+  const panel = document.getElementById("livePanel");
+  const closeBtn = document.getElementById("livePanelClose");
+
+  function togglePanel(force){
+    if (!panel) return;
+    const show = (typeof force === "boolean") ? force : (panel.style.display !== "block");
+    panel.style.display = show ? "block" : "none";
+  }
+
+  if (badge) badge.addEventListener("click", () => togglePanel(), { passive:true });
+  if (closeBtn) closeBtn.addEventListener("click", (e) => { e.stopPropagation(); togglePanel(false); });
 
   console.log("👥 Live tracker running");
 </script>
