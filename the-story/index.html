@@ -98,14 +98,21 @@ body{
   width:100%;
   height:100%;
   object-fit:cover;
+  object-position:center center;
   transform:scale(1.1);
   animation:zoom 15s ease forwards;
   will-change: transform, opacity;
 }
 
+/* 🔥 ZAPANYAH FACE CORRECTION (Slide 3 only) */
+.slide:nth-child(3) img{
+  object-position:center 18%;
+  transform:scale(1.05);
+}
+
 @keyframes zoom{
-  from{transform:scale(1.1);}
-  to{transform:scale(1.2);}
+  from{transform:scale(1.05);}
+  to{transform:scale(1.12);}
 }
 
 .overlay{
@@ -150,10 +157,6 @@ p{
   transform:translateX(-50%);
   z-index:9999;
 
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-
   padding:11px 16px;
   border-radius:999px;
   border:1px solid rgba(255,255,255,.18);
@@ -165,14 +168,8 @@ p{
   letter-spacing:.08em;
   font-size:12px;
   cursor:pointer;
-  user-select:none;
 
   transition:opacity .35s ease, transform .35s ease;
-}
-
-#audioBtn:hover{
-  border-color:rgba(43,86,255,.55);
-  box-shadow:0 0 0 6px rgba(43,86,255,.10);
 }
 
 #audioBtn.hidden{
@@ -185,15 +182,16 @@ p{
 
 <body>
 
-<!-- ✅ Background Music -->
-<audio id="bg-music" loop preload="auto" playsinline></audio>
+<audio id="bg-music" loop preload="auto" playsinline>
+  <source src="/instrumental-audio.mp3" type="audio/mpeg">
+</audio>
 
 <div id="audioBtn">ENABLE AUDIO</div>
 
 <div class="topbar">
   <div class="topbar-inner">
     <div class="brand">
-      <img src="/abytransparent.png" alt="Awakened By YAH">
+      <img src="/abytransparent.png">
       AWAKENED BY YAH
     </div>
     <div class="nav">
@@ -205,10 +203,10 @@ p{
   </div>
 </div>
 
-<div class="slideshow" id="slideshow">
+<div class="slideshow">
 
   <div class="slide active">
-    <img src="/images/story/01.jpg" alt="Story 01">
+    <img src="/images/story/01.jpg">
     <div class="overlay"></div>
     <div class="content">
       <h2>THE BEGINNING</h2>
@@ -218,7 +216,7 @@ p{
   </div>
 
   <div class="slide">
-    <img src="/images/story/02.jpg" alt="Story 02">
+    <img src="/images/story/02.jpg">
     <div class="overlay"></div>
     <div class="content">
       <h2>URIYAH</h2>
@@ -227,9 +225,8 @@ p{
     </div>
   </div>
 
-  <!-- Slide 3 (ZAPANYAH uses 04.jpg) -->
   <div class="slide">
-    <img src="/images/story/04.jpg" alt="Zapanyah">
+    <img src="/images/story/04.jpg">
     <div class="overlay"></div>
     <div class="content">
       <h2>ZAPANYAH</h2>
@@ -238,9 +235,8 @@ p{
     </div>
   </div>
 
-  <!-- Slide 4 -->
   <div class="slide">
-    <img src="/images/story/03.jpg" alt="Story 03">
+    <img src="/images/story/03.jpg">
     <div class="overlay"></div>
     <div class="content">
       <h2>THE SOUND</h2>
@@ -250,7 +246,7 @@ p{
   </div>
 
   <div class="slide">
-    <img src="/images/story/05.jpg" alt="Story 05">
+    <img src="/images/story/05.jpg">
     <div class="overlay"></div>
     <div class="content">
       <h2>THE BATTLEFIELD</h2>
@@ -260,7 +256,7 @@ p{
   </div>
 
   <div class="slide">
-    <img src="/images/story/06.jpg" alt="Story 06">
+    <img src="/images/story/06.jpg">
     <div class="overlay"></div>
     <div class="content">
       <h2>THE MISSION</h2>
@@ -272,111 +268,39 @@ p{
 </div>
 
 <script>
-  // ---------------------------
-  // SLIDESHOW
-  // ---------------------------
-  const slides = Array.from(document.querySelectorAll('.slide'));
-  let current = 0;
+const slides = document.querySelectorAll('.slide');
+let current = 0;
 
-  function restartZoom(slide){
-    const img = slide.querySelector('img');
-    if(!img) return;
-    img.style.animation = 'none';
-    void img.offsetHeight;
-    img.style.animation = '';
+function nextSlide(){
+  slides[current].classList.remove('active');
+  current = (current + 1) % slides.length;
+  slides[current].classList.add('active');
+}
+setInterval(nextSlide, 9000);
+
+const music = document.getElementById("bg-music");
+const btn = document.getElementById("audioBtn");
+
+music.volume = 0;
+music.muted = true;
+
+btn.addEventListener("click", async () => {
+  try{
+    music.muted = false;
+    await music.play();
+    btn.classList.add("hidden");
+
+    let vol = 0;
+    const fade = setInterval(()=>{
+      vol += 0.01;
+      music.volume = vol;
+      if(vol >= 0.16) clearInterval(fade);
+    }, 220);
+
+  }catch(e){
+    btn.textContent = "CLICK AGAIN TO START AUDIO";
   }
-
-  function showSlide(i){
-    slides.forEach((s, idx) => {
-      s.classList.remove('active');
-      s.style.zIndex = (idx === i) ? 2 : 1;
-    });
-    const next = slides[i];
-    restartZoom(next);
-    next.classList.add('active');
-  }
-
-  function nextSlide(){
-    current = (current + 1) % slides.length;
-    showSlide(current);
-  }
-
-  showSlide(current);
-  setInterval(nextSlide, 9000);
-
-  // ---------------------------
-  // AUDIO: auto-find file + fade-in
-  // ---------------------------
-  const music = document.getElementById('bg-music');
-  const btn = document.getElementById('audioBtn');
-
-  const CANDIDATES = [
-    "/instrumental-audio.mp3",
-    "/audio/instrumental-audio.mp3",
-    "/the-story/instrumental-audio.mp3",
-    "/the-story/audio/instrumental-audio.mp3"
-  ];
-
-  const TARGET_VOL = 0.16;
-  const STEP = 0.01;
-  const STEP_MS = 220;
-
-  music.volume = 0;
-  music.muted = true;
-  music.loop = true;
-
-  async function pickAudio(){
-    for (const url of CANDIDATES){
-      try{
-        const res = await fetch(url, { method:"HEAD", cache:"no-store" });
-        if (res.ok){
-          const src = document.createElement("source");
-          src.src = url;
-          src.type = "audio/mpeg";
-          music.innerHTML = "";
-          music.appendChild(src);
-          music.load();
-          return url;
-        }
-      }catch(e){}
-    }
-    return null;
-  }
-
-  let started = false;
-
-  function fadeIn(){
-    let v = 0;
-    const t = setInterval(() => {
-      v = Math.min(TARGET_VOL, v + STEP);
-      music.volume = v;
-      if (v >= TARGET_VOL) clearInterval(t);
-    }, STEP_MS);
-  }
-
-  async function startAudio(){
-    if (started) return;
-    started = true;
-
-    const found = await pickAudio();
-    if (!found){
-      started = false;
-      btn.textContent = "AUDIO FILE NOT FOUND";
-      return;
-    }
-
-    try{
-      music.muted = false;
-      await music.play();
-      btn.classList.add("hidden");
-      fadeIn();
-    }catch(e){
-      started = false;
-      btn.textContent = "CLICK AGAIN TO START AUDIO";
-    }
-  }
-
-  btn.addEventListener("click", startAudio);
+});
 </script>
 
 </body>
