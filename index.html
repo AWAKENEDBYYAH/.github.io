@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+ 
    <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-374VL7E9G9"></script>
 <script>
@@ -1959,5 +1960,41 @@
       setActiveTrack(0, false);
     });
   </script>
+
+  <!-- ===================== FIREBASE (SAFE / MODULAR / GLOBAL HANDLE) ===================== -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { getDatabase } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+    // ✅ Paste your real values here later
+    const firebaseConfig = {
+      apiKey: "AIzaSyC8aLmUsgCS92SFwpt2LWMhyKJrwPDDplo",
+      authDomain: "awakened-by-yah-live.firebaseapp.com",
+      projectId: "awakened-by-yah-live",
+      storageBucket: "awakened-by-yah-live.appspot.com",
+      messagingSenderId: "753674439301",
+      appId: "1:753674439301:web:49cda8cacb13699778f7ec"
+    };
+
+    try {
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const database = getDatabase(app);
+
+      // ✅ Make Firebase available to non-module scripts if needed
+      window.ABY_FIREBASE = { app, auth, database };
+
+      console.log("🔥 Firebase READY:", {
+        projectId: firebaseConfig.projectId,
+        hasApiKey: !!firebaseConfig.apiKey && firebaseConfig.apiKey !== "YOUR_API_KEY",
+        hasAppId: !!firebaseConfig.appId && firebaseConfig.appId !== "YOUR_APP_ID"
+      });
+    } catch (err) {
+      console.warn("⚠️ Firebase failed to initialize (site will still run):", err);
+    }
+  </script>
+  <!-- ===================== END FIREBASE ===================== -->
+
 </body>
 </html>
