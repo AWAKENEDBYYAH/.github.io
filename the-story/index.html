@@ -12,8 +12,6 @@
   --bg:#020617;
   --text:#ffffff;
   --muted:#94a3b8;
-  --overlay:rgba(2,6,23,.75);
-  --accent:rgba(43,86,255,.85);
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
@@ -25,7 +23,7 @@ body{
   overflow:hidden;
 }
 
-/* Top Nav */
+/* NAV */
 .topbar{
   position:fixed;
   top:0;
@@ -74,7 +72,7 @@ body{
   border-color:rgba(43,86,255,.7);
 }
 
-/* Slide container */
+/* SLIDES */
 .slideshow{
   position:relative;
   height:100vh;
@@ -86,10 +84,12 @@ body{
   inset:0;
   opacity:0;
   transition:opacity 2s ease-in-out;
+  z-index:1;
 }
 
 .slide.active{
   opacity:1;
+  z-index:2;
 }
 
 .slide img{
@@ -100,6 +100,7 @@ body{
   object-fit:cover;
   transform:scale(1.1);
   animation:zoom 15s ease forwards;
+  will-change: transform, opacity;
 }
 
 @keyframes zoom{
@@ -110,7 +111,7 @@ body{
 .overlay{
   position:absolute;
   inset:0;
-  background:linear-gradient(180deg, rgba(0,0,0,.3), rgba(0,0,0,.85));
+  background:linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.86));
 }
 
 .content{
@@ -128,33 +129,71 @@ body{
   transform:translateY(0);
 }
 
-h1{
-  font-size:46px;
-  letter-spacing:.05em;
-  margin-bottom:12px;
-}
-
+h1{font-size:46px;margin-bottom:12px}
 h2{
   font-size:14px;
   letter-spacing:.15em;
   color:var(--muted);
   margin-bottom:16px;
 }
-
 p{
   font-size:17px;
   line-height:1.7;
   color:#e5e7eb;
+}
+
+/* AUDIO BUTTON */
+#audioBtn{
+  position:fixed;
+  left:50%;
+  bottom:22px;
+  transform:translateX(-50%);
+  z-index:9999;
+
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  padding:11px 16px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.18);
+  background:rgba(2,6,23,.65);
+  backdrop-filter: blur(10px);
+
+  color:#fff;
+  font-weight:900;
+  letter-spacing:.08em;
+  font-size:12px;
+  cursor:pointer;
+  user-select:none;
+
+  transition:opacity .35s ease, transform .35s ease;
+}
+
+#audioBtn:hover{
+  border-color:rgba(43,86,255,.55);
+  box-shadow:0 0 0 6px rgba(43,86,255,.10);
+}
+
+#audioBtn.hidden{
+  opacity:0;
+  transform:translateX(-50%) translateY(10px);
+  pointer-events:none;
 }
 </style>
 </head>
 
 <body>
 
+<!-- ✅ Background Music -->
+<audio id="bg-music" loop preload="auto" playsinline></audio>
+
+<div id="audioBtn">ENABLE AUDIO</div>
+
 <div class="topbar">
   <div class="topbar-inner">
     <div class="brand">
-      <img src="/abytransparent.png">
+      <img src="/abytransparent.png" alt="Awakened By YAH">
       AWAKENED BY YAH
     </div>
     <div class="nav">
@@ -168,9 +207,8 @@ p{
 
 <div class="slideshow" id="slideshow">
 
-  <!-- Slide 1 -->
   <div class="slide active">
-    <img src="/images/story/01.jpg">
+    <img src="/images/story/01.jpg" alt="Story 01">
     <div class="overlay"></div>
     <div class="content">
       <h2>THE BEGINNING</h2>
@@ -179,9 +217,8 @@ p{
     </div>
   </div>
 
-  <!-- Slide 2 -->
   <div class="slide">
-    <img src="/images/story/02.jpg">
+    <img src="/images/story/02.jpg" alt="Story 02">
     <div class="overlay"></div>
     <div class="content">
       <h2>URIYAH</h2>
@@ -190,9 +227,9 @@ p{
     </div>
   </div>
 
-  <!-- Slide 3 -->
+  <!-- Slide 3 (ZAPANYAH uses 04.jpg) -->
   <div class="slide">
-    <img src="/images/story/03.jpg">
+    <img src="/images/story/04.jpg" alt="Zapanyah">
     <div class="overlay"></div>
     <div class="content">
       <h2>ZAPANYAH</h2>
@@ -203,7 +240,7 @@ p{
 
   <!-- Slide 4 -->
   <div class="slide">
-    <img src="/images/story/04.jpg">
+    <img src="/images/story/03.jpg" alt="Story 03">
     <div class="overlay"></div>
     <div class="content">
       <h2>THE SOUND</h2>
@@ -212,9 +249,8 @@ p{
     </div>
   </div>
 
-  <!-- Slide 5 -->
   <div class="slide">
-    <img src="/images/story/05.jpg">
+    <img src="/images/story/05.jpg" alt="Story 05">
     <div class="overlay"></div>
     <div class="content">
       <h2>THE BATTLEFIELD</h2>
@@ -223,9 +259,8 @@ p{
     </div>
   </div>
 
-  <!-- Slide 6 -->
   <div class="slide">
-    <img src="/images/story/06.jpg">
+    <img src="/images/story/06.jpg" alt="Story 06">
     <div class="overlay"></div>
     <div class="content">
       <h2>THE MISSION</h2>
@@ -237,16 +272,111 @@ p{
 </div>
 
 <script>
-const slides = document.querySelectorAll('.slide');
-let current = 0;
+  // ---------------------------
+  // SLIDESHOW
+  // ---------------------------
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  let current = 0;
 
-function nextSlide(){
-  slides[current].classList.remove('active');
-  current = (current + 1) % slides.length;
-  slides[current].classList.add('active');
-}
+  function restartZoom(slide){
+    const img = slide.querySelector('img');
+    if(!img) return;
+    img.style.animation = 'none';
+    void img.offsetHeight;
+    img.style.animation = '';
+  }
 
-setInterval(nextSlide, 9000); // 9 seconds per slide
+  function showSlide(i){
+    slides.forEach((s, idx) => {
+      s.classList.remove('active');
+      s.style.zIndex = (idx === i) ? 2 : 1;
+    });
+    const next = slides[i];
+    restartZoom(next);
+    next.classList.add('active');
+  }
+
+  function nextSlide(){
+    current = (current + 1) % slides.length;
+    showSlide(current);
+  }
+
+  showSlide(current);
+  setInterval(nextSlide, 9000);
+
+  // ---------------------------
+  // AUDIO: auto-find file + fade-in
+  // ---------------------------
+  const music = document.getElementById('bg-music');
+  const btn = document.getElementById('audioBtn');
+
+  const CANDIDATES = [
+    "/instrumental-audio.mp3",
+    "/audio/instrumental-audio.mp3",
+    "/the-story/instrumental-audio.mp3",
+    "/the-story/audio/instrumental-audio.mp3"
+  ];
+
+  const TARGET_VOL = 0.16;
+  const STEP = 0.01;
+  const STEP_MS = 220;
+
+  music.volume = 0;
+  music.muted = true;
+  music.loop = true;
+
+  async function pickAudio(){
+    for (const url of CANDIDATES){
+      try{
+        const res = await fetch(url, { method:"HEAD", cache:"no-store" });
+        if (res.ok){
+          const src = document.createElement("source");
+          src.src = url;
+          src.type = "audio/mpeg";
+          music.innerHTML = "";
+          music.appendChild(src);
+          music.load();
+          return url;
+        }
+      }catch(e){}
+    }
+    return null;
+  }
+
+  let started = false;
+
+  function fadeIn(){
+    let v = 0;
+    const t = setInterval(() => {
+      v = Math.min(TARGET_VOL, v + STEP);
+      music.volume = v;
+      if (v >= TARGET_VOL) clearInterval(t);
+    }, STEP_MS);
+  }
+
+  async function startAudio(){
+    if (started) return;
+    started = true;
+
+    const found = await pickAudio();
+    if (!found){
+      started = false;
+      btn.textContent = "AUDIO FILE NOT FOUND";
+      return;
+    }
+
+    try{
+      music.muted = false;
+      await music.play();
+      btn.classList.add("hidden");
+      fadeIn();
+    }catch(e){
+      started = false;
+      btn.textContent = "CLICK AGAIN TO START AUDIO";
+    }
+  }
+
+  btn.addEventListener("click", startAudio);
 </script>
 
 </body>
