@@ -103,8 +103,6 @@ body{
   object-fit:cover;
   transform:scale(1.1);
   animation:zoom 15s ease forwards;
-
-  /* ✅ helps prevent “later slides not painting” issues */
   will-change: transform, opacity;
 }
 
@@ -152,10 +150,20 @@ p{
   line-height:1.7;
   color:#e5e7eb;
 }
+
+/* (Optional) keeps audio element hidden */
+#audioWrap{display:none;}
 </style>
 </head>
 
 <body>
+
+<!-- ✅ Background Music (muted autoplay, fades in after first interaction) -->
+<div id="audioWrap">
+  <audio id="bg-music" autoplay loop muted playsinline preload="auto">
+    <source src="/instrumental-audio.mp3" type="audio/mpeg">
+  </audio>
+</div>
 
 <div class="topbar">
   <div class="topbar-inner">
@@ -196,9 +204,9 @@ p{
     </div>
   </div>
 
-  <!-- Slide 3 -->
+  <!-- Slide 3 (ZAPANYAH uses 04.jpg) -->
   <div class="slide">
-    <img src="/images/story/03.jpg" alt="Story 03">
+    <img src="/images/story/04.jpg" alt="Zapanyah">
     <div class="overlay"></div>
     <div class="content">
       <h2>ZAPANYAH</h2>
@@ -207,9 +215,9 @@ p{
     </div>
   </div>
 
-  <!-- Slide 4 -->
+  <!-- Slide 4 (Now uses 03.jpg) -->
   <div class="slide">
-    <img src="/images/story/04.jpg" alt="Story 04">
+    <img src="/images/story/03.jpg" alt="Story 03">
     <div class="overlay"></div>
     <div class="content">
       <h2>THE SOUND</h2>
@@ -243,6 +251,9 @@ p{
 </div>
 
 <script>
+  // ---------------------------
+  // SLIDESHOW (stable rendering)
+  // ---------------------------
   const slides = Array.from(document.querySelectorAll('.slide'));
   let current = 0;
 
@@ -250,9 +261,9 @@ p{
     const img = slide.querySelector('img');
     if(!img) return;
 
-    // Force restart the CSS zoom animation each time the slide becomes active
+    // Force restart zoom animation on activation
     img.style.animation = 'none';
-    void img.offsetHeight; // force reflow
+    void img.offsetHeight; // reflow
     img.style.animation = '';
   }
 
@@ -272,11 +283,48 @@ p{
     showSlide(current);
   }
 
-  // Start
   showSlide(current);
-
-  // 9 seconds per slide (keep same timing)
   setInterval(nextSlide, 9000);
+
+  // ---------------------------
+  // BACKGROUND MUSIC (muted -> fade in)
+  // ---------------------------
+  const music = document.getElementById('bg-music');
+  const TARGET_VOL = 0.15;     // soft level (adjust if you want)
+  const STEP = 0.01;           // fade step
+  const STEP_MS = 220;         // fade speed (higher = slower)
+
+  // Start muted autoplay attempt (works in most browsers)
+  (async function(){
+    try { await music.play(); } catch(e) {}
+  })();
+
+  let startedSound = false;
+
+  function fadeInMusic(){
+    music.volume = 0;
+    let v = 0;
+    const fade = setInterval(() => {
+      v = Math.min(TARGET_VOL, v + STEP);
+      music.volume = v;
+      if (v >= TARGET_VOL) clearInterval(fade);
+    }, STEP_MS);
+  }
+
+  async function enableSound(){
+    if (startedSound) return;
+    startedSound = true;
+
+    music.muted = false;
+
+    try { await music.play(); } catch(e) {}
+
+    fadeInMusic();
+  }
+
+  // First user interaction enables sound + fade
+  document.addEventListener('pointerdown', enableSound, { once:true });
+  document.addEventListener('keydown', enableSound, { once:true });
 </script>
 
 </body>
