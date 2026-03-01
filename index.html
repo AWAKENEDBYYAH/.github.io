@@ -28,43 +28,12 @@
     }
   </script>
 
-  <!-- ===================== BRAND ICONS ===================== -->
-  <!-- Standard Favicons -->
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/aby-favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/aby-favicon-16x16.png">
-
-  <!-- Apple iOS Home Screen -->
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/aby-apple-touch-180x180.png">
-
-  <!-- Android / Chrome -->
-  <link rel="icon" type="image/png" sizes="192x192" href="/images/aby-android-192x192.png">
-
-  <!-- Optional fallback -->
-  <link rel="icon" href="/images/aby-favicon-32x32.png">
-
-  <!-- Browser UI color (Android/Chrome) -->
-  <meta name="theme-color" content="#1C39A8">
-  <!-- ===================== END BRAND ICONS ===================== -->
+  <!-- ✅ UPDATED: use official logo for browser icon -->
+  <link rel="icon" type="image/png" href="/images/aby-official-logo.png">
+  
+  <link rel="apple-touch-icon" href="/favicon.png">
 
   <title>Awakened By YAH — Truth-Based Soul • R&amp;B • Praise</title>
-
-  <!-- ===================== OPEN GRAPH (SOCIAL PREVIEW) ===================== -->
-  <meta property="og:title" content="Awakened By YAH — Truth-Based Soul • R&B • Praise">
-  <meta property="og:description" content="Stream unlimited. Own the music. Support the movement. Official home of Awakened By YAH.">
-  <meta property="og:url" content="https://awakenedbyyahmusic.com/">
-  <meta property="og:type" content="website">
-  <!-- IMPORTANT: create /images/aby-share.jpg (1200x630) -->
-  <meta property="og:image" content="https://awakenedbyyahmusic.com/images/aby-share.jpg">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-
-  <!-- Twitter -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Awakened By YAH">
-  <meta name="twitter:description" content="Truth-Based Soul • R&B • Praise">
-  <meta name="twitter:image" content="https://awakenedbyyahmusic.com/images/aby-share.jpg">
-  <!-- ===================== END OPEN GRAPH ===================== -->
-
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <!-- CINZEL BOLD (intro title) -->
@@ -238,7 +207,7 @@
 
     /* QUICK LINKS */
     .quick-links {
-      margin-bottom: 1.1rem; /* tightened slightly to make room for buy bar */
+      margin-bottom: 0.9rem; /* tightened slightly to make room for docked live pill */
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
@@ -308,6 +277,61 @@
       background: rgba(251,191,36,0.12);
       border-color: rgba(251,191,36,1);
     }
+
+    /* ===================== LIVE TRACKER (DOCKED UNDER NAV) ===================== */
+    #liveWrap{
+      width:100%;
+      max-width:1200px;
+      margin: 0 auto 1.05rem;   /* spacing under nav */
+      padding: 0 1.75rem;       /* match shell padding */
+      display:flex;
+      justify-content:flex-start;
+      position: relative;       /* anchor dropdown */
+      z-index: 60;
+    }
+
+    #liveBadge{
+      position: relative;
+      background:rgba(15,23,42,.88);
+      border:1px solid rgba(251,191,36,.55);
+      color:#fbbf24;
+      padding:10px 14px;
+      border-radius:999px;
+      font:900 12px/1 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      letter-spacing:.18em; text-transform:uppercase;
+      backdrop-filter: blur(10px);
+      box-shadow:0 14px 34px rgba(0,0,0,.45);
+      display:inline-flex; align-items:center; gap:10px;
+      cursor:pointer;
+      user-select:none;
+    }
+
+    #livePanel{
+      position:absolute;
+      left:0;
+      top: calc(100% + 10px);
+      width:min(360px, calc(100vw - 32px));
+      background:rgba(2,6,23,.94);
+      border:1px solid rgba(148,163,184,.35);
+      border-radius:16px;
+      padding:12px 12px 10px;
+      box-shadow:0 18px 46px rgba(0,0,0,.75);
+      backdrop-filter: blur(12px);
+      display:none;
+    }
+
+    @media (max-width: 640px){
+      #liveWrap{
+        padding: 0 1.25rem;
+        justify-content:center;   /* centered under mobile nav */
+      }
+      #livePanel{
+        left:50%;
+        transform:translateX(-50%);
+        width:min(360px, calc(100vw - 24px));
+      }
+    }
+    /* ===================== END LIVE TRACKER (DOCKED) ===================== */
 
     /* ===================== NEW: BATTLEFIELD BUY BAR ===================== */
     .bf-buybar{
@@ -1479,6 +1503,33 @@
         </a>
       </nav>
 
+      <!-- ✅ LIVE TRACKER (DOCKED UNDER NAV — NO OVERLAP) -->
+      <div id="liveWrap" aria-label="Live stats">
+        <div id="liveBadge" role="button" aria-label="Toggle live visitors panel">
+          👥 <span id="liveCount">0</span> LIVE
+          <span style="opacity:.55;">•</span>
+          👣 <span id="todayUnique">0</span> TODAY
+          <span style="opacity:.55;">•</span>
+          <span id="pagesHint" style="opacity:.9;">PAGES</span>
+        </div>
+
+        <div id="livePanel" aria-label="Live visitors details">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <div style="color:#e5e7eb; font-weight:900; letter-spacing:.16em; text-transform:uppercase; font-size:11px;">
+              Live Visitors by Page
+            </div>
+            <button id="livePanelClose" style="
+              border:none; background:transparent; color:#94a3b8;
+              font-weight:900; cursor:pointer; font-size:14px;
+            " aria-label="Close">✕</button>
+          </div>
+          <div id="livePages" style="display:flex; flex-direction:column; gap:6px;"></div>
+          <div style="margin-top:10px; color:#94a3b8; font-size:10px; letter-spacing:.12em; text-transform:uppercase;">
+            Updates in real time
+          </div>
+        </div>
+      </div>
+
       <!-- ✅ NEW: BATTLEFIELD BUY BAR (HIGH VISIBILITY, CLEAN) -->
       <div class="bf-buybar" role="region" aria-label="The Battlefield physical editions">
         <div class="bf-buybar__inner">
@@ -2117,53 +2168,6 @@
   console.log("👥 Live tracker running");
 </script>
   <!-- ===================== END FIREBASE ===================== -->
-<!-- ✅ LIVE VISITORS BADGE -->
-<!-- ✅ LIVE VISITORS BADGE (LIVE + TODAY + PAGES) -->
-<div id="liveBadge" style="
-  position:fixed; left:16px; bottom:16px; z-index:9999;
-  background:rgba(15,23,42,.88);
-  border:1px solid rgba(251,191,36,.55);
-  color:#fbbf24;
-  padding:10px 14px;
-  border-radius:999px;
-  font:900 12px/1 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-  letter-spacing:.18em; text-transform:uppercase;
-  backdrop-filter: blur(10px);
-  box-shadow:0 14px 34px rgba(0,0,0,.6);
-  display:flex; align-items:center; gap:10px;
-">
-  👥 <span id="liveCount">0</span> LIVE
-  <span style="opacity:.55;">•</span>
-  👣 <span id="todayUnique">0</span> TODAY
-  <span style="opacity:.55;">•</span>
-  <span id="pagesHint" style="opacity:.9;">PAGES</span>
-</div>
 
-<!-- mini panel (click badge to toggle) -->
-<div id="livePanel" style="
-  position:fixed; left:16px; bottom:62px; z-index:9999;
-  width:min(320px, calc(100vw - 32px));
-  background:rgba(2,6,23,.92);
-  border:1px solid rgba(148,163,184,.35);
-  border-radius:16px;
-  padding:12px 12px 10px;
-  box-shadow:0 18px 46px rgba(0,0,0,.75);
-  backdrop-filter: blur(12px);
-  display:none;
-">
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-    <div style="color:#e5e7eb; font-weight:900; letter-spacing:.16em; text-transform:uppercase; font-size:11px;">
-      Live Visitors by Page
-    </div>
-    <button id="livePanelClose" style="
-      border:none; background:transparent; color:#94a3b8;
-      font-weight:900; cursor:pointer; font-size:14px;
-    " aria-label="Close">✕</button>
-  </div>
-  <div id="livePages" style="display:flex; flex-direction:column; gap:6px;"></div>
-  <div style="margin-top:10px; color:#94a3b8; font-size:10px; letter-spacing:.12em; text-transform:uppercase;">
-    Updates in real time
-  </div>
-</div>
 </body>
 </html>
