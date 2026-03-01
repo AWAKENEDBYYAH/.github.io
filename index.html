@@ -101,7 +101,7 @@
       white-space: nowrap;
       padding: 8px 14px;
       will-change: transform;
-      animation: tickerScroll 45s linear infinite; /* ✅ SLOWED WAY DOWN */
+      animation: tickerScroll 45s linear infinite;
     }
 
     .founders-ticker .ticker-move span{
@@ -126,7 +126,6 @@
       100% { transform: translateX(-50%); }
     }
 
-    /* optional: pause on hover (nice on desktop) */
     .founders-ticker:hover .ticker-move{ animation-play-state: paused; }
 
     @media (max-width: 640px){
@@ -207,7 +206,7 @@
 
     /* QUICK LINKS */
     .quick-links {
-      margin-bottom: 0.9rem; /* tightened slightly to make room for docked live pill */
+      margin-bottom: 0.9rem;
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
@@ -268,7 +267,6 @@
       border-color: rgba(96,165,250,1);
     }
 
-    /* ✅ NEW: Reviews link styling (matches brand gold CTA) */
     .quick-links a.reviews-link{
       border-color: rgba(251,191,36,0.7);
       color: #fbbf24;
@@ -282,11 +280,11 @@
     #liveWrap{
       width:100%;
       max-width:1200px;
-      margin: 0 auto 1.05rem;   /* spacing under nav */
-      padding: 0 1.75rem;       /* match shell padding */
+      margin: 0 auto 1.05rem;
+      padding: 0 1.75rem;
       display:flex;
       justify-content:flex-start;
-      position: relative;       /* anchor dropdown */
+      position: relative;
       z-index: 60;
     }
 
@@ -323,7 +321,7 @@
     @media (max-width: 640px){
       #liveWrap{
         padding: 0 1.25rem;
-        justify-content:center;   /* centered under mobile nav */
+        justify-content:center;
       }
       #livePanel{
         left:50%;
@@ -480,7 +478,6 @@
       color: #e5e7eb;
     }
 
-    /* ===================== SUPPORT THE WORK (HERO MICRO-CTA) ===================== */
     .support-work{
       margin-top: 1.15rem;
       padding-top: 1.05rem;
@@ -502,7 +499,6 @@
       background: rgba(251,191,36,0.12);
       border-color: rgba(251,191,36,1);
     }
-    /* ===================== END SUPPORT CTA ===================== */
 
     .hero-right {
       display: flex;
@@ -526,7 +522,6 @@
       object-fit:contain;
     }
 
-    /* ===================== NEW: FEATURED RELEASE CARD (UNDER HERO) ===================== */
     .bf-feature{
       margin-top: 1.25rem;
     }
@@ -596,9 +591,7 @@
       background: linear-gradient(120deg, #fbbf24, #f59e0b);
       border-color: rgba(0,0,0,0.20);
     }
-    /* ===================== END FEATURED RELEASE ===================== */
 
-    /* SECTIONS */
     .extra-section { margin-top: 2.5rem; }
 
     .section-card {
@@ -631,7 +624,6 @@
       max-width: 40rem;
     }
 
-    /* MUSIC PLAYER + PLAYLIST */
     .music-layout {
       display: grid;
       grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.1fr);
@@ -728,7 +720,6 @@
       background: rgba(15,23,42,0.9);
     }
 
-    /* PLAYLIST */
     .playlist {
       list-style: none;
       margin-top: 0.9rem;
@@ -798,7 +789,6 @@
       color: #9ca3af;
     }
 
-    /* VIDEO GRID */
     .video-grid {
       margin-top: 1.2rem;
       display: grid;
@@ -865,7 +855,6 @@
 
     .video-card:hover img { transform: scale(1.04); }
 
-    /* SIGNUP */
     #signup .section-card { text-align: center; }
 
     #signup .section-kicker,
@@ -889,7 +878,6 @@
       color: #9ca3af;
     }
 
-    /* FOOTER */
     .site-footer {
       margin-top: 2.8rem;
       padding-top: 1.1rem;
@@ -925,7 +913,6 @@
       transform:translateY(-1px);
     }
 
-    /* ✅ NEW: Entity clarification (music-only signal) */
     .entity-clarification{
       margin: 0.75rem auto 0.85rem;
       padding-top: 0.85rem;
@@ -938,7 +925,6 @@
       color: rgba(148,163,184,0.95);
     }
 
-    /* ✅ SMALL FLOATING MUSIC LINK (NON-DISRUPTIVE) */
     .music-fab{
       position:fixed;
       bottom:18px;
@@ -1094,7 +1080,6 @@
       pointer-events:none;
     }
 
-    /* ✅ Subtle sound hint (replaces ugly button on mobile) */
     #soundHint{
       position:absolute;
       left:50%;
@@ -1112,7 +1097,7 @@
       text-transform:uppercase;
       backdrop-filter: blur(10px);
       box-shadow:0 18px 46px rgba(0,0,0,.55);
-      pointer-events:none; /* tap anywhere */
+      pointer-events:none;
       animation:pulseHint 2.1s ease-in-out infinite;
     }
     @keyframes pulseHint{
@@ -1120,7 +1105,6 @@
       50%{ opacity:1; transform:translateX(-50%) scale(1); }
     }
 
-    /* ✅ Keep desktop button available if needed */
     #introSoundBtn{
       position:absolute;
       left:50%;
@@ -1146,7 +1130,6 @@
       color:#fbbf24;
     }
 
-    /* ===== MOBILE INTRO BOOST (make every transition obvious) ===== */
     @media (max-width: 640px){
       .introBg{ filter: blur(12px); }
 
@@ -1176,7 +1159,6 @@
         font-size: 22px;
       }
 
-      /* Hide the button on mobile, show the hint instead */
       #introSoundBtn{ display:none !important; }
       #soundHint{ display:inline-flex; }
     }
@@ -1209,11 +1191,10 @@
 </head>
 
 <body>
-  <!-- ✅ TOP TICKER (away from nav, fixed at very top) -->
+  <!-- ✅ TOP TICKER -->
   <div class="founders-ticker" aria-label="Founders circle ticker">
     <div class="ticker-shell">
       <div class="ticker-track">
-        <!-- duplicate content twice so the loop is seamless -->
         <div class="ticker-move" aria-hidden="true">
           <span>🎧 UNLIMITED STREAMING</span><i class="dot"></i><span>⬇️ OWN THE MUSIC</span><i class="dot"></i><span>🔥 SUPPORT THE MOVEMENT</span><i class="dot"></i>
           <span>🎧 UNLIMITED STREAMING</span><i class="dot"></i><span>⬇️ OWN THE MUSIC</span><i class="dot"></i><span>🔥 SUPPORT THE MOVEMENT</span><i class="dot"></i>
@@ -1241,15 +1222,12 @@
       <img id="bannerImg" src="/intro/abybanner.png" alt="Final Banner">
     </div>
 
-    <!-- ✅ Intro Audio (hybrid autoplay + mobile tap) -->
     <audio id="introAudio" preload="auto" playsinline>
       <source src="/intro/intro_stem.wav" type="audio/wav" />
     </audio>
 
-    <!-- ✅ Mobile hint (tap anywhere) -->
     <div id="soundHint">TAP TO ENABLE SOUND</div>
 
-    <!-- ✅ Desktop fallback button (only appears if autoplay blocked) -->
     <button id="introSoundBtn" type="button" aria-label="Enable intro sound">
       🔊 TAP FOR SOUND
     </button>
@@ -1257,7 +1235,6 @@
 
   <script>
   (function(){
-    // 🔒 Session lock: play intro once per session
     if (sessionStorage.getItem('aby_intro_seen')) {
       document.getElementById('introOverlay')?.remove();
       return;
@@ -1276,7 +1253,6 @@
     const isMobile = matchMedia("(max-width: 640px)").matches
       || (matchMedia("(pointer:coarse)").matches || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent));
 
-    // Slower on mobile so people actually SEE the transitions
     const PER_PHOTO_MS = isMobile ? 1350 : 1000;
     const FADE_OUT_MS  = isMobile ? 160  : 220;
 
@@ -1289,7 +1265,6 @@
     const bannerReveal = document.getElementById('bannerReveal');
     const overlay      = document.getElementById('introOverlay');
 
-    // ======= INTRO AUDIO (HYBRID) =======
     const introAudio = document.getElementById('introAudio');
     const soundBtn   = document.getElementById('introSoundBtn');
     const soundHint  = document.getElementById('soundHint');
@@ -1333,12 +1308,10 @@
         if (soundBtn) soundBtn.style.display = "none";
         if (soundHint) soundHint.style.opacity = "0";
       }catch(e){
-        // autoplay blocked (desktop)
         if (!isMobile && soundBtn) soundBtn.style.display = "inline-flex";
       }
     }
 
-    // Desktop: attempt autoplay, fallback to button
     if (!isMobile){
       setTimeout(tryPlayIntroAudio, 140);
       if (soundBtn){
@@ -1346,13 +1319,11 @@
       }
     }
 
-    // Mobile: tap anywhere to enable sound (hint shows)
     if (isMobile){
       const unlock = () => { tryPlayIntroAudio(); };
       overlay.addEventListener("click", unlock, { passive:true });
       overlay.addEventListener("touchstart", unlock, { passive:true });
     }
-    // ======= END INTRO AUDIO =======
 
     function sleep(ms){ return new Promise(r=>setTimeout(r, ms)); }
     function rand(min,max){ return Math.random()*(max-min)+min; }
@@ -1369,7 +1340,6 @@
 
     function placeRandom(){
       if (isMobile){
-        // Keep it centered and strong on phones
         hit.style.left = "50vw";
         hit.style.top  = "54vh";
         hit.style.transform =
@@ -1388,7 +1358,6 @@
       placeRandom();
       hit.classList.add('show');
 
-      // Mobile punch-in for visibility
       if (isMobile){
         hit.style.transform += " scale(1.02)";
         setTimeout(()=> {
@@ -1478,10 +1447,8 @@
   <div class="page">
     <main class="shell">
 
-      <!-- TOP BAR -->
       <header class="top-bar">
         <div class="brand-block">
-          <!-- ✅ UPDATED: new official logo path, absolute so it works from any folder page -->
           <img src="/images/aby-official-logo.png" class="brand-logo" alt="AWAKENED BY YAH logo" />
           <div class="brand-text">
             <span class="brand-title">AWAKENED BY YAH</span>
@@ -1500,17 +1467,11 @@
         </div>
       </header>
 
-      <!-- QUICK LINKS -->
       <nav class="quick-links">
         <a href="#music">Music Player</a>
         <a href="/albums/">Albums</a>
-
-        <!-- ✅ NEW: THE STORY link -->
         <a href="/the-story/">THE STORY</a>
-
-        <!-- ✅ NEW: Listener Ratings link -->
         <a class="reviews-link" href="/reviews/">⭐ Listener Ratings</a>
-
         <a href="#videos">Videos</a>
         <a href="#signup">Email Signup</a>
 
@@ -1535,9 +1496,9 @@
         </a>
       </nav>
 
-      <!-- ✅ LIVE TRACKER (DOCKED UNDER NAV — NO OVERLAP) -->
+      <!-- ✅ LIVE TRACKER -->
       <div id="liveWrap" aria-label="Live stats">
-        <div id="liveBadge" role="button" aria-label="Toggle live visitors panel">
+        <div id="liveBadge" role="button" aria-label="Toggle live visitors panel" aria-expanded="false">
           👥 <span id="liveCount">0</span> LIVE
           <span style="opacity:.55;">•</span>
           👣 <span id="todayUnique">0</span> TODAY
@@ -1562,7 +1523,6 @@
         </div>
       </div>
 
-      <!-- ✅ NEW: BATTLEFIELD BUY BAR (HIGH VISIBILITY, CLEAN) -->
       <div class="bf-buybar" role="region" aria-label="The Battlefield physical editions">
         <div class="bf-buybar__inner">
           <div class="bf-buybar__left">
@@ -1577,7 +1537,6 @@
         </div>
       </div>
 
-      <!-- HERO -->
       <section class="hero">
         <div class="hero-left">
           <p class="eyebrow">TRUTH-BASED • SET-APART</p>
@@ -1598,13 +1557,10 @@
             <a href="#signup" class="btn btn-outline">Join The Remnant List</a>
           </div>
 
-          <!-- ✅ NEW: SUPPORT THE WORK (links ONLY to Founders page) -->
           <div class="support-work" aria-label="Support the work">
             <p>If this music speaks to you,<br>support the work and help carry the message forward.</p>
             <a href="/subscribe/founders/" class="btn btn-outline support-btn">SUPPORT THE WORK</a>
           </div>
-          <!-- ✅ END NEW SUPPORT CTA -->
-
         </div>
 
         <aside class="hero-right">
@@ -1620,7 +1576,6 @@
         </aside>
       </section>
 
-      <!-- ✅ NEW: FEATURED RELEASE CARD (DIRECT PURCHASE UNDER “ALBUM CARD” FEEL) -->
       <section class="bf-feature" aria-label="Featured release: The Battlefield">
         <div class="bf-card">
           <div>
@@ -1642,7 +1597,6 @@
         </div>
       </section>
 
-      <!-- MUSIC PLAYER + PLAYLIST -->
       <section id="music" class="extra-section">
         <div class="section-card music-player">
           <p class="section-kicker">Soundtrack For The Awakened</p>
@@ -1704,7 +1658,6 @@
         </div>
       </section>
 
-      <!-- VIDEOS SECTION -->
       <section id="videos" class="extra-section">
         <div class="section-card">
           <p class="section-kicker">Watch &amp; Share</p>
@@ -1714,8 +1667,6 @@
           </p>
 
           <div class="video-grid">
-
-            <!-- ✅ KEEP: 1OAVoq37Dko -->
             <div class="video-card">
               <a href="https://youtu.be/1OAVoq37Dko?si=bDp14nQPlGLU44p1" target="_blank" rel="noopener">
                 <div class="video-thumb-wrap">
@@ -1728,7 +1679,6 @@
               </a>
             </div>
 
-            <!-- ✅ KEEP: DQJLaqlsi8E -->
             <div class="video-card">
               <a href="https://youtu.be/DQJLaqlsi8E?si=81XgrXz_dDwMKyh-" target="_blank" rel="noopener">
                 <div class="video-thumb-wrap">
@@ -1741,7 +1691,6 @@
               </a>
             </div>
 
-            <!-- ✅ KEEP: 6QeUzd-GIm0 -->
             <div class="video-card">
               <a href="https://youtu.be/6QeUzd-GIm0?si=NJmNSKAA3wxF_3fD" target="_blank" rel="noopener">
                 <div class="video-thumb-wrap">
@@ -1754,7 +1703,6 @@
               </a>
             </div>
 
-            <!-- ✅ NEW (FIRST of replacements): THINK ABOUT ME -->
             <div class="video-card">
               <a href="https://youtu.be/hTG-AkjUjnk?si=pd2MjDtr_9Cp7aK1" target="_blank" rel="noopener">
                 <div class="video-thumb-wrap">
@@ -1767,7 +1715,6 @@
               </a>
             </div>
 
-            <!-- ✅ NEW (SECOND TO LAST): NOT MY WILL -->
             <div class="video-card">
               <a href="https://youtu.be/wQFPnR_yma4?si=LeEB5n2JOb3F4jdJ" target="_blank" rel="noopener">
                 <div class="video-thumb-wrap">
@@ -1780,7 +1727,6 @@
               </a>
             </div>
 
-            <!-- ✅ NEW (LAST): THE SECRET PLACE -->
             <div class="video-card">
               <a href="https://youtu.be/DSLxl34PhHQ?si=z26IcbZ4dEErW3mX" target="_blank" rel="noopener">
                 <div class="video-thumb-wrap">
@@ -1792,12 +1738,10 @@
                 </div>
               </a>
             </div>
-
           </div>
         </div>
       </section>
 
-      <!-- EMAIL SIGNUP -->
       <section id="signup" class="extra-section">
         <div class="section-card">
           <p class="section-kicker">Stay Connected</p>
@@ -1820,7 +1764,6 @@
         </div>
       </section>
 
-      <!-- FOOTER -->
       <footer class="site-footer">
         <div class="footer-socials">
           <a href="https://open.spotify.com/artist/0u6jzM2fSRodmTq61j0z0R?si=fP3WoH4ORbuPNaazgkN0aA" target="_blank" rel="noopener">Spotify</a>
@@ -1828,7 +1771,6 @@
           <a href="https://www.tiktok.com/@awakened_by_yah?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">TikTok</a>
         </div>
 
-        <!-- ✅ NEW: Entity clarification (music-only signal for Google) -->
         <div class="entity-clarification">
           AWAKENED BY YAH is an independent music artist brand.<br>
           Not affiliated with any apparel or clothing companies.
@@ -1840,10 +1782,9 @@
     </main>
   </div>
 
-  <!-- ✅ SMALL NON-DISRUPTIVE LINK TO MUSIC PAGE (UPDATED) -->
   <a href="/music/" class="music-fab" aria-label="Open Music Player">🎧 Music</a>
 
-  <!-- ===================== NEW: AMBIENT HOMEPAGE LOOP (AUTO FADE-IN) ===================== -->
+  <!-- ===================== AMBIENT HOMEPAGE LOOP ===================== -->
   <audio id="siteAmbient" preload="auto" loop playsinline>
     <source src="/audio/site-ambient.mp3" type="audio/mpeg">
   </audio>
@@ -1853,12 +1794,12 @@
     const ambient = document.getElementById('siteAmbient');
     if (!ambient) return;
 
-    const player = document.getElementById('audio-player'); // main music player on page
+    const player = document.getElementById('audio-player');
     const introAudio = document.getElementById('introAudio');
 
-    const MAX_VOL = 0.16;     // subtle ambiance
-    const IN_STEP = 0.01;     // fade in speed
-    const OUT_STEP = 0.02;    // fade out speed
+    const MAX_VOL = 0.16;
+    const IN_STEP = 0.01;
+    const OUT_STEP = 0.02;
     const TICK_MS = 120;
 
     let fadeTimer = null;
@@ -1891,11 +1832,10 @@
     }
 
     function playAmbient(){
-      // Don't start if main player is actively playing
       if (player && !player.paused) return;
 
       try{
-        ambient.muted = true;   // helps autoplay
+        ambient.muted = true;
         ambient.volume = 0;
       }catch(e){}
 
@@ -1906,7 +1846,6 @@
           try { ambient.muted = false; } catch(e){}
           fadeTo(MAX_VOL, IN_STEP);
         }).catch(() => {
-          // Autoplay blocked (mobile): enable on first user interaction
           const unlock = () => {
             document.removeEventListener('click', unlock);
             document.removeEventListener('touchstart', unlock);
@@ -1919,7 +1858,6 @@
     }
 
     function stopAmbient(){
-      // fade out then pause
       fadeTo(0, OUT_STEP);
     }
 
@@ -1933,7 +1871,6 @@
         return;
       }
 
-      // Wait until intro overlay is removed, then start ambient
       const obs = new MutationObserver(() => {
         if (!introOverlayExists()){
           obs.disconnect();
@@ -1943,26 +1880,21 @@
       obs.observe(document.body, { childList:true, subtree:true });
     }
 
-    // If intro audio plays later, stop ambient (safety)
     if (introAudio){
       introAudio.addEventListener('play', stopAmbient);
     }
 
-    // Main player: if user plays a track, stop ambient
     if (player){
       player.addEventListener('play', stopAmbient);
-      // If they pause/finish, bring ambient back
       player.addEventListener('pause', () => setTimeout(playAmbient, 450));
       player.addEventListener('ended', () => setTimeout(playAmbient, 450));
     }
 
-    // If user changes tabs, pause ambient; resume when back (if main player not playing)
     document.addEventListener('visibilitychange', () => {
       if (document.hidden){
         try { ambient.pause(); } catch(e){}
       } else {
         if (player && !player.paused) return;
-        // resume gently
         if (startedOnce) {
           try { ambient.volume = 0; } catch(e){}
           playAmbient();
@@ -1972,13 +1904,11 @@
       }
     });
 
-    // Start sequence
     startWhenIntroDone();
   })();
   </script>
   <!-- ===================== END AMBIENT LOOP ===================== -->
 
-  <!-- ✅ RADIO POPUP HANDLER (NO EMBED, NO LAYOUT IMPACT) -->
   <script>
     (function(){
       function openRadioPopup(url){
@@ -2014,7 +1944,6 @@
     })();
   </script>
 
-  <!-- PLAYER + VISUALIZER + COPYRIGHT SCRIPT -->
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       var yearSpan = document.getElementById('year');
@@ -2082,127 +2011,172 @@
   </script>
 
   <!-- ===================== FIREBASE (SAFE / MODULAR / GLOBAL HANDLE) ===================== -->
- <script type="module">
+<script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import {
     getDatabase,
     ref,
     onValue,
-    get,
     set,
     onDisconnect,
-    remove,
     serverTimestamp
   } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-  // 🔐 Your Firebase config
+  // --- UUID fallback (older browsers) ---
+  function makeId(){
+    if (crypto?.randomUUID) return crypto.randomUUID();
+    return "id_" + Math.random().toString(16).slice(2) + "_" + Date.now().toString(16);
+  }
+
+  // 🔐 Firebase config (CLEAN — only one databaseURL)
   const firebaseConfig = {
-    apiKey: "AIzaSyC8aLmUsgCS92SFwpt2LWMhyKJrwPDDplo",
+    apiKey: "AIzaSyC8aLmUsgCS9Z5FwpT2LWhMyKJrwPDDplo",
     appId: "1:753674439301:web:49cda8cacb13699778f7ec",
     authDomain: "awakened-by-yah-live.firebaseapp.com",
     projectId: "awakened-by-yah-live",
     storageBucket: "awakened-by-yah-live.appspot.com",
-    messagingSenderId: "753674439301"
+    messagingSenderId: "753674439301",
+    databaseURL: "https://awakened-by-yah-live-default-rtdb.firebaseio.com"
   };
 
   const app = initializeApp(firebaseConfig);
   const db  = getDatabase(app);
 
   // ---------- IDs ----------
-  const uid = localStorage.getItem("aby_uid") || crypto.randomUUID();
+  const uid = localStorage.getItem("aby_uid") || makeId();
   localStorage.setItem("aby_uid", uid);
 
-  const sid = sessionStorage.getItem("aby_sid") || crypto.randomUUID();
+  const sid = sessionStorage.getItem("aby_sid") || makeId();
   sessionStorage.setItem("aby_sid", sid);
 
   // ---------- Date key ----------
   const d = new Date();
   const dateKey = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
 
-  // ---------- Presence (LIVE NOW + page) ----------
-  const myPresenceRef = ref(db, `presence/${sid}`);
-  await set(myPresenceRef, {
-    online: true,
-    uid,
-    ts: serverTimestamp(),
-    path: location.pathname
-  });
-  onDisconnect(myPresenceRef).remove();
-
-  // ---------- TODAY Unique (write uid + count keys) ----------
-  const todayUidsPath = `stats/daily/${dateKey}/uids`;
-  const todayUidRef   = ref(db, `${todayUidsPath}/${uid}`);
-
-  try{
-    await set(todayUidRef, true);
-    console.log("✅ TODAY uid written:", uid);
-  }catch(e){
-    console.warn("❌ TODAY uid write failed:", e);
-  }
-
   // ---------- UI ----------
+  const liveBadgeEl    = document.getElementById("liveBadge");
+  const livePanelEl    = document.getElementById("livePanel");
+  const livePanelClose = document.getElementById("livePanelClose");
+
   const liveCountEl    = document.getElementById("liveCount");
   const todayUniqueEl  = document.getElementById("todayUnique");
   const livePagesEl    = document.getElementById("livePages");
 
-  // LIVE + PAGES
+  // ---------- Panel Toggle ----------
+  function openPanel(){
+    if (!livePanelEl || !liveBadgeEl) return;
+    livePanelEl.style.display = "block";
+    liveBadgeEl.setAttribute("aria-expanded","true");
+  }
+  function closePanel(){
+    if (!livePanelEl || !liveBadgeEl) return;
+    livePanelEl.style.display = "none";
+    liveBadgeEl.setAttribute("aria-expanded","false");
+  }
+  function togglePanel(){
+    if (!livePanelEl) return;
+    const isOpen = livePanelEl.style.display === "block";
+    if (isOpen) closePanel(); else openPanel();
+  }
+
+  if (liveBadgeEl) liveBadgeEl.addEventListener("click", (e) => { e.stopPropagation(); togglePanel(); });
+  if (livePanelClose) livePanelClose.addEventListener("click", (e) => { e.stopPropagation(); closePanel(); });
+
+  document.addEventListener("click", () => closePanel());
+  if (livePanelEl) livePanelEl.addEventListener("click", (e) => e.stopPropagation());
+
+  // ---------- Presence ----------
+  const connectedRef  = ref(db, ".info/connected");
+  const myPresenceRef = ref(db, `presence/${sid}`);
+
+  onValue(connectedRef, async (snap) => {
+    if (snap.val() !== true) return;
+
+    console.log("✅ Firebase connected — setting presence:", sid);
+
+    await onDisconnect(myPresenceRef).remove();
+
+    await set(myPresenceRef, {
+      online: true,
+      uid,
+      ts: serverTimestamp(),
+      path: location.pathname
+    });
+
+    console.log("✅ presence written:", `presence/${sid}`);
+  });
+
+  // ---------- TODAY Unique ----------
+  const todayUidsPath = `stats/daily/${dateKey}/uids`;
+  const todayUidRef   = ref(db, `${todayUidsPath}/${uid}`);
+
+  try {
+    await set(todayUidRef, true);
+    console.log("✅ TODAY uid written:", uid);
+  } catch(e) {
+    console.warn("❌ TODAY uid write failed:", e);
+  }
+
+  // ---------- LIVE count + Pages ----------
+  function renderPagesCounts(sessions){
+    if (!livePagesEl) return;
+
+    const counts = new Map();
+    for (const s of sessions){
+      const p = (s && typeof s.path === "string" && s.path.trim()) ? s.path : "/";
+      counts.set(p, (counts.get(p) || 0) + 1);
+    }
+
+    const rows = Array.from(counts.entries())
+      .sort((a,b) => b[1] - a[1])
+      .slice(0, 12);
+
+    if (rows.length === 0){
+      livePagesEl.innerHTML = `<div style="color:#94a3b8;font-size:12px;">No live sessions yet.</div>`;
+      return;
+    }
+
+    livePagesEl.innerHTML = rows.map(([path,n]) => `
+      <div style="
+        display:flex; align-items:center; justify-content:space-between;
+        padding:8px 10px; border-radius:12px;
+        background:rgba(15,23,42,.65);
+        border:1px solid rgba(148,163,184,.18);
+      ">
+        <div style="color:#e5e7eb; font-size:12px; letter-spacing:.08em; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:240px;">
+          ${escapeHtml(path)}
+        </div>
+        <div style="color:#fbbf24; font-weight:900; letter-spacing:.14em; font-size:12px;">
+          ${n}
+        </div>
+      </div>
+    `).join("");
+  }
+
+  function escapeHtml(str){
+    return String(str)
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
   onValue(ref(db, "presence"), (snap) => {
     const val = snap.val() || {};
     const sessions = Object.values(val);
 
     if (liveCountEl) liveCountEl.textContent = String(sessions.length);
-
-    const byPath = {};
-    for (const s of sessions){
-      const p = (s && s.path) ? s.path : "/";
-      byPath[p] = (byPath[p] || 0) + 1;
-    }
-
-    if (livePagesEl){
-      const entries = Object.entries(byPath).sort((a,b)=>b[1]-a[1]).slice(0, 6);
-      livePagesEl.innerHTML = entries.length ? entries.map(([p,c]) => `
-        <div style="
-          display:flex; justify-content:space-between; align-items:center;
-          border:1px solid rgba(148,163,184,.18);
-          background:rgba(15,23,42,.55);
-          border-radius:12px;
-          padding:8px 10px;
-          color:#e5e7eb;
-          font-weight:700;
-          letter-spacing:.06em;
-        ">
-          <span style="max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
-            ${p}
-          </span>
-          <span style="color:#fbbf24; font-weight:900; letter-spacing:.12em;">
-            ${c}
-          </span>
-        </div>
-      `).join("") : `<div style="color:#94a3b8; font-size:12px;">No active sessions yet.</div>`;
-    }
+    renderPagesCounts(sessions);
   });
 
-  // TODAY (counts keys)
+  // ---------- TODAY count ----------
   onValue(ref(db, todayUidsPath), (snap) => {
     const uids = snap.val() || {};
     const n = Object.keys(uids).length;
     if (todayUniqueEl) todayUniqueEl.textContent = String(n);
     console.log("📊 TODAY unique count:", n);
   });
-
-  // ---------- Panel toggle ----------
-  const badge = document.getElementById("liveBadge");
-  const panel = document.getElementById("livePanel");
-  const closeBtn = document.getElementById("livePanelClose");
-
-  function togglePanel(force){
-    if (!panel) return;
-    const show = (typeof force === "boolean") ? force : (panel.style.display !== "block");
-    panel.style.display = show ? "block" : "none";
-  }
-
-  if (badge) badge.addEventListener("click", () => togglePanel(), { passive:true });
-  if (closeBtn) closeBtn.addEventListener("click", (e) => { e.stopPropagation(); togglePanel(false); });
 
   console.log("👥 Live tracker running");
 </script>
