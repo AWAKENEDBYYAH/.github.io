@@ -925,6 +925,19 @@
       transform:translateY(-1px);
     }
 
+    /* ✅ NEW: Entity clarification (music-only signal) */
+    .entity-clarification{
+      margin: 0.75rem auto 0.85rem;
+      padding-top: 0.85rem;
+      border-top: 1px solid rgba(255,255,255,0.10);
+      max-width: 720px;
+      font-size: 0.72rem;
+      line-height: 1.65;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(148,163,184,0.95);
+    }
+
     /* ✅ SMALL FLOATING MUSIC LINK (NON-DISRUPTIVE) */
     .music-fab{
       position:fixed;
@@ -955,6 +968,7 @@
       .top-bar { flex-direction: column; align-items: flex-start; position:static; }
       .header-tags { position:static; transform:none; justify-content: center; width: 100%; }
       .music-fab{ bottom:14px; right:14px; padding:9px 14px; font-size:0.72rem; }
+      .entity-clarification{ font-size: 0.68rem; letter-spacing: 0.06em; padding-top: 0.75rem; }
     }
 
     /* ===================== CINEMATIC INTRO (HOMEPAGE) ===================== */
@@ -1811,6 +1825,12 @@
           <a href="https://open.spotify.com/artist/0u6jzM2fSRodmTq61j0z0R?si=fP3WoH4ORbuPNaazgkN0aA" target="_blank" rel="noopener">Spotify</a>
           <a href="https://music.apple.com/us/artist/awakened-by-yah/1860666182" target="_blank" rel="noopener">Apple Music</a>
           <a href="https://www.tiktok.com/@awakened_by_yah?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">TikTok</a>
+        </div>
+
+        <!-- ✅ NEW: Entity clarification (music-only signal for Google) -->
+        <div class="entity-clarification">
+          AWAKENED BY YAH is an independent music artist brand.<br>
+          Not affiliated with any apparel or clothing companies.
         </div>
 
         <span id="year"></span> © AWAKENED BY YAH MUSIC GROUP — All Rights Reserved.
