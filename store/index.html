@@ -515,12 +515,11 @@
   <script>
     /*****************************************************************
       EDIT THESE 4 PATHS to match your real filenames in /images/
-      (Put the new bundle graphic in /images/ then update its name here)
     ******************************************************************/
-    const IMG_BUNDLE = "/images/bundle-3albums.png";   // upload your new bundle graphic as this name (recommended)
-    const IMG_RISE   = "/images/rise.png";             // change to your real file, ex: /images/rise-of-yasharal.png
-    const IMG_KING   = "/images/kingdom-biz.png";      // change to your real file
-    const IMG_BATTLE = "/images/the-battlefield.png";  // change to your real file
+    const IMG_BUNDLE = "/images/bundle-3albums.png";
+    const IMG_RISE   = "/images/the-rise-of-yasharal1.png";
+    const IMG_KING   = "/images/kingdom-biz1.png";
+    const IMG_BATTLE = "/images/the-battlefield.png";
 
     /*****************************************************************
       AMBIENT AUDIO
@@ -892,11 +891,6 @@
         const p = PRODUCTS.find(x => x.key === i.key);
         return { price: p.priceId, quantity: i.qty || 1 };
       });
-
-      // For now we show what will be sent.
-      // Next step we replace this with a fetch() to your backend:
-      // const res = await fetch("YOUR_SUPABASE_FUNCTION_URL/create-checkout", { ... })
-      // const data = await res.json(); window.location.href = data.url;
 
       alert(
         "Checkout is ready to be wired.\n\nStripe line items:\n" +
