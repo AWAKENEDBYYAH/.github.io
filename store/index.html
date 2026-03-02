@@ -514,7 +514,8 @@
 
   <script>
     const SUPABASE_URL = "https://fgqzopqgtownfovhtlcq.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable__LlL7rsAYeDlub9OmvofaA_ck1tKqca";
+    const SUPABASE_ANON_KEY = "sb_publishable__LlL7rsAYeDlub9OmvofaA_ck1tKqca";
+
     /*****************************************************************
       EDIT THESE 4 PATHS to match your real filenames in /images/
     ******************************************************************/
@@ -881,24 +882,59 @@ const SUPABASE_ANON_KEY = "sb_publishable__LlL7rsAYeDlub9OmvofaA_ck1tKqca";
     backdrop.addEventListener("click", closeCart);
 
     /*****************************************************************
-      CHECKOUT (placeholder wiring for now)
-      Next step: we connect this button to a Supabase Edge Function that
-      creates the Stripe Checkout Session with line items.
+      CHECKOUT (LIVE - Supabase Edge Function -> Stripe redirect)
+      NOTE: current create-checkout expects: priceId, successUrl, cancelUrl
     ******************************************************************/
     document.getElementById("checkoutBtn").addEventListener("click", async ()=>{
       if(cart.length === 0) return;
 
-      // Build line_items from cart using the Stripe PRICE IDs
-      const line_items = cart.map(i=>{
-        const p = PRODUCTS.find(x => x.key === i.key);
-        return { price: p.priceId, quantity: i.qty || 1 };
-      });
+      const successUrl = "https://awakenedbyyahmusic.com/store/success/";
+      const cancelUrl  = "https://awakenedbyyahmusic.com/store/cancel/";
 
-      alert(
-        "Checkout is ready to be wired.\n\nStripe line items:\n" +
-        JSON.stringify(line_items, null, 2) +
-        "\n\nNext: we connect this to Supabase create-checkout."
-      );
+      // Your current edge function is single-item checkout.
+      // If cart has multiple items, force the bundle.
+      let priceIdToCheckout = null;
+
+      if(cart.length === 1){
+        const p = PRODUCTS.find(x => x.key === cart[0].key);
+        priceIdToCheckout = p?.priceId || null;
+      }else{
+        priceIdToCheckout = PRICE_IDS.bundle_all3;
+      }
+
+      if(!priceIdToCheckout){
+        alert("Checkout error: missing price ID.");
+        return;
+      }
+
+      try{
+        const res = await fetch(`${SUPABASE_URL}/functions/v1/create-checkout`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_ANON_KEY,
+            "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
+          },
+          body: JSON.stringify({
+            priceId: priceIdToCheckout,
+            successUrl,
+            cancelUrl
+          })
+        });
+
+        const data = await res.json();
+
+        if(!res.ok || !data?.url){
+          console.error("create-checkout failed:", data);
+          alert(data?.error || "Checkout failed. Open console for details.");
+          return;
+        }
+
+        window.location.href = data.url;
+      }catch(e){
+        console.error(e);
+        alert("Checkout error. Open console.");
+      }
     });
 
     /*****************************************************************
