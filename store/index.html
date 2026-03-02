@@ -441,9 +441,7 @@
       </div>
 
       <div class="actions">
-        <button class="iconBtn" id="audioBtn" title="Ambient audio">
-          ♪
-        </button>
+        <button class="iconBtn" id="audioBtn" title="Ambient audio">♪</button>
 
         <button class="iconBtn" id="cartBtn" title="Cart">
           🛒
@@ -513,10 +511,12 @@
   </aside>
 
   <script>
-   const SUPABASE_URL = "https://fgqzopgqtownfvohtlcq.supabase.co";
+    const SUPABASE_URL = "https://fgqzopgqtownfvohtlcq.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable__LlL7rsAYeDlub9OmvofaA_ck1tKqca";
-console.log("SUPABASE_URL RAW:", JSON.stringify(SUPABASE_URL));
-console.log("CHECKOUT ENDPOINT:", `${SUPABASE_URL}/functions/v1/create-checkout`);
+
+    console.log("SUPABASE_URL RAW:", JSON.stringify(SUPABASE_URL));
+    console.log("CHECKOUT ENDPOINT:", `${SUPABASE_URL}/functions/v1/create-checkout`);
+
     /*****************************************************************
       EDIT THESE 4 PATHS to match your real filenames in /images/
     ******************************************************************/
@@ -527,10 +527,8 @@ console.log("CHECKOUT ENDPOINT:", `${SUPABASE_URL}/functions/v1/create-checkout`
 
     /*****************************************************************
       AMBIENT AUDIO
-      Put your instrumental here later. It starts muted, user taps to unmute,
-      then we fade in. Update the path when you upload the file.
     ******************************************************************/
-    const AMBIENT_AUDIO_SRC = "/audio/store-ambient.mp3"; // upload later (or change)
+    const AMBIENT_AUDIO_SRC = "/audio/store-ambient.mp3";
 
     /*****************************************************************
       YOUR REAL STRIPE PRICE IDS (Locked in)
@@ -543,8 +541,7 @@ console.log("CHECKOUT ENDPOINT:", `${SUPABASE_URL}/functions/v1/create-checkout`
     };
 
     /*****************************************************************
-      PRODUCTS (storefront items)
-      Note: tracks will be added later once we batch-create track price IDs
+      PRODUCTS
     ******************************************************************/
     const PRODUCTS = [
       {
@@ -586,8 +583,7 @@ console.log("CHECKOUT ENDPOINT:", `${SUPABASE_URL}/functions/v1/create-checkout`
     ];
 
     /*****************************************************************
-      CAROUSEL DATA (loop)
-      We feature bundle first, then albums.
+      CAROUSEL DATA
     ******************************************************************/
     const SLIDES = [
       {
@@ -661,13 +657,12 @@ console.log("CHECKOUT ENDPOINT:", `${SUPABASE_URL}/functions/v1/create-checkout`
         return;
       }
 
-      // If bundle exists, do nothing (bundle already best)
+      // If bundle exists, do nothing
       if(cart.some(i => i.key === "bundle_all3")){
         openCart();
         return;
       }
 
-      // Prevent duplicates of the same item
       const existing = cart.find(i => i.key === productKey);
       if(existing) existing.qty += 1;
       else cart.push({ key: productKey, qty: 1 });
@@ -746,7 +741,6 @@ console.log("CHECKOUT ENDPOINT:", `${SUPABASE_URL}/functions/v1/create-checkout`
 
       document.getElementById("cartTotal").textContent = money(total);
 
-      // wire buttons
       wrap.querySelectorAll("[data-rm]").forEach(btn=>{
         btn.addEventListener("click", ()=> removeFromCart(btn.getAttribute("data-rm")));
       });
@@ -810,15 +804,12 @@ console.log("CHECKOUT ENDPOINT:", `${SUPABASE_URL}/functions/v1/create-checkout`
       const addBtn = document.getElementById("heroAddBtn");
       addBtn.onclick = ()=> addToCart(s.addKey);
 
-      if(userAction) restartCarousel();
+      if(userAction) startCarousel();
     }
 
     function startCarousel(){
       if(slideTimer) clearInterval(slideTimer);
       slideTimer = setInterval(()=> goToSlide(slideIndex + 1, false), 5200);
-    }
-    function restartCarousel(){
-      startCarousel();
     }
 
     /*****************************************************************
@@ -828,7 +819,6 @@ console.log("CHECKOUT ENDPOINT:", `${SUPABASE_URL}/functions/v1/create-checkout`
       const grid = document.getElementById("albumGrid");
       grid.innerHTML = "";
 
-      // show albums (exclude bundle here because it is already featured)
       const list = PRODUCTS.filter(p=> p.key !== "bundle_all3");
       list.forEach(p=>{
         const card = document.createElement("div");
@@ -854,7 +844,6 @@ console.log("CHECKOUT ENDPOINT:", `${SUPABASE_URL}/functions/v1/create-checkout`
         grid.appendChild(card);
       });
 
-      // Attach listeners
       grid.querySelectorAll("[data-add]").forEach(btn=>{
         btn.addEventListener("click", ()=> addToCart(btn.getAttribute("data-add")));
       });
@@ -883,17 +872,38 @@ console.log("CHECKOUT ENDPOINT:", `${SUPABASE_URL}/functions/v1/create-checkout`
     backdrop.addEventListener("click", closeCart);
 
     /*****************************************************************
-      CHECKOUT (LIVE - Supabase Edge Function -> Stripe redirect)
-      NOTE: current create-checkout expects: priceId, successUrl, cancelUrl
+      CHECKOUT (Supabase Edge Function -> Stripe redirect)
+      We send BOTH formats:
+        - lineItems: [{ price, quantity }]
+        - priceId: "price_..."
+      so your Edge Function works whichever it expects.
     ******************************************************************/
+    async function safeJson(res){
+      const txt = await res.text();
+      try{ return txt ? JSON.parse(txt) : {}; }
+      catch{ return { raw: txt }; }
+    }
+
+    function buildLineItemsFromCart(){
+      // If you later upgrade Edge Function for multi-item cart,
+      // this will already be ready.
+      return cart.map(item=>{
+        const p = PRODUCTS.find(x=> x.key === item.key);
+        if(!p?.priceId) return null;
+        return { price: p.priceId, quantity: item.qty || 1 };
+      }).filter(Boolean);
+    }
+
     document.getElementById("checkoutBtn").addEventListener("click", async ()=>{
       if(cart.length === 0) return;
+
+      const btn = document.getElementById("checkoutBtn");
+      const originalText = btn.textContent;
 
       const successUrl = "https://awakenedbyyahmusic.com/store/success/";
       const cancelUrl  = "https://awakenedbyyahmusic.com/store/cancel/";
 
-      // Your current edge function is single-item checkout.
-      // If cart has multiple items, force the bundle.
+      // Your current rule: if multiple items, force bundle checkout
       let priceIdToCheckout = null;
 
       if(cart.length === 1){
@@ -908,35 +918,55 @@ console.log("CHECKOUT ENDPOINT:", `${SUPABASE_URL}/functions/v1/create-checkout`
         return;
       }
 
+      // Build lineItems (keep bundle rule intact)
+      let lineItems = [];
+      if(cart.length === 1){
+        lineItems = buildLineItemsFromCart();
+      }else{
+        lineItems = [{ price: PRICE_IDS.bundle_all3, quantity: 1 }];
+      }
+
       try{
-        const lineItems = [{ price: priceIdToCheckout, quantity: 1 }];
-        const res = await fetch(`${SUPABASE_URL}/functions/v1/create-checkout`, {
+        btn.disabled = true;
+        btn.textContent = "Processing...";
+
+        const endpoint = `${SUPABASE_URL}/functions/v1/create-checkout`;
+
+        const res = await fetch(endpoint, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Accept": "application/json",
             "apikey": SUPABASE_ANON_KEY,
             "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
           },
-        body: JSON.stringify({
-  lineItems,
-  successUrl,
-  cancelUrl
-})
+          body: JSON.stringify({
+            // preferred multi-item format
+            lineItems,
+
+            // fallback single-item format
+            priceId: priceIdToCheckout,
+
+            successUrl,
+            cancelUrl
           })
         });
 
-        const data = await res.json();
+        const data = await safeJson(res);
 
         if(!res.ok || !data?.url){
-          console.error("create-checkout failed:", data);
-          alert(data?.error || "Checkout failed. Open console for details.");
+          console.error("create-checkout failed:", { status: res.status, data });
+          alert(data?.error || data?.message || "Checkout failed. Open console for details.");
           return;
         }
 
         window.location.href = data.url;
       }catch(e){
-        console.error(e);
+        console.error("Checkout exception:", e);
         alert("Checkout error. Open console.");
+      }finally{
+        btn.disabled = false;
+        btn.textContent = originalText;
       }
     });
 
