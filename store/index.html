@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Store | AWAKENED BY YAH</title>
+
+  <link rel="canonical" href="https://awakenedbyyahmusic.com/store/" />
+  <link rel="icon" type="image/png" href="/abytransparent.png">
+
+  <style>
+    :root{
+      --bg:#020617;
+      --text:#e5e7eb;
+      --muted:#94a3b8;
+      --line:rgba(255,255,255,.12);
+      --panel:rgba(255,255,255,.06);
+      --panel2:rgba(255,255,255,.045);
+      --brand:#1C39A8;
+      --brand2:#2b56ff;
+      --gold:rgba(255,210,120,.95);
+      --radius:22px;
+      --shadow: 0 18px 60px rgba(0,0,0,.55);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1100px 800px at 20% -10%, rgba(43,86,255,.22), transparent 60%),
+        radial-gradient(900px 700px at 85% 10%, rgba(28,57,168,.25), transparent 60%),
+        radial-gradient(1000px 700px at 50% 120%, rgba(255,210,120,.08), transparent 55%),
+        linear-gradient(180deg, #020617 0%, #040b1a 50%, #020617 100%);
+      overflow-x:hidden;
+    }
+    a{color:inherit; text-decoration:none}
+    .wrap{max-width:1200px; margin:0 auto; padding:24px 16px 80px}
+
+    /* Top bar */
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px; padding:10px 12px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+      position: sticky;
+      top: 10px;
+      z-index: 50;
+      backdrop-filter: blur(10px);
+    }
+    .brand{
+      display:flex; align-items:center; gap:10px;
+      font-weight:800; letter-spacing:.06em;
+      text-transform:uppercase;
+    }
+    .pill{
+      font-size:12px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(43,86,255,.35);
+      background: rgba(43,86,255,.12);
+      color:#dbe7ff;
+    }
+    .actions{display:flex; align-items:center; gap:10px}
+    .iconBtn{
+      display:inline-flex; align-items:center; justify-content:center;
+      width:44px; height:44px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      cursor:pointer;
+      position:relative;
+      transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+    }
+    .iconBtn:hover{
+      transform: translateY(-1px);
+      border-color: rgba(43,86,255,.55);
+      box-shadow: 0 0 0 3px rgba(43,86,255,.12);
+    }
+    .badge{
+      position:absolute;
+      top:-8px; right:-8px;
+      min-width:22px; height:22px;
+      padding:0 6px;
+      border-radius:999px;
+      display:flex; align-items:center; justify-content:center;
+      background: rgba(255,210,120,.95);
+      color:#111;
+      font-weight:900;
+      font-size:12px;
+      box-shadow: 0 10px 20px rgba(0,0,0,.35);
+    }
+
+    /* Hero */
+    .hero{
+      margin-top:18px;
+      border-radius: 26px;
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .heroInner{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 0;
+      align-items:stretch;
+    }
+    @media (max-width: 900px){
+      .heroInner{grid-template-columns: 1fr;}
+    }
+
+    /* Flash vibe like "The Story" */
+    .flashWrap{ position:relative; overflow:hidden; }
+    .flashWrap::before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(700px 380px at 50% 40%, rgba(43,86,255,.32), transparent 65%);
+      opacity:.0; filter: blur(6px);
+      animation: flashIn .9s ease-out both, glowPulse 3.2s ease-in-out 1s infinite;
+      pointer-events:none;
+      z-index:2;
+    }
+    .flashWrap::after{
+      content:"";
+      position:absolute;
+      top:-40%;
+      left:-70%;
+      width:55%;
+      height:180%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.22), transparent);
+      transform: rotate(14deg);
+      opacity:0;
+      animation: sweep 2.8s ease-in-out 1.1s infinite;
+      pointer-events:none;
+      z-index:2;
+    }
+    @keyframes flashIn{
+      0%{opacity:0; transform:scale(.985)}
+      35%{opacity:.90}
+      100%{opacity:.16; transform:scale(1)}
+    }
+    @keyframes glowPulse{ 0%,100%{opacity:.12} 50%{opacity:.26} }
+    @keyframes sweep{
+      0%{left:-75%; opacity:0}
+      15%{opacity:.35}
+      45%{opacity:0}
+      100%{left:135%; opacity:0}
+    }
+    @media (prefers-reduced-motion: reduce){
+      .flashWrap::before,.flashWrap::after{animation:none !important}
+    }
+
+    .carousel{
+      position:relative;
+      padding: 22px;
+      min-height: 420px;
+    }
+    @media (max-width: 900px){
+      .carousel{min-height: 520px;}
+    }
+
+    .slides{position:relative; height:100%;}
+    .slide{
+      position:absolute; inset:0;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:14px;
+      opacity:0;
+      transform: translateY(8px) scale(.995);
+      transition: opacity .55s ease, transform .55s ease;
+      pointer-events:none;
+    }
+    .slide.active{
+      opacity:1;
+      transform: translateY(0) scale(1);
+      pointer-events:auto;
+    }
+
+    .coverRow{
+      display:flex;
+      gap:16px;
+      align-items:flex-end;
+      justify-content:center;
+      flex-wrap:wrap;
+      padding-top: 6px;
+    }
+    .cover{
+      width: 320px;
+      max-width: 80vw;
+      aspect-ratio: 1/1;
+      border-radius: 20px;
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow: 0 18px 70px rgba(0,0,0,.55);
+      overflow:hidden;
+      position:relative;
+      background: rgba(255,255,255,.03);
+    }
+    .cover img{
+      width:100%; height:100%;
+      object-fit:cover;
+      display:block;
+    }
+    .coverGlow{
+      position:absolute; inset:-2px;
+      background: radial-gradient(240px 200px at 50% 30%, rgba(43,86,255,.22), transparent 70%);
+      mix-blend-mode: screen;
+      pointer-events:none;
+    }
+
+    .heroRight{
+      padding: 22px 22px 22px 0;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      gap:14px;
+    }
+    @media (max-width: 900px){
+      .heroRight{padding: 0 22px 22px;}
+    }
+
+    .heroTitle{
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 900;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      margin:0;
+      font-size: clamp(28px, 4.2vw, 44px);
+      text-shadow: 0 0 22px rgba(43,86,255,.35);
+      animation: microFlicker 5.5s ease-in-out infinite;
+    }
+    @keyframes microFlicker{
+      0%,96%,100%{opacity:1}
+      97%{opacity:.92}
+      98%{opacity:1}
+      99%{opacity:.95}
+    }
+    @media (prefers-reduced-motion: reduce){
+      .heroTitle{animation:none !important}
+    }
+
+    .heroSub{
+      margin:0;
+      color: var(--muted);
+      line-height:1.45;
+      font-size: 15px;
+    }
+
+    .priceCard{
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.24);
+      border-radius: 18px;
+      padding: 14px;
+    }
+    .priceRow{
+      display:flex; align-items:baseline; justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .priceBig{
+      font-size: 38px;
+      font-weight: 900;
+      letter-spacing:.02em;
+      color: rgba(255,230,170,.95);
+      text-shadow: 0 0 24px rgba(255,210,120,.18);
+    }
+    .meta{
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .btnRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      font-weight: 800;
+      letter-spacing:.04em;
+      text-transform: uppercase;
+      cursor:pointer;
+      transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease, background .15s ease;
+      user-select:none;
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      border-color: rgba(43,86,255,.55);
+      box-shadow: 0 0 0 3px rgba(43,86,255,.12);
+      background: rgba(43,86,255,.10);
+    }
+    .btn.primary{
+      border-color: rgba(255,210,120,.35);
+      background: rgba(255,210,120,.10);
+    }
+    .dots{
+      display:flex; gap:8px; justify-content:center;
+      padding: 10px 0 2px;
+    }
+    .dot{
+      width:10px; height:10px; border-radius:50%;
+      border:1px solid rgba(255,255,255,.22);
+      background: rgba(255,255,255,.08);
+      cursor:pointer;
+      transition: transform .15s ease, background .15s ease;
+    }
+    .dot.active{ background: rgba(43,86,255,.55); transform: scale(1.15); }
+
+    /* Sections */
+    .sectionTitle{
+      margin: 26px 0 12px;
+      font-size: 14px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: #cfe0ff;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    @media (max-width: 980px){ .grid{grid-template-columns: 1fr;} }
+
+    .card{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      border-radius: var(--radius);
+      padding: 14px;
+      box-shadow: 0 14px 40px rgba(0,0,0,.35);
+    }
+    .cardTop{
+      display:flex; gap:12px; align-items:center;
+    }
+    .thumb{
+      width:72px; height:72px; border-radius:16px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.03);
+      flex: 0 0 auto;
+    }
+    .thumb img{width:100%; height:100%; object-fit:cover; display:block;}
+    .cardName{font-weight:900; letter-spacing:.04em; text-transform:uppercase; margin:0;}
+    .cardMeta{margin:3px 0 0; color: var(--muted); font-size: 13px;}
+    .cardPrice{margin-left:auto; text-align:right;}
+    .cardPrice .p{font-weight:900; font-size:20px; color: rgba(255,230,170,.95)}
+    .cardPrice .s{color:var(--muted); font-size:12px;}
+    .cardBtns{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;}
+
+    /* Cart Drawer */
+    .drawerBackdrop{
+      position:fixed; inset:0;
+      background: rgba(0,0,0,.55);
+      opacity:0; pointer-events:none;
+      transition: opacity .2s ease;
+      z-index:80;
+    }
+    .drawerBackdrop.open{opacity:1; pointer-events:auto;}
+    .drawer{
+      position:fixed;
+      top:0; right:0;
+      width:min(420px, 92vw);
+      height:100%;
+      background: rgba(2,6,23,.96);
+      border-left:1px solid rgba(255,255,255,.12);
+      box-shadow: -20px 0 70px rgba(0,0,0,.55);
+      transform: translateX(105%);
+      transition: transform .25s ease;
+      z-index:90;
+      display:flex; flex-direction:column;
+    }
+    .drawer.open{transform: translateX(0);}
+    .drawerHead{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:16px;
+      border-bottom:1px solid rgba(255,255,255,.10);
+    }
+    .drawerHead h3{
+      margin:0;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      font-size:14px;
+    }
+    .drawerBody{padding:14px 16px; overflow:auto; flex: 1 1 auto;}
+    .cartItem{
+      display:flex; gap:10px; align-items:center;
+      padding:10px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.03);
+      border-radius: 16px;
+      margin-bottom:10px;
+    }
+    .cartItem .ciName{font-weight:900; font-size:13px; text-transform:uppercase; letter-spacing:.05em;}
+    .cartItem .ciSub{color:var(--muted); font-size:12px;}
+    .cartItem .ciPrice{margin-left:auto; font-weight:900; color: rgba(255,230,170,.95);}
+    .miniBtn{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 8px 10px;
+      cursor:pointer;
+      font-weight:900;
+      letter-spacing:.04em;
+      text-transform:uppercase;
+    }
+    .drawerFoot{
+      padding:14px 16px 18px;
+      border-top:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.22);
+    }
+    .totals{
+      display:flex; align-items:center; justify-content:space-between;
+      margin-bottom:10px;
+      color: #dbe7ff;
+      font-weight:900;
+      letter-spacing:.04em;
+      text-transform:uppercase;
+      font-size:13px;
+    }
+    .totalAmount{
+      font-size: 18px;
+      color: rgba(255,230,170,.95);
+    }
+    .mutedNote{color:var(--muted); font-size:12px; line-height:1.35; margin-top:10px;}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <span style="display:inline-flex;align-items:center;gap:10px;">
+          <img src="/abytransparent.png" alt="" style="width:26px;height:26px;border-radius:8px;opacity:.95" />
+          <span>AWAKENED BY YAH</span>
+        </span>
+        <span class="pill">Digital Store</span>
+      </div>
+
+      <div class="actions">
+        <button class="iconBtn" id="audioBtn" title="Ambient audio">
+          ♪
+        </button>
+
+        <button class="iconBtn" id="cartBtn" title="Cart">
+          🛒
+          <span class="badge" id="cartCount" style="display:none;">0</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="hero">
+      <div class="heroInner">
+        <div class="carousel flashWrap" id="carouselWrap">
+          <div class="slides" id="slides"></div>
+          <div class="dots" id="dots"></div>
+        </div>
+
+        <div class="heroRight">
+          <h1 class="heroTitle" id="heroTitle">Digital Albums</h1>
+          <p class="heroSub" id="heroSub">
+            Instant MP3 downloads, premium quality, own the message.
+            Choose a full album, the bundle, or individual tracks (coming next).
+          </p>
+
+          <div class="priceCard">
+            <div class="priceRow">
+              <div>
+                <div class="meta" id="heroMeta">Best Value Bundle</div>
+                <div class="priceBig" id="heroPrice">$34.99</div>
+              </div>
+              <div class="meta" id="heroSmallMeta">Save $7</div>
+            </div>
+
+            <div class="btnRow">
+              <button class="btn primary" id="heroAddBtn">Add to Cart</button>
+              <a class="btn" href="/albums/">View Physical</a>
+            </div>
+
+            <div class="mutedNote">
+              Checkout is secure. Your cart and download delivery will be handled through Stripe and your store system.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sectionTitle">Albums</div>
+    <div class="grid" id="albumGrid"></div>
+  </div>
+
+  <!-- Cart Drawer -->
+  <div class="drawerBackdrop" id="backdrop"></div>
+  <aside class="drawer" id="drawer">
+    <div class="drawerHead">
+      <h3>Your Cart</h3>
+      <button class="miniBtn" id="closeCart">Close</button>
+    </div>
+    <div class="drawerBody" id="cartItems"></div>
+    <div class="drawerFoot">
+      <div class="totals">
+        <div>Subtotal</div>
+        <div class="totalAmount" id="cartTotal">$0.00</div>
+      </div>
+      <button class="btn primary" style="width:100%" id="checkoutBtn">Checkout</button>
+      <div class="mutedNote">
+        Track previews are coming next. For now this store is being wired for albums + bundle first.
+      </div>
+    </div>
+  </aside>
+
+  <script>
+    /*****************************************************************
+      EDIT THESE 4 PATHS to match your real filenames in /images/
+      (Put the new bundle graphic in /images/ then update its name here)
+    ******************************************************************/
+    const IMG_BUNDLE = "/images/bundle-3albums.png";   // upload your new bundle graphic as this name (recommended)
+    const IMG_RISE   = "/images/rise.png";             // change to your real file, ex: /images/rise-of-yasharal.png
+    const IMG_KING   = "/images/kingdom-biz.png";      // change to your real file
+    const IMG_BATTLE = "/images/the-battlefield.png";  // change to your real file
+
+    /*****************************************************************
+      AMBIENT AUDIO
+      Put your instrumental here later. It starts muted, user taps to unmute,
+      then we fade in. Update the path when you upload the file.
+    ******************************************************************/
+    const AMBIENT_AUDIO_SRC = "/audio/store-ambient.mp3"; // upload later (or change)
+
+    /*****************************************************************
+      YOUR REAL STRIPE PRICE IDS (Locked in)
+    ******************************************************************/
+    const PRICE_IDS = {
+      rise_album: "price_1T6a680J5682KmNwCH5WkC17",
+      kingdom_ep: "price_1T6aGG0J5682KmNwRSscOHsj",
+      battlefield_album: "price_1T6aKl0J5682KmNwKQ6bHp2h",
+      bundle_all3: "price_1T6ajO0J5682KmNw3Mt71qFi"
+    };
+
+    /*****************************************************************
+      PRODUCTS (storefront items)
+      Note: tracks will be added later once we batch-create track price IDs
+    ******************************************************************/
+    const PRODUCTS = [
+      {
+        key: "bundle_all3",
+        title: "3 Album Bundle",
+        subtitle: "Rise of Yasharal + Kingdom Biz + The Battlefield",
+        price: 34.99,
+        meta: "Best Value, Save $7",
+        img: IMG_BUNDLE,
+        priceId: PRICE_IDS.bundle_all3
+      },
+      {
+        key: "rise_album",
+        title: "THE RISE OF YASHARAL",
+        subtitle: "12 Track MP3 Digital Album",
+        price: 17.99,
+        meta: "$1.99 per track",
+        img: IMG_RISE,
+        priceId: PRICE_IDS.rise_album
+      },
+      {
+        key: "kingdom_ep",
+        title: "KINGDOM BIZ",
+        subtitle: "5 Track MP3 Digital EP",
+        price: 7.99,
+        meta: "$1.99 per track",
+        img: IMG_KING,
+        priceId: PRICE_IDS.kingdom_ep
+      },
+      {
+        key: "battlefield_album",
+        title: "THE BATTLEFIELD",
+        subtitle: "10 Track MP3 Digital Album",
+        price: 15.99,
+        meta: "$1.99 per track",
+        img: IMG_BATTLE,
+        priceId: PRICE_IDS.battlefield_album
+      }
+    ];
+
+    /*****************************************************************
+      CAROUSEL DATA (loop)
+      We feature bundle first, then albums.
+    ******************************************************************/
+    const SLIDES = [
+      {
+        key: "bundle_all3",
+        title: "3 Album Bundle",
+        meta: "Best Value Bundle",
+        priceText: "$34.99",
+        smallMeta: "Save $7",
+        img: IMG_BUNDLE,
+        addKey: "bundle_all3"
+      },
+      {
+        key: "rise_album",
+        title: "THE RISE OF YASHARAL",
+        meta: "12 Track Digital Album",
+        priceText: "$17.99",
+        smallMeta: "$1.99 per track",
+        img: IMG_RISE,
+        addKey: "rise_album"
+      },
+      {
+        key: "kingdom_ep",
+        title: "KINGDOM BIZ",
+        meta: "5 Track Digital EP",
+        priceText: "$7.99",
+        smallMeta: "$1.99 per track",
+        img: IMG_KING,
+        addKey: "kingdom_ep"
+      },
+      {
+        key: "battlefield_album",
+        title: "THE BATTLEFIELD",
+        meta: "10 Track Digital Album",
+        priceText: "$15.99",
+        smallMeta: "$1.99 per track",
+        img: IMG_BATTLE,
+        addKey: "battlefield_album"
+      }
+    ];
+
+    /*****************************************************************
+      CART
+    ******************************************************************/
+    const CART_KEY = "aby_store_cart_v1";
+    let cart = loadCart();
+
+    function loadCart(){
+      try{
+        const raw = localStorage.getItem(CART_KEY);
+        return raw ? JSON.parse(raw) : [];
+      }catch(e){
+        return [];
+      }
+    }
+    function saveCart(){
+      localStorage.setItem(CART_KEY, JSON.stringify(cart));
+      renderCartBadge();
+    }
+    function money(n){ return "$" + (Math.round(n * 100) / 100).toFixed(2); }
+
+    function addToCart(productKey){
+      const p = PRODUCTS.find(x => x.key === productKey);
+      if(!p) return;
+
+      // Cart rules: bundle replaces everything
+      if(productKey === "bundle_all3"){
+        cart = [ { key: p.key, qty: 1 } ];
+        saveCart();
+        renderCart();
+        openCart();
+        return;
+      }
+
+      // If bundle exists, do nothing (bundle already best)
+      if(cart.some(i => i.key === "bundle_all3")){
+        openCart();
+        return;
+      }
+
+      // Prevent duplicates of the same item
+      const existing = cart.find(i => i.key === productKey);
+      if(existing) existing.qty += 1;
+      else cart.push({ key: productKey, qty: 1 });
+
+      saveCart();
+      renderCart();
+      openCart();
+    }
+
+    function removeFromCart(productKey){
+      cart = cart.filter(i => i.key !== productKey);
+      saveCart();
+      renderCart();
+    }
+
+    function decQty(productKey){
+      const item = cart.find(i => i.key === productKey);
+      if(!item) return;
+      item.qty -= 1;
+      if(item.qty <= 0) removeFromCart(productKey);
+      saveCart();
+      renderCart();
+    }
+
+    function renderCartBadge(){
+      const count = cart.reduce((sum,i)=> sum + (i.qty||1), 0);
+      const el = document.getElementById("cartCount");
+      if(count > 0){
+        el.style.display = "flex";
+        el.textContent = String(count);
+      }else{
+        el.style.display = "none";
+      }
+    }
+
+    function renderCart(){
+      const wrap = document.getElementById("cartItems");
+      wrap.innerHTML = "";
+
+      if(cart.length === 0){
+        wrap.innerHTML = `<div style="color:var(--muted);padding:10px 2px;line-height:1.5;">
+          Your cart is empty. Add a digital album or the bundle.
+        </div>`;
+        document.getElementById("cartTotal").textContent = "$0.00";
+        return;
+      }
+
+      let total = 0;
+
+      for(const item of cart){
+        const p = PRODUCTS.find(x => x.key === item.key);
+        if(!p) continue;
+        const qty = item.qty || 1;
+        const line = p.price * qty;
+        total += line;
+
+        const div = document.createElement("div");
+        div.className = "cartItem";
+        div.innerHTML = `
+          <div style="width:52px;height:52px;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);flex:0 0 auto;">
+            <img src="${p.img}" alt="" style="width:100%;height:100%;object-fit:cover;display:block">
+          </div>
+          <div style="min-width:0">
+            <div class="ciName">${p.title}</div>
+            <div class="ciSub">${p.subtitle}</div>
+            <div class="ciSub">Qty: ${qty}</div>
+          </div>
+          <div class="ciPrice">${money(line)}</div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <button class="miniBtn" data-dec="${p.key}">-</button>
+            <button class="miniBtn" data-rm="${p.key}">Remove</button>
+          </div>
+        `;
+        wrap.appendChild(div);
+      }
+
+      document.getElementById("cartTotal").textContent = money(total);
+
+      // wire buttons
+      wrap.querySelectorAll("[data-rm]").forEach(btn=>{
+        btn.addEventListener("click", ()=> removeFromCart(btn.getAttribute("data-rm")));
+      });
+      wrap.querySelectorAll("[data-dec]").forEach(btn=>{
+        btn.addEventListener("click", ()=> decQty(btn.getAttribute("data-dec")));
+      });
+    }
+
+    /*****************************************************************
+      HERO CAROUSEL
+    ******************************************************************/
+    let slideIndex = 0;
+    let slideTimer = null;
+
+    function buildCarousel(){
+      const slidesEl = document.getElementById("slides");
+      const dotsEl = document.getElementById("dots");
+      slidesEl.innerHTML = "";
+      dotsEl.innerHTML = "";
+
+      SLIDES.forEach((s, idx)=>{
+        const slide = document.createElement("div");
+        slide.className = "slide";
+        slide.dataset.idx = idx;
+        slide.innerHTML = `
+          <div class="coverRow">
+            <div class="cover">
+              <img src="${s.img}" alt="">
+              <div class="coverGlow"></div>
+            </div>
+          </div>
+        `;
+        slidesEl.appendChild(slide);
+
+        const dot = document.createElement("div");
+        dot.className = "dot";
+        dot.addEventListener("click", ()=> goToSlide(idx, true));
+        dotsEl.appendChild(dot);
+      });
+
+      goToSlide(0, false);
+      startCarousel();
+    }
+
+    function goToSlide(idx, userAction){
+      slideIndex = idx % SLIDES.length;
+
+      document.querySelectorAll(".slide").forEach((el,i)=>{
+        el.classList.toggle("active", i === slideIndex);
+      });
+      document.querySelectorAll(".dot").forEach((el,i)=>{
+        el.classList.toggle("active", i === slideIndex);
+      });
+
+      const s = SLIDES[slideIndex];
+      document.getElementById("heroTitle").textContent = s.title;
+      document.getElementById("heroMeta").textContent = s.meta;
+      document.getElementById("heroPrice").textContent = s.priceText;
+      document.getElementById("heroSmallMeta").textContent = s.smallMeta;
+
+      const addBtn = document.getElementById("heroAddBtn");
+      addBtn.onclick = ()=> addToCart(s.addKey);
+
+      if(userAction) restartCarousel();
+    }
+
+    function startCarousel(){
+      if(slideTimer) clearInterval(slideTimer);
+      slideTimer = setInterval(()=> goToSlide(slideIndex + 1, false), 5200);
+    }
+    function restartCarousel(){
+      startCarousel();
+    }
+
+    /*****************************************************************
+      ALBUM GRID
+    ******************************************************************/
+    function buildAlbumGrid(){
+      const grid = document.getElementById("albumGrid");
+      grid.innerHTML = "";
+
+      // show albums (exclude bundle here because it is already featured)
+      const list = PRODUCTS.filter(p=> p.key !== "bundle_all3");
+      list.forEach(p=>{
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <div class="cardTop">
+            <div class="thumb"><img src="${p.img}" alt=""></div>
+            <div style="min-width:0">
+              <p class="cardName">${p.title}</p>
+              <p class="cardMeta">${p.subtitle}</p>
+              <p class="cardMeta">${p.meta}</p>
+            </div>
+            <div class="cardPrice">
+              <div class="p">${money(p.price)}</div>
+              <div class="s">One time</div>
+            </div>
+          </div>
+          <div class="cardBtns">
+            <button class="btn primary" data-add="${p.key}">Add to Cart</button>
+            <a class="btn" href="/music/">Stream</a>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      // Attach listeners
+      grid.querySelectorAll("[data-add]").forEach(btn=>{
+        btn.addEventListener("click", ()=> addToCart(btn.getAttribute("data-add")));
+      });
+    }
+
+    /*****************************************************************
+      CART DRAWER UI
+    ******************************************************************/
+    const drawer = document.getElementById("drawer");
+    const backdrop = document.getElementById("backdrop");
+
+    function openCart(){
+      drawer.classList.add("open");
+      backdrop.classList.add("open");
+    }
+    function closeCart(){
+      drawer.classList.remove("open");
+      backdrop.classList.remove("open");
+    }
+
+    document.getElementById("cartBtn").addEventListener("click", ()=>{
+      renderCart();
+      openCart();
+    });
+    document.getElementById("closeCart").addEventListener("click", closeCart);
+    backdrop.addEventListener("click", closeCart);
+
+    /*****************************************************************
+      CHECKOUT (placeholder wiring for now)
+      Next step: we connect this button to a Supabase Edge Function that
+      creates the Stripe Checkout Session with line items.
+    ******************************************************************/
+    document.getElementById("checkoutBtn").addEventListener("click", async ()=>{
+      if(cart.length === 0) return;
+
+      // Build line_items from cart using the Stripe PRICE IDs
+      const line_items = cart.map(i=>{
+        const p = PRODUCTS.find(x => x.key === i.key);
+        return { price: p.priceId, quantity: i.qty || 1 };
+      });
+
+      // For now we show what will be sent.
+      // Next step we replace this with a fetch() to your backend:
+      // const res = await fetch("YOUR_SUPABASE_FUNCTION_URL/create-checkout", { ... })
+      // const data = await res.json(); window.location.href = data.url;
+
+      alert(
+        "Checkout is ready to be wired.\n\nStripe line items:\n" +
+        JSON.stringify(line_items, null, 2) +
+        "\n\nNext: we connect this to Supabase create-checkout."
+      );
+    });
+
+    /*****************************************************************
+      AMBIENT AUDIO (muted until user taps)
+    ******************************************************************/
+    const audioBtn = document.getElementById("audioBtn");
+    const ambient = new Audio();
+    ambient.src = AMBIENT_AUDIO_SRC;
+    ambient.loop = true;
+    ambient.volume = 0.0;
+    ambient.muted = true;
+
+    let audioOn = false;
+
+    function fadeTo(target, ms){
+      const start = ambient.volume;
+      const steps = 24;
+      const stepMs = ms / steps;
+      let n = 0;
+      const t = setInterval(()=>{
+        n++;
+        const v = start + (target - start) * (n / steps);
+        ambient.volume = Math.max(0, Math.min(1, v));
+        if(n >= steps) clearInterval(t);
+      }, stepMs);
+    }
+
+    audioBtn.addEventListener("click", async ()=>{
+      try{
+        if(!audioOn){
+          ambient.muted = false;
+          await ambient.play();
+          fadeTo(0.15, 1200);
+          audioOn = true;
+          audioBtn.textContent = "🔊";
+        }else{
+          fadeTo(0.0, 500);
+          setTimeout(()=>{
+            ambient.pause();
+            ambient.muted = true;
+          }, 520);
+          audioOn = false;
+          audioBtn.textContent = "♪";
+        }
+      }catch(e){
+        alert("Audio could not start. Upload your instrumental to: " + AMBIENT_AUDIO_SRC);
+      }
+    });
+
+    /*****************************************************************
+      INIT
+    ******************************************************************/
+    renderCartBadge();
+    renderCart();
+    buildCarousel();
+    buildAlbumGrid();
+  </script>
+</body>
+</html>
