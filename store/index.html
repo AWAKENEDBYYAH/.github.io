@@ -54,6 +54,7 @@
       display:flex; align-items:center; gap:10px;
       font-weight:800; letter-spacing:.06em;
       text-transform:uppercase;
+      flex-wrap:wrap;
     }
     .pill{
       font-size:12px;
@@ -62,7 +63,29 @@
       border:1px solid rgba(43,86,255,.35);
       background: rgba(43,86,255,.12);
       color:#dbe7ff;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease, background .15s ease;
+      user-select:none;
+      white-space:nowrap;
     }
+
+    /* ✅ clickable pill hover */
+    a.pill:hover{
+      transform: translateY(-1px);
+      border-color: rgba(43,86,255,.55);
+      box-shadow: 0 0 0 3px rgba(43,86,255,.12);
+      background: rgba(43,86,255,.18);
+    }
+
+    /* ✅ subtle “home” icon */
+    .pill .pillIcon{
+      font-size: 13px;
+      line-height: 1;
+      opacity: .95;
+    }
+
     .actions{display:flex; align-items:center; gap:10px}
     .iconBtn{
       display:inline-flex; align-items:center; justify-content:center;
@@ -439,6 +462,13 @@
           <img src="/abytransparent.png" alt="" style="width:26px;height:26px;border-radius:8px;opacity:.95" />
           <span>AWAKENED BY YAH</span>
         </span>
+
+        <!-- ✅ NEW: HOME BUTTON -->
+        <a class="pill" href="/" aria-label="Go to Homepage">
+          <span class="pillIcon">🏠</span>
+          HOME
+        </a>
+
         <span class="pill">Digital Store</span>
       </div>
 
