@@ -126,6 +126,39 @@ If a download does not start automatically, tap and hold the link and choose
 
 </div>
 </div>
+<script>
+(async () => {
+  const VERIFY_TOKEN_URL = "https://fgqzopgqtownfvohtlcq.supabase.co/functions/v1/verify_token";
 
+  const params = new URLSearchParams(location.search);
+  const token = params.get("t");
+
+  // If no token, block immediately
+  if (!token) {
+    location.replace("/downloads/");
+    return;
+  }
+
+  try {
+    const res = await fetch(VERIFY_TOKEN_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token })
+    });
+
+    const data = await res.json();
+
+    // Must be valid AND album must match this page
+    if (!data.ok || data.album !== "kingdom-biz") {
+      location.replace("/downloads/");
+      return;
+    }
+
+    // ✅ Authorized — do nothing, page stays open
+  } catch (e) {
+    location.replace("/downloads/");
+  }
+})();
+</script>
 </body>
 </html>
