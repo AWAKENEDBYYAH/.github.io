@@ -6,6 +6,7 @@
 <title>Download The Rise of Yasharal | AWAKENED BY YAH</title>
 
 <link rel="canonical" href="https://awakenedbyyahmusic.com/downloads/rise-of-yasharal/">
+<link rel="icon" type="image/png" href="/abytransparent.png">
 
 <style>
 :root{
@@ -25,6 +26,7 @@ body{
     radial-gradient(700px 520px at 80% 20%, rgba(43,86,255,.18), transparent 55%),
     var(--bg);
   color:var(--text);
+  visibility:hidden; /* 🔒 hidden until verified */
 }
 .wrap{max-width:900px;margin:0 auto;padding:28px 16px 60px;}
 .card{
@@ -69,97 +71,130 @@ p{margin:0 0 16px;color:var(--muted);line-height:1.45;}
 <body>
 <div class="wrap">
 
-<a class="back" href="/downloads/">← Back to Download Center</a>
+  <a class="back" id="backLink" href="/downloads/">← Back to Download Center</a>
 
-<div class="card">
-<h1>The Rise of Yasharal — Download Your Album</h1>
-<p>Your purchase is complete. Tap any track below to download.</p>
+  <div class="card">
+    <h1>The Rise of Yasharal — Download Your Album</h1>
+    <p>Your purchase is complete. Tap any track below to download.</p>
 
-<a class="track" href="/audio/ROY_TRACK%2001_THE%20LOVE%20I%20HAVE%20IN%20YAHUAH.mp3" download>01 The Love I Have in YAHUAH</a>
+    <a class="track" href="/audio/ROY_TRACK%2001_THE%20LOVE%20I%20HAVE%20IN%20YAHUAH.mp3" download>01 The Love I Have in YAHUAH</a>
+    <a class="track" href="/audio/ROY_TRACK%2002_YOU%27RE%20WITH%20ME.mp3" download>02 You're With Me</a>
+    <a class="track" href="/audio/ROY_TRACK%2003_BENEATH%20YOUR%20WINGS.mp3" download>03 Beneath Your Wings</a>
+    <a class="track" href="/audio/ROY_TRACK%2004_YAHUAH%20THE%20HOLY%20ONE%20OF%20YASHARAL.mp3" download>04 YAHUAH The Holy One of Yasharal</a>
+    <a class="track" href="/audio/ROY_TRACK%2005_SHOW%20ME%20YOUR%20HEART.mp3" download>05 Show Me Your Heart</a>
+    <a class="track" href="/audio/ROY_TRACK%2006_YAHS%20CHOSEN%20THE%20GREAT%20GATHERING.mp3" download>06 YAH's Chosen The Great Gathering</a>
+    <a class="track" href="/audio/ROY_TRACK%2007_YAHUAH%20IS%20THE%20FATHERS%20NAME.mp3" download>07 YAHUAH Is The Father's Name</a>
+    <a class="track" href="/audio/ROY_TRACK%2008_HOW%20SWEET%20IS%20YOUR%20NAME%20YAHUAH.mp3" download>08 How Sweet Is Your Name YAHUAH</a>
+    <a class="track" href="/audio/ROY_TRACK%2009_IN%20YOUR%20PRESENCE.mp3" download>09 In Your Presence</a>
+    <a class="track" href="/audio/ROY_TRACK%2010_HALAL%20YAHUAH%20WE%20MAGNIFY%20YOUR%20NAME.mp3" download>10 Halal YAHUAH We Magnify Your Name</a>
+    <a class="track" href="/audio/ROY_TRACK%2011_MY%20EYES%20OPENED%20WIDE.mp3" download>11 My Eyes Opened Wide</a>
+    <a class="track" href="/audio/ROY_TRACK%2012_RETURN%20TO%20THE%20COVENANT.mp3" download>12 Return To The Covenant</a>
 
-<a class="track" href="/audio/ROY_TRACK%2002_YOU%27RE%20WITH%20ME.mp3" download>02 You're With Me</a>
-
-<a class="track" href="/audio/ROY_TRACK%2003_BENEATH%20YOUR%20WINGS.mp3" download>03 Beneath Your Wings</a>
-
-<a class="track" href="/audio/ROY_TRACK%2004_YAHUAH%20THE%20HOLY%20ONE%20OF%20YASHARAL.mp3" download>04 YAHUAH The Holy One of Yasharal</a>
-
-<a class="track" href="/audio/ROY_TRACK%2005_SHOW%20ME%20YOUR%20HEART.mp3" download>05 Show Me Your Heart</a>
-
-<a class="track" href="/audio/ROY_TRACK%2006_YAHS%20CHOSEN%20THE%20GREAT%20GATHERING.mp3" download>06 YAH's Chosen The Great Gathering</a>
-
-<a class="track" href="/audio/ROY_TRACK%2007_YAHUAH%20IS%20THE%20FATHERS%20NAME.mp3" download>07 YAHUAH Is The Father's Name</a>
-
-<a class="track" href="/audio/ROY_TRACK%2008_HOW%20SWEET%20IS%20YOUR%20NAME%20YAHUAH.mp3" download>08 How Sweet Is Your Name YAHUAH</a>
-
-<a class="track" href="/audio/ROY_TRACK%2009_IN%20YOUR%20PRESENCE.mp3" download>09 In Your Presence</a>
-
-<a class="track" href="/audio/ROY_TRACK%2010_HALAL%20YAHUAH%20WE%20MAGNIFY%20YOUR%20NAME.mp3" download>10 Halal YAHUAH We Magnify Your Name</a>
-
-<a class="track" href="/audio/ROY_TRACK%2011_MY%20EYES%20OPENED%20WIDE.mp3" download>11 My Eyes Opened Wide</a>
-
-<a class="track" href="/audio/ROY_TRACK%2012_RETURN%20TO%20THE%20COVENANT.mp3" download>12 Return To The Covenant</a>
-
-<p class="note">
-If a download does not start automatically, tap and hold the link and choose <b>Download link</b>.
-</p>
-
+    <p class="note">
+      If a download does not start automatically, tap and hold the link and choose <b>Download link</b>.
+    </p>
+  </div>
 </div>
-</div>
-  <script>
+
+<script>
 (async () => {
-  const VERIFY_TOKEN_URL = "https://fgqzopgqtownfvohtlcq.supabase.co/functions/v1/verify_token";
+  const VERIFY_PURCHASE_URL = "https://fgqzopgqtownfvohtlcq.supabase.co/functions/v1/verify_purchase";
+  const VERIFY_TOKEN_URL    = "https://fgqzopgqtownfvohtlcq.supabase.co/functions/v1/verify_token";
 
+  const REQUIRED_ALBUM = "rise-of-yasharal";
   const params = new URLSearchParams(location.search);
-  const token = params.get("t");
 
-  if (!token) {
-    location.replace("/downloads/");
+  const sessionId = params.get("session_id");
+  const token     = params.get("t");
+
+  const backLink = document.getElementById("backLink");
+
+  function deny(message){
+    document.body.innerHTML = `
+      <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:#020617;color:#e5e7eb;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;">
+        <div style="max-width:820px;width:100%;border:1px solid rgba(255,255,255,.14);border-radius:22px;padding:22px;background:rgba(255,255,255,.04);box-shadow:0 18px 60px rgba(0,0,0,.35);">
+          <h1 style="margin:0 0 8px;font-size:28px;">ACCESS DENIED ⛔</h1>
+          <p style="margin:0 0 14px;color:rgba(229,231,235,.8);line-height:1.5;">${message}</p>
+          <a href="/downloads/" style="display:inline-flex;align-items:center;justify-content:center;padding:12px 14px;border-radius:14px;border:1px solid rgba(43,86,255,.35);background:linear-gradient(180deg, rgba(43,86,255,.28), rgba(28,57,168,.18));color:#fff;text-decoration:none;font-weight:900;">
+            Back to Download Center
+          </a>
+        </div>
+      </div>
+    `;
+    document.body.style.visibility = "visible";
+  }
+
+  // carry auth param back to download center
+  const carry = sessionId ? `?session_id=${encodeURIComponent(sessionId)}` : (token ? `?t=${encodeURIComponent(token)}` : "");
+  backLink.href = "/downloads/" + carry;
+
+  if(!sessionId && !token){
+    deny("You do not have a verified purchase for this album. Please return to the Download Center using your purchase link.");
     return;
   }
 
-  try {
-    const res = await fetch(VERIFY_TOKEN_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token })
-    });
-
-    const data = await res.json();
-
-    if (!data.ok || (data.album !== "rise-of-yasharal" && data.album !== "bundle")) {
-      location.replace("/downloads/");
-      return;
-    }
-  } catch (e) {
-    location.replace("/downloads/");
-  }
-})();
-</script>
-  <script>
-(async () => {
-  const VERIFY_TOKEN_URL = "https://fgqzopgqtownfvohtlcq.supabase.co/functions/v1/verify_token";
-  const params = new URLSearchParams(location.search);
-  const token = params.get("t");
-
-  if (!token) { location.replace("/downloads/"); return; }
-
   try{
-    const res = await fetch(VERIFY_TOKEN_URL, {
-      method:"POST",
-      headers:{ "Content-Type":"application/json" },
-      body: JSON.stringify({ token })
-    });
-    const data = await res.json();
+    // ✅ primary: session_id verification
+    if(sessionId){
+      const res = await fetch(VERIFY_PURCHASE_URL, {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({ session_id: sessionId })
+      });
 
-    // allow rise OR bundle
-    if (!data.ok || (data.album !== "rise-of-yasharal" && data.album !== "bundle")) {
-      location.replace("/downloads/");
+      let data = null;
+      try { data = await res.json(); } catch(_){}
+
+      if(!res.ok || !data || !data.ok){
+        deny("We could not verify your Stripe session. Please return to the Download Center using your purchase link.");
+        return;
+      }
+
+      const albums = Array.isArray(data.albums)
+        ? data.albums
+        : (data.album ? [data.album] : []);
+
+      const allowed = albums.includes(REQUIRED_ALBUM) || albums.includes("bundle") || data.album === "bundle";
+
+      if(!allowed){
+        deny("This purchase does not include The Rise of Yasharal. Please use the correct purchase link for this album.");
+        return;
+      }
+
+      document.body.style.visibility = "visible";
       return;
     }
+
+    // ✅ fallback: token verification
+    if(token){
+      const res = await fetch(VERIFY_TOKEN_URL, {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({ token })
+      });
+
+      let data = null;
+      try { data = await res.json(); } catch(_){}
+
+      if(!res.ok || !data || !data.ok){
+        deny("Your access token is invalid or expired. Please return to the Download Center using your purchase link.");
+        return;
+      }
+
+      if(data.album !== REQUIRED_ALBUM && data.album !== "bundle"){
+        deny("This token does not grant access to The Rise of Yasharal. Please use the correct purchase link.");
+        return;
+      }
+
+      document.body.style.visibility = "visible";
+      return;
+    }
+
   }catch(e){
-    location.replace("/downloads/");
+    deny("Verification failed due to a network error. Please try again using your purchase link.");
   }
 })();
 </script>
+
 </body>
 </html>
