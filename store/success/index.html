@@ -108,7 +108,12 @@
     const VERIFY_URL = "https://fgqzopgqtownfvohtlcq.supabase.co/functions/v1/verify_purchase";
 
     const params = new URLSearchParams(location.search);
-    const sessionId = params.get("session_id");
+
+    // ✅ Updated: accept multiple possible session id param names
+    const sessionId =
+      params.get("session_id") ||
+      params.get("sessionId") ||
+      params.get("sid");
 
     const btn  = document.getElementById("goDownloads");
     const msg  = document.getElementById("msg");
@@ -146,8 +151,6 @@
           return;
         }
 
-        // ✅ Real mode (this will work once we upgrade the function):
-        // Expected: { ok:true, token:"...", albums:["kingdom-biz"] } OR { ok:true, token:"...", album:"kingdom-biz" }
         if(!data || !data.ok){
           msg.textContent = "We could not verify your purchase automatically. Please use the Download Center.";
           hint.innerHTML = `If you need help, reply to your receipt email or contact support.`;
