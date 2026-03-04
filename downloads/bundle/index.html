@@ -14,7 +14,6 @@
       --text:#e5e7eb;
       --muted:#94a3b8;
       --line:rgba(255,255,255,.12);
-      --panel:rgba(255,255,255,.06);
       --brand:#1C39A8;
       --brand2:#2b56ff;
       --radius:22px;
@@ -30,6 +29,7 @@
         radial-gradient(900px 600px at 50% 95%, rgba(255,255,255,.05), transparent 60%),
         var(--bg);
       min-height:100vh;
+      visibility:hidden; /* 🔒 hidden until verified */
     }
     .wrap{max-width:980px;margin:0 auto;padding:26px 16px 50px}
     .top{
@@ -44,7 +44,7 @@
       display:inline-flex;align-items:center;gap:8px;
       padding:10px 14px;border-radius:999px;border:1px solid var(--line);
       background:rgba(255,255,255,.04);
-      font-weight:800;text-decoration:none;
+      font-weight:800;text-decoration:none;color:var(--text);
     }
     .pill:hover{border-color:rgba(43,86,255,.55); box-shadow:0 0 0 4px rgba(43,86,255,.10)}
     header{
@@ -87,7 +87,7 @@
       padding:12px 14px;border-radius:14px;
       border:1px solid rgba(255,255,255,.16);
       background:rgba(255,255,255,.05);
-      text-decoration:none;font-weight:900;
+      text-decoration:none;font-weight:900;color:var(--text);
       cursor:pointer;
     }
     .btn.primary{
@@ -95,7 +95,6 @@
       background:linear-gradient(180deg, rgba(43,86,255,.26), rgba(28,57,168,.18));
       box-shadow:0 0 0 4px rgba(43,86,255,.10);
     }
-    .btn:hover{transform: translateY(-1px)}
     footer{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
     code{background:rgba(255,255,255,.06);padding:2px 6px;border-radius:8px}
   </style>
@@ -111,15 +110,13 @@
       <div class="nav">
         <a class="pill" href="/store/">Store</a>
         <a class="pill" href="/music/">Music</a>
-        <a class="pill" href="/downloads/">Download Center</a>
+        <a class="pill" id="dlCenter" href="/downloads/">Download Center</a>
       </div>
     </div>
 
     <header>
       <h1>3-Album Bundle — Download Center</h1>
-      <p class="sub">
-        If you just purchased the bundle, your downloads will unlock automatically. If not, use the Store to purchase the bundle.
-      </p>
+      <p class="sub">Your bundle downloads unlock only after purchase verification.</p>
       <div class="btnrow">
         <a class="btn" href="/store/">Go to Store</a>
       </div>
@@ -131,23 +128,21 @@
       <div id="lockedBox" class="alert danger">
         Downloads are currently locked.
         <div style="margin-top:8px;font-size:12px;color:var(--muted);line-height:1.4">
-          After purchase, Stripe will redirect you here with <code>?success=1</code> which unlocks the buttons below.
+          Please return using your purchase link so we can verify your access.
         </div>
       </div>
 
       <div id="unlockedBox" style="display:none">
-        <div class="alert ok">Purchase detected. Bundle unlocked ✅</div>
+        <div class="alert ok">Purchase verified. Bundle unlocked ✅</div>
 
         <div class="btnrow">
-          <!-- These pages must exist. Rise does. We’ll create the others next. -->
-          <a class="btn primary" href="/downloads/the-battlefield/?success=1">Download The Battlefield</a>
-          <a class="btn primary" href="/downloads/kingdom-biz/?success=1">Download Kingdom Biz</a>
-          <a class="btn primary" href="/downloads/rise-of-yasharal/?success=1">Download The Rise of Yasharal</a>
+          <a class="btn primary" id="btnBattlefield" href="/downloads/the-battlefield/">Download The Battlefield</a>
+          <a class="btn primary" id="btnKingdomBiz" href="/downloads/kingdom-biz/">Download Kingdom Biz</a>
+          <a class="btn primary" id="btnRise" href="/downloads/rise-of-yasharal/">Download The Rise of Yasharal</a>
         </div>
 
         <div class="alert" style="margin-top:14px">
-          Tip: Save this page. If you ever need your downloads again, return to
-          <code>/downloads/bundle/</code> after purchase.
+          Tip: bookmark this page. When you return, use the same verified purchase link to unlock again.
         </div>
       </div>
     </div>
@@ -157,19 +152,115 @@
 
   <script>
     document.getElementById('yr').textContent = new Date().getFullYear();
-    const params = new URLSearchParams(location.search);
-    const success = params.get('success') === '1';
 
-    const lockedBox = document.getElementById('lockedBox');
-    const unlockedBox = document.getElementById('unlockedBox');
+    (async () => {
+      const VERIFY_PURCHASE_URL = "https://fgqzopgqtownfvohtlcq.supabase.co/functions/v1/verify_purchase";
+      const VERIFY_TOKEN_URL    = "https://fgqzopgqtownfvohtlcq.supabase.co/functions/v1/verify_token";
+      const REQUIRED = "bundle";
 
-    if(success){
-      lockedBox.style.display = "none";
-      unlockedBox.style.display = "block";
-    } else {
-      lockedBox.style.display = "block";
-      unlockedBox.style.display = "none";
-    }
+      const params = new URLSearchParams(location.search);
+      const sessionId = params.get("session_id");
+      const token = params.get("t");
+
+      const lockedBox = document.getElementById("lockedBox");
+      const unlockedBox = document.getElementById("unlockedBox");
+
+      const dlCenter = document.getElementById("dlCenter");
+      const btnBattlefield = document.getElementById("btnBattlefield");
+      const btnKingdomBiz  = document.getElementById("btnKingdomBiz");
+      const btnRise        = document.getElementById("btnRise");
+
+      function carry(){
+        return sessionId ? `?session_id=${encodeURIComponent(sessionId)}`
+             : token     ? `?t=${encodeURIComponent(token)}`
+             : "";
+      }
+
+      // keep the download center link carrying auth
+      dlCenter.href = "/downloads/" + carry();
+
+      function unlock(){
+        lockedBox.style.display = "none";
+        unlockedBox.style.display = "block";
+
+        const q = carry();
+        btnBattlefield.href = "/downloads/the-battlefield/" + q;
+        btnKingdomBiz.href  = "/downloads/kingdom-biz/" + q;
+        btnRise.href        = "/downloads/rise-of-yasharal/" + q;
+
+        document.body.style.visibility = "visible";
+      }
+
+      function deny(){
+        lockedBox.style.display = "block";
+        unlockedBox.style.display = "none";
+        document.body.style.visibility = "visible";
+      }
+
+      if(!sessionId && !token){
+        deny();
+        return;
+      }
+
+      try{
+        // ✅ primary: session verification
+        if(sessionId){
+          const res = await fetch(VERIFY_PURCHASE_URL, {
+            method:"POST",
+            headers:{ "Content-Type":"application/json" },
+            body: JSON.stringify({ session_id: sessionId })
+          });
+
+          let data = null;
+          try { data = await res.json(); } catch(_){}
+
+          if(!res.ok || !data || !data.ok){
+            deny();
+            return;
+          }
+
+          const albums = Array.isArray(data.albums)
+            ? data.albums
+            : (data.album ? [data.album] : []);
+
+          if(albums.includes(REQUIRED) || data.album === REQUIRED){
+            unlock();
+            return;
+          }
+
+          deny();
+          return;
+        }
+
+        // ✅ fallback: token verification
+        if(token){
+          const res = await fetch(VERIFY_TOKEN_URL, {
+            method:"POST",
+            headers:{ "Content-Type":"application/json" },
+            body: JSON.stringify({ token })
+          });
+
+          let data = null;
+          try { data = await res.json(); } catch(_){}
+
+          if(!res.ok || !data || !data.ok){
+            deny();
+            return;
+          }
+
+          if(data.album === REQUIRED){
+            unlock();
+            return;
+          }
+
+          deny();
+          return;
+        }
+
+      }catch(e){
+        deny();
+      }
+    })();
   </script>
 </body>
 </html>
