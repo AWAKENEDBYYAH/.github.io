@@ -14,10 +14,8 @@
       --text:#e5e7eb;
       --muted:#94a3b8;
       --line:rgba(255,255,255,.12);
-      --panel:rgba(255,255,255,.06);
-      --brand:#1C39A8;
       --radius:22px;
-      --cta:#ffff00; /* neon yellow */
+      --cta:#ffff00;
     }
     *{box-sizing:border-box}
     body{
@@ -30,9 +28,7 @@
         radial-gradient(900px 600px at 50% 95%, rgba(255,255,255,.05), transparent 60%),
         var(--bg);
       min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
+      display:flex;align-items:center;justify-content:center;
       padding:24px 16px;
     }
     .card{
@@ -67,8 +63,8 @@
       box-shadow:0 0 0 4px rgba(43,86,255,.10);
       color:var(--cta);
       text-shadow:0 0 7px rgba(255,255,0,.55);
-      letter-spacing:.4px;
       text-transform:uppercase;
+      letter-spacing:.4px;
     }
     .hint{
       margin-top:14px;
@@ -94,64 +90,80 @@
       <a class="btn" href="/store/">Store</a>
     </div>
 
-    <h1>PAYMENT SUCCESSFUL ✅</h1>
-    <p class="sub" id="msg">
-      Your payment went through. Tap below to access your downloads.
-    </p>
+    <h1 id="title">PAYMENT SUCCESSFUL ✅</h1>
+    <p class="sub" id="msg">Verifying your purchase and preparing your downloads…</p>
 
     <div class="btnrow">
-      <a class="btn primary" id="goDownloads" href="/downloads/">
-        GET YOUR DOWNLOADS
-      </a>
-      <a class="btn" href="/downloads/">Download Center</a>
+      <a class="btn primary" id="goDownloads" href="/downloads/">GET YOUR DOWNLOADS</a>
       <a class="btn" href="/music/">Stream</a>
     </div>
 
-    <div class="hint" id="hint"></div>
+    <div class="hint" id="hint">
+      If you are not redirected automatically, click <b>GET YOUR DOWNLOADS</b>.
+    </div>
   </div>
 
   <script>
+    // ✅ PUT YOUR SUPABASE EDGE FUNCTION URL HERE
+    const VERIFY_URL = "https://YOUR_PROJECT.functions.supabase.co/verify_purchase";
+
     const params = new URLSearchParams(location.search);
+    const sessionId = params.get("session_id");
 
-    // ✅ Stripe might not send "album". We support multiple keys just in case.
-    const rawAlbum =
-      (params.get('album') || params.get('product') || params.get('sku') || '').toLowerCase().trim();
+    const btn = document.getElementById("goDownloads");
+    const msg = document.getElementById("msg");
+    const hint = document.getElementById("hint");
 
-    const map = {
-      "kingdom-biz": {
-        title: "Kingdom Biz",
-        url: "/downloads/kingdom-biz/?success=1"
-      },
-      "the-battlefield": {
-        title: "The Battlefield",
-        url: "/downloads/the-battlefield/?success=1"
-      },
-      "rise-of-yasharal": {
-        title: "The Rise of Yasharal",
-        url: "/downloads/rise-of-yasharal/?success=1"
-      },
-      "bundle": {
-        title: "3-Album Bundle",
-        url: "/downloads/bundle/?success=1"
-      }
+    const ALBUM_TO_PATH = {
+      "kingdom-biz": "/downloads/kingdom-biz/",
+      "the-battlefield": "/downloads/the-battlefield/",
+      "rise-of-yasharal": "/downloads/rise-of-yasharal/",
+      "bundle": "/downloads/bundle/"
     };
 
-    const btn = document.getElementById('goDownloads');
-    const msg = document.getElementById('msg');
-    const hint = document.getElementById('hint');
+    async function run(){
+      if(!sessionId){
+        msg.textContent = "Missing session ID. Please use the Download Center.";
+        btn.href = "/downloads/";
+        return;
+      }
 
-    if(map[rawAlbum]){
-      btn.href = map[rawAlbum].url;
-      btn.textContent = "GET YOUR DOWNLOADS";
-      msg.textContent = `Your ${map[rawAlbum].title} purchase is complete. Tap below to download now.`;
-      hint.innerHTML = `If you ever need your files again, visit <code>/downloads/</code>.`;
-    } else {
-      // ✅ Always safe fallback so customers never get stuck
-      btn.href = "/downloads/";
-      btn.textContent = "GET YOUR DOWNLOADS";
-      msg.textContent = "Your purchase is complete. Tap below to open the Download Center.";
-      hint.innerHTML = `Tip: If you arrived here without an album tag, use <code>/downloads/</code> to access everything.`;
+      try{
+        const res = await fetch(`${VERIFY_URL}?session_id=${encodeURIComponent(sessionId)}`);
+        const data = await res.json();
+
+        if(!data.ok){
+          msg.textContent = "We could not verify your purchase automatically. Please use the Download Center.";
+          hint.innerHTML = `If you need help, reply to your receipt email or contact support.`;
+          btn.href = "/downloads/";
+          return;
+        }
+
+        const token = data.token;
+        const albums = data.albums || [];
+
+        // Routing: if bundle purchased -> bundle page
+        let target = null;
+        if(albums.includes("bundle")){
+          target = ALBUM_TO_PATH["bundle"];
+        } else {
+          // Otherwise first recognized album
+          target = ALBUM_TO_PATH[albums[0]] || "/downloads/";
+        }
+
+        const finalUrl = `${target}?t=${encodeURIComponent(token)}`;
+        btn.href = finalUrl;
+
+        msg.textContent = "Verified ✅ Redirecting you to your downloads now…";
+        setTimeout(()=>{ location.replace(finalUrl); }, 900);
+
+      }catch(e){
+        msg.textContent = "Network error while verifying. Please use the Download Center.";
+        btn.href = "/downloads/";
+      }
     }
+
+    run();
   </script>
 </body>
 </html>
