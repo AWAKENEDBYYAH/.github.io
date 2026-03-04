@@ -67,6 +67,8 @@
       box-shadow:0 0 0 4px rgba(43,86,255,.10);
       color:var(--cta);
       text-shadow:0 0 7px rgba(255,255,0,.55);
+      letter-spacing:.4px;
+      text-transform:uppercase;
     }
     .hint{
       margin-top:14px;
@@ -92,17 +94,17 @@
       <a class="btn" href="/store/">Store</a>
     </div>
 
-    <h1>Purchase Complete ✅</h1>
+    <h1>PAYMENT SUCCESSFUL ✅</h1>
     <p class="sub" id="msg">
-      Your payment went through. Tap the button below to go straight to your downloads.
+      Your payment went through. Tap below to access your downloads.
     </p>
 
     <div class="btnrow">
       <a class="btn primary" id="goDownloads" href="/downloads/">
-        Go to your downloads
+        GET YOUR DOWNLOADS
       </a>
       <a class="btn" href="/downloads/">Download Center</a>
-      <a class="btn" href="/music/">Music</a>
+      <a class="btn" href="/music/">Stream</a>
     </div>
 
     <div class="hint" id="hint"></div>
@@ -110,7 +112,10 @@
 
   <script>
     const params = new URLSearchParams(location.search);
-    const album = (params.get('album') || '').toLowerCase();
+
+    // ✅ Stripe might not send "album". We support multiple keys just in case.
+    const rawAlbum =
+      (params.get('album') || params.get('product') || params.get('sku') || '').toLowerCase().trim();
 
     const map = {
       "kingdom-biz": {
@@ -135,15 +140,16 @@
     const msg = document.getElementById('msg');
     const hint = document.getElementById('hint');
 
-    if(map[album]){
-      btn.href = map[album].url;
-      btn.textContent = `Go to ${map[album].title} downloads`;
-      msg.textContent = `Your ${map[album].title} purchase is complete. Tap below to download now.`;
+    if(map[rawAlbum]){
+      btn.href = map[rawAlbum].url;
+      btn.textContent = "GET YOUR DOWNLOADS";
+      msg.textContent = `Your ${map[rawAlbum].title} purchase is complete. Tap below to download now.`;
       hint.innerHTML = `If you ever need your files again, visit <code>/downloads/</code>.`;
     } else {
+      // ✅ Always safe fallback so customers never get stuck
       btn.href = "/downloads/";
-      btn.textContent = "Go to Download Center";
-      msg.textContent = "Your purchase is complete. Tap below to access your downloads.";
+      btn.textContent = "GET YOUR DOWNLOADS";
+      msg.textContent = "Your purchase is complete. Tap below to open the Download Center.";
       hint.innerHTML = `Tip: If you arrived here without an album tag, use <code>/downloads/</code> to access everything.`;
     }
   </script>
