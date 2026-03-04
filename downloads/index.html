@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Downloads | AWAKENED BY YAH</title>
   <link rel="canonical" href="https://awakenedbyyahmusic.com/downloads/" />
+  <link rel="icon" type="image/png" href="/abytransparent.png">
+
   <style>
     :root{
       --bg:#020617;
@@ -111,6 +113,7 @@
       line-height:1.5;
     }
     .note b{color:var(--text)}
+    code{background:rgba(255,255,255,.06);padding:2px 6px;border-radius:8px}
   </style>
 </head>
 <body>
@@ -126,6 +129,14 @@
     </div>
 
     <div class="grid">
+      <!-- Bundle card -->
+      <div class="card" id="card-bundle">
+        <span class="badge locked" id="badge-bundle">LOCKED</span>
+        <p class="title">3-ALBUM BUNDLE</p>
+        <p class="desc">Access all albums from one verified bundle hub.</p>
+        <a class="btn disabled" id="btn-bundle" href="/downloads/bundle/">Open Bundle</a>
+      </div>
+
       <div class="card" id="card-kingdom-biz">
         <span class="badge locked" id="badge-kingdom-biz">LOCKED</span>
         <p class="title">KINGDOM BIZ</p>
@@ -151,36 +162,47 @@
     <div class="note">
       <b>Having trouble?</b> If a download doesn’t start, tap and hold the link and choose <b>Download link</b>.
       For support email <b>yahuahsremnant@gmail.com</b>.
+      <div style="margin-top:8px">
+        Tip: your verified link will include <code>?session_id=cs_live_...</code> (or legacy <code>?t=...</code>).
+      </div>
     </div>
   </div>
 
   <script>
     (async () => {
-      const VERIFY_TOKEN_URL = "https://fgqzopgqtownfvohtlcq.supabase.co/functions/v1/verify_token";
+      const VERIFY_PURCHASE_URL = "https://fgqzopgqtownfvohtlcq.supabase.co/functions/v1/verify_purchase";
+      const VERIFY_TOKEN_URL    = "https://fgqzopgqtownfvohtlcq.supabase.co/functions/v1/verify_token";
 
       const params = new URLSearchParams(location.search);
-      const token = params.get("t");
+      const sessionId = params.get("session_id"); // primary
+      const token     = params.get("t");          // fallback
 
       const statusEl = document.getElementById("status");
       const subEl = document.getElementById("sub");
 
       const ALBUMS = ["kingdom-biz", "the-battlefield", "rise-of-yasharal"];
 
-      function setLocked(album) {
-        const btn = document.getElementById(`btn-${album}`);
-        const badge = document.getElementById(`badge-${album}`);
+      function carryQuery(){
+        if(sessionId) return `?session_id=${encodeURIComponent(sessionId)}`;
+        if(token) return `?t=${encodeURIComponent(token)}`;
+        return "";
+      }
+
+      function setLocked(key) {
+        const btn = document.getElementById(`btn-${key}`);
+        const badge = document.getElementById(`badge-${key}`);
         btn.classList.add("disabled");
         badge.textContent = "LOCKED";
         badge.classList.remove("ok");
         badge.classList.add("locked");
       }
 
-      function setAllowed(album) {
-        const btn = document.getElementById(`btn-${album}`);
-        const badge = document.getElementById(`badge-${album}`);
+      function setAllowed(key) {
+        const btn = document.getElementById(`btn-${key}`);
+        const badge = document.getElementById(`badge-${key}`);
 
         btn.classList.remove("disabled");
-        btn.href = `${btn.getAttribute("href")}?t=${encodeURIComponent(token)}`;
+        btn.href = `${btn.getAttribute("href")}${carryQuery()}`;
 
         badge.textContent = "UNLOCKED";
         badge.classList.remove("locked");
@@ -188,17 +210,70 @@
       }
 
       // Default lock everything
-      ALBUMS.forEach(setLocked);
+      ["bundle", ...ALBUMS].forEach(setLocked);
 
-      if (!token) {
+      if (!sessionId && !token) {
         statusEl.classList.remove("ok");
         statusEl.classList.add("locked");
-        statusEl.innerHTML = `<b>Locked:</b> This page requires a secure download link. Please purchase an album to receive access.`;
-        subEl.textContent = "This download center is locked without a verified purchase token.";
+        statusEl.innerHTML = `<b>Locked:</b> This page requires a verified purchase link. Please complete checkout and use the link you receive.`;
+        subEl.textContent = "This download center is locked without a verified session or token.";
         return;
       }
 
       try {
+        // ✅ Primary: session_id verification
+        if(sessionId){
+          const res = await fetch(VERIFY_PURCHASE_URL, {
+            method:"POST",
+            headers:{ "Content-Type":"application/json" },
+            body: JSON.stringify({ session_id: sessionId })
+          });
+
+          let data = null;
+          try { data = await res.json(); } catch(_){}
+
+          if (!res.ok || !data || !data.ok) {
+            statusEl.classList.remove("ok");
+            statusEl.classList.add("locked");
+            statusEl.innerHTML = `<b>Locked:</b> Unable to verify session. Please use your purchase success link again.`;
+            subEl.textContent = "Session is missing, invalid, or expired.";
+            return;
+          }
+
+          const albums = Array.isArray(data.albums)
+            ? data.albums
+            : (data.album ? [data.album] : []);
+
+          // bundle purchase unlocks everything + bundle hub
+          if (albums.includes("bundle") || data.album === "bundle") {
+            setAllowed("bundle");
+            ALBUMS.forEach(setAllowed);
+            statusEl.classList.remove("locked");
+            statusEl.classList.add("ok");
+            statusEl.innerHTML = `<b>Verified:</b> Bundle access unlocked ✅`;
+            subEl.textContent = "Bundle purchase detected. All album downloads are available.";
+            return;
+          }
+
+          // single-album purchase unlocks only matching album
+          const single = albums[0] || data.album;
+          if (ALBUMS.includes(single)) {
+            setAllowed(single);
+            statusEl.classList.remove("locked");
+            statusEl.classList.add("ok");
+            statusEl.innerHTML = `<b>Verified:</b> Access granted for <b>${single.replaceAll("-", " ").toUpperCase()}</b> ✅`;
+            subEl.textContent = "Only your purchased album is unlocked.";
+            return;
+          }
+
+          statusEl.classList.remove("ok");
+          statusEl.classList.add("locked");
+          statusEl.innerHTML = `<b>Locked:</b> Purchase verified, but album not recognized by this page.`;
+          subEl.textContent = "Verified response did not include a recognized album.";
+          return;
+        }
+
+        // ✅ Fallback: token verification
         const res = await fetch(VERIFY_TOKEN_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -215,8 +290,8 @@
           return;
         }
 
-        // If bundle token: unlock all albums
         if (data.album === "bundle") {
+          setAllowed("bundle");
           ALBUMS.forEach(setAllowed);
           statusEl.classList.remove("locked");
           statusEl.classList.add("ok");
@@ -225,7 +300,6 @@
           return;
         }
 
-        // Single-album token: unlock only matching album
         if (ALBUMS.includes(data.album)) {
           setAllowed(data.album);
           statusEl.classList.remove("locked");
@@ -235,16 +309,16 @@
           return;
         }
 
-        // Unknown album payload
         statusEl.classList.remove("ok");
         statusEl.classList.add("locked");
         statusEl.innerHTML = `<b>Locked:</b> Token album not recognized. Please contact support.`;
         subEl.textContent = "Token was valid but album was not recognized by this page.";
+
       } catch (e) {
         statusEl.classList.remove("ok");
         statusEl.classList.add("locked");
         statusEl.innerHTML = `<b>Locked:</b> Verification error. Please refresh or use your success link again.`;
-        subEl.textContent = "Unable to verify token at this time.";
+        subEl.textContent = "Unable to verify access at this time.";
       }
     })();
   </script>
