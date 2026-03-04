@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Success | AWAKENED BY YAH</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Purchase Complete | AWAKENED BY YAH</title>
+
   <link rel="canonical" href="https://awakenedbyyahmusic.com/store/success/" />
   <link rel="icon" type="image/png" href="/abytransparent.png">
 
@@ -13,20 +14,21 @@
       --text:#e5e7eb;
       --muted:#94a3b8;
       --line:rgba(255,255,255,.12);
+      --panel:rgba(255,255,255,.06);
       --brand:#1C39A8;
-      --gold:rgba(255,210,120,.95);
       --radius:22px;
+      --cta:#ffff00; /* neon yellow */
     }
     *{box-sizing:border-box}
     body{
       margin:0;
-      font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
       color:var(--text);
       background:
-        radial-gradient(1100px 800px at 20% -10%, rgba(43,86,255,.22), transparent 60%),
-        radial-gradient(900px 700px at 85% 10%, rgba(28,57,168,.25), transparent 60%),
-        radial-gradient(1000px 700px at 50% 120%, rgba(255,210,120,.08), transparent 55%),
-        linear-gradient(180deg, #020617 0%, #040b1a 50%, #020617 100%);
+        radial-gradient(1200px 600px at 20% 10%, rgba(43,86,255,.16), transparent 60%),
+        radial-gradient(900px 500px at 90% 30%, rgba(28,57,168,.18), transparent 55%),
+        radial-gradient(900px 600px at 50% 95%, rgba(255,255,255,.05), transparent 60%),
+        var(--bg);
       min-height:100vh;
       display:flex;
       align-items:center;
@@ -34,144 +36,115 @@
       padding:24px 16px;
     }
     .card{
-      width:min(820px, 100%);
+      width:min(900px, 100%);
       border:1px solid var(--line);
-      background: rgba(255,255,255,.04);
-      border-radius: var(--radius);
-      padding: 22px;
-      box-shadow: 0 18px 60px rgba(0,0,0,.55);
+      border-radius:var(--radius);
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow:0 18px 60px rgba(0,0,0,.35);
+      padding:22px;
     }
     .top{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      margin-bottom:14px;
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:12px 14px;border:1px solid var(--line);border-radius:999px;
+      background:rgba(255,255,255,.04);
     }
-    .logo{
-      width:44px;height:44px;border-radius:14px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.03);
-      display:flex;align-items:center;justify-content:center;
-      overflow:hidden;
-    }
-    .logo img{width:100%;height:100%;object-fit:cover;display:block}
-    h1{
-      margin:0;
-      font-size: 22px;
-      letter-spacing:.06em;
-      text-transform:uppercase;
-    }
-    .pill{
-      margin-left:auto;
-      font-size:12px;
-      padding:6px 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,210,120,.35);
-      background: rgba(255,210,120,.10);
-      color: rgba(255,230,170,.95);
-      font-weight:900;
-      letter-spacing:.06em;
-      text-transform:uppercase;
-    }
-    .msg{
-      color:var(--muted);
-      line-height:1.55;
-      font-size:14px;
-      margin: 6px 0 16px;
-    }
-    .status{
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.22);
-      border-radius: 18px;
-      padding: 14px;
-      margin: 12px 0 18px;
-    }
-    .status strong{color: rgba(255,230,170,.95)}
-    .row{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:10px;
-    }
+    .brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:.4px}
+    h1{margin:16px 0 8px;font-size:28px}
+    .sub{margin:0;color:var(--muted);line-height:1.5}
+    .btnrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
     .btn{
-      display:inline-flex;align-items:center;justify-content:center;
-      padding: 12px 14px;
-      border-radius: 14px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.04);
-      color: var(--text);
-      font-weight: 900;
-      letter-spacing:.04em;
-      text-transform: uppercase;
+      display:inline-flex;align-items:center;justify-content:center;gap:10px;
+      padding:12px 14px;border-radius:14px;
+      border:1px solid rgba(255,255,255,.16);
+      background:rgba(255,255,255,.05);
+      text-decoration:none;font-weight:900;
+      color:var(--text);
       cursor:pointer;
-      text-decoration:none;
     }
     .btn.primary{
-      border-color: rgba(255,210,120,.45);
-      background: linear-gradient(180deg, rgba(255,210,120,.28), rgba(255,210,120,.10));
+      border-color:rgba(43,86,255,.55);
+      background:linear-gradient(180deg, rgba(43,86,255,.26), rgba(28,57,168,.18));
+      box-shadow:0 0 0 4px rgba(43,86,255,.10);
+      color:var(--cta);
+      text-shadow:0 0 7px rgba(255,255,0,.55);
     }
-    .fine{
-      margin-top:12px;
+    .hint{
+      margin-top:14px;
+      padding:12px 12px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.03);
       color:var(--muted);
-      font-size:12px;
+      font-size:13px;
       line-height:1.45;
     }
-    code{
-      background: rgba(255,255,255,.06);
-      padding: 2px 6px;
-      border-radius: 8px;
-      border:1px solid rgba(255,255,255,.10);
-    }
+    code{background:rgba(255,255,255,.06);padding:2px 6px;border-radius:8px}
   </style>
 </head>
 
 <body>
   <div class="card">
     <div class="top">
-      <div class="logo"><img src="/abytransparent.png" alt=""></div>
-      <h1>Payment Successful</h1>
-      <div class="pill">Thank you</div>
+      <div class="brand">
+        <img src="/abytransparent.png" alt="AWAKENED BY YAH" style="width:32px;height:32px;object-fit:contain;">
+        <div>AWAKENED BY YAH</div>
+      </div>
+      <a class="btn" href="/store/">Store</a>
     </div>
 
-    <p class="msg">
-      Your order went through. Your cart is now being cleared automatically so you can start fresh.
+    <h1>Purchase Complete ✅</h1>
+    <p class="sub" id="msg">
+      Your payment went through. Tap the button below to go straight to your downloads.
     </p>
 
-    <div class="status" id="statusBox">
-      Clearing cart…
+    <div class="btnrow">
+      <a class="btn primary" id="goDownloads" href="/downloads/">
+        Go to your downloads
+      </a>
+      <a class="btn" href="/downloads/">Download Center</a>
+      <a class="btn" href="/music/">Music</a>
     </div>
 
-    <div class="row">
-      <a class="btn primary" href="/store/">Back to Store</a>
-      <a class="btn" href="/music/">Stream</a>
-    </div>
-
-    <div class="fine">
-      If you were returned here from Stripe, you may see a <code>session_id</code> in the URL — that’s normal.
-      Delivery automation comes next.
-    </div>
+    <div class="hint" id="hint"></div>
   </div>
 
   <script>
-    // MUST match your store page cart key
-    const CART_KEY = "aby_store_cart_v1";
+    const params = new URLSearchParams(location.search);
+    const album = (params.get('album') || '').toLowerCase();
 
-    function clearCart() {
-      try {
-        localStorage.removeItem(CART_KEY);
-        return true;
-      } catch (e) {
-        return false;
+    const map = {
+      "kingdom-biz": {
+        title: "Kingdom Biz",
+        url: "/downloads/kingdom-biz/?success=1"
+      },
+      "the-battlefield": {
+        title: "The Battlefield",
+        url: "/downloads/the-battlefield/?success=1"
+      },
+      "rise-of-yasharal": {
+        title: "The Rise of Yasharal",
+        url: "/downloads/rise-of-yasharal/?success=1"
+      },
+      "bundle": {
+        title: "3-Album Bundle",
+        url: "/downloads/bundle/?success=1"
       }
-    }
+    };
 
-    const ok = clearCart();
-    const statusBox = document.getElementById("statusBox");
+    const btn = document.getElementById('goDownloads');
+    const msg = document.getElementById('msg');
+    const hint = document.getElementById('hint');
 
-    if (ok) {
-      statusBox.innerHTML = `✅ Cart cleared. You’re all set.`;
+    if(map[album]){
+      btn.href = map[album].url;
+      btn.textContent = `Go to ${map[album].title} downloads`;
+      msg.textContent = `Your ${map[album].title} purchase is complete. Tap below to download now.`;
+      hint.innerHTML = `If you ever need your files again, visit <code>/downloads/</code>.`;
     } else {
-      statusBox.innerHTML = `⚠️ Cart could not be cleared automatically. Please return to the store and refresh.`;
+      btn.href = "/downloads/";
+      btn.textContent = "Go to Download Center";
+      msg.textContent = "Your purchase is complete. Tap below to access your downloads.";
+      hint.innerHTML = `Tip: If you arrived here without an album tag, use <code>/downloads/</code> to access everything.`;
     }
   </script>
 </body>
