@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Processing Purchase | AWAKENED BY YAH</title>
+  <link rel="canonical" href="https://awakenedbyyahmusic.com/purchase-success/" />
+  <link rel="icon" type="image/png" href="/abytransparent.png">
+
+  <style>
+    :root{
+      --bg:#020617;
+      --text:#e5e7eb;
+      --muted:#94a3b8;
+      --line:rgba(255,255,255,.12);
+      --radius:22px;
+      --cta:#ffff00;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 20% 10%, rgba(43,86,255,.16), transparent 60%),
+        radial-gradient(900px 500px at 90% 30%, rgba(28,57,168,.18), transparent 55%),
+        radial-gradient(900px 600px at 50% 95%, rgba(255,255,255,.05), transparent 60%),
+        var(--bg);
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px 16px;
+    }
+    .card{
+      width:min(900px,100%);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow:0 18px 60px rgba(0,0,0,.35);
+      padding:22px;
+    }
+    .top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:12px 14px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background:rgba(255,255,255,.04);
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:900;
+      letter-spacing:.4px
+    }
+    h1{margin:16px 0 8px;font-size:28px}
+    .sub{margin:0;color:var(--muted);line-height:1.5}
+    .btnrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.16);
+      background:rgba(255,255,255,.05);
+      text-decoration:none;
+      font-weight:900;
+      color:var(--text);
+      cursor:pointer;
+    }
+    .btn.primary{
+      border-color:rgba(43,86,255,.55);
+      background:linear-gradient(180deg, rgba(43,86,255,.26), rgba(28,57,168,.18));
+      box-shadow:0 0 0 4px rgba(43,86,255,.10);
+      color:var(--cta);
+      text-shadow:0 0 7px rgba(255,255,0,.55);
+      text-transform:uppercase;
+      letter-spacing:.4px;
+    }
+    .hint{
+      margin-top:14px;
+      padding:12px 12px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.03);
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.45;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <div class="top">
+      <div class="brand">
+        <img src="/abytransparent.png" alt="AWAKENED BY YAH" style="width:32px;height:32px;object-fit:contain;">
+        <div>AWAKENED BY YAH</div>
+      </div>
+      <a class="btn" href="/store/">Store</a>
+    </div>
+
+    <h1 id="title">PROCESSING YOUR PURCHASE…</h1>
+    <p class="sub" id="msg">Verifying your payment and preparing your downloads…</p>
+
+    <div class="btnrow">
+      <a class="btn primary" id="goDownloads" href="/downloads/">GO TO DOWNLOAD CENTER</a>
+      <a class="btn" href="/music/">Stream</a>
+    </div>
+
+    <div class="hint" id="hint">
+      If you are not redirected automatically, click <b>GO TO DOWNLOAD CENTER</b>.
+    </div>
+  </div>
+
+  <script>
+    const VERIFY_URL = "https://fgqzopgqtownfvohtlcq.supabase.co/functions/v1/verify_purchase";
+
+    const params = new URLSearchParams(location.search);
+    const sessionId = params.get("session_id");
+
+    const btn  = document.getElementById("goDownloads");
+    const msg  = document.getElementById("msg");
+    const hint = document.getElementById("hint");
+
+    const ALBUM_TO_PATH = {
+      "kingdom-biz": "/downloads/kingdom-biz/",
+      "the-battlefield": "/downloads/the-battlefield/",
+      "rise-of-yasharal": "/downloads/rise-of-yasharal/",
+      "bundle": "/downloads/bundle/"
+    };
+
+    async function run(){
+      if(!sessionId){
+        msg.textContent = "Missing session ID. Please use the Download Center.";
+        btn.href = "/downloads/";
+        return;
+      }
+
+      try{
+        const res = await fetch(VERIFY_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ session_id: sessionId })
+        });
+
+        const data = await res.json();
+        console.log("verify_purchase response:", data);
+
+        if(!data || !data.ok){
+          msg.textContent = "We could not verify your purchase automatically. Please use the Download Center.";
+          btn.href = "/downloads/";
+          return;
+        }
+
+        const token = data.token;
+        const albums = Array.isArray(data.albums) ? data.albums : (data.album ? [data.album] : []);
+
+        let target = "/downloads/";
+        if(albums.includes("bundle")){
+          target = ALBUM_TO_PATH["bundle"];
+        } else if (albums[0] && ALBUM_TO_PATH[albums[0]]) {
+          target = ALBUM_TO_PATH[albums[0]];
+        }
+
+        const finalUrl = `${target}?t=${encodeURIComponent(token)}`;
+        btn.href = finalUrl;
+
+        msg.textContent = "Verified ✅ Redirecting you to your downloads now…";
+        setTimeout(()=>{ location.replace(finalUrl); }, 300);
+
+      }catch(e){
+        msg.textContent = "Network error while verifying. Please use the Download Center.";
+        btn.href = "/downloads/";
+      }
+    }
+
+    run();
+  </script>
+</body>
+</html>
