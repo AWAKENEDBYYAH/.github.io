@@ -317,10 +317,27 @@
       box-shadow: 0 0 0 3px rgba(43,86,255,.12);
       background: rgba(43,86,255,.10);
     }
+
+    /* ✅ Primary CTA = BUY NOW */
     .btn.primary{
-      border-color: rgba(255,210,120,.35);
-      background: rgba(255,210,120,.10);
+      border-color: rgba(255,210,120,.55);
+      background: linear-gradient(180deg, rgba(255,210,120,.22), rgba(43,86,255,.10));
+      box-shadow: 0 0 0 4px rgba(255,210,120,.10);
     }
+
+    /* ✅ Secondary CTA = ADD TO CART */
+    .btn.secondary{
+      border-color: rgba(255,255,255,.16);
+      background: rgba(255,255,255,.03);
+      opacity: .92;
+    }
+    .btn.secondary:hover{
+      opacity: 1;
+      border-color: rgba(43,86,255,.45);
+      background: rgba(43,86,255,.08);
+      box-shadow: 0 0 0 3px rgba(43,86,255,.10);
+    }
+
     .dots{
       display:flex; gap:8px; justify-content:center;
       padding: 10px 0 2px;
@@ -506,13 +523,14 @@
             </div>
 
             <div class="btnRow">
-              <button class="btn" id="heroAddBtn">Add to Cart</button>
-              <a class="btn primary" id="heroBuyBtn" href="#" target="_blank" rel="noopener">Buy Now</a>
+              <!-- ✅ PRIMARY FIRST -->
+              <a class="btn primary" id="heroBuyBtn" href="#" target="_blank" rel="noopener">BUY NOW — INSTANT DOWNLOAD</a>
+              <button class="btn secondary" id="heroAddBtn">Add to Cart</button>
               <a class="btn" href="/albums/">View Physical</a>
             </div>
 
             <div class="mutedNote">
-              Checkout is secure. Use the cart checkout, or tap Buy Now for instant Stripe checkout.
+              Most customers tap <b>Buy Now</b> for instant checkout. Use <b>Add to Cart</b> if you plan to checkout later.
             </div>
           </div>
         </div>
@@ -539,7 +557,7 @@
       <button class="btn primary" style="width:100%" id="checkoutBtn">Checkout</button>
 
       <div class="mutedNote">
-        Want instant checkout? Use the Buy Now buttons on the store page.
+        For instant checkout, use the <b>Buy Now</b> buttons on the store page.
       </div>
     </div>
   </aside>
@@ -892,8 +910,9 @@
             </div>
           </div>
           <div class="cardBtns">
-            <button class="btn" data-add="${p.key}">Add to Cart</button>
-            <a class="btn primary" href="${p.buyUrl}" target="_blank" rel="noopener">Buy Now</a>
+            <!-- ✅ PRIMARY FIRST -->
+            <a class="btn primary" href="${p.buyUrl}" target="_blank" rel="noopener">BUY NOW — INSTANT DOWNLOAD</a>
+            <button class="btn secondary" data-add="${p.key}">Add to Cart</button>
             <a class="btn" href="/music/">Stream</a>
           </div>
         `;
