@@ -165,5 +165,33 @@
 
     run();
   </script>
+  <script>
+(async () => {
+
+const params = new URLSearchParams(window.location.search);
+const session_id = params.get("session_id");
+
+if(!session_id){
+console.log("No session id found");
+return;
+}
+
+const res = await fetch(
+"https://fgqzopgqtownfvohtlcq.supabase.co/functions/v1/verify_purchase",
+{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({session_id})
+}
+);
+
+const data = await res.json();
+
+console.log(data);
+
+})();
+</script>
 </body>
 </html>
