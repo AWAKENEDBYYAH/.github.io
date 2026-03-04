@@ -93,6 +93,12 @@
       font-size:13px;
       line-height:1.45;
     }
+    .code{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size:12px;
+      opacity:.9;
+      word-break:break-all;
+    }
   </style>
 </head>
 
@@ -110,25 +116,28 @@
     <p class="sub" id="msg">Verifying your payment and preparing your downloads…</p>
 
     <div class="btnrow">
-      <a class="btn primary" id="goDownloads" href="/downloads/">GO TO DOWNLOAD CENTER</a>
+      <a class="btn primary" id="goDownloads" href="/downloads/">GO TO YOUR DOWNLOADS</a>
       <a class="btn" href="/music/">Stream</a>
     </div>
 
     <div class="hint" id="hint">
-      If you are not redirected automatically, click <b>GO TO DOWNLOAD CENTER</b>.
+      If you are not redirected automatically, click <b>GO TO YOUR DOWNLOADS</b>.
+      <div class="code" id="debug"></div>
     </div>
   </div>
 
   <script>
+    // ✅ REAL Supabase Edge Function URL (keep as-is)
     const VERIFY_URL = "https://fgqzopgqtownfvohtlcq.supabase.co/functions/v1/verify_purchase";
 
     const params = new URLSearchParams(location.search);
     const sessionId = params.get("session_id");
 
-    const btn  = document.getElementById("goDownloads");
-    const msg  = document.getElementById("msg");
-    const hint = document.getElementById("hint");
+    const btn   = document.getElementById("goDownloads");
+    const msg   = document.getElementById("msg");
+    const debug = document.getElementById("debug");
 
+    // Your download page routes
     const ALBUM_TO_PATH = {
       "kingdom-biz": "/downloads/kingdom-biz/",
       "the-battlefield": "/downloads/the-battlefield/",
@@ -136,10 +145,15 @@
       "bundle": "/downloads/bundle/"
     };
 
+    function setFallback(message){
+      msg.textContent = message;
+      btn.href = "/downloads/";
+      debug.textContent = sessionId ? `session_id: ${sessionId}` : "";
+    }
+
     async function run(){
       if(!sessionId){
-        msg.textContent = "Missing session ID. Please use the Download Center.";
-        btn.href = "/downloads/";
+        setFallback("Missing session ID. Please use the Download Center.");
         return;
       }
 
@@ -150,77 +164,60 @@
           body: JSON.stringify({ session_id: sessionId })
         });
 
-        const data = await res.json();
+        let data = null;
+        try { data = await res.json(); } catch(_) {}
+
         console.log("verify_purchase response:", data);
 
-        if(!data || !data.ok){
-          msg.textContent = "We could not verify your purchase automatically. Please use the Download Center.";
-          btn.href = "/downloads/";
+        if(!res.ok || !data || !data.ok){
+          setFallback("We could not verify your purchase automatically. Please use the Download Center.");
           return;
         }
 
-        const token = data.token;
-        const albums = Array.isArray(data.albums) ? data.albums : (data.album ? [data.album] : []);
+        // normalize album(s)
+        const albums = Array.isArray(data.albums)
+          ? data.albums
+          : (data.album ? [data.album] : []);
 
-        let target = "/downloads/";
-        if(albums.includes("bundle")){
-          target = ALBUM_TO_PATH["bundle"];
+        // determine target
+        let albumKey = null;
+
+        if (albums.includes("bundle")) {
+          albumKey = "bundle";
         } else if (albums[0] && ALBUM_TO_PATH[albums[0]]) {
-          target = ALBUM_TO_PATH[albums[0]];
+          albumKey = albums[0];
+        } else if (typeof data.album === "string" && ALBUM_TO_PATH[data.album]) {
+          albumKey = data.album;
         }
 
-        const finalUrl = `${target}?t=${encodeURIComponent(token)}`;
-        btn.href = finalUrl;
+        if(!albumKey){
+          setFallback("Purchase verified, but we couldn't determine which album to route you to. Please use the Download Center.");
+          return;
+        }
 
+        const targetPath = ALBUM_TO_PATH[albumKey];
+
+        // ✅ REQUIRED FLOW: pass session_id forward
+        // Optional: also pass token if your download pages still accept it
+        const token = data.token ? String(data.token) : "";
+        const finalUrl =
+          `${targetPath}?session_id=${encodeURIComponent(sessionId)}`
+          + (token ? `&t=${encodeURIComponent(token)}` : "");
+
+        btn.href = finalUrl;
         msg.textContent = "Verified ✅ Redirecting you to your downloads now…";
+        debug.textContent = `album: ${albumKey} • session_id: ${sessionId}`;
+
+        // quick redirect
         setTimeout(()=>{ location.replace(finalUrl); }, 300);
 
       }catch(e){
-        msg.textContent = "Network error while verifying. Please use the Download Center.";
-        btn.href = "/downloads/";
+        console.error(e);
+        setFallback("Network error while verifying. Please use the Download Center.");
       }
     }
 
     run();
   </script>
-  <script>
-(async function () {
-  try {
-    // 1) Get session_id from URL (?session_id=cs_live_...)
-    const params = new URLSearchParams(window.location.search);
-    const sessionId = params.get("session_id");
-
-    if (!sessionId) {
-      // If somehow missing, send them to the download center (or store)
-      window.location.href = "/downloads/";
-      return;
-    }
-
-    // 2) Call your Supabase Edge Function (verify_purchase)
-    // IMPORTANT: Replace this with your real Edge Function URL:
-    const SUPABASE_FUNCTION_URL = "https://YOUR-PROJECT-REF.supabase.co/functions/v1/verify_purchase";
-
-    const res = await fetch(SUPABASE_FUNCTION_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ session_id: sessionId })
-    });
-
-    const data = await res.json();
-
-    // 3) If verified and album is known, send them to the correct album page only
-    if (data && data.ok && data.album) {
-      window.location.href =
-        `/downloads/${encodeURIComponent(data.album)}/?session_id=${encodeURIComponent(sessionId)}`;
-      return;
-    }
-
-    // If verification failed, fallback
-    window.location.href = "/downloads/";
-  } catch (e) {
-    window.location.href = "/downloads/";
-  }
-})();
-</script>
 </body>
 </html>
