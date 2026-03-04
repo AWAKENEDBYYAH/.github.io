@@ -16,7 +16,9 @@
   --brand:#1C39A8;
   --radius:18px;
 }
+
 *{box-sizing:border-box}
+
 body{
   margin:0;
   font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
@@ -26,7 +28,13 @@ body{
     var(--bg);
   color:var(--text);
 }
-.wrap{max-width:900px;margin:0 auto;padding:28px 16px 60px;}
+
+.wrap{
+  max-width:900px;
+  margin:0 auto;
+  padding:28px 16px 60px;
+}
+
 .card{
   border:1px solid var(--line);
   background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.04));
@@ -34,8 +42,18 @@ body{
   padding:20px;
   box-shadow:0 18px 60px rgba(0,0,0,.35);
 }
-h1{margin:0 0 8px;font-size:28px;}
-p{margin:0 0 16px;color:var(--muted);line-height:1.45;}
+
+h1{
+  margin:0 0 8px;
+  font-size:28px;
+}
+
+p{
+  margin:0 0 16px;
+  color:var(--muted);
+  line-height:1.45;
+}
+
 .track{
   display:block;
   padding:14px 16px;
@@ -47,10 +65,12 @@ p{margin:0 0 16px;color:var(--muted);line-height:1.45;}
   font-weight:600;
   background:rgba(255,255,255,.03);
 }
+
 .track:hover{
   background:rgba(28,57,168,.25);
   border-color:rgba(43,86,255,.6);
 }
+
 .back{
   display:inline-block;
   margin-bottom:14px;
@@ -58,6 +78,7 @@ p{margin:0 0 16px;color:var(--muted);line-height:1.45;}
   text-decoration:none;
   font-size:14px;
 }
+
 .note{
   margin-top:16px;
   font-size:13px;
@@ -76,7 +97,22 @@ p{margin:0 0 16px;color:var(--muted);line-height:1.45;}
 
 <h1>The Battlefield — Download Your Album</h1>
 
-<p>Your purchase is complete. Your download links will appear below.</p>
+<p>Your purchase is complete. Tap any track below to download.</p>
+
+<a class="track" href="/audio/the-battlefield/01-hear-my-voice.mp3" download>01 Hear My Voice</a>
+<a class="track" href="/audio/the-battlefield/02-the-secret-place.mp3" download>02 The Secret Place</a>
+<a class="track" href="/audio/the-battlefield/03-the-lamp.mp3" download>03 The Lamp</a>
+<a class="track" href="/audio/the-battlefield/04-not-my-will.mp3" download>04 Not My Will</a>
+<a class="track" href="/audio/the-battlefield/05-think-about-me.mp3" download>05 Think About Me</a>
+<a class="track" href="/audio/the-battlefield/06-counted-righteous.mp3" download>06 Counted Righteous</a>
+<a class="track" href="/audio/the-battlefield/07-sound-the-shupar.mp3" download>07 Sound the Shupar</a>
+<a class="track" href="/audio/the-battlefield/08-deliver-us.mp3" download>08 Deliver Us</a>
+<a class="track" href="/audio/the-battlefield/09-ten-toes-down.mp3" download>09 Ten Toes Down</a>
+<a class="track" href="/audio/the-battlefield/10-hidden-with-you.mp3" download>10 Hidden With You</a>
+
+<p class="note">
+If a download does not start automatically, tap and hold the link and choose <b>Download link</b>.
+</p>
 
 </div>
 </div>
