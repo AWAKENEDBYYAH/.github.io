@@ -6,6 +6,7 @@
 <title>Download Kingdom Biz | AWAKENED BY YAH</title>
 
 <link rel="canonical" href="https://awakenedbyyahmusic.com/downloads/kingdom-biz/">
+<link rel="icon" type="image/png" href="/abytransparent.png">
 
 <style>
 :root{
@@ -16,9 +17,7 @@
   --brand:#1C39A8;
   --radius:18px;
 }
-
 *{box-sizing:border-box}
-
 body{
   margin:0;
   font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
@@ -27,14 +26,13 @@ body{
     radial-gradient(700px 520px at 80% 20%, rgba(43,86,255,.18), transparent 55%),
     var(--bg);
   color:var(--text);
+  visibility:hidden; /* 🔒 hidden until verified */
 }
-
 .wrap{
   max-width:900px;
   margin:0 auto;
   padding:28px 16px 60px;
 }
-
 .card{
   border:1px solid var(--line);
   background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.04));
@@ -42,18 +40,8 @@ body{
   padding:20px;
   box-shadow:0 18px 60px rgba(0,0,0,.35);
 }
-
-h1{
-  margin:0 0 8px;
-  font-size:28px;
-}
-
-p{
-  margin:0 0 16px;
-  color:var(--muted);
-  line-height:1.45;
-}
-
+h1{ margin:0 0 8px; font-size:28px; }
+p{ margin:0 0 16px; color:var(--muted); line-height:1.45; }
 .track{
   display:block;
   padding:14px 16px;
@@ -65,12 +53,10 @@ p{
   font-weight:600;
   background:rgba(255,255,255,.03);
 }
-
 .track:hover{
   background:rgba(28,57,168,.25);
   border-color:rgba(43,86,255,.6);
 }
-
 .back{
   display:inline-block;
   margin-bottom:14px;
@@ -78,7 +64,6 @@ p{
   text-decoration:none;
   font-size:14px;
 }
-
 .note{
   margin-top:16px;
   font-size:13px;
@@ -90,117 +75,52 @@ p{
 <body>
 
 <div class="wrap">
+  <a class="back" id="backLink" href="/downloads/">← Back to Download Center</a>
 
-<a class="back" href="/downloads/">← Back to Download Center</a>
+  <div class="card">
+    <h1>Kingdom Biz — Download Your Album</h1>
+    <p>Your purchase is complete. Tap any track below to download.</p>
 
-<div class="card">
+    <a class="track" href="/audio/TRACK%2001_WALK%20IT%20OUT.mp3" download>
+      Download Track 1 — WALK IT OUT
+    </a>
 
-<h1>Kingdom Biz — Download Your Album</h1>
+    <a class="track" href="/audio/TRACK%2002_RISE%20OF%20THE%20REMNANT.mp3" download>
+      Download Track 2 — RISE OF THE REMNANT
+    </a>
 
-<p>Your purchase is complete. Tap any track below to download.</p>
+    <a class="track" href="/audio/TRACK%2003__WE%20RISE.mp3" download>
+      Download Track 3 — WE RISE
+    </a>
 
-<a class="track" href="/audio/TRACK%2001_WALK%20IT%20OUT.mp3" download>
-Download Track 1 — WALK IT OUT
-</a>
+    <a class="track" href="/audio/TRACK%2004_UNBROKEN%20FREQUENCY.mp3" download>
+      Download Track 4 — UNBROKEN FREQUENCY
+    </a>
 
-<a class="track" href="/audio/TRACK%2002_RISE%20OF%20THE%20REMNANT.mp3" download>
-Download Track 2 — RISE OF THE REMNANT
-</a>
+    <a class="track" href="/audio/TRACK%2005__UNBROKEN%20FREQUENCY%20REMIX.mp3" download>
+      Download Track 5 — UNBROKEN FREQUENCY REMIX
+    </a>
 
-<a class="track" href="/audio/TRACK%2003__WE%20RISE.mp3" download>
-Download Track 3 — WE RISE
-</a>
-
-<a class="track" href="/audio/TRACK%2004_UNBROKEN%20FREQUENCY.mp3" download>
-Download Track 4 — UNBROKEN FREQUENCY
-</a>
-
-<a class="track" href="/audio/TRACK%2005__UNBROKEN%20FREQUENCY%20REMIX.mp3" download>
-Download Track 5 — UNBROKEN FREQUENCY REMIX
-</a>
-
-<p class="note">
-If a download does not start automatically, tap and hold the link and choose
-<b>Download link</b>.
-</p>
-
+    <p class="note">
+      If a download does not start automatically, tap and hold the link and choose
+      <b>Download link</b>.
+    </p>
+  </div>
 </div>
-</div>
+
 <script>
 (async () => {
-  const VERIFY_TOKEN_URL = "https://fgqzopgqtownfvohtlcq.supabase.co/functions/v1/verify_token";
+  // ✅ Your real endpoints
+  const VERIFY_PURCHASE_URL = "https://fgqzopgqtownfvohtlcq.supabase.co/functions/v1/verify_purchase";
+  const VERIFY_TOKEN_URL    = "https://fgqzopgqtownfvohtlcq.supabase.co/functions/v1/verify_token";
 
-  const params = new URLSearchParams(location.search);
-  const token = params.get("t");
-
-  // If no token, block immediately
-  if (!token) {
-    location.replace("/downloads/");
-    return;
-  }
-
-  try {
-    const res = await fetch(VERIFY_TOKEN_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token })
-    });
-
-    const data = await res.json();
-
-    // Must be valid AND album must match this page
-    if (!data.ok || data.album !== "kingdom-biz") {
-      location.replace("/downloads/");
-      return;
-    }
-
-    // ✅ Authorized — do nothing, page stays open
-  } catch (e) {
-    location.replace("/downloads/");
-  }
-})();
-</script>
-  <script>
-(async () => {
-  const VERIFY_TOKEN_URL = "https://fgqzopgqtownfvohtlcq.supabase.co/functions/v1/verify_token";
-
-  const params = new URLSearchParams(location.search);
-  const token = params.get("t");
-
-  // MARKER (temporary): you should see this in Console every time
-  console.log("LOCK CHECK running. token =", token);
-
-  if (!token) {
-    location.replace("/downloads/");
-    return;
-  }
-
-  try {
-    const res = await fetch(VERIFY_TOKEN_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ token })
-    });
-
-    const data = await res.json();
-    console.log("verify_token response:", data);
-
-    if (!data.ok || data.album !== "kingdom-biz") {
-      location.replace("/downloads/");
-      return;
-    }
-  } catch (e) {
-    location.replace("/downloads/");
-  }
-})();
-</script>
-  <script>
-(async () => {
-  const VERIFY_TOKEN_URL = "https://fgqzopgqtownfvohtlcq.supabase.co/functions/v1/verify_token";
   const REQUIRED_ALBUM = "kingdom-biz";
-
   const params = new URLSearchParams(location.search);
-  const token = params.get("t");
+
+  const sessionId = params.get("session_id"); // preferred production path
+  const token     = params.get("t");          // legacy support
+
+  const backLink = document.getElementById("backLink");
 
   function deny(message){
     document.body.innerHTML = `
@@ -217,33 +137,78 @@ If a download does not start automatically, tap and hold the link and choose
     document.body.style.visibility = "visible";
   }
 
-  // No token = deny
-  if(!token){
-    deny("You do not have a verified purchase token for this album.");
+  // Keep back button carrying the same auth params
+  const carry = sessionId ? `?session_id=${encodeURIComponent(sessionId)}` : (token ? `?t=${encodeURIComponent(token)}` : "");
+  backLink.href = "/downloads/" + carry;
+
+  // Must have session_id or token
+  if(!sessionId && !token){
+    deny("You do not have a verified purchase for this album. Please return to the Download Center using your purchase link.");
     return;
   }
 
   try{
-    const res = await fetch(VERIFY_TOKEN_URL, {
-      method:"POST",
-      headers:{ "Content-Type":"application/json" },
-      body: JSON.stringify({ token })
-    });
+    // ✅ Preferred: verify session_id (new production flow)
+    if(sessionId){
+      const res = await fetch(VERIFY_PURCHASE_URL, {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({ session_id: sessionId })
+      });
 
-    const data = await res.json();
+      let data = null;
+      try { data = await res.json(); } catch(_){}
 
-    // Token must be valid AND match this album (bundle is allowed)
-    if(!data.ok || (data.album !== REQUIRED_ALBUM && data.album !== "bundle")){
-      deny("This token does not grant access to Kingdom Biz. Please use the correct purchase link.");
+      if(!res.ok || !data || !data.ok){
+        deny("We could not verify your Stripe session. Please return to the Download Center using your purchase link.");
+        return;
+      }
+
+      const albums = Array.isArray(data.albums)
+        ? data.albums
+        : (data.album ? [data.album] : []);
+
+      const allowed = albums.includes(REQUIRED_ALBUM) || albums.includes("bundle") || data.album === "bundle";
+
+      if(!allowed){
+        deny("This purchase does not include Kingdom Biz. Please use the correct purchase link for this album.");
+        return;
+      }
+
+      document.body.style.visibility = "visible";
       return;
     }
 
-    // Authorized: reveal page
-    document.body.style.visibility = "visible";
+    // ✅ Legacy fallback: verify token (older flow)
+    if(token){
+      const res = await fetch(VERIFY_TOKEN_URL, {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({ token })
+      });
+
+      let data = null;
+      try { data = await res.json(); } catch(_){}
+
+      if(!res.ok || !data || !data.ok){
+        deny("Your access token is invalid or expired. Please return to the Download Center using your purchase link.");
+        return;
+      }
+
+      if(data.album !== REQUIRED_ALBUM && data.album !== "bundle"){
+        deny("This token does not grant access to Kingdom Biz. Please use the correct purchase link.");
+        return;
+      }
+
+      document.body.style.visibility = "visible";
+      return;
+    }
+
   }catch(e){
-    deny("Verification failed. Please try again using your purchase link.");
+    deny("Verification failed due to a network error. Please try again using your purchase link.");
   }
 })();
 </script>
+
 </body>
 </html>
