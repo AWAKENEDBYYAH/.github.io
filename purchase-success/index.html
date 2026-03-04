@@ -183,5 +183,44 @@
 
     run();
   </script>
+  <script>
+(async function () {
+  try {
+    // 1) Get session_id from URL (?session_id=cs_live_...)
+    const params = new URLSearchParams(window.location.search);
+    const sessionId = params.get("session_id");
+
+    if (!sessionId) {
+      // If somehow missing, send them to the download center (or store)
+      window.location.href = "/downloads/";
+      return;
+    }
+
+    // 2) Call your Supabase Edge Function (verify_purchase)
+    // IMPORTANT: Replace this with your real Edge Function URL:
+    const SUPABASE_FUNCTION_URL = "https://YOUR-PROJECT-REF.supabase.co/functions/v1/verify_purchase";
+
+    const res = await fetch(SUPABASE_FUNCTION_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ session_id: sessionId })
+    });
+
+    const data = await res.json();
+
+    // 3) If verified and album is known, send them to the correct album page only
+    if (data && data.ok && data.album) {
+      window.location.href =
+        `/downloads/${encodeURIComponent(data.album)}/?session_id=${encodeURIComponent(sessionId)}`;
+      return;
+    }
+
+    // If verification failed, fallback
+    window.location.href = "/downloads/";
+  } catch (e) {
+    window.location.href = "/downloads/";
+  }
+})();
+</script>
 </body>
 </html>
