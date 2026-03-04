@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>3-Album Bundle Downloads | AWAKENED BY YAH</title>
+
+  <link rel="canonical" href="https://awakenedbyyahmusic.com/downloads/bundle/" />
+  <link rel="icon" type="image/png" href="/abytransparent.png">
+
+  <style>
+    :root{
+      --bg:#020617;
+      --text:#e5e7eb;
+      --muted:#94a3b8;
+      --line:rgba(255,255,255,.12);
+      --panel:rgba(255,255,255,.06);
+      --brand:#1C39A8;
+      --brand2:#2b56ff;
+      --radius:22px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 20% 10%, rgba(43,86,255,.16), transparent 60%),
+        radial-gradient(900px 500px at 90% 30%, rgba(28,57,168,.18), transparent 55%),
+        radial-gradient(900px 600px at 50% 95%, rgba(255,255,255,.05), transparent 60%),
+        var(--bg);
+      min-height:100vh;
+    }
+    .wrap{max-width:980px;margin:0 auto;padding:26px 16px 50px}
+    .top{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:14px 16px;border:1px solid var(--line);border-radius:999px;
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      backdrop-filter: blur(10px);
+    }
+    .brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:.4px}
+    .nav{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:10px 14px;border-radius:999px;border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      font-weight:800;text-decoration:none;
+    }
+    .pill:hover{border-color:rgba(43,86,255,.55); box-shadow:0 0 0 4px rgba(43,86,255,.10)}
+    header{
+      margin:18px 0 14px;
+      padding:18px;
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow: 0 18px 60px rgba(0,0,0,.35);
+    }
+    h1{margin:0 0 6px;font-size:26px}
+    .sub{margin:0;color:var(--muted);line-height:1.45}
+    .card{
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      padding:16px;
+      box-shadow: 0 18px 60px rgba(0,0,0,.35);
+      margin-top:14px;
+    }
+    .alert{
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(255,255,255,.04);
+      padding:12px 12px;border-radius:16px;margin:12px 0;
+      color:var(--muted);
+    }
+    .ok{
+      border-color:rgba(34,197,94,.35);
+      background:rgba(34,197,94,.08);
+      color:#d1fae5;
+    }
+    .danger{
+      border-color:rgba(248,113,113,.35);
+      background:rgba(248,113,113,.08);
+      color:#fee2e2;
+    }
+    .btnrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:10px;
+      padding:12px 14px;border-radius:14px;
+      border:1px solid rgba(255,255,255,.16);
+      background:rgba(255,255,255,.05);
+      text-decoration:none;font-weight:900;
+      cursor:pointer;
+    }
+    .btn.primary{
+      border-color:rgba(43,86,255,.55);
+      background:linear-gradient(180deg, rgba(43,86,255,.26), rgba(28,57,168,.18));
+      box-shadow:0 0 0 4px rgba(43,86,255,.10);
+    }
+    .btn:hover{transform: translateY(-1px)}
+    footer{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
+    code{background:rgba(255,255,255,.06);padding:2px 6px;border-radius:8px}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div class="brand">
+        <img src="/abytransparent.png" alt="AWAKENED BY YAH" style="width:34px;height:34px;object-fit:contain;">
+        <div>AWAKENED BY YAH</div>
+      </div>
+      <div class="nav">
+        <a class="pill" href="/store/">Store</a>
+        <a class="pill" href="/music/">Music</a>
+        <a class="pill" href="/downloads/">Download Center</a>
+      </div>
+    </div>
+
+    <header>
+      <h1>3-Album Bundle — Download Center</h1>
+      <p class="sub">
+        If you just purchased the bundle, your downloads will unlock automatically. If not, use the Store to purchase the bundle.
+      </p>
+      <div class="btnrow">
+        <a class="btn" href="/store/">Go to Store</a>
+      </div>
+    </header>
+
+    <div class="card">
+      <h2 style="margin:0 0 10px;font-size:18px">Bundle Downloads</h2>
+
+      <div id="lockedBox" class="alert danger">
+        Downloads are currently locked.
+        <div style="margin-top:8px;font-size:12px;color:var(--muted);line-height:1.4">
+          After purchase, Stripe will redirect you here with <code>?success=1</code> which unlocks the buttons below.
+        </div>
+      </div>
+
+      <div id="unlockedBox" style="display:none">
+        <div class="alert ok">Purchase detected. Bundle unlocked ✅</div>
+
+        <div class="btnrow">
+          <!-- These pages must exist. Rise does. We’ll create the others next. -->
+          <a class="btn primary" href="/downloads/the-battlefield/?success=1">Download The Battlefield</a>
+          <a class="btn primary" href="/downloads/kingdom-biz/?success=1">Download Kingdom Biz</a>
+          <a class="btn primary" href="/downloads/rise-of-yasharal/?success=1">Download The Rise of Yasharal</a>
+        </div>
+
+        <div class="alert" style="margin-top:14px">
+          Tip: Save this page. If you ever need your downloads again, return to
+          <code>/downloads/bundle/</code> after purchase.
+        </div>
+      </div>
+    </div>
+
+    <footer>© <span id="yr"></span> AWAKENED BY YAH • All rights reserved</footer>
+  </div>
+
+  <script>
+    document.getElementById('yr').textContent = new Date().getFullYear();
+    const params = new URLSearchParams(location.search);
+    const success = params.get('success') === '1';
+
+    const lockedBox = document.getElementById('lockedBox');
+    const unlockedBox = document.getElementById('unlockedBox');
+
+    if(success){
+      lockedBox.style.display = "none";
+      unlockedBox.style.display = "block";
+    } else {
+      lockedBox.style.display = "block";
+      unlockedBox.style.display = "none";
+    }
+  </script>
+</body>
+</html>
