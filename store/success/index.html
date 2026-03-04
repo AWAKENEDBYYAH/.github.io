@@ -104,14 +104,14 @@
   </div>
 
   <script>
-    // ✅ PUT YOUR SUPABASE EDGE FUNCTION URL HERE
+    // ✅ Supabase Edge Function endpoint
     const VERIFY_URL = "https://fgqzopgqtownfvohtlcq.supabase.co/functions/v1/verify_purchase";
 
     const params = new URLSearchParams(location.search);
     const sessionId = params.get("session_id");
 
-    const btn = document.getElementById("goDownloads");
-    const msg = document.getElementById("msg");
+    const btn  = document.getElementById("goDownloads");
+    const msg  = document.getElementById("msg");
     const hint = document.getElementById("hint");
 
     const ALBUM_TO_PATH = {
@@ -129,10 +129,26 @@
       }
 
       try{
-        const res = await fetch(`${VERIFY_URL}?session_id=${encodeURIComponent(sessionId)}`);
-        const data = await res.json();
+        const res = await fetch(VERIFY_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ session_id: sessionId })
+        });
 
-        if(!data.ok){
+        const data = await res.json();
+        console.log("verify_purchase response:", data);
+
+        // ✅ If function is still in test mode, do NOT show error
+        if (data && data.status && data.status.includes("verify_purchase")) {
+          msg.textContent = "Verification service connected ✅ (purchase routing will activate next).";
+          hint.innerHTML = `Click <b>GET YOUR DOWNLOADS</b> to continue.`;
+          btn.href = "/downloads/";
+          return;
+        }
+
+        // ✅ Real mode (this will work once we upgrade the function):
+        // Expected: { ok:true, token:"...", albums:["kingdom-biz"] } OR { ok:true, token:"...", album:"kingdom-biz" }
+        if(!data || !data.ok){
           msg.textContent = "We could not verify your purchase automatically. Please use the Download Center.";
           hint.innerHTML = `If you need help, reply to your receipt email or contact support.`;
           btn.href = "/downloads/";
@@ -140,15 +156,13 @@
         }
 
         const token = data.token;
-        const albums = data.albums || [];
+        const albums = Array.isArray(data.albums) ? data.albums : (data.album ? [data.album] : []);
 
-        // Routing: if bundle purchased -> bundle page
-        let target = null;
+        let target = "/downloads/";
         if(albums.includes("bundle")){
           target = ALBUM_TO_PATH["bundle"];
-        } else {
-          // Otherwise first recognized album
-          target = ALBUM_TO_PATH[albums[0]] || "/downloads/";
+        } else if (albums[0] && ALBUM_TO_PATH[albums[0]]) {
+          target = ALBUM_TO_PATH[albums[0]];
         }
 
         const finalUrl = `${target}?t=${encodeURIComponent(token)}`;
@@ -165,33 +179,5 @@
 
     run();
   </script>
-  <script>
-(async () => {
-
-const params = new URLSearchParams(window.location.search);
-const session_id = params.get("session_id");
-
-if(!session_id){
-console.log("No session id found");
-return;
-}
-
-const res = await fetch(
-"https://fgqzopgqtownfvohtlcq.supabase.co/functions/v1/verify_purchase",
-{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify({session_id})
-}
-);
-
-const data = await res.json();
-
-console.log(data);
-
-})();
-</script>
 </body>
 </html>
