@@ -146,5 +146,31 @@ If a download does not start automatically, tap and hold the link and choose <b>
   }
 })();
 </script>
+  <script>
+(async () => {
+  const VERIFY_TOKEN_URL = "https://fgqzopgqtownfvohtlcq.supabase.co/functions/v1/verify_token";
+  const params = new URLSearchParams(location.search);
+  const token = params.get("t");
+
+  if (!token) { location.replace("/downloads/"); return; }
+
+  try{
+    const res = await fetch(VERIFY_TOKEN_URL, {
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify({ token })
+    });
+    const data = await res.json();
+
+    // allow battlefield OR bundle
+    if (!data.ok || (data.album !== "the-battlefield" && data.album !== "bundle")) {
+      location.replace("/downloads/");
+      return;
+    }
+  }catch(e){
+    location.replace("/downloads/");
+  }
+})();
+</script>
 </body>
 </html>
