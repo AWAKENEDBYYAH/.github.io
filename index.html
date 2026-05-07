@@ -573,6 +573,7 @@
       display:flex;
       align-items:center;
       justify-content:center;
+      width: 100%;
     }
 
     .hero-right-inner img {
@@ -581,6 +582,123 @@
       height:auto;
       object-fit:contain;
     }
+
+    /* ===================== TOP SITE BANNER ===================== */
+    .top-site-banner{
+      width: 100%;
+      margin: 0 auto 1.45rem;
+      border-radius: 26px;
+      overflow: hidden;
+      background: rgba(2,6,23,0.72);
+      border: 1px solid rgba(251,191,36,0.24);
+      box-shadow: 0 28px 70px rgba(0,0,0,0.82), 0 0 0 1px rgba(148,163,184,0.08);
+    }
+    .top-site-banner img{
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+
+    /* ===================== HERO NEW RELEASE PLAYER ===================== */
+    .release-player-card{
+      width: 100%;
+      min-height: 100%;
+      padding: 1.35rem;
+      background:
+        radial-gradient(circle at top left, rgba(28,57,168,0.35) 0%, transparent 42%),
+        radial-gradient(circle at bottom right, rgba(251,191,36,0.15) 0%, transparent 42%),
+        linear-gradient(145deg, rgba(17,24,39,0.98), rgba(2,6,23,0.98));
+      border-radius: 26px;
+      border: 1px solid rgba(251,191,36,0.28);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      gap: 0.85rem;
+    }
+    .release-kicker{
+      font-size: 0.72rem;
+      letter-spacing: 0.34em;
+      text-transform: uppercase;
+      color: #fbbf24;
+      font-weight: 900;
+    }
+    .release-title{
+      font-size: clamp(1.25rem, 2vw, 1.75rem);
+      letter-spacing: 0.20em;
+      text-transform: uppercase;
+      color: #f9fafb;
+      line-height: 1.2;
+      text-shadow: 0 10px 26px rgba(0,0,0,0.85);
+    }
+    .release-subtitle{
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(203,213,225,0.95);
+      margin-top: -0.25rem;
+    }
+    .release-cover{
+      width: min(270px, 88%);
+      aspect-ratio: 1 / 1;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(251,191,36,0.5);
+      box-shadow: 0 22px 48px rgba(0,0,0,0.78), 0 0 28px rgba(251,191,36,0.12);
+      background: rgba(15,23,42,0.85);
+    }
+    .release-cover img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display:block;
+    }
+    .release-player-card audio{
+      width: 100%;
+      max-width: 330px;
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,0.7));
+    }
+    .release-actions{
+      display:flex;
+      justify-content:center;
+      gap: 0.65rem;
+      flex-wrap: wrap;
+      margin-top: 0.25rem;
+    }
+    .release-actions a{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding: 0.72rem 1.05rem;
+      border-radius: 999px;
+      font-size: 0.74rem;
+      font-weight: 900;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      border: 1px solid rgba(248,250,252,0.22);
+      background: rgba(15,23,42,0.84);
+      color: #e5e7eb;
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+      white-space: nowrap;
+    }
+    .release-actions a:hover{
+      transform: translateY(-1px);
+      background: rgba(148,163,184,0.18);
+      border-color: rgba(248,250,252,0.55);
+    }
+    .release-actions .release-primary{
+      background: linear-gradient(120deg, #f59e0b, #fbbf24);
+      color: #111827;
+      border-color: rgba(0,0,0,0.14);
+    }
+    @media (max-width: 640px){
+      .top-site-banner{ border-radius: 18px; margin-bottom: 1.1rem; }
+      .release-player-card{ padding: 1.15rem; }
+      .release-cover{ width: min(245px, 92%); }
+    }
+    /* ===================== END TOP BANNER / RELEASE PLAYER ===================== */
 
     .bf-feature{
       margin-top: 1.25rem;
@@ -1696,6 +1814,17 @@
         </div>
       </div>
 
+      <!-- 🔥 TOP BANNER ACROSS THE HOMEPAGE -->
+      <section class="top-site-banner" aria-label="AWAKENED BY YAH official banner">
+        <img
+          id="homeHeroBanner"
+          src="/intro/abybanner.png"
+          alt="AWAKENED BY YAH official banner"
+          decoding="async"
+          fetchpriority="high"
+        />
+      </section>
+
       <section class="hero">
         <div class="hero-left">
           <p class="eyebrow">TRUTH-BASED • SET-APART</p>
@@ -1722,15 +1851,27 @@
           </div>
         </div>
 
-        <aside class="hero-right">
+        <aside class="hero-right" aria-label="New release player">
           <div class="hero-right-inner">
-            <img
-              id="homeHeroBanner"
-              src="/intro/abybanner.png"
-              alt="Awakened By YAH banner"
-              decoding="async"
-              fetchpriority="high"
-            />
+            <div class="release-player-card">
+              <p class="release-kicker">New Release</p>
+              <h2 class="release-title">The Transformation</h2>
+              <p class="release-subtitle">Better Man + Better Man Remix</p>
+
+              <div class="release-cover">
+                <img src="/images/the-transformation-cover.png" alt="The Transformation cover art" />
+              </div>
+
+              <audio controls preload="metadata">
+                <source src="/audio/better-man.mp3" type="audio/mpeg" />
+                Your browser does not support the audio element.
+              </audio>
+
+              <div class="release-actions">
+                <a class="release-primary" href="/store/">Own The Sound</a>
+                <a href="#music">Full Player</a>
+              </div>
+            </div>
           </div>
         </aside>
       </section>
@@ -1886,67 +2027,7 @@
                 </div>
                 <div class="video-info">
                   <h3>Rise Above CHALLENGES with the Power of Unity</h3>
-                  <p>Music for standing together in faith and endurance.</p>
-                </div>
-              </a>
-            </div>
-
-            <div class="video-card">
-              <a href="https://youtu.be/DQJLaqlsi8E?si=81XgrXz_dDwMKyh-" target="_blank" rel="noopener">
-                <div class="video-thumb-wrap">
-                  <img src="https://img.youtube.com/vi/DQJLaqlsi8E/hqdefault.jpg" alt="Unbroken Frequency Remix" />
-                </div>
-                <div class="video-info">
-                  <h3>Unbroken Frequency Remix</h3>
-                  <p>Is this the anthem of the Remnant rising?</p>
-                </div>
-              </a>
-            </div>
-
-            <div class="video-card">
-              <a href="https://youtu.be/6QeUzd-GIm0?si=NJmNSKAA3wxF_3fD" target="_blank" rel="noopener">
-                <div class="video-thumb-wrap">
-                  <img src="https://img.youtube.com/vi/6QeUzd-GIm0/hqdefault.jpg" alt="This Song Will Touch Your Heart!" />
-                </div>
-                <div class="video-info">
-                  <h3>This Song Will Touch Your Heart!</h3>
-                  <p>A message of comfort, conviction, and hope.</p>
-                </div>
-              </a>
-            </div>
-
-            <div class="video-card">
-              <a href="https://youtu.be/hTG-AkjUjnk?si=pd2MjDtr_9Cp7aK1" target="_blank" rel="noopener">
-                <div class="video-thumb-wrap">
-                  <img src="https://img.youtube.com/vi/hTG-AkjUjnk/hqdefault.jpg" alt="Think About Me" />
-                </div>
-                <div class="video-info">
-                  <h3>Think About Me</h3>
-                  <p>Before the day ends… reach out. Love is intentional.</p>
-                </div>
-              </a>
-            </div>
-
-            <div class="video-card">
-              <a href="https://youtu.be/wQFPnR_yma4?si=LeEB5n2JOb3F4jdJ" target="_blank" rel="noopener">
-                <div class="video-thumb-wrap">
-                  <img src="https://img.youtube.com/vi/wQFPnR_yma4/hqdefault.jpg" alt="Not My Will" />
-                </div>
-                <div class="video-info">
-                  <h3>Not My Will</h3>
-                  <p>A surrender anthem — obedience over emotion.</p>
-                </div>
-              </a>
-            </div>
-
-            <div class="video-card">
-              <a href="https://youtu.be/DSLxl34PhHQ?si=z26IcbZ4dEErW3mX" target="_blank" rel="noopener">
-                <div class="video-thumb-wrap">
-                  <img src="https://img.youtube.com/vi/DSLxl34PhHQ/hqdefault.jpg" alt="The Secret Place" />
-                </div>
-                <div class="video-info">
-                  <h3>The Secret Place</h3>
-                  <p>Enter the covering — peace, refuge, and presence.</p>
+                  <p>Music for standing together</p>
                 </div>
               </a>
             </div>
@@ -1957,139 +2038,125 @@
       <section id="signup" class="extra-section">
         <div class="section-card">
           <p class="section-kicker">Stay Connected</p>
-          <h2 class="section-title">Email Signup</h2>
+          <h2 class="section-title">Join The Remnant List</h2>
           <p class="section-text">
-            Join the <strong>Remnant List</strong> to get early access to new releases,
-            behind-the-scenes sessions, and updates on truth-based projects from
-            Awakened By YAH.
+            Get updates when new music, videos, releases, and exclusive drops are available.
           </p>
 
           <div class="signup-form">
-            <script async src="https://eocampaign1.com/form/6bc338e0-c532-11f0-9c5d-bdac12d6eac9.js"
-                    data-form="6bc338e0-c532-11f0-9c5d-bdac12d6eac9"></script>
+            <a class="btn btn-primary" href="mailto:yahuahsremnant@gmail.com?subject=Join%20The%20Remnant%20List">
+              Join By Email
+            </a>
           </div>
 
           <p class="signup-note">
-            Your email is submitted securely over HTTPS. No mail app needed — just enter your
-            address and join the movement.
+            Official contact: yahuahsremnant@gmail.com
           </p>
         </div>
       </section>
 
       <footer class="site-footer">
         <div class="footer-socials">
-          <a href="https://open.spotify.com/artist/0u6jzM2fSRodmTq61j0z0R?si=fP3WoH4ORbuPNaazgkN0aA" target="_blank" rel="noopener">Spotify</a>
-          <a href="https://music.apple.com/us/artist/awakened-by-yah/1860666182" target="_blank" rel="noopener">Apple Music</a>
-          <a href="https://www.tiktok.com/@awakened_by_yah?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener">TikTok</a>
+          <a href="https://soundcloud.com/awakenedbyyah" target="_blank" rel="noopener">SoundCloud</a>
+          <a href="https://www.tiktok.com/@awakenedbyyah" target="_blank" rel="noopener">TikTok</a>
+          <a href="https://www.youtube.com/@YAHUAHS_REMNANT" target="_blank" rel="noopener">YouTube</a>
         </div>
+
+        <p>&copy; <span id="year"></span> AWAKENED BY YAH. All rights reserved.</p>
 
         <div class="entity-clarification">
-          AWAKENED BY YAH is an independent music artist brand.<br>
-          Not affiliated with any apparel or clothing companies.
+          AWAKENED BY YAH is the official artist and music brand. YAHUAH'S_REMNANT is a separate teaching platform.
         </div>
-
-        <span id="year"></span> © AWAKENED BY YAH MUSIC GROUP — All Rights Reserved.
       </footer>
-
     </main>
   </div>
 
-  <a href="/music/" class="music-fab" aria-label="Open Music Player">🎧 Music</a>
+  <a href="#music" class="music-fab">Music</a>
 
-  <!-- ===================== AMBIENT HOMEPAGE LOOP ===================== -->
-  <audio id="siteAmbient" preload="auto" loop playsinline>
-    <source src="/audio/site-ambient.mp3" type="audio/mpeg">
+  <!-- ===================== AMBIENT LOOP ===================== -->
+  <audio id="ambientAudio" preload="auto" loop playsinline>
+    <source src="/audio/site-ambient.mp3" type="audio/mpeg" />
   </audio>
 
   <script>
   (function(){
-    const ambient = document.getElementById('siteAmbient');
-    if (!ambient) return;
-
+    const ambient = document.getElementById('ambientAudio');
     const player = document.getElementById('audio-player');
     const introAudio = document.getElementById('introAudio');
 
-    const MAX_VOL = 0.16;
-    const IN_STEP = 0.01;
-    const OUT_STEP = 0.02;
-    const TICK_MS = 120;
+    if (!ambient) return;
 
-    let fadeTimer = null;
     let startedOnce = false;
+    let fading = null;
 
-    function clearFade(){
-      if (fadeTimer){ clearInterval(fadeTimer); fadeTimer = null; }
-    }
-
-    function fadeTo(target, step, after){
-      clearFade();
-      fadeTimer = setInterval(() => {
-        let v = Number(ambient.volume);
-        if (Number.isNaN(v)) v = 0;
-
-        if (v < target) v = Math.min(target, v + step);
-        else v = Math.max(target, v - step);
-
-        ambient.volume = v;
-
-        if (Math.abs(v - target) <= 0.001){
-          ambient.volume = target;
-          clearFade();
-          if (target === 0){
-            try { ambient.pause(); } catch(e){}
-          }
-          if (after) after();
-        }
-      }, TICK_MS);
-    }
-
-    function playAmbient(){
-      if (player && !player.paused) return;
-
-      try{
-        ambient.muted = true;
-        ambient.volume = 0;
-      }catch(e){}
-
-      const p = ambient.play();
-      if (p && typeof p.then === "function"){
-        p.then(() => {
-          startedOnce = true;
-          try { ambient.muted = false; } catch(e){}
-          fadeTo(MAX_VOL, IN_STEP);
-        }).catch(() => {
-          const unlock = () => {
-            document.removeEventListener('click', unlock);
-            document.removeEventListener('touchstart', unlock);
-            playAmbient();
-          };
-          document.addEventListener('click', unlock, { once:true, passive:true });
-          document.addEventListener('touchstart', unlock, { once:true, passive:true });
-        });
+    function stopFade(){
+      if (fading) {
+        clearInterval(fading);
+        fading = null;
       }
     }
 
-    function stopAmbient(){
-      fadeTo(0, OUT_STEP);
+    function fadeTo(target, seconds){
+      stopFade();
+
+      const stepMs = 80;
+      const steps = Math.max(1, Math.round((seconds * 1000) / stepMs));
+      const start = Number.isFinite(ambient.volume) ? ambient.volume : 0;
+      let i = 0;
+
+      fading = setInterval(() => {
+        i++;
+        const t = i / steps;
+        ambient.volume = Math.max(0, Math.min(1, start + ((target - start) * t)));
+
+        if (i >= steps) {
+          stopFade();
+          ambient.volume = target;
+          if (target === 0) {
+            try { ambient.pause(); } catch(e){}
+          }
+        }
+      }, stepMs);
     }
 
-    function introOverlayExists(){
-      return !!document.getElementById('introOverlay');
+    async function playAmbient(){
+      if (!ambient) return;
+      if (player && !player.paused) return;
+      try{
+        ambient.volume = 0;
+        await ambient.play();
+        startedOnce = true;
+        fadeTo(0.22, 1.6);
+      }catch(e){}
+    }
+
+    function stopAmbient(){
+      if (!ambient || ambient.paused) return;
+      fadeTo(0, 0.8);
     }
 
     function startWhenIntroDone(){
-      if (!introOverlayExists()){
-        playAmbient();
+      const intro = document.getElementById('introOverlay');
+
+      if (!intro) {
+        setTimeout(playAmbient, 800);
         return;
       }
 
       const obs = new MutationObserver(() => {
-        if (!introOverlayExists()){
+        if (!document.getElementById('introOverlay')) {
           obs.disconnect();
-          playAmbient();
+          setTimeout(playAmbient, 900);
         }
       });
-      obs.observe(document.body, { childList:true, subtree:true });
+
+      obs.observe(document.body, { childList: true, subtree: true });
+
+      setTimeout(() => {
+        if (document.getElementById('introOverlay')) return;
+        try { obs.disconnect(); } catch(e){}
+        playAmbient();
+      }, 9000);
     }
 
     if (introAudio){
