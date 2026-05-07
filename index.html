@@ -42,7 +42,7 @@
   <meta charset="UTF-8" />
 
   <!-- 🔥 Preload homepage hero for cinematic intro dock -->
-  <link rel="preload" as="image" href="/images/awakened-by-yah-banner.png" fetchpriority="high">
+  <link rel="preload" as="image" href="/intro/abybanner.png" fetchpriority="high">
 
   <!-- ✅ NEW: Preload ambient site audio -->
   <link rel="preload" as="audio" href="/audio/site-ambient.mp3" type="audio/mpeg">
@@ -100,39 +100,87 @@
 
     a { color: inherit; text-decoration: none; }
 
-    /* ===================== TOP HEADER BANNER ===================== */
+    /* ===================== FOUNDERS TICKER (TOP) ===================== */
     :root{
-      --tickerH: 170px;
+      --tickerH: 44px;
+      --tickerBorder: rgba(251,191,36,0.85);
+      --tickerBg: rgba(15,23,42,0.72);
+      --tickerText: #fbbf24;
     }
 
-    .top-header-banner{
+    .founders-ticker{
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 0; left: 0; right: 0;
       height: var(--tickerH);
       z-index: 1000;
-      background: #050505;
+      display: flex;
+      align-items: center;
       overflow: hidden;
-      box-shadow: 0 14px 40px rgba(0,0,0,0.8);
+      background: var(--tickerBg);
+      border-bottom: 1px solid rgba(255,255,255,0.10);
+      backdrop-filter: blur(12px);
     }
 
-    .top-header-banner img{
+    .founders-ticker .ticker-shell{
       width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-      display: block;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1.25rem;
+      display: flex;
+      align-items: center;
     }
 
-    @media (max-width: 900px){
-      :root{ --tickerH: 120px; }
+    .founders-ticker .ticker-track{
+      width: 100%;
+      border: 1px solid var(--tickerBorder);
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(2,6,23,0.55);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.55);
     }
+
+    .founders-ticker .ticker-move{
+      display: inline-flex;
+      align-items: center;
+      gap: 28px;
+      white-space: nowrap;
+      padding: 8px 14px;
+      will-change: transform;
+      animation: tickerScroll 45s linear infinite;
+    }
+
+    .founders-ticker .ticker-move span{
+      color: var(--tickerText);
+      font-weight: 900;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+    }
+
+    .founders-ticker .dot{
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: rgba(251,191,36,0.95);
+      box-shadow: 0 0 12px rgba(251,191,36,0.55);
+      flex: 0 0 auto;
+    }
+
+    @keyframes tickerScroll{
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .founders-ticker:hover .ticker-move{ animation-play-state: paused; }
 
     @media (max-width: 640px){
-      :root{ --tickerH: 90px; }
+      :root{ --tickerH: 48px; }
+      .founders-ticker .ticker-move span{
+        font-size: 0.68rem;
+        letter-spacing: 0.20em;
+      }
     }
-    /* ===================== END TOP HEADER BANNER ===================== */
+    /* ===================== END TICKER ===================== */
 
     .page { min-height: 100vh; display: flex; flex-direction: column; padding-top: var(--tickerH); }
     .shell { width: 100%; max-width: 1200px; margin: 0 auto; padding: 2rem 1.75rem 3rem; }
@@ -1391,6 +1439,7 @@
     @media (prefers-reduced-motion: reduce){
       .introBg{ animation:none; }
       #photoHit, #introOverlay.fadeOut{ transition:none; }
+      .founders-ticker .ticker-move{ animation:none; transform:none; }
     }
     /* ===================== END INTRO ===================== */
   </style>
@@ -1415,15 +1464,18 @@
 </head>
 
 <body>
-  <!-- ✅ TOP HEADER BANNER -->
-  <div class="top-header-banner" aria-label="AWAKENED BY YAH official banner">
-    <img
-      id="homeHeroBanner"
-      src="/images/awakened-by-yah-banner.png"
-      alt="AWAKENED BY YAH official banner"
-      decoding="async"
-      fetchpriority="high"
-    />
+  <!-- ✅ TOP TICKER -->
+  <div class="founders-ticker" aria-label="Founders circle ticker">
+    <div class="ticker-shell">
+      <div class="ticker-track">
+        <div class="ticker-move" aria-hidden="true">
+          <span>🎧 UNLIMITED STREAMING</span><i class="dot"></i><span>⬇️ OWN THE MUSIC</span><i class="dot"></i><span>🔥 SUPPORT THE MOVEMENT</span><i class="dot"></i>
+          <span>🎧 UNLIMITED STREAMING</span><i class="dot"></i><span>⬇️ OWN THE MUSIC</span><i class="dot"></i><span>🔥 SUPPORT THE MOVEMENT</span><i class="dot"></i>
+          <span>🎧 UNLIMITED STREAMING</span><i class="dot"></i><span>⬇️ OWN THE MUSIC</span><i class="dot"></i><span>🔥 SUPPORT THE MOVEMENT</span><i class="dot"></i>
+          <span>🎧 UNLIMITED STREAMING</span><i class="dot"></i><span>⬇️ OWN THE MUSIC</span><i class="dot"></i><span>🔥 SUPPORT THE MOVEMENT</span><i class="dot"></i>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- ===================== INTRO OVERLAY (runs once per session) ===================== -->
@@ -1440,7 +1492,7 @@
     <div id="photoHit"><img id="photoImg" alt=""></div>
 
     <div id="bannerReveal">
-      <img id="bannerImg" src="/images/awakened-by-yah-banner.png" alt="Final Banner">
+      <img id="bannerImg" src="/intro/abybanner.png" alt="Final Banner">
     </div>
 
     <audio id="introAudio" preload="auto" playsinline>
@@ -1469,7 +1521,7 @@
       "/intro/flash4.jpg",
       "/intro/flash5.jpg"
     ];
-    const bannerPath = "/images/awakened-by-yah-banner.png";
+    const bannerPath = "/intro/abybanner.png";
 
     const isMobile = matchMedia("(max-width: 640px)").matches
       || (matchMedia("(pointer:coarse)").matches || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent));
@@ -1761,7 +1813,19 @@
           </a>
         </div>
       </div>
-<section class="hero">
+
+      <!-- 🔥 TOP BANNER ACROSS THE HOMEPAGE -->
+      <section class="top-site-banner" aria-label="AWAKENED BY YAH official banner">
+        <img
+          id="homeHeroBanner"
+          src="/intro/abybanner.png"
+          alt="AWAKENED BY YAH official banner"
+          decoding="async"
+          fetchpriority="high"
+        />
+      </section>
+
+      <section class="hero">
         <div class="hero-left">
           <p class="eyebrow">TRUTH-BASED • SET-APART</p>
 
@@ -1795,13 +1859,20 @@
               <p class="release-subtitle">Better Man + Better Man Remix</p>
 
               <div class="release-cover">
-                <img src="/images/the-transformation-cover.png" alt="The Transformation cover art" />
+                <img src="/images/transformation-aby.jpg" alt="The Transformation by AWAKENED BY YAH cover art" />
               </div>
 
-              <audio controls preload="metadata">
-                <source src="/audio/better-man.mp3" type="audio/mpeg" />
-                Your browser does not support the audio element.
-              </audio>
+              <div class="transformation-mini-player" style="width:100%; max-width:330px;">
+                <p id="transformationTrackTitle" style="font-size:0.75rem; letter-spacing:0.18em; text-transform:uppercase; color:#fbbf24; margin-bottom:0.5rem; font-weight:900;">Better Man</p>
+                <audio id="transformationPlayer" controls preload="metadata" style="width:100%; filter: drop-shadow(0 10px 18px rgba(0,0,0,0.7));">
+                  <source src="/audio/the-transformation/better-man.mp3" type="audio/mpeg" />
+                  Your browser does not support the audio element.
+                </audio>
+                <div style="margin-top:0.65rem; display:flex; gap:0.55rem; justify-content:center; flex-wrap:wrap;">
+                  <button type="button" onclick="playTransformationTrack(0)" style="padding:7px 11px; border-radius:999px; border:1px solid rgba(251,191,36,0.65); background:rgba(15,23,42,0.88); color:#fbbf24; font-size:0.66rem; font-weight:900; letter-spacing:0.14em; text-transform:uppercase; cursor:pointer;">Better Man</button>
+                  <button type="button" onclick="playTransformationTrack(1)" style="padding:7px 11px; border-radius:999px; border:1px solid rgba(251,191,36,0.65); background:rgba(15,23,42,0.88); color:#fbbf24; font-size:0.66rem; font-weight:900; letter-spacing:0.14em; text-transform:uppercase; cursor:pointer;">Remix</button>
+                </div>
+              </div>
 
               <div class="release-actions">
                 <a class="release-primary" href="/store/">Own The Sound</a>
@@ -1941,6 +2012,27 @@
   </div>
 </li>
 
+
+
+<li class="playlist-item"
+    data-src="audio/the-transformation/better-man.mp3"
+    data-title="Better Man">
+  <span class="track-index">6</span>
+  <div class="track-meta">
+    <span class="track-title">Better Man</span>
+    <span class="track-tagline">A transformation of the heart and mind</span>
+  </div>
+</li>
+
+<li class="playlist-item"
+    data-src="audio/the-transformation/better-man-remix.mp3"
+    data-title="Better Man Remix">
+  <span class="track-index">7</span>
+  <div class="track-meta">
+    <span class="track-title">Better Man Remix</span>
+    <span class="track-tagline">A deeper reimagining of transformation</span>
+  </div>
+</li>
 </ul>
             </div>
           </div>
@@ -1963,67 +2055,7 @@
                 </div>
                 <div class="video-info">
                   <h3>Rise Above CHALLENGES with the Power of Unity</h3>
-                  <p>Music for standing together in faith and endurance.</p>
-                </div>
-              </a>
-            </div>
-
-            <div class="video-card">
-              <a href="https://youtu.be/DQJLaqlsi8E?si=81XgrXz_dDwMKyh-" target="_blank" rel="noopener">
-                <div class="video-thumb-wrap">
-                  <img src="https://img.youtube.com/vi/DQJLaqlsi8E/hqdefault.jpg" alt="Unbroken Frequency Remix" />
-                </div>
-                <div class="video-info">
-                  <h3>Unbroken Frequency Remix</h3>
-                  <p>Is this the anthem of the Remnant rising?</p>
-                </div>
-              </a>
-            </div>
-
-            <div class="video-card">
-              <a href="https://youtu.be/6QeUzd-GIm0?si=NJmNSKAA3wxF_3fD" target="_blank" rel="noopener">
-                <div class="video-thumb-wrap">
-                  <img src="https://img.youtube.com/vi/6QeUzd-GIm0/hqdefault.jpg" alt="This Song Will Touch Your Heart!" />
-                </div>
-                <div class="video-info">
-                  <h3>This Song Will Touch Your Heart!</h3>
-                  <p>A message of comfort, conviction, and hope.</p>
-                </div>
-              </a>
-            </div>
-
-            <div class="video-card">
-              <a href="https://youtu.be/hTG-AkjUjnk?si=pd2MjDtr_9Cp7aK1" target="_blank" rel="noopener">
-                <div class="video-thumb-wrap">
-                  <img src="https://img.youtube.com/vi/hTG-AkjUjnk/hqdefault.jpg" alt="Think About Me" />
-                </div>
-                <div class="video-info">
-                  <h3>Think About Me</h3>
-                  <p>Before the day ends… reach out. Love is intentional.</p>
-                </div>
-              </a>
-            </div>
-
-            <div class="video-card">
-              <a href="https://youtu.be/wQFPnR_yma4?si=LeEB5n2JOb3F4jdJ" target="_blank" rel="noopener">
-                <div class="video-thumb-wrap">
-                  <img src="https://img.youtube.com/vi/wQFPnR_yma4/hqdefault.jpg" alt="Not My Will" />
-                </div>
-                <div class="video-info">
-                  <h3>Not My Will</h3>
-                  <p>A surrender anthem — obedience over emotion.</p>
-                </div>
-              </a>
-            </div>
-
-            <div class="video-card">
-              <a href="https://youtu.be/DSLxl34PhHQ?si=z26IcbZ4dEErW3mX" target="_blank" rel="noopener">
-                <div class="video-thumb-wrap">
-                  <img src="https://img.youtube.com/vi/DSLxl34PhHQ/hqdefault.jpg" alt="The Secret Place" />
-                </div>
-                <div class="video-info">
-                  <h3>The Secret Place</h3>
-                  <p>Enter the covering — peace, refuge, and presence.</p>
+                  <p>Music for standing together</p>
                 </div>
               </a>
             </div>
@@ -2473,6 +2505,28 @@
   console.log("👥 Live tracker running");
 </script>
   <!-- ===================== END FIREBASE ===================== -->
+
+
+
+  <!-- ===================== TRANSFORMATION MINI PLAYER ===================== -->
+  <script>
+    function playTransformationTrack(index){
+      const player = document.getElementById("transformationPlayer");
+      const title = document.getElementById("transformationTrackTitle");
+      if (!player || !title) return;
+
+      const tracks = [
+        { src: "/audio/the-transformation/better-man.mp3", title: "Better Man" },
+        { src: "/audio/the-transformation/better-man-remix.mp3", title: "Better Man Remix" }
+      ];
+
+      const track = tracks[index] || tracks[0];
+      player.src = track.src;
+      title.textContent = track.title;
+      player.play().catch(function(){});
+    }
+  </script>
+  <!-- ===================== END TRANSFORMATION MINI PLAYER ===================== -->
 
 </body>
 </html>
