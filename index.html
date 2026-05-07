@@ -42,7 +42,7 @@
   <meta charset="UTF-8" />
 
   <!-- 🔥 Preload homepage hero for cinematic intro dock -->
-  <link rel="preload" as="image" href="/images/awakened-by-yah-banner.png" fetchpriority="high">
+  <link rel="preload" as="image" href="/images/awakened-by-yah-banner.jpg" fetchpriority="high">
 
   <!-- ✅ NEW: Preload ambient site audio -->
   <link rel="preload" as="audio" href="/audio/site-ambient.mp3" type="audio/mpeg">
@@ -100,59 +100,40 @@
 
     a { color: inherit; text-decoration: none; }
 
-    /* ===================== FIXED TOP HEADER BANNER ===================== */
+    /* ===================== TOP HOMEPAGE BANNER ===================== */
     :root{
-      --tickerH: clamp(130px, 17vw, 250px);
+      --tickerH: 0px;
     }
 
     .top-header-banner{
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: var(--tickerH);
-      z-index: 1000;
-      background: #050505;
+      position: relative;
+      width: 100%;
+      height: clamp(330px, 41.66vw, 800px);
+      background: #000;
       overflow: hidden;
-      border-bottom: 1px solid rgba(251,191,36,0.32);
-      box-shadow: 0 14px 42px rgba(0,0,0,0.86);
-    }
-
-    .top-header-banner::before{
-      content: "";
-      position: absolute;
-      inset: -24px;
-      background-image: url('/images/awakened-by-yah-banner.png');
-      background-size: cover;
-      background-position: center center;
-      filter: blur(18px) saturate(1.1) brightness(0.75);
-      transform: scale(1.08);
-      opacity: 0.72;
+      border-bottom: 1px solid rgba(251,191,36,0.35);
+      box-shadow: 0 18px 46px rgba(0,0,0,0.75);
     }
 
     .top-header-banner img{
-      position: relative;
-      z-index: 1;
       width: 100%;
       height: 100%;
-      max-width: 1800px;
-      margin: 0 auto;
-      object-fit: contain;
+      object-fit: cover;
       object-position: center center;
       display: block;
     }
 
     @media (max-width: 900px){
-      :root{ --tickerH: 130px; }
+      .top-header-banner{ height: clamp(260px, 58vw, 520px); }
     }
 
     @media (max-width: 640px){
-      :root{ --tickerH: 92px; }
-      .top-header-banner::before{ filter: blur(14px) saturate(1.1) brightness(0.72); }
+      .top-header-banner{ height: clamp(210px, 70vw, 420px); }
+      .top-header-banner img{ object-position: center center; }
     }
-    /* ===================== END FIXED TOP HEADER BANNER ===================== */
+    /* ===================== END TOP HOMEPAGE BANNER ===================== */
 
-    .page { min-height: 100vh; display: flex; flex-direction: column; padding-top: var(--tickerH); }
+    .page { min-height: 100vh; display: flex; flex-direction: column; padding-top: 0; }
     .shell { width: 100%; max-width: 1200px; margin: 0 auto; padding: 2rem 1.75rem 3rem; }
 
     /* TOP BAR */
@@ -629,6 +610,47 @@
       width: 100%;
       max-width: 330px;
       filter: drop-shadow(0 10px 18px rgba(0,0,0,0.7));
+    }
+    .transformation-trackbox{
+      width:100%;
+      max-width:340px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:0.55rem;
+    }
+    .transformation-current{
+      font-size:0.74rem;
+      letter-spacing:0.18em;
+      text-transform:uppercase;
+      color:#fbbf24;
+      font-weight:900;
+    }
+    .transformation-track-buttons{
+      display:flex;
+      justify-content:center;
+      gap:0.5rem;
+      flex-wrap:wrap;
+      margin-top:0.15rem;
+    }
+    .transformation-track-btn{
+      padding:7px 11px;
+      border-radius:999px;
+      border:1px solid rgba(251,191,36,0.55);
+      background:rgba(15,23,42,0.82);
+      color:#fbbf24;
+      font-size:0.66rem;
+      font-weight:900;
+      letter-spacing:0.14em;
+      text-transform:uppercase;
+      cursor:pointer;
+      transition:transform .15s ease, background .15s ease, border-color .15s ease;
+    }
+    .transformation-track-btn:hover,
+    .transformation-track-btn.is-active{
+      transform:translateY(-1px);
+      background:rgba(251,191,36,0.16);
+      border-color:rgba(251,191,36,0.95);
     }
     .release-actions{
       display:flex;
@@ -1409,7 +1431,6 @@
     @media (prefers-reduced-motion: reduce){
       .introBg{ animation:none; }
       #photoHit, #introOverlay.fadeOut{ transition:none; }
-      .top-header-banner{ transition:none; }
     }
     /* ===================== END INTRO ===================== */
   </style>
@@ -1434,11 +1455,10 @@
 </head>
 
 <body>
-  <!-- ✅ FIXED TOP BANNER -->
-  <div class="top-header-banner" aria-label="AWAKENED BY YAH official banner">
-    <img src="/images/awakened-by-yah-banner.png" alt="AWAKENED BY YAH - Uriyah and Zapanyah">
+  <!-- ✅ TOP HOMEPAGE BANNER -->
+  <div class="top-header-banner" aria-label="AWAKENED BY YAH banner">
+    <img src="/images/awakened-by-yah-banner.jpg" alt="AWAKENED BY YAH - Uriyah and Zapanyah">
   </div>
-
 
   <!-- ===================== INTRO OVERLAY (runs once per session) ===================== -->
   <div id="introOverlay" aria-hidden="true">
@@ -1454,7 +1474,7 @@
     <div id="photoHit"><img id="photoImg" alt=""></div>
 
     <div id="bannerReveal">
-      <img id="bannerImg" src="/images/awakened-by-yah-banner.png" alt="Final Banner">
+      <img id="bannerImg" src="/images/awakened-by-yah-banner.jpg" alt="Final Banner">
     </div>
 
     <audio id="introAudio" preload="auto" playsinline>
@@ -1483,7 +1503,7 @@
       "/intro/flash4.jpg",
       "/intro/flash5.jpg"
     ];
-    const bannerPath = "/images/awakened-by-yah-banner.png";
+    const bannerPath = "/images/awakened-by-yah-banner.jpg";
 
     const isMobile = matchMedia("(max-width: 640px)").matches
       || (matchMedia("(pointer:coarse)").matches || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent));
@@ -1775,7 +1795,8 @@
           </a>
         </div>
       </div>
-<section class="hero">
+
+      <section class="hero">
         <div class="hero-left">
           <p class="eyebrow">TRUTH-BASED • SET-APART</p>
 
@@ -1812,23 +1833,17 @@
                 <img src="/images/transformation-aby.jpg" alt="The Transformation by AWAKENED BY YAH cover art" />
               </div>
 
-              <div class="transformation-mini-player" style="width:100%; max-width:340px;">
-                <p id="transformationTrackTitle" style="font-size:0.75rem; letter-spacing:0.18em; text-transform:uppercase; color:#fbbf24; margin-bottom:0.55rem; font-weight:900;">
-                  Better Man
-                </p>
+              <div class="transformation-trackbox" aria-label="The Transformation track selector">
+                <p id="transformationTrackTitle" class="transformation-current">Better Man</p>
 
-                <audio id="transformationPlayer" controls preload="metadata" style="width:100%;">
+                <audio id="transformationPlayer" controls preload="metadata">
                   <source src="/audio/the-transformation/better-man.mp3" type="audio/mpeg" />
                   Your browser does not support the audio element.
                 </audio>
 
-                <div style="margin-top:0.65rem; display:flex; gap:0.5rem; justify-content:center; flex-wrap:wrap;">
-                  <button type="button" onclick="playTransformationTrack(0)" style="padding:7px 11px; border-radius:999px; border:1px solid rgba(251,191,36,0.6); background:rgba(15,23,42,0.86); color:#fbbf24; font-size:0.66rem; font-weight:900; letter-spacing:0.14em; text-transform:uppercase; cursor:pointer;">
-                    Better Man
-                  </button>
-                  <button type="button" onclick="playTransformationTrack(1)" style="padding:7px 11px; border-radius:999px; border:1px solid rgba(251,191,36,0.6); background:rgba(15,23,42,0.86); color:#fbbf24; font-size:0.66rem; font-weight:900; letter-spacing:0.14em; text-transform:uppercase; cursor:pointer;">
-                    Transformation
-                  </button>
+                <div class="transformation-track-buttons">
+                  <button type="button" class="transformation-track-btn is-active" data-transformation-index="0">Better Man</button>
+                  <button type="button" class="transformation-track-btn" data-transformation-index="1">Transformation</button>
                 </div>
               </div>
 
@@ -1973,7 +1988,7 @@
 
 
 <li class="playlist-item"
-    data-src="/audio/the-transformation/better-man.mp3"
+    data-src="audio/the-transformation/better-man.mp3"
     data-title="Better Man">
   <span class="track-index">6</span>
   <div class="track-meta">
@@ -1983,12 +1998,12 @@
 </li>
 
 <li class="playlist-item"
-    data-src="/audio/the-transformation/better-man-transformation.mp3"
+    data-src="audio/the-transformation/better-man-transformation.mp3"
     data-title="Better Man Transformation">
   <span class="track-index">7</span>
   <div class="track-meta">
     <span class="track-title">Better Man Transformation</span>
-    <span class="track-tagline">The remix version of Better Man</span>
+    <span class="track-tagline">The transformation version of Better Man</span>
   </div>
 </li>
 </ul>
@@ -2067,113 +2082,152 @@
   <script>
   (function(){
     const ambient = document.getElementById('ambientAudio');
-    const player = document.getElementById('audio-player');
-    const introAudio = document.getElementById('introAudio');
-
     if (!ambient) return;
 
+    const AMBIENT_VOL = 0.22;
+    let fadeTimer = null;
     let startedOnce = false;
-    let fading = null;
 
-    function stopFade(){
-      if (fading) {
-        clearInterval(fading);
-        fading = null;
-      }
+    function clearFade(){
+      if (fadeTimer){ clearInterval(fadeTimer); fadeTimer = null; }
     }
 
-    function fadeTo(target, seconds){
-      stopFade();
-
-      const stepMs = 80;
+    function fadeAmbientTo(target, seconds){
+      clearFade();
+      const stepMs = 60;
       const steps = Math.max(1, Math.round((seconds * 1000) / stepMs));
-      const start = Number.isFinite(ambient.volume) ? ambient.volume : 0;
+      const startVol = Number.isFinite(ambient.volume) ? ambient.volume : 0;
       let i = 0;
 
-      fading = setInterval(() => {
+      fadeTimer = setInterval(() => {
         i++;
         const t = i / steps;
-        ambient.volume = Math.max(0, Math.min(1, start + ((target - start) * t)));
+        ambient.volume = Math.max(0, Math.min(1, startVol + ((target - startVol) * t)));
 
-        if (i >= steps) {
-          stopFade();
+        if (i >= steps){
+          clearFade();
           ambient.volume = target;
-          if (target === 0) {
+          if (target === 0){
             try { ambient.pause(); } catch(e){}
           }
         }
       }, stepMs);
     }
 
+    function getMusicPlayers(){
+      return Array.from(document.querySelectorAll('audio')).filter(a => a !== ambient);
+    }
+
+    function anyPlayerActive(){
+      return getMusicPlayers().some(a => !a.paused && !a.ended);
+    }
+
+    function stopAmbient(){
+      fadeAmbientTo(0, 0.55);
+    }
+
     async function playAmbient(){
-      if (!ambient) return;
-      if (player && !player.paused) return;
+      if (anyPlayerActive()) return;
       try{
         ambient.volume = 0;
         await ambient.play();
         startedOnce = true;
-        fadeTo(0.22, 1.6);
+        fadeAmbientTo(AMBIENT_VOL, 1.25);
       }catch(e){}
     }
 
-    function stopAmbient(){
-      if (!ambient || ambient.paused) return;
-      fadeTo(0, 0.8);
+    function resumeAmbient(){
+      setTimeout(() => {
+        if (!anyPlayerActive()) playAmbient();
+      }, 350);
+    }
+
+    function connectPlayers(){
+      getMusicPlayers().forEach(player => {
+        if (player.dataset.ambientConnected === 'true') return;
+        player.dataset.ambientConnected = 'true';
+        player.addEventListener('play', stopAmbient);
+        player.addEventListener('pause', resumeAmbient);
+        player.addEventListener('ended', resumeAmbient);
+      });
     }
 
     function startWhenIntroDone(){
       const intro = document.getElementById('introOverlay');
-
-      if (!intro) {
+      if (!intro){
         setTimeout(playAmbient, 800);
         return;
       }
 
       const obs = new MutationObserver(() => {
-        if (!document.getElementById('introOverlay')) {
+        if (!document.getElementById('introOverlay')){
           obs.disconnect();
           setTimeout(playAmbient, 900);
         }
       });
-
-      obs.observe(document.body, { childList: true, subtree: true });
+      obs.observe(document.body, { childList:true, subtree:true });
 
       setTimeout(() => {
-        if (document.getElementById('introOverlay')) return;
-        try { obs.disconnect(); } catch(e){}
-        playAmbient();
+        if (!document.getElementById('introOverlay')){
+          try { obs.disconnect(); } catch(e){}
+          playAmbient();
+        }
       }, 9000);
     }
 
-    if (introAudio){
-      introAudio.addEventListener('play', stopAmbient);
-    }
+    document.addEventListener('DOMContentLoaded', () => {
+      connectPlayers();
+      startWhenIntroDone();
+    });
 
-    if (player){
-      player.addEventListener('play', stopAmbient);
-      player.addEventListener('pause', () => setTimeout(playAmbient, 450));
-      player.addEventListener('ended', () => setTimeout(playAmbient, 450));
-    }
+    window.addEventListener('load', connectPlayers);
+    document.addEventListener('click', connectPlayers, true);
 
     document.addEventListener('visibilitychange', () => {
       if (document.hidden){
         try { ambient.pause(); } catch(e){}
-      } else {
-        if (player && !player.paused) return;
-        if (startedOnce) {
-          try { ambient.volume = 0; } catch(e){}
-          playAmbient();
-        } else {
-          startWhenIntroDone();
-        }
+      } else if (startedOnce && !anyPlayerActive()){
+        playAmbient();
       }
     });
-
-    startWhenIntroDone();
   })();
   </script>
   <!-- ===================== END AMBIENT LOOP ===================== -->
 
+
+  <script>
+  (function(){
+    const tracks = [
+      { src: "/audio/the-transformation/better-man.mp3", title: "Better Man" },
+      { src: "/audio/the-transformation/better-man-transformation.mp3", title: "Better Man Transformation" }
+    ];
+
+    function setTransformationTrack(index, autoplay){
+      const player = document.getElementById("transformationPlayer");
+      const title = document.getElementById("transformationTrackTitle");
+      const buttons = Array.from(document.querySelectorAll(".transformation-track-btn"));
+      const track = tracks[index];
+      if (!player || !track) return;
+
+      player.src = track.src;
+      if (title) title.textContent = track.title;
+
+      buttons.forEach(btn => btn.classList.remove("is-active"));
+      if (buttons[index]) buttons[index].classList.add("is-active");
+
+      if (autoplay) player.play().catch(()=>{});
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll(".transformation-track-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const index = Number(btn.getAttribute("data-transformation-index"));
+          setTransformationTrack(index, true);
+        });
+      });
+    });
+  })();
+  </script>
   <script>
     (function(){
       function openRadioPopup(url){
@@ -2290,29 +2344,6 @@
 
       setActiveTrack(0, false);
     });
-  </script>
-
-  <script>
-    function playTransformationTrack(index){
-      const player = document.getElementById("transformationPlayer");
-      const title = document.getElementById("transformationTrackTitle");
-
-      const tracks = [
-        {
-          src: "/audio/the-transformation/better-man.mp3",
-          title: "Better Man"
-        },
-        {
-          src: "/audio/the-transformation/better-man-transformation.mp3",
-          title: "Better Man Transformation"
-        }
-      ];
-
-      if (!player || !title || !tracks[index]) return;
-      player.src = tracks[index].src;
-      title.textContent = tracks[index].title;
-      player.play().catch(()=>{});
-    }
   </script>
 
   <!-- ===================== FIREBASE (SAFE / MODULAR / GLOBAL HANDLE) ===================== -->
