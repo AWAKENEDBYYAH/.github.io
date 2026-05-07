@@ -102,7 +102,7 @@
 
     /* ===================== FIXED TOP HEADER BANNER ===================== */
     :root{
-      --tickerH: clamp(105px, 17vw, 230px);
+      --tickerH: clamp(130px, 17vw, 250px);
     }
 
     .top-header-banner{
@@ -114,32 +114,41 @@
       z-index: 1000;
       background: #050505;
       overflow: hidden;
-      box-shadow: 0 14px 40px rgba(0,0,0,0.82);
-      border-bottom: 1px solid rgba(251,191,36,0.28);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      border-bottom: 1px solid rgba(251,191,36,0.32);
+      box-shadow: 0 14px 42px rgba(0,0,0,0.86);
+    }
+
+    .top-header-banner::before{
+      content: "";
+      position: absolute;
+      inset: -24px;
+      background-image: url('/images/awakened-by-yah-banner.png');
+      background-size: cover;
+      background-position: center center;
+      filter: blur(18px) saturate(1.1) brightness(0.75);
+      transform: scale(1.08);
+      opacity: 0.72;
     }
 
     .top-header-banner img{
+      position: relative;
+      z-index: 1;
       width: 100%;
       height: 100%;
+      max-width: 1800px;
+      margin: 0 auto;
       object-fit: contain;
       object-position: center center;
       display: block;
-      background: #050505;
-    }
-
-    @media (min-width: 1400px){
-      :root{ --tickerH: 250px; }
     }
 
     @media (max-width: 900px){
-      :root{ --tickerH: 145px; }
+      :root{ --tickerH: 130px; }
     }
 
     @media (max-width: 640px){
-      :root{ --tickerH: 105px; }
+      :root{ --tickerH: 92px; }
+      .top-header-banner::before{ filter: blur(14px) saturate(1.1) brightness(0.72); }
     }
     /* ===================== END FIXED TOP HEADER BANNER ===================== */
 
@@ -620,46 +629,6 @@
       width: 100%;
       max-width: 330px;
       filter: drop-shadow(0 10px 18px rgba(0,0,0,0.7));
-    }
-
-    .transformation-switcher{
-      width: 100%;
-      max-width: 340px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.55rem;
-    }
-    .transformation-track-title{
-      font-size: 0.78rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: #fbbf24;
-      font-weight: 900;
-    }
-    .transformation-track-buttons{
-      display:flex;
-      justify-content:center;
-      gap:0.55rem;
-      flex-wrap:wrap;
-    }
-    .transformation-track-buttons button{
-      border: 1px solid rgba(251,191,36,0.58);
-      background: rgba(15,23,42,0.88);
-      color: #fbbf24;
-      border-radius: 999px;
-      padding: 0.45rem 0.75rem;
-      font-size: 0.68rem;
-      font-weight: 900;
-      letter-spacing: 0.13em;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: transform .15s ease, background .15s ease, border-color .15s ease;
-    }
-    .transformation-track-buttons button:hover{
-      transform: translateY(-1px);
-      background: rgba(251,191,36,0.12);
-      border-color: rgba(251,191,36,0.95);
     }
     .release-actions{
       display:flex;
@@ -1440,6 +1409,7 @@
     @media (prefers-reduced-motion: reduce){
       .introBg{ animation:none; }
       #photoHit, #introOverlay.fadeOut{ transition:none; }
+      .top-header-banner{ transition:none; }
     }
     /* ===================== END INTRO ===================== */
   </style>
@@ -1464,10 +1434,11 @@
 </head>
 
 <body>
-  <!-- ✅ FIXED TOP BANNER - TICKER REMOVED -->
+  <!-- ✅ FIXED TOP BANNER -->
   <div class="top-header-banner" aria-label="AWAKENED BY YAH official banner">
-    <img id="homeHeroBanner" src="/images/awakened-by-yah-banner.png" alt="AWAKENED BY YAH - Uriyah and Zapanyah">
+    <img src="/images/awakened-by-yah-banner.png" alt="AWAKENED BY YAH - Uriyah and Zapanyah">
   </div>
+
 
   <!-- ===================== INTRO OVERLAY (runs once per session) ===================== -->
   <div id="introOverlay" aria-hidden="true">
@@ -1841,15 +1812,23 @@
                 <img src="/images/transformation-aby.jpg" alt="The Transformation by AWAKENED BY YAH cover art" />
               </div>
 
-              <div class="transformation-switcher">
-                <p id="transformationTrackTitle" class="transformation-track-title">Better Man</p>
-                <audio id="transformationPlayer" controls preload="metadata">
+              <div class="transformation-mini-player" style="width:100%; max-width:340px;">
+                <p id="transformationTrackTitle" style="font-size:0.75rem; letter-spacing:0.18em; text-transform:uppercase; color:#fbbf24; margin-bottom:0.55rem; font-weight:900;">
+                  Better Man
+                </p>
+
+                <audio id="transformationPlayer" controls preload="metadata" style="width:100%;">
                   <source src="/audio/the-transformation/better-man.mp3" type="audio/mpeg" />
                   Your browser does not support the audio element.
                 </audio>
-                <div class="transformation-track-buttons" aria-label="The Transformation track buttons">
-                  <button type="button" onclick="playTransformationTrack(0)">Better Man</button>
-                  <button type="button" onclick="playTransformationTrack(1)">Remix</button>
+
+                <div style="margin-top:0.65rem; display:flex; gap:0.5rem; justify-content:center; flex-wrap:wrap;">
+                  <button type="button" onclick="playTransformationTrack(0)" style="padding:7px 11px; border-radius:999px; border:1px solid rgba(251,191,36,0.6); background:rgba(15,23,42,0.86); color:#fbbf24; font-size:0.66rem; font-weight:900; letter-spacing:0.14em; text-transform:uppercase; cursor:pointer;">
+                    Better Man
+                  </button>
+                  <button type="button" onclick="playTransformationTrack(1)" style="padding:7px 11px; border-radius:999px; border:1px solid rgba(251,191,36,0.6); background:rgba(15,23,42,0.86); color:#fbbf24; font-size:0.66rem; font-weight:900; letter-spacing:0.14em; text-transform:uppercase; cursor:pointer;">
+                    Transformation
+                  </button>
                 </div>
               </div>
 
@@ -1994,7 +1973,7 @@
 
 
 <li class="playlist-item"
-    data-src="audio/the-transformation/better-man.mp3"
+    data-src="/audio/the-transformation/better-man.mp3"
     data-title="Better Man">
   <span class="track-index">6</span>
   <div class="track-meta">
@@ -2004,12 +1983,12 @@
 </li>
 
 <li class="playlist-item"
-    data-src="audio/the-transformation/better-man-remix.mp3"
-    data-title="Better Man Remix">
+    data-src="/audio/the-transformation/better-man-transformation.mp3"
+    data-title="Better Man Transformation">
   <span class="track-index">7</span>
   <div class="track-meta">
-    <span class="track-title">Better Man Remix</span>
-    <span class="track-tagline">A deeper reimagining of transformation</span>
+    <span class="track-title">Better Man Transformation</span>
+    <span class="track-tagline">The remix version of Better Man</span>
   </div>
 </li>
 </ul>
@@ -2313,6 +2292,29 @@
     });
   </script>
 
+  <script>
+    function playTransformationTrack(index){
+      const player = document.getElementById("transformationPlayer");
+      const title = document.getElementById("transformationTrackTitle");
+
+      const tracks = [
+        {
+          src: "/audio/the-transformation/better-man.mp3",
+          title: "Better Man"
+        },
+        {
+          src: "/audio/the-transformation/better-man-transformation.mp3",
+          title: "Better Man Transformation"
+        }
+      ];
+
+      if (!player || !title || !tracks[index]) return;
+      player.src = tracks[index].src;
+      title.textContent = tracks[index].title;
+      player.play().catch(()=>{});
+    }
+  </script>
+
   <!-- ===================== FIREBASE (SAFE / MODULAR / GLOBAL HANDLE) ===================== -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -2484,27 +2486,6 @@
   console.log("👥 Live tracker running");
 </script>
   <!-- ===================== END FIREBASE ===================== -->
-
-
-  <script>
-  function playTransformationTrack(index){
-    const player = document.getElementById("transformationPlayer");
-    const title = document.getElementById("transformationTrackTitle");
-
-    if (!player || !title) return;
-
-    const tracks = [
-      { src: "/audio/the-transformation/better-man.mp3", title: "Better Man" },
-      { src: "/audio/the-transformation/better-man-remix.mp3", title: "Better Man Remix" }
-    ];
-
-    const track = tracks[index] || tracks[0];
-    player.src = track.src;
-    title.textContent = track.title;
-    player.load();
-    player.play().catch(function(){});
-  }
-  </script>
 
 </body>
 </html>
