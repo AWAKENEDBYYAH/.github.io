@@ -413,8 +413,8 @@
     /* HERO */
     .hero {
       display: grid;
-      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.1fr);
-      gap: 2.5rem;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+      gap: 2.2rem;
       align-items: stretch;
     }
 
@@ -689,17 +689,31 @@
     /* ===================== TRANSFORMATION CD / ZELLE ORDER BOX ===================== */
     .transformation-cd-box{
       width:100%;
-      max-width:340px;
+      max-width:760px;
       margin-top:1rem;
       padding:1rem;
-      border-radius:18px;
-      border:1px solid rgba(251,191,36,0.45);
+      border-radius:20px;
+      border:1px solid rgba(251,191,36,0.48);
       background:
-        radial-gradient(circle at top left, rgba(28,57,168,0.22) 0%, rgba(2,6,23,0.96) 70%);
+        radial-gradient(circle at top left, rgba(28,57,168,0.24) 0%, transparent 38%),
+        radial-gradient(circle at bottom right, rgba(251,191,36,0.12) 0%, transparent 42%),
+        linear-gradient(145deg, rgba(2,6,23,0.98), rgba(15,23,42,0.96));
       box-shadow:
         0 18px 36px rgba(0,0,0,0.70),
         0 0 18px rgba(251,191,36,0.10);
-      text-align:center;
+      text-align:left;
+    }
+
+    .transformation-cd-inner{
+      display:grid;
+      grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+      gap:1rem;
+      align-items:center;
+    }
+
+    .transformation-cd-left,
+    .transformation-cd-right{
+      min-width:0;
     }
 
     .transformation-cd-badge{
@@ -711,80 +725,111 @@
       background:rgba(251,191,36,0.14);
       border:1px solid rgba(251,191,36,0.55);
       color:#fbbf24;
-      font-size:0.68rem;
+      font-size:0.64rem;
       font-weight:900;
-      letter-spacing:0.16em;
+      letter-spacing:0.14em;
       text-transform:uppercase;
-      margin-bottom:0.85rem;
+      margin-bottom:0.65rem;
+      white-space:nowrap;
     }
 
     .transformation-cd-price{
       color:#f9fafb;
-      font-size:1rem;
-      line-height:1.55;
-      font-weight:800;
+      font-size:0.92rem;
+      line-height:1.35;
+      font-weight:900;
       text-transform:uppercase;
       letter-spacing:0.08em;
+      text-align:center;
     }
 
     .transformation-cd-price span{
+      display:block;
+      margin-top:0.25rem;
       color:#fbbf24;
-      font-size:1.25rem;
-      letter-spacing:0.04em;
+      font-size:1.45rem;
+      letter-spacing:0.05em;
+      line-height:1;
     }
 
     .transformation-cd-text{
-      margin-top:0.55rem;
+      margin-top:0.45rem;
       color:#e5e7eb;
-      font-size:0.88rem;
-      line-height:1.6;
+      font-size:0.80rem;
+      line-height:1.45;
+      text-align:center;
     }
 
     .transformation-cd-zelle{
-      margin-top:0.9rem;
       color:#fbbf24;
-      font-size:0.82rem;
+      font-size:0.74rem;
       font-weight:900;
       letter-spacing:0.10em;
       text-transform:uppercase;
-      line-height:1.45;
+      line-height:1.35;
+      text-align:center;
     }
 
     .transformation-zelle-email{
-      margin-top:0.55rem;
-      padding:12px;
-      border-radius:12px;
-      background:#1c39a8;
+      margin-top:0.45rem;
+      padding:11px 14px;
+      border-radius:14px;
+      background:linear-gradient(135deg, #1c39a8, #284bd6);
       color:#ffffff;
       font-weight:900;
       font-size:0.92rem;
-      letter-spacing:0.04em;
+      letter-spacing:0.03em;
       word-break:break-word;
+      text-align:center;
       box-shadow:0 10px 22px rgba(0,0,0,0.45);
     }
 
     .transformation-cd-instructions{
-      margin-top:1rem;
+      margin-top:0.6rem;
       color:#cbd5e1;
-      font-size:0.78rem;
-      line-height:1.65;
+      font-size:0.74rem;
+      line-height:1.45;
+      text-align:center;
     }
 
     .transformation-cd-list{
-      margin-top:0.65rem;
-      padding-left:1.2rem;
+      margin-top:0.55rem;
+      padding-left:1rem;
       text-align:left;
       color:#e5e7eb;
-      font-size:0.82rem;
-      line-height:1.7;
+      font-size:0.74rem;
+      line-height:1.45;
     }
 
     .transformation-cd-note{
-      margin-top:1rem;
+      margin-top:0.65rem;
       color:#fbbf24;
-      font-size:0.78rem;
-      font-weight:800;
-      line-height:1.6;
+      font-size:0.74rem;
+      font-weight:900;
+      line-height:1.35;
+      text-align:center;
+    }
+
+    @media (max-width: 760px){
+      .transformation-cd-box{
+        max-width:100%;
+        padding:0.95rem;
+      }
+      .transformation-cd-inner{
+        grid-template-columns:1fr;
+        gap:0.85rem;
+      }
+      .transformation-cd-badge{
+        display:flex;
+        margin-left:auto;
+        margin-right:auto;
+        width:max-content;
+        max-width:100%;
+      }
+      .transformation-cd-price,
+      .transformation-cd-text{
+        text-align:center;
+      }
     }
     /* ===================== END TRANSFORMATION CD / ZELLE ORDER BOX ===================== */
 
@@ -1938,40 +1983,46 @@
 
               <!-- ===================== THE TRANSFORMATION CD / ZELLE ORDER BOX ===================== -->
               <div class="transformation-cd-box" aria-label="The Transformation physical CD Zelle order instructions">
-                <div class="transformation-cd-badge">
-                  💿 PHYSICAL CD AVAILABLE
+                <div class="transformation-cd-inner">
+                  <div class="transformation-cd-left">
+                    <div class="transformation-cd-badge">
+                      💿 PHYSICAL CD AVAILABLE
+                    </div>
+
+                    <p class="transformation-cd-price">
+                      The Transformation CD
+                      <span>$12 Total</span>
+                    </p>
+
+                    <p class="transformation-cd-text">
+                      $7 CD + $5 shipping. Ships anywhere in the United States.
+                    </p>
+                  </div>
+
+                  <div class="transformation-cd-right">
+                    <p class="transformation-cd-zelle">
+                      To buy this CD, send $12 through Zelle to this email:
+                    </p>
+
+                    <div class="transformation-zelle-email">
+                      yahuahsremnant@gmail.com
+                    </div>
+
+                    <p class="transformation-cd-instructions">
+                      Open your banking app, choose <strong>Send Money with Zelle</strong>, enter the email above, and send <strong>$12</strong>.
+                    </p>
+
+                    <ul class="transformation-cd-list">
+                      <li>Put <strong>The Transformation CD</strong> in the Zelle note.</li>
+                      <li>Email your full name and shipping address to the same email.</li>
+                      <li>Your CD ships after payment is confirmed.</li>
+                    </ul>
+
+                    <p class="transformation-cd-note">
+                      Please make sure your shipping address is complete before sending.
+                    </p>
+                  </div>
                 </div>
-
-                <p class="transformation-cd-price">
-                  The Transformation CD<br>
-                  <span>$12 Total</span>
-                </p>
-
-                <p class="transformation-cd-text">
-                  $7 CD + $5 shipping. Ships anywhere in the United States through Pack &amp; Mail.
-                </p>
-
-                <p class="transformation-cd-zelle">
-                  To buy this CD, send $12 through Zelle to this email:
-                </p>
-
-                <div class="transformation-zelle-email">
-                  yahuahsremnant@gmail.com
-                </div>
-
-                <p class="transformation-cd-instructions">
-                  Open your banking app, choose <strong>Send Money with Zelle</strong>, enter the email above, and send <strong>$12</strong>.
-                </p>
-
-                <ul class="transformation-cd-list">
-                  <li>Put <strong>The Transformation CD</strong> in the Zelle note.</li>
-                  <li>Email your full name and shipping address to the same email.</li>
-                  <li>Your CD will be packaged and shipped after payment is confirmed.</li>
-                </ul>
-
-                <p class="transformation-cd-note">
-                  Please make sure your shipping address is complete before sending.
-                </p>
               </div>
               <!-- ===================== END THE TRANSFORMATION CD / ZELLE ORDER BOX ===================== -->
 
