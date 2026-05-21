@@ -853,6 +853,44 @@
         text-align:center;
       }
     }
+
+
+    .transformation-order-link-wrap{
+      margin-top:0.85rem;
+      text-align:center;
+    }
+
+    .transformation-order-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:0.78rem 1.25rem;
+      border-radius:999px;
+      background:linear-gradient(120deg, #f59e0b, #fbbf24);
+      color:#111827;
+      font-size:0.76rem;
+      font-weight:900;
+      letter-spacing:0.16em;
+      text-transform:uppercase;
+      border:1px solid rgba(0,0,0,0.16);
+      box-shadow:0 12px 26px rgba(0,0,0,0.55), 0 0 18px rgba(251,191,36,0.18);
+      transition:transform .15s ease, filter .15s ease;
+      white-space:nowrap;
+    }
+
+    .transformation-order-btn:hover{
+      transform:translateY(-1px);
+      filter:brightness(1.05);
+    }
+
+    .transformation-order-helper{
+      margin-top:0.45rem;
+      color:#cbd5e1;
+      font-size:0.72rem;
+      line-height:1.4;
+      text-align:center;
+    }
+
     /* ===================== END TRANSFORMATION CD / ZELLE ORDER BOX ===================== */
 
     @media (max-width: 640px){
@@ -2036,36 +2074,28 @@
 
                     <ul class="transformation-cd-list">
                       <li>Put <strong>The Transformation CD</strong> in the Zelle note.</li>
-                      <li>Email your full name and shipping address to the same email.</li>
+                      <li>After payment, complete the official order form so your shipping details are logged correctly.</li>
                       <li>Your CD ships after payment is confirmed.</li>
                     </ul>
 
                     <p class="transformation-cd-note">
                       Please make sure your shipping address is complete before sending.
                     </p>
+
+                    <div class="transformation-order-link-wrap">
+                      <a class="transformation-order-btn" href="/order-now/">Complete Order Form</a>
+                      <p class="transformation-order-helper">
+                        Use this form after sending Zelle so your order is logged and assigned an ABY order number.
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
               <!-- ===================== END THE TRANSFORMATION CD / ZELLE ORDER BOX ===================== -->
 
 
-              <div class="transformation-trackbox" aria-label="The Transformation track selector">
-                <p id="transformationTrackTitle" class="transformation-current">Better Man</p>
-
-                <audio id="transformationPlayer" controls preload="metadata">
-                  <source src="/audio/the-transformation/better-man.mp3" type="audio/mpeg" />
-                  Your browser does not support the audio element.
-                </audio>
-
-                <div class="transformation-track-buttons">
-                  <button type="button" class="transformation-track-btn is-active" data-transformation-index="0">Better Man</button>
-                  <button type="button" class="transformation-track-btn" data-transformation-index="1">Transformation</button>
-                </div>
-              </div>
-
               <div class="release-actions">
                 <a class="release-primary" href="/store/">Own The Sound</a>
-                <a href="#music">Full Player</a>
               </div>
             </div>
           </div>
