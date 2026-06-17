@@ -29,7 +29,7 @@
         radial-gradient(900px 600px at 50% 95%, rgba(255,255,255,.05), transparent 60%),
         var(--bg);
       min-height:100vh;
-      visibility:hidden; /* 🔒 hidden until verified */
+      visibility:hidden;
     }
     .wrap{max-width:980px;margin:0 auto;padding:26px 16px 50px}
     .top{
@@ -81,6 +81,18 @@
       background:rgba(248,113,113,.08);
       color:#fee2e2;
     }
+    .delivery-notice{
+      margin-top:14px;
+      padding:12px 14px;
+      border-radius:16px;
+      border:1px solid rgba(255,215,0,.35);
+      background:rgba(255,215,0,.08);
+      color:#ffd700;
+      font-size:14px;
+      font-weight:700;
+      line-height:1.5;
+      text-align:center;
+    }
     .btnrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
     .btn{
       display:inline-flex;align-items:center;justify-content:center;gap:10px;
@@ -119,6 +131,10 @@
       <p class="sub">Your bundle downloads unlock only after purchase verification.</p>
       <div class="btnrow">
         <a class="btn" href="/store/">Go to Store</a>
+      </div>
+
+      <div class="delivery-notice">
+        ⚠️ Digital Download Notice: Albums are currently being delivered directly to the email address used at checkout. Please allow up to 24 hours for delivery while we upgrade our automated download system.
       </div>
     </header>
 
@@ -176,7 +192,6 @@
              : "";
       }
 
-      // keep the download center link carrying auth
       dlCenter.href = "/downloads/" + carry();
 
       function unlock(){
@@ -203,7 +218,6 @@
       }
 
       try{
-        // ✅ primary: session verification
         if(sessionId){
           const res = await fetch(VERIFY_PURCHASE_URL, {
             method:"POST",
@@ -232,7 +246,6 @@
           return;
         }
 
-        // ✅ fallback: token verification
         if(token){
           const res = await fetch(VERIFY_TOKEN_URL, {
             method:"POST",
