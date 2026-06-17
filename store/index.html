@@ -585,10 +585,10 @@
     /*****************************************************************
       DIRECT STRIPE PAYMENT LINKS (BUY NOW)
     ******************************************************************/
-   const STRIPE_LINKS = {
-  battlefield_album: "https://buy.stripe.com/cNi28j6a80bedaZ9hI0oM01",
-  kingdom_ep:        "https://buy.stripe.com/eVq00bdCA1fidaZdxY0oM02",
-  rise_album:        "https://buy.stripe.com/5kQ14ffKI0be2wl65w0oM04",
+ const STRIPE_LINKS = {
+  battlefield_album: "https://payhip.com/b/gpCsG",
+  kingdom_ep:        "https://payhip.com/b/R3MKo",
+  rise_album:        "https://payhip.com/b/49w8a",
   bundle_all3:       "https://payhip.com/b/e127z"
 };
 
@@ -611,37 +611,37 @@
         title: "3 Album Bundle",
         subtitle: "Rise of Yasharal + Kingdom Biz + The Battlefield",
         price: 34.99,
-        meta: "Best Value, Save $7",
+        meta: "Complete Collection",
         img: IMG_BUNDLE,
         priceId: PRICE_IDS.bundle_all3,
         buyUrl: STRIPE_LINKS.bundle_all3
       },
       {
-        key: "rise_album",
-        title: "THE RISE OF YASHARAL",
-        subtitle: "12 Track MP3 Digital Album",
-        price: 17.99,
-        meta: "$1.99 per track",
+  key: "rise_album",
+  title: "THE RISE OF YASHARAL",
+  subtitle: "12 Track MP3 Digital Album",
+  price: 14.99,
+  meta: "12 Tracks",
         img: IMG_RISE,
         priceId: PRICE_IDS.rise_album,
         buyUrl: STRIPE_LINKS.rise_album
       },
       {
-        key: "kingdom_ep",
-        title: "KINGDOM BIZ",
-        subtitle: "5 Track MP3 Digital EP",
-        price: 7.99,
-        meta: "$1.99 per track",
+  key: "kingdom_ep",
+  title: "KINGDOM BIZ",
+  subtitle: "5 Track MP3 Digital EP",
+  price: 6.99,
+  meta: "5 Tracks",
         img: IMG_KING,
         priceId: PRICE_IDS.kingdom_ep,
         buyUrl: STRIPE_LINKS.kingdom_ep
       },
-      {
-        key: "battlefield_album",
-        title: "THE BATTLEFIELD",
-        subtitle: "10 Track MP3 Digital Album",
-        price: 15.99,
-        meta: "$1.99 per track",
+    {
+  key: "battlefield_album",
+  title: "THE BATTLEFIELD",
+  subtitle: "10 Track MP3 Digital Album",
+  price: 12.99,
+  meta: "10 Tracks",
         img: IMG_BATTLE,
         priceId: PRICE_IDS.battlefield_album,
         buyUrl: STRIPE_LINKS.battlefield_album
@@ -655,9 +655,9 @@
       {
         key: "bundle_all3",
         title: "3 Album Bundle",
-        meta: "Best Value Bundle",
+        meta: "Complete Collection",
         priceText: "$34.99",
-        smallMeta: "Save $7",
+        smallMeta: "All Three Albums",
         img: IMG_BUNDLE,
         addKey: "bundle_all3",
         buyUrl: STRIPE_LINKS.bundle_all3
@@ -666,8 +666,8 @@
         key: "rise_album",
         title: "THE RISE OF YASHARAL",
         meta: "12 Track Digital Album",
-        priceText: "$17.99",
-        smallMeta: "$1.99 per track",
+       priceText: "$14.99",
+smallMeta: "12 Tracks",
         img: IMG_RISE,
         addKey: "rise_album",
         buyUrl: STRIPE_LINKS.rise_album
@@ -676,8 +676,8 @@
         key: "kingdom_ep",
         title: "KINGDOM BIZ",
         meta: "5 Track Digital EP",
-        priceText: "$7.99",
-        smallMeta: "$1.99 per track",
+       priceText: "$6.99",
+smallMeta: "5 Tracks",
         img: IMG_KING,
         addKey: "kingdom_ep",
         buyUrl: STRIPE_LINKS.kingdom_ep
@@ -686,8 +686,8 @@
         key: "battlefield_album",
         title: "THE BATTLEFIELD",
         meta: "10 Track Digital Album",
-        priceText: "$15.99",
-        smallMeta: "$1.99 per track",
+       priceText: "$12.99",
+smallMeta: "10 Tracks",
         img: IMG_BATTLE,
         addKey: "battlefield_album",
         buyUrl: STRIPE_LINKS.battlefield_album
