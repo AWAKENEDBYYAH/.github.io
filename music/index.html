@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- ✅ Correct canonical for folder-based page -->
   <link rel="canonical" href="https://awakenedbyyahmusic.com/music/" />
 
   <meta charset="UTF-8" />
@@ -39,12 +38,7 @@
       border:1px solid rgba(255,255,255,.12);
       box-shadow:0 35px 90px rgba(0,0,0,.60);
       background:
-        linear-gradient(
-          180deg,
-          rgba(2,6,23,.20),
-          rgba(2,6,23,.40),
-          rgba(2,6,23,.82)
-        ),
+        linear-gradient(180deg,rgba(2,6,23,.20),rgba(2,6,23,.40),rgba(2,6,23,.82)),
         url("/music-banner.png");
       background-size:cover;
       background-position:center;
@@ -98,17 +92,11 @@
       border-bottom:1px solid var(--line);
     }
 
-    /* =========================================================
-       ✅ REBUILT COVER SYSTEM (NO CLIPPING)
-       - Outer wrapper: DOES NOT CLIP (LEDs/glow/sparkles live here)
-       - Inner box: clips the image cleanly
-       ========================================================= */
     .coverWrap{
       width:160px;height:160px;
       position:relative;
       flex:0 0 auto;
       border-radius:18px;
-      /* allow FX to extend beyond image box */
       overflow:visible;
       isolation:isolate;
     }
@@ -117,7 +105,7 @@
       border-radius:18px;
       background:#111827;
       border:1px solid var(--line);
-      overflow:hidden; /* ✅ only the image is clipped */
+      overflow:hidden;
       display:flex;align-items:center;justify-content:center;
       position:relative;
       z-index:6;
@@ -128,15 +116,13 @@
       display:block;
     }
 
-    /* ===== Calm ambient motion (not flashy) ===== */
     @keyframes slowSpin { from{ transform: rotate(0deg);} to{ transform: rotate(360deg);} }
     @keyframes driftGlow { 0%{transform:translate(-1px,-1px)} 50%{transform:translate(1px,1px)} 100%{transform:translate(-1px,-1px)} }
     @keyframes dustDrift { 0%{transform:translate(0,0)} 50%{transform:translate(10px,-6px)} 100%{transform:translate(0,0)} }
 
-    /* ===== Thicker, denser “LED equalizer frame” (NOW NOT CLIPPED) ===== */
     .eqFrame{
       position:absolute;
-      inset:-26px;                /* thicker AND visible now */
+      inset:-26px;
       border-radius:42px;
       pointer-events:none;
       z-index:4;
@@ -150,7 +136,6 @@
       animation: slowSpin 9s linear infinite;
     }
 
-    /* Soft inner glow behind the bars (cool palette) */
     .eqGlow{
       position:absolute;
       inset:-22px;
@@ -175,7 +160,6 @@
       animation: driftGlow 4s ease-in-out infinite;
     }
 
-    /* Sparkle dust (ambient, calming) */
     .sparkles{
       position:absolute;
       inset:-42px;
@@ -218,20 +202,17 @@
       animation: dustDrift 8s ease-in-out infinite;
     }
 
-    /* =========================================================
-       ✅ DENSER LED RAILS
-       ========================================================= */
     .rail{
       position:absolute;
       display:flex;
-      gap:1.5px;                 /* denser */
-      padding:11px;              /* thicker */
+      gap:1.5px;
+      padding:11px;
       border-radius:42px;
       mix-blend-mode: screen;
     }
     .rail span{
       display:block;
-      width:4.2px;               /* thinner dot/bar */
+      width:4.2px;
       height:10px;
       border-radius:9px;
       transform-origin: bottom;
@@ -239,7 +220,6 @@
       box-shadow: 0 0 14px rgba(255,255,255,.06);
       will-change: height, width, background, box-shadow;
     }
-
     .rail.top{
       left:10px; right:10px; top:6px;
       justify-content:space-between;
@@ -263,7 +243,7 @@
       align-items:flex-end;
     }
     .rail.left span, .rail.right span{
-      width:12px;                /* thicker side rail */
+      width:12px;
       height:4.2px;
       transform-origin: left;
       border-radius:9px;
@@ -410,6 +390,8 @@
       display:grid;
       grid-template-columns:1fr;
       gap:12px;
+      max-height:740px;
+      overflow:auto;
     }
     .coverBtn{
       display:flex;gap:12px;align-items:center;
@@ -444,6 +426,7 @@
     <header class="musicHero" aria-label="Awakened By YAH Music Banner">
       <div class="musicHeroBack">
         <a href="/">← Back to Home</a>
+        <a href="/store/">Visit Store</a>
       </div>
     </header>
 
@@ -451,9 +434,7 @@
       <section class="playerCard" aria-label="Music Player">
         <div class="playerHead">
 
-          <!-- ✅ REBUILT COVER MARKUP -->
           <div class="coverWrap" id="coverBox">
-
             <div class="sparkles" aria-hidden="true"></div>
             <div class="eqGlow" id="eqGlow" aria-hidden="true"></div>
 
@@ -470,7 +451,6 @@
                    alt="Project cover"
                    onerror="this.onerror=null;this.src='/abytransparent.png';" />
             </div>
-
           </div>
 
           <div class="meta">
@@ -493,8 +473,8 @@
               <button id="playBtn" class="primary" title="Play / Pause">▶️ Play</button>
               <button id="nextBtn" title="Next">⏭</button>
 
-              <button id="repeatAllBtn" title="Repeat All (Playlist)">🔁</button>
-              <button id="repeatOneBtn" title="Repeat 1 (Current Track)">🔂</button>
+              <button id="repeatAllBtn" title="Repeat All">🔁</button>
+              <button id="repeatOneBtn" title="Repeat 1">🔂</button>
 
               <span class="tinyLabel" id="statusLabel">Ready</span>
             </div>
@@ -522,9 +502,9 @@
         </div>
       </section>
 
-      <aside class="coversCard" aria-label="Albums">
+      <aside class="coversCard" aria-label="Music Catalog">
         <div class="coversHead">
-          <h2>Albums</h2>
+          <h2>Music Catalog</h2>
           <div class="hint">Click a cover to load</div>
         </div>
 
@@ -536,29 +516,84 @@
             </div>
             <div class="coverText">
               <p class="coverName">The Battlefield (2026)</p>
-              <p class="coverMeta">Album</p>
+              <p class="coverMeta">Album · 10 Tracks</p>
             </div>
           </div>
 
           <div class="coverBtn" data-key="kingdombiz">
             <div class="thumb">
-              <img src="/kingdom-biz-cover.png" alt="Kingdom Biz cover"
+              <img src="/images/kingdom-biz1.png" alt="Kingdom Biz cover"
                    onerror="this.onerror=null;this.src='/abytransparent.png';">
             </div>
             <div class="coverText">
               <p class="coverName">Kingdom Biz (2025)</p>
-              <p class="coverMeta">Album</p>
+              <p class="coverMeta">EP · 5 Tracks</p>
             </div>
           </div>
 
           <div class="coverBtn" data-key="rise">
             <div class="thumb">
-              <img src="/images/rise-of-yasharal.png" alt="The Rise of Yasharal cover"
+              <img src="/images/the-rise-of-yasharal1.png" alt="The Rise of Yasharal cover"
                    onerror="this.onerror=null;this.src='/abytransparent.png';">
             </div>
             <div class="coverText">
               <p class="coverName">The Rise of Yasharal (2025)</p>
-              <p class="coverMeta">Album</p>
+              <p class="coverMeta">Album · 12 Tracks</p>
+            </div>
+          </div>
+
+          <div class="coverBtn" data-key="decisiontime">
+            <div class="thumb">
+              <img src="/images/decision-time.png" alt="Decision Time cover"
+                   onerror="this.onerror=null;this.src='/abytransparent.png';">
+            </div>
+            <div class="coverText">
+              <p class="coverName">Decision Time (2026)</p>
+              <p class="coverMeta">EP · 5 Tracks</p>
+            </div>
+          </div>
+
+          <div class="coverBtn" data-key="transformation">
+            <div class="thumb">
+              <img src="/images/transformation-aby.jpg" alt="The Transformation cover"
+                   onerror="this.onerror=null;this.src='/abytransparent.png';">
+            </div>
+            <div class="coverText">
+              <p class="coverName">The Transformation (2026)</p>
+              <p class="coverMeta">EP · 2 Tracks</p>
+            </div>
+          </div>
+
+          <div class="coverBtn" data-key="yasharalgotnext">
+            <div class="thumb">
+              <img src="/images/yasharal-got-next.png" alt="Yasharal Got Next cover"
+                   onerror="this.onerror=null;this.src='/abytransparent.png';">
+            </div>
+            <div class="coverText">
+              <p class="coverName">Yasharal Got Next (2026)</p>
+              <p class="coverMeta">Single</p>
+            </div>
+          </div>
+
+          <div class="coverBtn" data-key="onestick">
+            <div class="thumb">
+              <img src="/images/one-stick.png" alt="One Stick cover"
+                   onerror="this.onerror=null;this.src='/abytransparent.png';">
+            </div>
+            <div class="coverText">
+              <p class="coverName">One Stick (2026)</p>
+              <p class="coverMeta">Single</p>
+            </div>
+          </div>
+
+          <div class="coverBtn" data-key="howlongyahuah">
+            <div class="thumb">
+              <img src="/images/how-long-yahuah.png" alt="How Long YAHUAH cover"
+                   onerror="this.onerror=null;this.src='/abytransparent.png';">
+            </div>
+            <div class="coverText">
+              <p class="coverName">How Long, YAHUAH? (2026)</p>
+              <p class="coverMeta">Single</p>
             </div>
           </div>
         </div>
@@ -589,26 +624,28 @@
           { title: "Hidden With You", file: U("/audio/the-battlefield/10-hidden-with-you.mp3") }
         ]
       },
+
       kingdombiz: {
         artist: "AWAKENED BY YAH",
         album: "Kingdom Biz",
         year: 2025,
         project: "Kingdom Biz",
-        cover: "/kingdom-biz-cover.png",
+        cover: "/images/kingdom-biz1.png",
         tracks: [
           { title: "Walk It Out", file: U("/audio/TRACK 01_WALK IT OUT.mp3") },
           { title: "Rise of the Remnant", file: U("/audio/TRACK 02_RISE OF THE REMNANT.mp3") },
           { title: "We Rise", file: U("/audio/TRACK 03__WE RISE.mp3") },
           { title: "Unbroken Frequency", file: U("/audio/TRACK 04_UNBROKEN FREQUENCY.mp3") },
-          { title: "Unbroken Frequency (Remix)", file: U("/audio/TRACK 05__UNBROKEN FREQUENCY REMIX.mp3") }
+          { title: "Unbroken Frequency Remix", file: U("/audio/TRACK 05__UNBROKEN FREQUENCY REMIX.mp3") }
         ]
       },
+
       rise: {
         artist: "AWAKENED BY YAH",
         album: "The Rise of Yasharal",
         year: 2025,
         project: "The Rise of Yasharal",
-        cover: "/images/rise-of-yasharal.png",
+        cover: "/images/the-rise-of-yasharal1.png",
         tracks: [
           { title: "The Love I Have In YAHUAH", file: U("/audio/ROY_TRACK 01_THE LOVE I HAVE IN YAHUAH.mp3") },
           { title: "You're With Me", file: U("/audio/ROY_TRACK 02_YOU'RE WITH ME.mp3") },
@@ -623,6 +660,66 @@
           { title: "My Eyes Opened Wide", file: U("/audio/ROY_TRACK 11_MY EYES OPENED WIDE.mp3") },
           { title: "Return to the Covenant", file: U("/audio/ROY_TRACK 12_RETURN TO THE COVENANT.mp3") }
         ]
+      },
+
+      decisiontime: {
+        artist: "AWAKENED BY YAH",
+        album: "Decision Time",
+        year: 2026,
+        project: "Decision Time",
+        cover: "/images/decision-time.png",
+        tracks: [
+          { title: "Choose Life", file: U("/audio/CHOOSE LIFE.mp3") },
+          { title: "Narrow Path", file: U("/audio/NARROW PATH.mp3") },
+          { title: "If You Love Me Do What I Say", file: U("/audio/IF YOU LOVE ME DO WHAT I SAY.mp3") },
+          { title: "Path Of Years", file: U("/audio/PATH OF YEARS.mp3") },
+          { title: "In Your Strength", file: U("/audio/IN YOUR STRENGTH.mp3") }
+        ]
+      },
+
+      transformation: {
+        artist: "AWAKENED BY YAH",
+        album: "The Transformation",
+        year: 2026,
+        project: "The Transformation",
+        cover: "/images/transformation-aby.jpg",
+        tracks: [
+          { title: "Better Man", file: U("/audio/BETTER MAN.mp3") },
+          { title: "Better Man Transformation", file: U("/audio/BETTER MAN TRANSFORMATION.mp3") }
+        ]
+      },
+
+      yasharalgotnext: {
+        artist: "AWAKENED BY YAH",
+        album: "Single",
+        year: 2026,
+        project: "YASHARAL GOT NEXT",
+        cover: "/images/yasharal-got-next.png",
+        tracks: [
+          { title: "YASHARAL GOT NEXT", file: U("/audio/YASHARAL GOT NEXT FINAL.mp3") }
+        ]
+      },
+
+      onestick: {
+        artist: "AWAKENED BY YAH",
+        album: "Single",
+        year: 2026,
+        project: "ONE STICK",
+        cover: "/images/one-stick.png",
+        tracks: [
+          { title: "ONE STICK", file: U("/audio/ONE STICK.mp3") }
+        ]
+      },
+
+      howlongyahuah: {
+        artist: "AWAKENED BY YAH",
+        album: "Single",
+        year: 2026,
+        project: "HOW LONG, YAHUAH?",
+        cover: "/images/how-long-yahuah.png",
+        tracks: [
+          { title: "HOW LONG, YAHUAH?", file: U("/audio/HOW_LONG_YAHUAH.mp3") }
+        ]
       }
     };
 
@@ -631,12 +728,10 @@
     const ui = {
       coverBox: $("coverBox"),
       eqGlow: $("eqGlow"),
-
       railTop: $("railTop"),
       railRight: $("railRight"),
       railBottom: $("railBottom"),
       railLeft: $("railLeft"),
-
       cover: $("playerCover"),
       artist: $("playerArtist"),
       album: $("playerAlbum"),
@@ -644,7 +739,6 @@
       projectPill: $("projectPill"),
       countPill: $("countPill"),
       list: $("plist"),
-
       play: $("playBtn"),
       prev: $("prevBtn"),
       next: $("nextBtn"),
@@ -652,7 +746,6 @@
       repAll: $("repeatAllBtn"),
       repOne: $("repeatOneBtn"),
       status: $("statusLabel"),
-
       seek: $("seek"),
       tNow: $("tNow"),
       tDur: $("tDur"),
@@ -675,7 +768,10 @@
       const s = Math.floor(sec%60);
       return `${m}:${String(s).padStart(2,"0")}`;
     }
-    function setStatus(t){ ui.status.textContent = t; }
+
+    function setStatus(t){
+      ui.status.textContent = t;
+    }
 
     function setActiveCover(k){
       document.querySelectorAll(".coverBtn").forEach(b=>{
@@ -685,11 +781,12 @@
 
     function render(){
       const pack = LIBRARY[key];
+
       ui.artist.textContent = pack.artist;
       ui.album.textContent = pack.album + (pack.year ? ` (${pack.year})` : "");
       ui.projectPill.textContent = pack.project;
       ui.cover.src = pack.cover;
-      ui.countPill.textContent = `${pack.tracks.length} tracks`;
+      ui.countPill.textContent = `${pack.tracks.length} ${pack.tracks.length === 1 ? "track" : "tracks"}`;
       ui.list.innerHTML = "";
 
       if (!pack.tracks.length){
@@ -711,7 +808,7 @@
         li.innerHTML = `
           <div class="itemLeft">
             <p class="itemTitle">${t.title}</p>
-            <p class="itemSub">${pack.album}</p>
+            <p class="itemSub">${pack.project}</p>
           </div>`;
         li.addEventListener("click", ()=> load(i,true));
         ui.list.appendChild(li);
@@ -761,10 +858,12 @@
 
     function togglePlay(){
       const pack = LIBRARY[key];
+
       if (!audio.src){
         if (pack.tracks.length) load(0,true);
         return;
       }
+
       if (audio.paused){
         audio.play().then(async ()=>{
           ui.play.textContent = "⏸ Pause";
@@ -784,9 +883,17 @@
       if (!pack.tracks.length) return;
 
       const ni = index + 1;
-      if (ni < pack.tracks.length) load(ni,true);
-      else if (repeatAll) load(0,true);
-      else { audio.pause(); ui.play.textContent="▶️ Play"; setStatus("Ended"); stopEQ(); }
+
+      if (ni < pack.tracks.length){
+        load(ni,true);
+      } else if (repeatAll){
+        load(0,true);
+      } else {
+        audio.pause();
+        ui.play.textContent="▶️ Play";
+        setStatus("Ended");
+        stopEQ();
+      }
     }
 
     function prev(){
@@ -794,12 +901,18 @@
       if (!pack.tracks.length) return;
 
       const pi = index - 1;
-      if (pi >= 0) load(pi,true);
-      else { audio.currentTime = 0; audio.play().then(startEQ).catch(()=>{}); }
+
+      if (pi >= 0){
+        load(pi,true);
+      } else {
+        audio.currentTime = 0;
+        audio.play().then(startEQ).catch(()=>{});
+      }
     }
 
     function restart(){
       if (!audio.src) return;
+
       audio.currentTime = 0;
       audio.play().then(startEQ).catch(()=>{});
       ui.play.textContent = "⏸ Pause";
@@ -831,8 +944,13 @@
       const t = (Number(ui.seek.value)/1000) * audio.duration;
       ui.tNow.textContent = fmt(t);
     });
+
     ui.seek.addEventListener("change", ()=>{
-      if (!audio.duration) { seeking = false; return; }
+      if (!audio.duration) {
+        seeking = false;
+        return;
+      }
+
       audio.currentTime = (Number(ui.seek.value)/1000) * audio.duration;
       seeking = false;
     });
@@ -841,8 +959,10 @@
     ui.vol.addEventListener("input", ()=> audio.volume = Number(ui.vol.value)/100);
 
     audio.addEventListener("loadedmetadata", ()=> ui.tDur.textContent = fmt(audio.duration));
+
     audio.addEventListener("timeupdate", ()=>{
       if (!audio.duration) return;
+
       if (!seeking){
         ui.tNow.textContent = fmt(audio.currentTime);
         ui.seek.value = Math.floor((audio.currentTime/audio.duration) * 1000);
@@ -872,18 +992,17 @@
         audio.pause();
         audio.src = "";
         ui.play.textContent = "▶️ Play";
-        ui.tNow.textContent="0:00"; ui.tDur.textContent="0:00"; ui.seek.value=0;
+        ui.tNow.textContent="0:00";
+        ui.tDur.textContent="0:00";
+        ui.seek.value=0;
         render();
         setStatus("Ready");
         stopEQ();
       });
     });
 
-    /* =========================================
-       ✅ BUILD DENSER LED RAILS
-       ========================================= */
-    const COUNT_TOP = 34;   // denser than before
-    const COUNT_SIDE = 28;  // denser than before
+    const COUNT_TOP = 34;
+    const COUNT_SIDE = 28;
 
     function buildRail(el, count){
       el.innerHTML = "";
@@ -898,17 +1017,17 @@
     const barsLeft = buildRail(ui.railLeft, COUNT_SIDE);
     const barsRight = buildRail(ui.railRight, COUNT_SIDE);
 
-    /* =========================================
-       AUDIO ANALYSER (voice-reactive)
-       ========================================= */
-    let ctx = null, analyser = null, data = null, srcNode = null, raf = null;
+    let ctx = null;
+    let analyser = null;
+    let data = null;
+    let srcNode = null;
+    let raf = null;
 
     function stopEQ(){
       if (raf) cancelAnimationFrame(raf);
       raf = null;
       ui.coverBox.classList.remove("is-playing");
 
-      // reset bars
       barsTop.forEach(b=> b.style.height = "10px");
       barsBottom.forEach(b=> b.style.height = "10px");
       barsLeft.forEach(b=> b.style.width = "12px");
@@ -937,7 +1056,7 @@
         analyser.getByteFrequencyData(data);
 
         const start = Math.floor(data.length * 0.10);
-        const end   = Math.floor(data.length * 0.62);
+        const end = Math.floor(data.length * 0.62);
 
         const now = performance.now();
         const hueBase = (now * 0.030) % 360;
@@ -1011,7 +1130,6 @@
       tick();
     }
 
-    // INIT
     setActiveCover(key);
     render();
     setStatus("Ready");
