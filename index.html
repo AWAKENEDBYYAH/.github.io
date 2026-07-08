@@ -452,6 +452,196 @@
     }
     /* ===================== END BUY BAR ===================== */
 
+
+    /* ===================== FEATURED RELEASE: THE BOOK IS OPEN ===================== */
+    .featured-release{
+      margin: 1.65rem auto 2.25rem;
+      width: 100%;
+    }
+
+    .featured-release-grid{
+      display:grid;
+      grid-template-columns: minmax(260px, 380px) minmax(0, 1fr);
+      gap: 2rem;
+      align-items:center;
+      background:
+        radial-gradient(circle at top left, rgba(251,191,36,0.18) 0%, transparent 42%),
+        radial-gradient(circle at bottom right, rgba(28,57,168,0.24) 0%, transparent 46%),
+        linear-gradient(145deg, rgba(17,24,39,0.98), rgba(2,6,23,0.98));
+      border:1px solid rgba(251,191,36,0.34);
+      border-radius:26px;
+      padding:1.65rem;
+      box-shadow:0 26px 60px rgba(0,0,0,0.72), 0 0 28px rgba(251,191,36,0.10);
+      overflow:hidden;
+      position:relative;
+    }
+
+    .featured-release-grid::before{
+      content:"";
+      position:absolute;
+      inset:-40%;
+      background: radial-gradient(circle at 42% 32%, rgba(255,255,255,0.10), transparent 42%);
+      pointer-events:none;
+    }
+
+    .featured-release-cover,
+    .featured-release-content{
+      position:relative;
+      z-index:1;
+    }
+
+    .featured-release-cover{
+      border-radius:22px;
+      overflow:hidden;
+      border:1px solid rgba(251,191,36,0.55);
+      box-shadow:0 24px 54px rgba(0,0,0,0.78), 0 0 30px rgba(251,191,36,0.14);
+      background:rgba(15,23,42,0.85);
+    }
+
+    .featured-release-cover img{
+      width:100%;
+      aspect-ratio:1/1;
+      object-fit:cover;
+      display:block;
+    }
+
+    .featured-kicker{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:0.38rem 0.78rem;
+      border-radius:999px;
+      border:1px solid rgba(251,191,36,0.55);
+      background:rgba(251,191,36,0.10);
+      color:#fbbf24;
+      letter-spacing:0.24em;
+      font-size:0.72rem;
+      font-weight:900;
+      text-transform:uppercase;
+      margin-bottom:0.85rem;
+    }
+
+    .featured-release h2{
+      margin:0 0 0.75rem;
+      font-size:clamp(1.65rem, 3vw, 2.65rem);
+      letter-spacing:0.18em;
+      text-transform:uppercase;
+      color:#f9fafb;
+      line-height:1.1;
+      text-shadow:0 12px 30px rgba(0,0,0,0.85);
+    }
+
+    .featured-description{
+      color:#e5e7eb;
+      font-size:0.98rem;
+      line-height:1.7;
+      max-width:680px;
+    }
+
+    .featured-release blockquote{
+      margin:1.15rem 0;
+      padding:0.8rem 0 0.8rem 1rem;
+      border-left:4px solid #fbbf24;
+      color:#f3f4f6;
+      font-size:0.94rem;
+      font-style:italic;
+      background:rgba(15,23,42,0.42);
+      border-radius:0 14px 14px 0;
+    }
+
+    .featured-release blockquote strong{
+      color:#fbbf24;
+      font-style:normal;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+    }
+
+    .featured-release audio{
+      width:100%;
+      max-width:650px;
+      margin:0.35rem 0 1.1rem;
+      filter:drop-shadow(0 10px 18px rgba(0,0,0,0.72));
+    }
+
+    .featured-buttons{
+      display:flex;
+      gap:0.75rem;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    .featured-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:0.82rem 1.25rem;
+      border-radius:999px;
+      border:1px solid rgba(248,250,252,0.24);
+      background:rgba(15,23,42,0.86);
+      color:#e5e7eb;
+      text-transform:uppercase;
+      letter-spacing:0.15em;
+      font-size:0.76rem;
+      font-weight:900;
+      transition:transform .15s ease, border-color .15s ease, background .15s ease;
+      white-space:nowrap;
+    }
+
+    .featured-btn:hover{
+      transform:translateY(-1px);
+      border-color:rgba(248,250,252,0.62);
+      background:rgba(148,163,184,0.18);
+    }
+
+    .featured-btn.gold{
+      background:linear-gradient(120deg, #f59e0b, #fbbf24);
+      color:#111827;
+      border-color:rgba(0,0,0,0.14);
+    }
+
+    .featured-platform-note{
+      margin-top:0.85rem;
+      color:#cbd5e1;
+      font-size:0.76rem;
+      letter-spacing:0.14em;
+      text-transform:uppercase;
+    }
+
+    @media(max-width:900px){
+      .featured-release-grid{
+        grid-template-columns:1fr;
+        text-align:center;
+        padding:1.25rem;
+      }
+      .featured-release-cover{
+        max-width:420px;
+        margin:0 auto;
+      }
+      .featured-description{
+        margin-left:auto;
+        margin-right:auto;
+      }
+      .featured-release blockquote{
+        text-align:left;
+      }
+      .featured-buttons{
+        justify-content:center;
+      }
+    }
+
+    @media(max-width:640px){
+      .featured-release{
+        margin-top:1.25rem;
+      }
+      .featured-release h2{
+        letter-spacing:0.12em;
+      }
+      .featured-btn{
+        width:100%;
+      }
+    }
+    /* ===================== END FEATURED RELEASE ===================== */
+
     /* HERO */
     .hero {
       display: grid;
@@ -2023,6 +2213,49 @@
           </a>
         </div>
       </div>
+
+
+      <!-- ===================== FEATURED RELEASE: THE BOOK IS OPEN ===================== -->
+      <section class="featured-release" aria-label="Featured release The Book Is Open">
+        <div class="featured-release-grid">
+
+          <div class="featured-release-cover">
+            <img src="images/the-book-is-open.png" alt="THE BOOK IS OPEN - AWAKENED BY YAH">
+          </div>
+
+          <div class="featured-release-content">
+            <span class="featured-kicker">🔥 NOW PREMIERING</span>
+
+            <h2>THE BOOK IS OPEN</h2>
+
+            <p class="featured-description">
+              A serious cinematic Neo-Soul anthem reminding us that when the books are opened,
+              faith will be proven by works.
+            </p>
+
+            <blockquote>
+              “And the books were opened... and the dead were judged according to their works.”
+              <br><strong>Revelation 20:12</strong>
+            </blockquote>
+
+            <audio controls preload="metadata">
+              <source src="audio/THE BOOK IS OPEN.mp3" type="audio/mpeg">
+              Your browser does not support the audio element.
+            </audio>
+
+            <div class="featured-buttons">
+              <a href="audio/THE BOOK IS OPEN.mp3" class="featured-btn gold">LISTEN NOW</a>
+              <a href="/music/" class="featured-btn">MORE MUSIC</a>
+            </div>
+
+            <p class="featured-platform-note">
+              Stream the full song exclusively here • Coming soon to all streaming platforms
+            </p>
+          </div>
+
+        </div>
+      </section>
+      <!-- ===================== END FEATURED RELEASE ===================== -->
 
       <section class="hero">
         <div class="hero-left">
