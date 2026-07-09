@@ -483,6 +483,22 @@
       line-height:1.35;
       margin-top:10px;
     }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      width:max-content;
+      margin-top:6px;
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px solid rgba(255,210,120,.45);
+      background:rgba(255,210,120,.10);
+      color:rgba(255,230,170,.95);
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+    }
   </style>
 </head>
 
@@ -518,8 +534,8 @@
         <div class="heroRight">
           <h1 class="heroTitle" id="heroTitle">Digital Music</h1>
           <p class="heroSub" id="heroSub">
-            Instant MP3 downloads, premium quality, and music with a message.
-            Choose from albums, EPs, singles, or the complete 3 album collection.
+            Premium digital releases from AWAKENED BY YAH. Get instant downloads,
+            official cover artwork, lyric booklets, and exclusive collector's edition content.
           </p>
 
           <div class="priceCard">
@@ -572,6 +588,7 @@
     const IMG_YASHARAL_NEXT = "/images/yasharal-got-next.png";
     const IMG_ONE_STICK = "/images/one-stick.png";
     const IMG_HOW_LONG = "/images/how-long-yahuah.png";
+    const IMG_BOOK_OPEN = "/images/the-book-is-open-cover.png";
 
     /*****************************************************************
       AMBIENT AUDIO
@@ -590,7 +607,8 @@
       transformation_ep: "https://payhip.com/b/gs9rO",
       yasharal_got_next: "https://payhip.com/b/sBNIi",
       one_stick: "https://payhip.com/b/zgH0L",
-      how_long_yahuah: "https://payhip.com/b/7aWcl"
+      how_long_yahuah: "https://payhip.com/b/7aWcl",
+      book_is_open: "https://payhip.com/b/W0Uxr"
     };
 
     /*****************************************************************
@@ -658,6 +676,17 @@
         buyUrl: PAYHIP_LINKS.transformation_ep
       },
       {
+        key: "book_is_open",
+        category: "single",
+        title: "THE BOOK IS OPEN",
+        subtitle: "Digital Collector's Edition",
+        price: 1.99,
+        meta: "MP3 • Cover Art • Lyric Booklet • Bonus",
+        img: IMG_BOOK_OPEN,
+        buyUrl: PAYHIP_LINKS.book_is_open,
+        badge: "Collector's Edition"
+      },
+      {
         key: "yasharal_got_next",
         category: "single",
         title: "YASHARAL GOT NEXT",
@@ -693,6 +722,15 @@
       HERO CAROUSEL DATA
     ******************************************************************/
     const SLIDES = [
+      {
+        title: "THE BOOK IS OPEN",
+        meta: "New Release",
+        priceText: "$1.99",
+        smallMeta: "Digital Collector's Edition",
+        img: IMG_BOOK_OPEN,
+        buyUrl: PAYHIP_LINKS.book_is_open,
+        cta: "GET DIGITAL COLLECTOR'S EDITION"
+      },
       {
         title: "3 Album Bundle",
         meta: "Complete Collection",
@@ -828,6 +866,7 @@
       document.getElementById("heroPrice").textContent = s.priceText;
       document.getElementById("heroSmallMeta").textContent = s.smallMeta;
       document.getElementById("heroBuyBtn").href = s.buyUrl;
+      document.getElementById("heroBuyBtn").textContent = s.cta || "BUY NOW — INSTANT DOWNLOAD";
 
       if(userAction) startCarousel();
     }
@@ -860,6 +899,7 @@
               <p class="cardName">${p.title}</p>
               <p class="cardMeta">${p.subtitle}</p>
               <p class="cardMeta">${p.meta}</p>
+              ${p.badge ? `<span class="badge">🏆 ${p.badge}</span>` : ""}
             </div>
 
             <div class="cardPrice">
@@ -870,7 +910,7 @@
 
           <div class="cardBtns">
             <a class="btn primary" href="${p.buyUrl}" target="_blank" rel="noopener">
-              BUY NOW — INSTANT DOWNLOAD
+              ${p.badge ? "GET COLLECTOR\'S EDITION" : "BUY NOW — INSTANT DOWNLOAD"}
             </a>
             <a class="btn" href="/music/">Stream</a>
           </div>
