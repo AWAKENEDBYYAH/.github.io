@@ -371,16 +371,16 @@
         <div class="tag" id="accessTag">🎧 FREE STREAMING • UNLIMITED</div>
         <h1 id="welcome">Welcome.</h1>
         <p class="sub">
-          Stream full-length music from <strong>AWAKENED BY YAH</strong> — no tiers, no restrictions.
-          If you want to support, you can buy and download individual tracks or full projects.
+          Stream full-length music from <strong>AWAKENED BY YAH</strong> — including the new single <strong>THE BOOK IS OPEN</strong>.
+          If you want to support, you can purchase the Digital Collector's Edition and keep it forever.
         </p>
 
         <div class="cta-download">
           <p class="cta-text">
-            Want to own it?
-            <span class="cta-sub">Buy & download — keep forever.</span>
+            Want the Collector's Edition?
+            <span class="cta-sub">Includes MP3, cover art, lyric booklet, and exclusive bonus.</span>
           </p>
-          <a href="/downloads/" class="cta-btn">GO TO BUY / DOWNLOAD</a>
+          <a href="https://payhip.com/b/W0Uxr" target="_blank" rel="noopener" class="cta-btn">BUY THE BOOK IS OPEN</a>
         </div>
       </div>
 
@@ -456,6 +456,7 @@
 
     // ====== TRACK PURCHASE LINKS (GUMROAD) — KEYS IN ALL CAPS ======
     const TRACK_BUY_LINKS = {
+      "THE BOOK IS OPEN": "https://payhip.com/b/W0Uxr",
       "HEAR MY VOICE": "https://remnant5.gumroad.com/l/whxxuc",
       "DELIVER US": "https://remnant5.gumroad.com/l/qnkiie",
 
@@ -481,12 +482,23 @@
     };
 
     // ====== COVERS ======
+    const COVER_BOOK_OPEN = "/images/the-book-is-open-cover.png";
     const COVER_FAN = "/images/abym-cover.png?v=3";
     const COVER_ROY = "/images/rise-of-yasharal.png?v=3";
     const COVER_KB  = "/images/kingdom-biz.png?v=3";
 
     // ====== LIBRARY (FREE STREAMING) ======
     const library = [
+      {
+        id: "the-book-is-open",
+        title: "THE BOOK IS OPEN",
+        subtitle: "New release • Digital Collector's Edition available",
+        badge: "NEW SINGLE",
+        cover: COVER_BOOK_OPEN,
+        tracks: [
+          { title: "THE BOOK IS OPEN", subtitle: "DIGITAL SINGLE", src: "/audio/THE BOOK IS OPEN.mp3" }
+        ]
+      },
       {
         id: "fan-exclusives",
         title: "SINGLES & EXTRAS",
