@@ -447,7 +447,7 @@
 
             <div class="coverInner">
               <img id="playerCover"
-                   src="/images/the-battlefield.png"
+                   src="/images/the-book-is-open-cover.png"
                    alt="Project cover"
                    onerror="this.onerror=null;this.src='/abytransparent.png';" />
             </div>
@@ -455,8 +455,8 @@
 
           <div class="meta">
             <p class="artist" id="playerArtist">AWAKENED BY YAH</p>
-            <p class="album" id="playerAlbum">The Battlefield (2026)</p>
-            <p class="track" id="playerTrack">TRACK 01 — Select a track</p>
+            <p class="album" id="playerAlbum">The Book Is Open (2026)</p>
+            <p class="track" id="playerTrack">THE BOOK IS OPEN — Select to play</p>
           </div>
         </div>
 
@@ -492,7 +492,7 @@
         <div class="playlist">
           <div class="plistHead">
             <div>
-              <span class="pill" id="projectPill">The Battlefield</span>
+              <span class="pill" id="projectPill">THE BOOK IS OPEN</span>
               <span class="pill" id="countPill">0 tracks</span>
             </div>
             <div class="hint">Click a track to play</div>
@@ -509,7 +509,18 @@
         </div>
 
         <div class="coverGrid">
-          <div class="coverBtn active" data-key="battlefield">
+          <div class="coverBtn active" data-key="bookisopen">
+            <div class="thumb">
+              <img src="/images/the-book-is-open-cover.png" alt="The Book Is Open cover"
+                   onerror="this.onerror=null;this.src='/abytransparent.png';">
+            </div>
+            <div class="coverText">
+              <p class="coverName">The Book Is Open (2026)</p>
+              <p class="coverMeta">Single · Digital Collector's Edition</p>
+            </div>
+          </div>
+
+          <div class="coverBtn" data-key="battlefield">
             <div class="thumb">
               <img src="/images/the-battlefield.png" alt="The Battlefield cover"
                    onerror="this.onerror=null;this.src='/abytransparent.png';">
@@ -605,6 +616,17 @@
     const U = (p) => encodeURI(p).replace(/'/g, "%27");
 
     const LIBRARY = {
+      bookisopen: {
+        artist: "AWAKENED BY YAH",
+        album: "The Book Is Open",
+        year: 2026,
+        project: "THE BOOK IS OPEN",
+        cover: "/images/the-book-is-open-cover.png",
+        tracks: [
+          { title: "THE BOOK IS OPEN", file: U("/audio/THE BOOK IS OPEN.mp3") }
+        ]
+      },
+
       battlefield: {
         artist: "AWAKENED BY YAH",
         album: "The Battlefield",
@@ -759,7 +781,7 @@
     let repeatAll = false;
     let repeatOne = false;
 
-    let key = "battlefield";
+    let key = "bookisopen";
     let index = 0;
 
     function fmt(sec){
