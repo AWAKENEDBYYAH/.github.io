@@ -776,7 +776,29 @@
 
     const audio = new Audio();
     audio.preload = "metadata";
+// ------------------------------------------------------------
+// REPORT MUSIC-PAGE PLAYBACK TO THE FIREBASE LIVE TRACKER
+// ------------------------------------------------------------
 
+function reportLiveListening(isListening) {
+  const pack = LIBRARY[key];
+  const currentTrack = pack?.tracks?.[index];
+
+  const trackTitle =
+    isListening && currentTrack
+      ? currentTrack.title
+      : "";
+
+  if (
+    window.ABYLiveTracker &&
+    typeof window.ABYLiveTracker.updateListeningActivity === "function"
+  ) {
+    window.ABYLiveTracker.updateListeningActivity(
+      isListening,
+      trackTitle
+    );
+  }
+}
     let seeking = false;
     let repeatAll = false;
     let repeatOne = false;
@@ -979,7 +1001,21 @@
 
     audio.volume = Number(ui.vol.value)/100;
     ui.vol.addEventListener("input", ()=> audio.volume = Number(ui.vol.value)/100);
+audio.addEventListener("play", () => {
+  reportLiveListening(true);
+});
 
+audio.addEventListener("pause", () => {
+  reportLiveListening(false);
+});
+
+audio.addEventListener("ended", () => {
+  reportLiveListening(false);
+});
+
+audio.addEventListener("emptied", () => {
+  reportLiveListening(false);
+});
     audio.addEventListener("loadedmetadata", ()=> ui.tDur.textContent = fmt(audio.duration));
 
     audio.addEventListener("timeupdate", ()=>{
