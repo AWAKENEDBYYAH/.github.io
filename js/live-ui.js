@@ -81,6 +81,7 @@ async function cleanupStaleVisitors() {
   }
 }
 
+
 // ------------------------------------------------------------
 // SETTINGS
 // A visitor is considered active when the heartbeat is no more
@@ -225,6 +226,24 @@ function initializeLiveInterface() {
         </div>
       </section>
 
+      <section class="aby-live-wide-card">
+        <div class="aby-live-wide-label">
+          Countries Represented
+        </div>
+
+        <div id="liveCountries">
+          <div class="aby-live-page-row">
+            <span class="aby-live-page-name">
+              Waiting for country activity...
+            </span>
+
+            <span class="aby-live-page-count">
+              0
+            </span>
+          </div>
+        </div>
+      </section>
+
       <footer class="aby-live-footer">
         Activity updates automatically in real time
       </footer>
@@ -336,6 +355,22 @@ function beginFirestoreListener() {
           </div>
         `;
       }
+
+      const liveCountries = document.getElementById("liveCountries");
+
+      if (liveCountries) {
+        liveCountries.innerHTML = `
+          <div class="aby-live-page-row">
+            <span class="aby-live-page-name">
+              Country activity temporarily unavailable
+            </span>
+
+            <span class="aby-live-page-count">
+              —
+            </span>
+          </div>
+        `;
+      }
     }
   );
 }
@@ -384,12 +419,14 @@ function renderVisitors(visitors) {
   }).length;
 
   const pageCounts = countActivePages(activeVisitors);
+  const countryCounts = countActiveCountries(activeVisitors);
 
   animateNumber("abyLiveOnlineCount", onlineCount);
   animateNumber("abyLiveStoreCount", storeCount);
 
   updateBadge(onlineCount);
   renderPageRows(pageCounts);
+  renderCountryRows(countryCounts);
 }
 
 
@@ -419,6 +456,79 @@ function countActivePages(activeVisitors) {
 
       return first.pageName.localeCompare(second.pageName);
     });
+}
+
+
+// ------------------------------------------------------------
+// COUNT ACTIVE VISITORS BY COUNTRY
+// ------------------------------------------------------------
+
+function countActiveCountries(activeVisitors) {
+  const countryMap = new Map();
+
+  activeVisitors.forEach(visitor => {
+    const country =
+      String(visitor.country || "").trim() || "Unknown";
+
+    countryMap.set(country, (countryMap.get(country) || 0) + 1);
+  });
+
+  return [...countryMap.entries()]
+    .map(([country, count]) => ({
+      country,
+      count
+    }))
+    .sort((first, second) => {
+      if (second.count !== first.count) {
+        return second.count - first.count;
+      }
+
+      return first.country.localeCompare(second.country);
+    });
+}
+
+
+// ------------------------------------------------------------
+// RENDER ACTIVE COUNTRY ROWS
+// ------------------------------------------------------------
+
+function renderCountryRows(countryCounts) {
+  const liveCountries = document.getElementById("liveCountries");
+
+  if (!liveCountries) {
+    return;
+  }
+
+  if (countryCounts.length === 0) {
+    liveCountries.innerHTML = `
+      <div class="aby-live-page-row">
+        <span class="aby-live-page-name">
+          No countries active right now
+        </span>
+
+        <span class="aby-live-page-count">
+          0
+        </span>
+      </div>
+    `;
+
+    return;
+  }
+
+  liveCountries.innerHTML = countryCounts
+    .slice(0, 8)
+    .map(country => `
+      <div class="aby-live-page-row">
+        <span class="aby-live-page-name">
+          ${escapeHtml(country.country)}
+        </span>
+
+        <span class="aby-live-page-count">
+          ${country.count}
+        </span>
+      </div>
+    `)
+    .join("");
 }
 
 
@@ -535,8 +645,10 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
+
 // Run stale-visitor cleanup when the dashboard loads.
 cleanupStaleVisitors();
+
 
 // Run cleanup again every 5 minutes while the dashboard remains open.
 setInterval(cleanupStaleVisitors, 5 * 60 * 1000);
