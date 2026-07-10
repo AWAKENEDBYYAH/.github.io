@@ -5,6 +5,12 @@
 // ============================================================
 
 import {
+  initializeApp,
+  getApp,
+  getApps
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+import {
   getFirestore,
   collection,
   onSnapshot,
