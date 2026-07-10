@@ -1,6 +1,6 @@
 // ============================================================
 // AWAKENED BY YAH MUSIC — FIREBASE LIVE TRACKER
-// Version 1: Visitor presence and heartbeat tracking
+// Version 2: Visitor presence, heartbeat, and offline tracking
 // ============================================================
 
 import { initializeApp } from
@@ -11,7 +11,6 @@ import {
   doc,
   setDoc,
   updateDoc,
-  deleteDoc,
   serverTimestamp
 } from
   "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
@@ -166,7 +165,7 @@ async function sendHeartbeat() {
       lastSeen: serverTimestamp()
     });
   } catch (error) {
-    // If the document disappeared, recreate it.
+    // Recreate the document if it no longer exists.
     await registerVisitor();
   }
 }
@@ -174,8 +173,8 @@ async function sendHeartbeat() {
 
 // ------------------------------------------------------------
 // MARK VISITOR OFFLINE
-// Browser exit events are not guaranteed, so stale visitors will
-// also be filtered later by their lastSeen heartbeat time.
+// Browser exit events are not guaranteed, so stale visitor
+// documents are also removed later by the dashboard cleanup.
 // ------------------------------------------------------------
 
 async function markVisitorOffline() {
@@ -186,20 +185,6 @@ async function markVisitorOffline() {
     });
   } catch (error) {
     console.warn("Could not mark visitor offline:", error);
-  }
-}
-
-
-// ------------------------------------------------------------
-// OPTIONAL MANUAL CLEANUP
-// This will be used later by the interface and testing tools.
-// ------------------------------------------------------------
-
-async function removeVisitorDocument() {
-  try {
-    await deleteDoc(visitorReference);
-  } catch (error) {
-    console.warn("Could not remove visitor document:", error);
   }
 }
 
@@ -246,7 +231,6 @@ window.ABYLiveTracker = {
   visitorId,
   sendHeartbeat,
   markVisitorOffline,
-  removeVisitorDocument,
   stopHeartbeat() {
     window.clearInterval(heartbeatTimer);
   }
