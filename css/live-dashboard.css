@@ -1,0 +1,348 @@
+/* ==========================================================
+   AWAKENED BY YAH MUSIC — LIVE ACTIVITY DASHBOARD
+   Elegant glass interface
+========================================================== */
+
+#liveWrap {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto 1.2rem;
+  padding: 0 1.75rem;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  z-index: 80;
+}
+
+#liveBadge {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 11px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(251, 191, 36, 0.58);
+  background:
+    radial-gradient(circle at 20% 10%, rgba(96, 165, 250, 0.16), transparent 42%),
+    linear-gradient(135deg, rgba(15, 23, 42, 0.94), rgba(2, 6, 23, 0.9));
+  color: #fbbf24;
+  font: 900 12px/1 system-ui, -apple-system, "Segoe UI", sans-serif;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.52),
+    0 0 24px rgba(251, 191, 36, 0.09);
+  backdrop-filter: blur(16px);
+  cursor: pointer;
+  user-select: none;
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+#liveBadge::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow:
+    0 0 0 4px rgba(34, 197, 94, 0.12),
+    0 0 16px rgba(34, 197, 94, 0.75);
+  animation: abyLivePulse 1.8s ease-in-out infinite;
+}
+
+#liveBadge:hover {
+  transform: translateY(-2px);
+  border-color: rgba(251, 191, 36, 0.9);
+  box-shadow:
+    0 20px 46px rgba(0, 0, 0, 0.62),
+    0 0 30px rgba(251, 191, 36, 0.14);
+}
+
+@keyframes abyLivePulse {
+  0%, 100% {
+    opacity: 0.55;
+    transform: scale(0.9);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.12);
+  }
+}
+
+#livePanel {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 14px);
+  transform: translate(-50%, -8px) scale(0.98);
+  width: min(430px, calc(100vw - 28px));
+  padding: 0;
+  border-radius: 28px;
+  border: 1px solid rgba(251, 191, 36, 0.34);
+  background:
+    radial-gradient(circle at top left, rgba(37, 99, 235, 0.2), transparent 42%),
+    radial-gradient(circle at bottom right, rgba(251, 191, 36, 0.1), transparent 46%),
+    linear-gradient(145deg, rgba(9, 15, 31, 0.97), rgba(2, 6, 23, 0.97));
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.78),
+    0 0 38px rgba(59, 130, 246, 0.12);
+  backdrop-filter: blur(22px);
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s ease,
+    visibility 0.22s ease;
+}
+
+#livePanel.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate(-50%, 0) scale(1);
+}
+
+.aby-live-shell {
+  padding: 18px;
+}
+
+.aby-live-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.aby-live-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+  color: #fbbf24;
+  font-size: 0.65rem;
+  font-weight: 900;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.aby-live-title {
+  margin: 0;
+  color: #f8fafc;
+  font-family: "Cinzel", serif;
+  font-size: 1.05rem;
+  letter-spacing: 0.12em;
+  line-height: 1.25;
+  text-transform: uppercase;
+}
+
+.aby-live-subtitle {
+  margin-top: 5px;
+  color: #94a3b8;
+  font-size: 0.75rem;
+}
+
+#livePanelClose {
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.72);
+  color: #cbd5e1;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition:
+    background 0.16s ease,
+    color 0.16s ease,
+    transform 0.16s ease;
+}
+
+#livePanelClose:hover {
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.1);
+  transform: rotate(6deg);
+}
+
+.aby-live-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.aby-live-card {
+  position: relative;
+  min-height: 112px;
+  padding: 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  background:
+    linear-gradient(145deg, rgba(30, 41, 59, 0.68), rgba(15, 23, 42, 0.48));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
+  overflow: hidden;
+}
+
+.aby-live-card::after {
+  content: "";
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  right: -35px;
+  bottom: -40px;
+  border-radius: 50%;
+  background: rgba(59, 130, 246, 0.12);
+  filter: blur(4px);
+}
+
+.aby-live-card-label {
+  position: relative;
+  z-index: 1;
+  color: #94a3b8;
+  font-size: 0.63rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.aby-live-number {
+  position: relative;
+  z-index: 1;
+  margin-top: 8px;
+  color: #ffffff;
+  font-size: 2rem;
+  font-weight: 900;
+  line-height: 1;
+  text-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+}
+
+.aby-live-card-note {
+  position: relative;
+  z-index: 1;
+  margin-top: 8px;
+  color: #cbd5e1;
+  font-size: 0.72rem;
+}
+
+.aby-live-wide-card {
+  margin-top: 10px;
+  padding: 15px;
+  border-radius: 20px;
+  border: 1px solid rgba(251, 191, 36, 0.18);
+  background:
+    linear-gradient(135deg, rgba(251, 191, 36, 0.055), rgba(15, 23, 42, 0.5));
+}
+
+.aby-live-wide-label {
+  color: #fbbf24;
+  font-size: 0.63rem;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.aby-live-track {
+  margin-top: 7px;
+  color: #f8fafc;
+  font-size: 0.92rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.aby-live-muted {
+  margin-top: 5px;
+  color: #94a3b8;
+  font-size: 0.72rem;
+}
+
+#livePages {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-top: 10px;
+}
+
+.aby-live-page-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  background: rgba(15, 23, 42, 0.54);
+}
+
+.aby-live-page-name {
+  color: #e5e7eb;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.aby-live-page-count {
+  min-width: 30px;
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: rgba(251, 191, 36, 0.12);
+  color: #fbbf24;
+  font-size: 0.7rem;
+  font-weight: 900;
+  text-align: center;
+}
+
+.aby-live-footer {
+  margin-top: 13px;
+  padding-top: 11px;
+  border-top: 1px solid rgba(148, 163, 184, 0.12);
+  color: #64748b;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+@media (max-width: 640px) {
+  #liveWrap {
+    padding: 0 1rem;
+  }
+
+  #liveBadge {
+    width: 100%;
+    max-width: 390px;
+    padding: 12px 14px;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+  }
+
+  #livePanel {
+    width: calc(100vw - 22px);
+    border-radius: 24px;
+  }
+
+  .aby-live-shell {
+    padding: 15px;
+  }
+
+  .aby-live-metrics {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .aby-live-title {
+    font-size: 0.9rem;
+  }
+
+  .aby-live-number {
+    font-size: 1.7rem;
+  }
+}
