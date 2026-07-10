@@ -5,15 +5,14 @@
 // ============================================================
 
 import {
-  initializeApp,
-  getApp,
-  getApps
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-
-import {
   getFirestore,
   collection,
-  onSnapshot
+  onSnapshot,
+  query,
+  where,
+  getDocs,
+  deleteDoc,
+  Timestamp
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
@@ -41,6 +40,40 @@ const firebaseApp = getApps().length
 
 const database = getFirestore(firebaseApp);
 
+
+// ------------------------------------------------------------
+// REMOVE VISITOR RECORDS INACTIVE FOR MORE THAN 10 MINUTES
+// ------------------------------------------------------------
+
+async function cleanupStaleVisitors() {
+  try {
+    // Use 11 minutes to give the Firestore security rule a safe buffer.
+    const cutoffTime = Timestamp.fromMillis(Date.now() - 11 * 60 * 1000);
+
+    const staleVisitorsQuery = query(
+      collection(database, "liveVisitors"),
+      where("lastSeen", "<", cutoffTime)
+    );
+
+    const staleVisitorsSnapshot = await getDocs(staleVisitorsQuery);
+
+    if (staleVisitorsSnapshot.empty) {
+      return;
+    }
+
+    await Promise.all(
+      staleVisitorsSnapshot.docs.map((visitorDocument) =>
+        deleteDoc(visitorDocument.ref)
+      )
+    );
+
+    console.log(
+      `Removed ${staleVisitorsSnapshot.size} stale visitor record(s).`
+    );
+  } catch (error) {
+    console.error("Unable to clean up stale visitor records:", error);
+  }
+}
 
 // ------------------------------------------------------------
 // SETTINGS
@@ -495,3 +528,9 @@ function escapeHtml(value) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 }
+
+// Run stale-visitor cleanup when the dashboard loads.
+cleanupStaleVisitors();
+
+// Run cleanup again every 5 minutes while the dashboard remains open.
+setInterval(cleanupStaleVisitors, 5 * 60 * 1000);
