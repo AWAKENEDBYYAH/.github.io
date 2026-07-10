@@ -335,63 +335,7 @@
       background: rgba(251,191,36,0.12);
       border-color: rgba(251,191,36,1);
     }
-
-    /* ===================== LIVE TRACKER (DOCKED UNDER NAV) ===================== */
-    #liveWrap{
-      width:100%;
-      max-width:1200px;
-      margin: 0 auto 1.05rem;
-      padding: 0 1.75rem;
-      display:flex;
-      justify-content:center;
-      position: relative;
-      z-index: 60;
-    }
-
-    #liveBadge{
-      margin: 0 auto;
-      position: relative;
-      background:rgba(15,23,42,.88);
-      border:1px solid rgba(251,191,36,.55);
-      color:#fbbf24;
-      padding:10px 14px;
-      border-radius:999px;
-      font:900 12px/1 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      letter-spacing:.18em; text-transform:uppercase;
-      backdrop-filter: blur(10px);
-      box-shadow:0 14px 34px rgba(0,0,0,.45);
-      display:inline-flex; align-items:center; gap:10px;
-      cursor:pointer;
-      user-select:none;
-    }
-
-    #livePanel{
-      position:absolute;
-      left:50%;
-      transform:translateX(-50%);
-      top: calc(100% + 10px);
-      width:min(360px, calc(100vw - 32px));
-      background:rgba(2,6,23,.94);
-      border:1px solid rgba(148,163,184,.35);
-      border-radius:16px;
-      padding:12px 12px 10px;
-      box-shadow:0 18px 46px rgba(0,0,0,.75);
-      backdrop-filter: blur(12px);
-      display:none;
-    }
-
-    @media (max-width: 640px){
-      #liveWrap{
-        padding: 0 1.25rem;
-        justify-content:center;
-      }
-      #livePanel{
-        width:min(360px, calc(100vw - 24px));
-      }
-    }
-    /* ===================== END LIVE TRACKER (DOCKED) ===================== */
-
-    /* ===================== NEW: BATTLEFIELD BUY BAR ===================== */
+/* ===================== NEW: BATTLEFIELD BUY BAR ===================== */
     .bf-buybar{
       margin: 0 auto 1.35rem;
       max-width: 1200px;
@@ -2180,34 +2124,23 @@
         </a>
       </nav>
 
-      <!-- ✅ LIVE TRACKER -->
-      <div id="liveWrap" aria-label="Live stats">
-        <div id="liveBadge" role="button" aria-label="Toggle live visitors panel" aria-expanded="false">
-          👥 <span id="liveCount">0</span> LIVE
-          <span style="opacity:.55;">•</span>
-          👣 <span id="todayUnique">0</span> TODAY
-          <span style="opacity:.55;">•</span>
-          <span id="pagesHint" style="opacity:.9;">PAGES</span>
-        </div>
+      <!-- ===================== FIRESTORE LIVE ACTIVITY LAUNCHER ===================== -->
+      <div id="liveWrap" aria-label="Open live activity dashboard">
+        <button
+          id="liveBadge"
+          type="button"
+          aria-label="Open live activity dashboard"
+          aria-expanded="false"
+        >
+          <span aria-hidden="true">●</span>
+          <span>LIVE ACTIVITY</span>
+        </button>
 
-        <div id="livePanel" aria-label="Live visitors details">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-            <div style="color:#e5e7eb; font-weight:900; letter-spacing:.16em; text-transform:uppercase; font-size:11px;">
-              Live Visitors by Page
-            </div>
-            <button id="livePanelClose" style="
-              border:none; background:transparent; color:#94a3b8;
-              font-weight:900; cursor:pointer; font-size:14px;
-            " aria-label="Close">✕</button>
-          </div>
-          <div id="livePages" style="display:flex; flex-direction:column; gap:6px;"></div>
-          <div style="margin-top:10px; color:#94a3b8; font-size:10px; letter-spacing:.12em; text-transform:uppercase;">
-            Updates in real time
-          </div>
-        </div>
+        <div id="livePanel" aria-label="Live activity dashboard"></div>
       </div>
+      <!-- ===================== END LIVE ACTIVITY LAUNCHER ===================== -->
 
-      <div class="bf-buybar" role="region" aria-label="The Battlefield physical editions">
+<div class="bf-buybar" role="region" aria-label="The Battlefield physical editions">
         <div class="bf-buybar__inner">
           <div class="bf-buybar__left">
             <strong class="bf-buybar__title">THE BATTLEFIELD — PHYSICAL</strong>
@@ -2827,179 +2760,7 @@
       setActiveTrack(0, false);
     });
   </script>
-
-  <!-- ===================== FIREBASE (SAFE / MODULAR / GLOBAL HANDLE) ===================== -->
-<script type="text/plain" id="legacy-live-tracker">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-  import {
-    getDatabase,
-    ref,
-    onValue,
-    set,
-    onDisconnect,
-    serverTimestamp
-  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-
-  // --- UUID fallback (older browsers) ---
-  function makeId(){
-    if (crypto?.randomUUID) return crypto.randomUUID();
-    return "id_" + Math.random().toString(16).slice(2) + "_" + Date.now().toString(16);
-  }
-
-  // 🔐 Firebase config (CLEAN — only one databaseURL)
-  const firebaseConfig = {
-    apiKey: "AIzaSyC8aLmUsgCS9Z5FwpT2LWhMyKJrwPDDplo",
-    appId: "1:753674439301:web:49cda8cacb13699778f7ec",
-    authDomain: "awakened-by-yah-live.firebaseapp.com",
-    projectId: "awakened-by-yah-live",
-    storageBucket: "awakened-by-yah-live.appspot.com",
-    messagingSenderId: "753674439301",
-    databaseURL: "https://awakened-by-yah-live-default-rtdb.firebaseio.com"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db  = getDatabase(app);
-
-  // ---------- IDs ----------
-  const uid = localStorage.getItem("aby_uid") || makeId();
-  localStorage.setItem("aby_uid", uid);
-
-  const sid = sessionStorage.getItem("aby_sid") || makeId();
-  sessionStorage.setItem("aby_sid", sid);
-
-  // ---------- Date key ----------
-  const d = new Date();
-  const dateKey = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
-
-  // ---------- UI ----------
-  const liveBadgeEl    = document.getElementById("liveBadge");
-  const livePanelEl    = document.getElementById("livePanel");
-  const livePanelClose = document.getElementById("livePanelClose");
-
-  const liveCountEl    = document.getElementById("liveCount");
-  const todayUniqueEl  = document.getElementById("todayUnique");
-  const livePagesEl    = document.getElementById("livePages");
-
-  // ---------- Panel Toggle ----------
-  function openPanel(){
-    if (!livePanelEl || !liveBadgeEl) return;
-    livePanelEl.style.display = "block";
-    liveBadgeEl.setAttribute("aria-expanded","true");
-  }
-  function closePanel(){
-    if (!livePanelEl || !liveBadgeEl) return;
-    livePanelEl.style.display = "none";
-    liveBadgeEl.setAttribute("aria-expanded","false");
-  }
-  function togglePanel(){
-    if (!livePanelEl) return;
-    const isOpen = livePanelEl.style.display === "block";
-    if (isOpen) closePanel(); else openPanel();
-  }
-
-  if (liveBadgeEl) liveBadgeEl.addEventListener("click", (e) => { e.stopPropagation(); togglePanel(); });
-  if (livePanelClose) livePanelClose.addEventListener("click", (e) => { e.stopPropagation(); closePanel(); });
-
-  document.addEventListener("click", () => closePanel());
-  if (livePanelEl) livePanelEl.addEventListener("click", (e) => e.stopPropagation());
-
-  // ---------- Presence ----------
-  const connectedRef  = ref(db, ".info/connected");
-  const myPresenceRef = ref(db, `presence/${sid}`);
-
-  onValue(connectedRef, async (snap) => {
-    if (snap.val() !== true) return;
-
-    console.log("✅ Firebase connected — setting presence:", sid);
-
-    await onDisconnect(myPresenceRef).remove();
-
-    await set(myPresenceRef, {
-      online: true,
-      uid,
-      ts: serverTimestamp(),
-      path: location.pathname
-    });
-
-    console.log("✅ presence written:", `presence/${sid}`);
-  });
-
-  // ---------- TODAY Unique ----------
-  const todayUidsPath = `stats/daily/${dateKey}/uids`;
-  const todayUidRef   = ref(db, `${todayUidsPath}/${uid}`);
-
-  try {
-    await set(todayUidRef, true);
-    console.log("✅ TODAY uid written:", uid);
-  } catch(e) {
-    console.warn("❌ TODAY uid write failed:", e);
-  }
-
-  // ---------- LIVE count + Pages ----------
-  function renderPagesCounts(sessions){
-    if (!livePagesEl) return;
-
-    const counts = new Map();
-    for (const s of sessions){
-      const p = (s && typeof s.path === "string" && s.path.trim()) ? s.path : "/";
-      counts.set(p, (counts.get(p) || 0) + 1);
-    }
-
-    const rows = Array.from(counts.entries())
-      .sort((a,b) => b[1] - a[1])
-      .slice(0, 12);
-
-    if (rows.length === 0){
-      livePagesEl.innerHTML = `<div style="color:#94a3b8;font-size:12px;">No live sessions yet.</div>`;
-      return;
-    }
-
-    livePagesEl.innerHTML = rows.map(([path,n]) => `
-      <div style="
-        display:flex; align-items:center; justify-content:space-between;
-        padding:8px 10px; border-radius:12px;
-        background:rgba(15,23,42,.65);
-        border:1px solid rgba(148,163,184,.18);
-      ">
-        <div style="color:#e5e7eb; font-size:12px; letter-spacing:.08em; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:240px;">
-          ${escapeHtml(path)}
-        </div>
-        <div style="color:#fbbf24; font-weight:900; letter-spacing:.14em; font-size:12px;">
-          ${n}
-        </div>
-      </div>
-    `).join("");
-  }
-
-  function escapeHtml(str){
-    return String(str)
-      .replaceAll("&","&amp;")
-      .replaceAll("<","&lt;")
-      .replaceAll(">","&gt;")
-      .replaceAll('"',"&quot;")
-      .replaceAll("'","&#039;");
-  }
-
-  onValue(ref(db, "presence"), (snap) => {
-    const val = snap.val() || {};
-    const sessions = Object.values(val);
-
-    if (liveCountEl) liveCountEl.textContent = String(sessions.length);
-    renderPagesCounts(sessions);
-  });
-
-  // ---------- TODAY count ----------
-  onValue(ref(db, todayUidsPath), (snap) => {
-    const uids = snap.val() || {};
-    const n = Object.keys(uids).length;
-    if (todayUniqueEl) todayUniqueEl.textContent = String(n);
-    console.log("📊 TODAY unique count:", n);
-  });
-
-  console.log("👥 Live tracker running");
-</script>
-  <!-- ===================== END FIREBASE ===================== -->
- <link rel="stylesheet" href="/css/live-dashboard.css">
+<link rel="stylesheet" href="/css/live-dashboard.css">
 <script type="module" src="/js/firebase-live.js"></script>
  <script type="module" src="/js/live-ui.js"></script>
 </body>
