@@ -1,6 +1,6 @@
 // ============================================================
 // AWAKENED BY YAH MUSIC — FIREBASE LIVE TRACKER
-// Version 2: Visitor presence, heartbeat, and offline tracking
+// Version 3: Presence, heartbeat, offline status, and countries
 // ============================================================
 
 import { initializeApp } from
@@ -9,6 +9,7 @@ import { initializeApp } from
 import {
   getFirestore,
   doc,
+  getDoc,
   setDoc,
   updateDoc,
   serverTimestamp
@@ -43,7 +44,9 @@ const database = getFirestore(firebaseApp);
 // ------------------------------------------------------------
 
 const HEARTBEAT_INTERVAL = 30000;
+
 const VISITOR_STORAGE_KEY = "aby_live_visitor_id";
+const LOCATION_STORAGE_KEY = "aby_live_location";
 
 
 // ------------------------------------------------------------
@@ -103,24 +106,186 @@ function getPageInformation() {
 
 
 // ------------------------------------------------------------
+// DEFAULT LOCATION
+// Used if the country service is unavailable.
+// ------------------------------------------------------------
+
+function getUnknownLocation() {
+  return {
+    country: "Unknown",
+    countryCode: "",
+    region: "",
+    city: "",
+    continent: ""
+  };
+}
+
+
+// ------------------------------------------------------------
+// READ CACHED LOCATION
+// The country lookup is performed only once per browser session.
+// ------------------------------------------------------------
+
+function getCachedLocation() {
+  try {
+    const storedLocation =
+      sessionStorage.getItem(LOCATION_STORAGE_KEY);
+
+    if (!storedLocation) {
+      return null;
+    }
+
+    const parsedLocation = JSON.parse(storedLocation);
+
+    if (
+      typeof parsedLocation.country !== "string" ||
+      typeof parsedLocation.countryCode !== "string" ||
+      typeof parsedLocation.region !== "string" ||
+      typeof parsedLocation.city !== "string" ||
+      typeof parsedLocation.continent !== "string"
+    ) {
+      return null;
+    }
+
+    return parsedLocation;
+  } catch (error) {
+    return null;
+  }
+}
+
+
+// ------------------------------------------------------------
+// LOOK UP THE VISITOR'S GENERAL LOCATION
+// No IP address is stored in Firestore.
+// ------------------------------------------------------------
+
+async function getLocationInformation() {
+  const cachedLocation = getCachedLocation();
+
+  if (cachedLocation) {
+    return cachedLocation;
+  }
+
+  const controller = new AbortController();
+
+  const timeoutId = window.setTimeout(() => {
+    controller.abort();
+  }, 6000);
+
+  try {
+    const response = await fetch("https://ipwho.is/", {
+      method: "GET",
+      signal: controller.signal,
+      cache: "no-store"
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        `Location request failed with status ${response.status}`
+      );
+    }
+
+    const locationData = await response.json();
+
+    if (locationData.success === false) {
+      throw new Error(
+        locationData.message || "Location lookup was unsuccessful."
+      );
+    }
+
+    const location = {
+      country:
+        typeof locationData.country === "string"
+          ? locationData.country
+          : "Unknown",
+
+      countryCode:
+        typeof locationData.country_code === "string"
+          ? locationData.country_code
+          : "",
+
+      region:
+        typeof locationData.region === "string"
+          ? locationData.region
+          : "",
+
+      city:
+        typeof locationData.city === "string"
+          ? locationData.city
+          : "",
+
+      continent:
+        typeof locationData.continent === "string"
+          ? locationData.continent
+          : ""
+    };
+
+    sessionStorage.setItem(
+      LOCATION_STORAGE_KEY,
+      JSON.stringify(location)
+    );
+
+    return location;
+  } catch (error) {
+    console.warn(
+      "Country lookup unavailable. Using Unknown location:",
+      error
+    );
+
+    const unknownLocation = getUnknownLocation();
+
+    sessionStorage.setItem(
+      LOCATION_STORAGE_KEY,
+      JSON.stringify(unknownLocation)
+    );
+
+    return unknownLocation;
+  } finally {
+    window.clearTimeout(timeoutId);
+  }
+}
+
+
+// ------------------------------------------------------------
 // VISITOR DOCUMENT
 // ------------------------------------------------------------
 
 const visitorId = getVisitorId();
-const visitorReference = doc(database, "liveVisitors", visitorId);
+
+const visitorReference = doc(
+  database,
+  "liveVisitors",
+  visitorId
+);
 
 
 // ------------------------------------------------------------
-// REGISTER THE VISITOR
+// REGISTER OR RESTORE THE VISITOR
 // ------------------------------------------------------------
 
 async function registerVisitor() {
   const page = getPageInformation();
+  const location = await getLocationInformation();
 
   try {
-    await setDoc(
-      visitorReference,
-      {
+    const existingVisitor = await getDoc(visitorReference);
+
+    if (existingVisitor.exists()) {
+      await updateDoc(visitorReference, {
+        online: true,
+        pageName: page.pageName,
+        pagePath: page.pagePath,
+        pageTitle: page.pageTitle,
+        pageUrl: page.pageUrl,
+        lastSeen: serverTimestamp(),
+        country: location.country,
+        countryCode: location.countryCode,
+        region: location.region,
+        city: location.city,
+        continent: location.continent
+      });
+    } else {
+      await setDoc(visitorReference, {
         visitorId,
         online: true,
         pageName: page.pageName,
@@ -131,14 +296,22 @@ async function registerVisitor() {
         lastSeen: serverTimestamp(),
         userAgent: navigator.userAgent,
         language: navigator.language || "Unknown",
-        screenWidth: window.screen?.width || null,
-        screenHeight: window.screen?.height || null
-      },
-      { merge: true }
-    );
+        screenWidth: Number.isInteger(window.screen?.width)
+          ? window.screen.width
+          : 0,
+        screenHeight: Number.isInteger(window.screen?.height)
+          ? window.screen.height
+          : 0,
+        country: location.country,
+        countryCode: location.countryCode,
+        region: location.region,
+        city: location.city,
+        continent: location.continent
+      });
+    }
 
     console.log(
-      "%cAWAKENED BY YAH LIVE TRACKER CONNECTED",
+      `%cAWAKENED BY YAH LIVE TRACKER CONNECTED — ${location.country}`,
       "color:#fbbf24;font-weight:bold;"
     );
   } catch (error) {
@@ -149,7 +322,7 @@ async function registerVisitor() {
 
 // ------------------------------------------------------------
 // HEARTBEAT
-// Keeps the visitor marked active while the page remains open.
+// Keeps the visitor active while the page remains open.
 // ------------------------------------------------------------
 
 async function sendHeartbeat() {
@@ -165,7 +338,7 @@ async function sendHeartbeat() {
       lastSeen: serverTimestamp()
     });
   } catch (error) {
-    // Recreate the document if it no longer exists.
+    // Recreate the visitor if cleanup removed the document.
     await registerVisitor();
   }
 }
@@ -173,8 +346,6 @@ async function sendHeartbeat() {
 
 // ------------------------------------------------------------
 // MARK VISITOR OFFLINE
-// Browser exit events are not guaranteed, so stale visitor
-// documents are also removed later by the dashboard cleanup.
 // ------------------------------------------------------------
 
 async function markVisitorOffline() {
@@ -231,6 +402,12 @@ window.ABYLiveTracker = {
   visitorId,
   sendHeartbeat,
   markVisitorOffline,
+
+  refreshLocation() {
+    sessionStorage.removeItem(LOCATION_STORAGE_KEY);
+    return registerVisitor();
+  },
+
   stopHeartbeat() {
     window.clearInterval(heartbeatTimer);
   }
