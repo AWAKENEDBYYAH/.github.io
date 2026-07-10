@@ -1,29 +1,24 @@
 // ============================================================
-// AWAKENED BY YAH MUSIC — LIVE ACTIVITY INTERFACE
-// Reads active visitors from Cloud Firestore and updates
-// the elegant live dashboard in real time.
+// AWAKENED BY YAH MUSIC — FIREBASE LIVE TRACKER
+// Version 4: Presence, countries, and live song activity
 // ============================================================
 
-import {
-  initializeApp,
-  getApp,
-  getApps
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+import { initializeApp } from
+  "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 
 import {
   getFirestore,
-  collection,
-  onSnapshot,
-  query,
-  where,
-  getDocs,
-  deleteDoc,
-  Timestamp
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  serverTimestamp
+} from
+  "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
 // ------------------------------------------------------------
-// FIREBASE CONFIGURATION
+// FIREBASE PROJECT CONFIGURATION
 // ------------------------------------------------------------
 
 const firebaseConfig = {
@@ -37,724 +32,529 @@ const firebaseConfig = {
 
 
 // ------------------------------------------------------------
-// CONNECT TO THE EXISTING FIREBASE APP
+// INITIALIZE FIREBASE
 // ------------------------------------------------------------
 
-const firebaseApp = getApps().length
-  ? getApp()
-  : initializeApp(firebaseConfig);
-
+const firebaseApp = initializeApp(firebaseConfig);
 const database = getFirestore(firebaseApp);
-
-
-// ------------------------------------------------------------
-// REMOVE VISITOR RECORDS INACTIVE FOR MORE THAN 10 MINUTES
-// ------------------------------------------------------------
-
-async function cleanupStaleVisitors() {
-  try {
-    const cutoffTime = Timestamp.fromMillis(Date.now() - 11 * 60 * 1000);
-
-    const staleVisitorsQuery = query(
-      collection(database, "liveVisitors"),
-      where("lastSeen", "<", cutoffTime)
-    );
-
-    const staleVisitorsSnapshot = await getDocs(staleVisitorsQuery);
-
-    if (staleVisitorsSnapshot.empty) {
-      return;
-    }
-
-    await Promise.all(
-      staleVisitorsSnapshot.docs.map((visitorDocument) =>
-        deleteDoc(visitorDocument.ref)
-      )
-    );
-
-    console.log(
-      `Removed ${staleVisitorsSnapshot.size} stale visitor record(s).`
-    );
-  } catch (error) {
-    console.error("Unable to clean up stale visitor records:", error);
-  }
-}
 
 
 // ------------------------------------------------------------
 // SETTINGS
 // ------------------------------------------------------------
 
-const ACTIVE_WINDOW_MS = 90 * 1000;
-const REFRESH_INTERVAL_MS = 15 * 1000;
+const HEARTBEAT_INTERVAL = 30000;
 
-let latestVisitors = [];
+const VISITOR_STORAGE_KEY = "aby_live_visitor_id";
+const LOCATION_STORAGE_KEY = "aby_live_location";
 
 
 // ------------------------------------------------------------
-// FIND THE EXISTING LIVE TRACKER ELEMENTS
+// CURRENT LISTENING STATE
 // ------------------------------------------------------------
 
-const liveWrap = document.getElementById("liveWrap");
-const liveBadge = document.getElementById("liveBadge");
-const livePanel = document.getElementById("livePanel");
+let listeningState = {
+  isListening: false,
+  trackTitle: ""
+};
 
-if (!liveWrap || !liveBadge || !livePanel) {
-  console.warn(
-    "AWAKENED BY YAH live interface could not find liveWrap, liveBadge, or livePanel."
+
+// ------------------------------------------------------------
+// CREATE OR RETRIEVE A PRIVATE RANDOM VISITOR ID
+// ------------------------------------------------------------
+
+function getVisitorId() {
+  let visitorId = sessionStorage.getItem(VISITOR_STORAGE_KEY);
+
+  if (!visitorId) {
+    visitorId =
+      typeof crypto.randomUUID === "function"
+        ? crypto.randomUUID()
+        : `visitor-${Date.now()}-${Math.random()
+            .toString(36)
+            .slice(2, 12)}`;
+
+    sessionStorage.setItem(VISITOR_STORAGE_KEY, visitorId);
+  }
+
+  return visitorId;
+}
+
+
+// ------------------------------------------------------------
+// DETERMINE THE CURRENT PAGE
+// ------------------------------------------------------------
+
+function getPageInformation() {
+  const pathname = window.location.pathname;
+
+  let pageName = document.title || "AWAKENED BY YAH MUSIC";
+
+  if (pathname === "/" || pathname.endsWith("/index.html")) {
+    pageName = "Homepage";
+  } else if (pathname.includes("/store")) {
+    pageName = "Digital Store";
+  } else if (pathname.includes("/music")) {
+    pageName = "Music";
+  } else if (pathname.includes("/albums")) {
+    pageName = "Albums";
+  } else if (pathname.includes("/videos")) {
+    pageName = "Videos";
+  } else if (pathname.includes("/press")) {
+    pageName = "Press";
+  } else if (pathname.includes("/downloads")) {
+    pageName = "Downloads";
+  }
+
+  return {
+    pageName,
+    pagePath: pathname,
+    pageTitle: document.title || "",
+    pageUrl: window.location.href
+  };
+}
+
+
+// ------------------------------------------------------------
+// DEFAULT LOCATION
+// Used if the country service is unavailable.
+// ------------------------------------------------------------
+
+function getUnknownLocation() {
+  return {
+    country: "Unknown",
+    countryCode: "",
+    region: "",
+    city: "",
+    continent: ""
+  };
+}
+
+
+// ------------------------------------------------------------
+// READ CACHED LOCATION
+// The country lookup is performed only once per browser session.
+// ------------------------------------------------------------
+
+function getCachedLocation() {
+  try {
+    const storedLocation =
+      sessionStorage.getItem(LOCATION_STORAGE_KEY);
+
+    if (!storedLocation) {
+      return null;
+    }
+
+    const parsedLocation = JSON.parse(storedLocation);
+
+    if (
+      typeof parsedLocation.country !== "string" ||
+      typeof parsedLocation.countryCode !== "string" ||
+      typeof parsedLocation.region !== "string" ||
+      typeof parsedLocation.city !== "string" ||
+      typeof parsedLocation.continent !== "string"
+    ) {
+      return null;
+    }
+
+    return parsedLocation;
+  } catch (error) {
+    return null;
+  }
+}
+
+
+// ------------------------------------------------------------
+// LOOK UP THE VISITOR'S GENERAL LOCATION
+// No IP address is stored in Firestore.
+// ------------------------------------------------------------
+
+async function getLocationInformation() {
+  const cachedLocation = getCachedLocation();
+
+  if (cachedLocation) {
+    return cachedLocation;
+  }
+
+  const controller = new AbortController();
+
+  const timeoutId = window.setTimeout(() => {
+    controller.abort();
+  }, 6000);
+
+  try {
+    const response = await fetch("https://ipwho.is/", {
+      method: "GET",
+      signal: controller.signal,
+      cache: "no-store"
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        `Location request failed with status ${response.status}`
+      );
+    }
+
+    const locationData = await response.json();
+
+    if (locationData.success === false) {
+      throw new Error(
+        locationData.message || "Location lookup was unsuccessful."
+      );
+    }
+
+    const location = {
+      country:
+        typeof locationData.country === "string"
+          ? locationData.country
+          : "Unknown",
+
+      countryCode:
+        typeof locationData.country_code === "string"
+          ? locationData.country_code
+          : "",
+
+      region:
+        typeof locationData.region === "string"
+          ? locationData.region
+          : "",
+
+      city:
+        typeof locationData.city === "string"
+          ? locationData.city
+          : "",
+
+      continent:
+        typeof locationData.continent === "string"
+          ? locationData.continent
+          : ""
+    };
+
+    sessionStorage.setItem(
+      LOCATION_STORAGE_KEY,
+      JSON.stringify(location)
+    );
+
+    return location;
+  } catch (error) {
+    console.warn(
+      "Country lookup unavailable. Using Unknown location:",
+      error
+    );
+
+    const unknownLocation = getUnknownLocation();
+
+    sessionStorage.setItem(
+      LOCATION_STORAGE_KEY,
+      JSON.stringify(unknownLocation)
+    );
+
+    return unknownLocation;
+  } finally {
+    window.clearTimeout(timeoutId);
+  }
+}
+
+
+// ------------------------------------------------------------
+// VISITOR DOCUMENT
+// ------------------------------------------------------------
+
+const visitorId = getVisitorId();
+
+const visitorReference = doc(
+  database,
+  "liveVisitors",
+  visitorId
+);
+
+
+// ------------------------------------------------------------
+// REGISTER OR RESTORE THE VISITOR
+// ------------------------------------------------------------
+
+async function registerVisitor() {
+  const page = getPageInformation();
+  const location = await getLocationInformation();
+
+  try {
+    const existingVisitor = await getDoc(visitorReference);
+
+    if (existingVisitor.exists()) {
+      await updateDoc(visitorReference, {
+        online: true,
+        pageName: page.pageName,
+        pagePath: page.pagePath,
+        pageTitle: page.pageTitle,
+        pageUrl: page.pageUrl,
+        lastSeen: serverTimestamp(),
+        country: location.country,
+        countryCode: location.countryCode,
+        region: location.region,
+        city: location.city,
+        continent: location.continent,
+        isListening: listeningState.isListening,
+        trackTitle: listeningState.trackTitle
+      });
+    } else {
+      await setDoc(visitorReference, {
+        visitorId,
+        online: true,
+        pageName: page.pageName,
+        pagePath: page.pagePath,
+        pageTitle: page.pageTitle,
+        pageUrl: page.pageUrl,
+        firstSeen: serverTimestamp(),
+        lastSeen: serverTimestamp(),
+        userAgent: navigator.userAgent,
+        language: navigator.language || "Unknown",
+        screenWidth: Number.isInteger(window.screen?.width)
+          ? window.screen.width
+          : 0,
+        screenHeight: Number.isInteger(window.screen?.height)
+          ? window.screen.height
+          : 0,
+        country: location.country,
+        countryCode: location.countryCode,
+        region: location.region,
+        city: location.city,
+        continent: location.continent,
+        isListening: listeningState.isListening,
+        trackTitle: listeningState.trackTitle
+      });
+    }
+
+    console.log(
+      `%cAWAKENED BY YAH LIVE TRACKER CONNECTED — ${location.country}`,
+      "color:#fbbf24;font-weight:bold;"
+    );
+  } catch (error) {
+    console.error("Live tracker registration failed:", error);
+  }
+}
+
+
+// ------------------------------------------------------------
+// HEARTBEAT
+// Keeps the visitor active while the page remains open.
+// ------------------------------------------------------------
+
+async function sendHeartbeat() {
+  const page = getPageInformation();
+
+  try {
+    await updateDoc(visitorReference, {
+      online: true,
+      pageName: page.pageName,
+      pagePath: page.pagePath,
+      pageTitle: page.pageTitle,
+      pageUrl: page.pageUrl,
+      lastSeen: serverTimestamp(),
+      isListening: listeningState.isListening,
+      trackTitle: listeningState.trackTitle
+    });
+  } catch (error) {
+    await registerVisitor();
+  }
+}
+
+
+// ------------------------------------------------------------
+// MARK VISITOR OFFLINE
+// ------------------------------------------------------------
+
+async function markVisitorOffline() {
+  try {
+    listeningState = {
+      isListening: false,
+      trackTitle: ""
+    };
+
+    await updateDoc(visitorReference, {
+      online: false,
+      lastSeen: serverTimestamp(),
+      isListening: false,
+      trackTitle: ""
+    });
+  } catch (error) {
+    console.warn("Could not mark visitor offline:", error);
+  }
+}
+
+
+// ------------------------------------------------------------
+// LIVE SONG ACTIVITY
+// Tracks every HTML audio player on the page.
+// ------------------------------------------------------------
+
+function getAudioTrackTitle(audioElement) {
+  const directTitle = String(
+    audioElement.dataset.trackTitle ||
+    audioElement.getAttribute("data-title") ||
+    ""
+  ).trim();
+
+  if (directTitle) {
+    return directTitle;
+  }
+
+  if (audioElement.id === "audio-player") {
+    const nowPlayingTitle =
+      document.getElementById("now-playing-title");
+
+    const playlistTitle =
+      String(nowPlayingTitle?.textContent || "").trim();
+
+    if (playlistTitle) {
+      return playlistTitle;
+    }
+  }
+
+  const nearbyTitle = audioElement
+    .closest("section, article, div")
+    ?.querySelector(
+      "[data-track-title], .track-title, .release-title, .featured-release h2, h1, h2, h3"
+    );
+
+  const nearbyText = String(
+    nearbyTitle?.dataset?.trackTitle ||
+    nearbyTitle?.textContent ||
+    ""
+  ).trim();
+
+  return nearbyText || "Unknown Track";
+}
+
+async function updateListeningActivity(
+  isListening,
+  trackTitle = ""
+) {
+  listeningState = {
+    isListening: Boolean(isListening),
+    trackTitle: isListening
+      ? String(trackTitle || "Unknown Track").trim()
+      : ""
+  };
+
+  try {
+    await updateDoc(visitorReference, {
+      online: true,
+      lastSeen: serverTimestamp(),
+      isListening: listeningState.isListening,
+      trackTitle: listeningState.trackTitle
+    });
+  } catch (error) {
+    await registerVisitor();
+  }
+}
+
+function bindAudioPlayer(audioElement) {
+  if (!(audioElement instanceof HTMLAudioElement)) {
+    return;
+  }
+
+  if (audioElement.dataset.abyListeningBound === "true") {
+    return;
+  }
+
+  audioElement.dataset.abyListeningBound = "true";
+
+  audioElement.addEventListener("play", () => {
+    const trackTitle = getAudioTrackTitle(audioElement);
+
+    updateListeningActivity(true, trackTitle);
+  });
+
+  audioElement.addEventListener("pause", () => {
+    if (!audioElement.ended) {
+      updateListeningActivity(false);
+    }
+  });
+
+  audioElement.addEventListener("ended", () => {
+    updateListeningActivity(false);
+  });
+
+  audioElement.addEventListener("emptied", () => {
+    updateListeningActivity(false);
+  });
+}
+
+function bindAllAudioPlayers() {
+  document
+    .querySelectorAll("audio")
+    .forEach(bindAudioPlayer);
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener(
+    "DOMContentLoaded",
+    bindAllAudioPlayers
   );
 } else {
-  initializeLiveInterface();
+  bindAllAudioPlayers();
 }
 
+const audioObserver = new MutationObserver(() => {
+  bindAllAudioPlayers();
+});
 
-// ------------------------------------------------------------
-// BUILD THE DASHBOARD
-// ------------------------------------------------------------
-
-function initializeLiveInterface() {
-  liveBadge.setAttribute("role", "button");
-  liveBadge.setAttribute("tabindex", "0");
-  liveBadge.setAttribute("aria-expanded", "false");
-  liveBadge.setAttribute("aria-controls", "livePanel");
-
-  livePanel.setAttribute("aria-hidden", "true");
-
-  livePanel.innerHTML = `
-    <div class="aby-live-shell">
-
-      <header class="aby-live-header">
-        <div>
-          <div class="aby-live-eyebrow">
-            <span>Live Activity</span>
-          </div>
-
-          <h2 class="aby-live-title">
-            The Nations Are Awakening
-          </h2>
-
-          <p class="aby-live-subtitle">
-            Real-time activity across AWAKENED BY YAH MUSIC
-          </p>
-        </div>
-
-        <button
-          id="livePanelClose"
-          type="button"
-          aria-label="Close live activity panel"
-        >
-          ✕
-        </button>
-      </header>
-
-      <section class="aby-live-metrics">
-
-        <article class="aby-live-card">
-          <div class="aby-live-card-label">
-            Visitors Online
-          </div>
-
-          <div
-            class="aby-live-number"
-            id="abyLiveOnlineCount"
-          >
-            0
-          </div>
-
-          <div class="aby-live-card-note">
-            Active across the site
-          </div>
-        </article>
-
-        <article class="aby-live-card">
-          <div class="aby-live-card-label">
-            Digital Store
-          </div>
-
-          <div
-            class="aby-live-number"
-            id="abyLiveStoreCount"
-          >
-            0
-          </div>
-
-          <div class="aby-live-card-note">
-            Browsing the store
-          </div>
-        </article>
-
-      </section>
-
-      <section class="aby-live-wide-card">
-        <div class="aby-live-wide-label">
-          Now Hearing
-        </div>
-
-        <div
-          class="aby-live-track"
-          id="abyNowListeningTrack"
-        >
-          Waiting for the next listener
-        </div>
-
-        <div
-          class="aby-live-muted"
-          id="abyNowListeningCount"
-        >
-          Song activity will appear here
-        </div>
-      </section>
-
-      <section class="aby-live-wide-card">
-        <div class="aby-live-wide-label">
-          Active Across the Site
-        </div>
-
-        <div id="livePages">
-          <div class="aby-live-page-row">
-            <span class="aby-live-page-name">
-              Waiting for live activity...
-            </span>
-
-            <span class="aby-live-page-count">
-              0
-            </span>
-          </div>
-        </div>
-      </section>
-
-      <section class="aby-live-wide-card">
-        <div class="aby-live-wide-label">
-          Countries Represented
-        </div>
-
-        <div id="liveCountries">
-          <div class="aby-live-page-row">
-            <span class="aby-live-page-name">
-              Waiting for country activity...
-            </span>
-
-            <span class="aby-live-page-count">
-              0
-            </span>
-          </div>
-        </div>
-      </section>
-
-      <footer class="aby-live-footer">
-        Activity updates automatically in real time
-      </footer>
-
-    </div>
-  `;
-
-  bindInterfaceControls();
-  beginFirestoreListener();
-
-  window.setInterval(() => {
-    renderVisitors(latestVisitors);
-  }, REFRESH_INTERVAL_MS);
-}
+audioObserver.observe(document.documentElement, {
+  childList: true,
+  subtree: true
+});
 
 
 // ------------------------------------------------------------
-// OPEN AND CLOSE CONTROLS
+// PAGE VISIBILITY
 // ------------------------------------------------------------
 
-function bindInterfaceControls() {
-  const closeButton = document.getElementById("livePanelClose");
-
-  function openPanel() {
-    livePanel.classList.add("is-open");
-    livePanel.setAttribute("aria-hidden", "false");
-    liveBadge.setAttribute("aria-expanded", "true");
-  }
-
-  function closePanel() {
-    livePanel.classList.remove("is-open");
-    livePanel.setAttribute("aria-hidden", "true");
-    liveBadge.setAttribute("aria-expanded", "false");
-  }
-
-  function togglePanel() {
-    if (livePanel.classList.contains("is-open")) {
-      closePanel();
-    } else {
-      openPanel();
-    }
-  }
-
-  liveBadge.addEventListener("click", togglePanel);
-
-  liveBadge.addEventListener("keydown", event => {
-    if (event.key === "Enter" || event.key === " ") {
-      event.preventDefault();
-      togglePanel();
-    }
-  });
-
-  closeButton?.addEventListener("click", event => {
-    event.stopPropagation();
-    closePanel();
-  });
-
-  document.addEventListener("click", event => {
-    if (
-      livePanel.classList.contains("is-open") &&
-      !liveWrap.contains(event.target)
-    ) {
-      closePanel();
-    }
-  });
-
-  document.addEventListener("keydown", event => {
-    if (event.key === "Escape") {
-      closePanel();
-    }
-  });
-}
-
-
-// ------------------------------------------------------------
-// LISTEN TO FIRESTORE IN REAL TIME
-// ------------------------------------------------------------
-
-function beginFirestoreListener() {
-  const visitorsCollection = collection(database, "liveVisitors");
-
-  onSnapshot(
-    visitorsCollection,
-    snapshot => {
-      latestVisitors = snapshot.docs.map(visitorDocument => ({
-        id: visitorDocument.id,
-        ...visitorDocument.data()
-      }));
-
-      renderVisitors(latestVisitors);
-    },
-    error => {
-      console.error("Live interface Firestore error:", error);
-
-      updateBadge(0);
-
-      const listeningTrack =
-        document.getElementById("abyNowListeningTrack");
-
-      const listeningCount =
-        document.getElementById("abyNowListeningCount");
-
-      if (listeningTrack) {
-        listeningTrack.textContent = "Song activity unavailable";
-      }
-
-      if (listeningCount) {
-        listeningCount.textContent =
-          "Unable to read live listening activity";
-      }
-
-      const livePages = document.getElementById("livePages");
-
-      if (livePages) {
-        livePages.innerHTML = `
-          <div class="aby-live-page-row">
-            <span class="aby-live-page-name">
-              Live activity temporarily unavailable
-            </span>
-
-            <span class="aby-live-page-count">
-              —
-            </span>
-          </div>
-        `;
-      }
-
-      const liveCountries =
-        document.getElementById("liveCountries");
-
-      if (liveCountries) {
-        liveCountries.innerHTML = `
-          <div class="aby-live-page-row">
-            <span class="aby-live-page-name">
-              Country activity temporarily unavailable
-            </span>
-
-            <span class="aby-live-page-count">
-              —
-            </span>
-          </div>
-        `;
-      }
-    }
-  );
-}
-
-
-// ------------------------------------------------------------
-// DETERMINE WHETHER A VISITOR IS STILL ACTIVE
-// ------------------------------------------------------------
-
-function isVisitorActive(visitor) {
-  if (visitor.online !== true || !visitor.lastSeen) {
-    return false;
-  }
-
-  const lastSeenDate =
-    typeof visitor.lastSeen.toDate === "function"
-      ? visitor.lastSeen.toDate()
-      : new Date(visitor.lastSeen);
-
-  if (Number.isNaN(lastSeenDate.getTime())) {
-    return false;
-  }
-
-  return Date.now() - lastSeenDate.getTime() <= ACTIVE_WINDOW_MS;
-}
-
-
-// ------------------------------------------------------------
-// RENDER ALL CURRENT ACTIVITY
-// ------------------------------------------------------------
-
-function renderVisitors(visitors) {
-  const activeVisitors = visitors.filter(isVisitorActive);
-
-  const onlineCount = activeVisitors.length;
-
-  const storeCount = activeVisitors.filter(visitor => {
-    const pageName = String(visitor.pageName || "").toLowerCase();
-    const pagePath = String(visitor.pagePath || "").toLowerCase();
-
-    return (
-      pageName.includes("store") ||
-      pagePath.includes("/store") ||
-      pagePath.includes("payhip")
-    );
-  }).length;
-
-  const pageCounts = countActivePages(activeVisitors);
-  const countryCounts = countActiveCountries(activeVisitors);
-
-  animateNumber("abyLiveOnlineCount", onlineCount);
-  animateNumber("abyLiveStoreCount", storeCount);
-
-  updateBadge(onlineCount);
-  renderListeningActivity(activeVisitors);
-  renderPageRows(pageCounts);
-  renderCountryRows(countryCounts);
-}
-
-
-// ------------------------------------------------------------
-// RENDER LIVE SONG ACTIVITY
-// ------------------------------------------------------------
-
-function renderListeningActivity(activeVisitors) {
-  const trackElement =
-    document.getElementById("abyNowListeningTrack");
-
-  const countElement =
-    document.getElementById("abyNowListeningCount");
-
-  if (!trackElement || !countElement) {
-    return;
-  }
-
-  const listeningVisitors = activeVisitors.filter(visitor => {
-    return (
-      visitor.isListening === true &&
-      String(visitor.trackTitle || "").trim() !== ""
-    );
-  });
-
-  if (listeningVisitors.length === 0) {
-    trackElement.textContent = "Waiting for the next listener";
-    countElement.textContent = "Song activity will appear here";
-    return;
-  }
-
-  const trackMap = new Map();
-
-  listeningVisitors.forEach(visitor => {
-    const trackTitle =
-      String(visitor.trackTitle || "Unknown Track").trim();
-
-    trackMap.set(
-      trackTitle,
-      (trackMap.get(trackTitle) || 0) + 1
-    );
-  });
-
-  const tracks = [...trackMap.entries()]
-    .map(([trackTitle, count]) => ({
-      trackTitle,
-      count
-    }))
-    .sort((first, second) => {
-      if (second.count !== first.count) {
-        return second.count - first.count;
-      }
-
-      return first.trackTitle.localeCompare(second.trackTitle);
-    });
-
-  const leadingTrack = tracks[0];
-
-  const listenerWord =
-    listeningVisitors.length === 1
-      ? "listener"
-      : "listeners";
-
-  trackElement.textContent = leadingTrack.trackTitle;
-
-  if (tracks.length === 1) {
-    countElement.textContent =
-      `${listeningVisitors.length} ${listenerWord} listening now`;
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible") {
+    sendHeartbeat();
   } else {
-    const songWord =
-      tracks.length === 1
-        ? "song"
-        : "songs";
-
-    countElement.textContent =
-      `${listeningVisitors.length} ${listenerWord} across ${tracks.length} ${songWord}`;
+    markVisitorOffline();
   }
-}
+});
 
 
 // ------------------------------------------------------------
-// COUNT ACTIVE VISITORS BY PAGE
+// PAGE EXIT
 // ------------------------------------------------------------
 
-function countActivePages(activeVisitors) {
-  const pageMap = new Map();
-
-  activeVisitors.forEach(visitor => {
-    const pageName =
-      String(visitor.pageName || "").trim() || "Unknown Page";
-
-    pageMap.set(
-      pageName,
-      (pageMap.get(pageName) || 0) + 1
-    );
-  });
-
-  return [...pageMap.entries()]
-    .map(([pageName, count]) => ({
-      pageName,
-      count
-    }))
-    .sort((first, second) => {
-      if (second.count !== first.count) {
-        return second.count - first.count;
-      }
-
-      return first.pageName.localeCompare(second.pageName);
-    });
-}
+window.addEventListener("pagehide", () => {
+  markVisitorOffline();
+});
 
 
 // ------------------------------------------------------------
-// COUNT ACTIVE VISITORS BY COUNTRY
+// START TRACKING
 // ------------------------------------------------------------
 
-function countActiveCountries(activeVisitors) {
-  const countryMap = new Map();
+registerVisitor();
 
-  activeVisitors.forEach(visitor => {
-    const country =
-      String(visitor.country || "").trim() || "Unknown";
-
-    countryMap.set(
-      country,
-      (countryMap.get(country) || 0) + 1
-    );
-  });
-
-  return [...countryMap.entries()]
-    .map(([country, count]) => ({
-      country,
-      count
-    }))
-    .sort((first, second) => {
-      if (second.count !== first.count) {
-        return second.count - first.count;
-      }
-
-      return first.country.localeCompare(second.country);
-    });
-}
-
-
-// ------------------------------------------------------------
-// RENDER ACTIVE COUNTRY ROWS
-// ------------------------------------------------------------
-
-function renderCountryRows(countryCounts) {
-  const liveCountries =
-    document.getElementById("liveCountries");
-
-  if (!liveCountries) {
-    return;
-  }
-
-  if (countryCounts.length === 0) {
-    liveCountries.innerHTML = `
-      <div class="aby-live-page-row">
-        <span class="aby-live-page-name">
-          No countries active right now
-        </span>
-
-        <span class="aby-live-page-count">
-          0
-        </span>
-      </div>
-    `;
-
-    return;
-  }
-
-  liveCountries.innerHTML = countryCounts
-    .slice(0, 8)
-    .map(country => `
-      <div class="aby-live-page-row">
-        <span class="aby-live-page-name">
-          ${escapeHtml(country.country)}
-        </span>
-
-        <span class="aby-live-page-count">
-          ${country.count}
-        </span>
-      </div>
-    `)
-    .join("");
-}
-
-
-// ------------------------------------------------------------
-// UPDATE THE LIVE BADGE
-// ------------------------------------------------------------
-
-function updateBadge(onlineCount) {
-  const visitorWord =
-    onlineCount === 1
-      ? "Visitor"
-      : "Visitors";
-
-  liveBadge.textContent =
-    `Live Activity · ${onlineCount} ${visitorWord} Online`;
-}
-
-
-// ------------------------------------------------------------
-// RENDER ACTIVE PAGE ROWS
-// ------------------------------------------------------------
-
-function renderPageRows(pageCounts) {
-  const livePages =
-    document.getElementById("livePages");
-
-  if (!livePages) {
-    return;
-  }
-
-  if (pageCounts.length === 0) {
-    livePages.innerHTML = `
-      <div class="aby-live-page-row">
-        <span class="aby-live-page-name">
-          No active pages right now
-        </span>
-
-        <span class="aby-live-page-count">
-          0
-        </span>
-      </div>
-    `;
-
-    return;
-  }
-
-  livePages.innerHTML = pageCounts
-    .slice(0, 6)
-    .map(page => `
-      <div class="aby-live-page-row">
-        <span class="aby-live-page-name">
-          ${escapeHtml(page.pageName)}
-        </span>
-
-        <span class="aby-live-page-count">
-          ${page.count}
-        </span>
-      </div>
-    `)
-    .join("");
-}
-
-
-// ------------------------------------------------------------
-// SMOOTH NUMBER ANIMATION
-// ------------------------------------------------------------
-
-function animateNumber(elementId, newValue) {
-  const element =
-    document.getElementById(elementId);
-
-  if (!element) {
-    return;
-  }
-
-  const currentValue =
-    Number.parseInt(element.textContent, 10) || 0;
-
-  if (currentValue === newValue) {
-    return;
-  }
-
-  const difference = newValue - currentValue;
-  const duration = 350;
-  const startTime = performance.now();
-
-  function animate(currentTime) {
-    const elapsed = currentTime - startTime;
-    const progress = Math.min(elapsed / duration, 1);
-
-    const easedProgress =
-      1 - Math.pow(1 - progress, 3);
-
-    const displayedValue = Math.round(
-      currentValue + difference * easedProgress
-    );
-
-    element.textContent = String(displayedValue);
-
-    if (progress < 1) {
-      requestAnimationFrame(animate);
-    }
-  }
-
-  requestAnimationFrame(animate);
-}
-
-
-// ------------------------------------------------------------
-// PROTECT INTERFACE OUTPUT
-// ------------------------------------------------------------
-
-function escapeHtml(value) {
-  return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
-
-
-// Run stale-visitor cleanup when the dashboard loads.
-cleanupStaleVisitors();
-
-
-// Run cleanup again every 5 minutes.
-setInterval(
-  cleanupStaleVisitors,
-  5 * 60 * 1000
+const heartbeatTimer = window.setInterval(
+  sendHeartbeat,
+  HEARTBEAT_INTERVAL
 );
+
+
+// ------------------------------------------------------------
+// EXPOSE LIMITED TESTING CONTROLS
+// ------------------------------------------------------------
+
+window.ABYLiveTracker = {
+  visitorId,
+  sendHeartbeat,
+  markVisitorOffline,
+  updateListeningActivity,
+
+  refreshLocation() {
+    sessionStorage.removeItem(LOCATION_STORAGE_KEY);
+    return registerVisitor();
+  },
+
+  stopHeartbeat() {
+    window.clearInterval(heartbeatTimer);
+  }
+};
