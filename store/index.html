@@ -499,6 +499,104 @@
       letter-spacing:.06em;
       text-transform:uppercase;
     }
+
+    /* ===================== STORE CONTACT DIRECTORY ===================== */
+    .storeContact{
+      margin-top:28px;
+      border:1px solid rgba(255,210,120,.28);
+      background:
+        radial-gradient(650px 260px at 15% 0%, rgba(43,86,255,.16), transparent 60%),
+        rgba(255,255,255,.03);
+      border-radius:var(--radius);
+      padding:18px;
+      box-shadow:0 14px 40px rgba(0,0,0,.35);
+    }
+
+    .storeContact h2{
+      margin:0;
+      font-family:Georgia,"Times New Roman",serif;
+      font-size:20px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:rgba(255,230,170,.95);
+    }
+
+    .storeContactIntro{
+      margin:7px 0 0;
+      color:var(--muted);
+      font-size:13px;
+      line-height:1.5;
+    }
+
+    .storeContactGrid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:12px;
+      margin-top:14px;
+    }
+
+    .storeContactCard{
+      display:block;
+      padding:14px;
+      border-radius:16px;
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.20);
+      transition:transform .15s ease,border-color .15s ease,box-shadow .15s ease,background .15s ease;
+    }
+
+    .storeContactCard:hover{
+      transform:translateY(-1px);
+      border-color:rgba(43,86,255,.55);
+      box-shadow:0 0 0 3px rgba(43,86,255,.10);
+      background:rgba(43,86,255,.08);
+    }
+
+    .storeContactLabel{
+      display:block;
+      color:#cfe0ff;
+      font-size:11px;
+      font-weight:900;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+    }
+
+    .storeContactEmail{
+      display:block;
+      margin-top:6px;
+      color:rgba(255,230,170,.95);
+      font-size:13px;
+      font-weight:800;
+      overflow-wrap:anywhere;
+    }
+
+    .storeContactNote{
+      display:block;
+      margin-top:5px;
+      color:var(--muted);
+      font-size:11px;
+      line-height:1.4;
+    }
+
+    .storeFooter{
+      margin-top:18px;
+      padding-top:16px;
+      border-top:1px solid var(--line);
+      text-align:center;
+      color:var(--muted);
+      font-size:11px;
+      line-height:1.6;
+    }
+
+    .storeFooter a{
+      color:rgba(255,230,170,.95);
+      font-weight:800;
+    }
+
+    @media (max-width:820px){
+      .storeContactGrid{grid-template-columns:1fr;}
+    }
+    /* ===================== END STORE CONTACT DIRECTORY ===================== */
+
   </style>
 </head>
 
@@ -573,6 +671,41 @@
 
     <div class="sectionTitle">Singles</div>
     <div class="grid" id="singleGrid"></div>
+
+    <section class="storeContact" aria-labelledby="storeContactTitle">
+      <h2 id="storeContactTitle">Store Assistance</h2>
+      <p class="storeContactIntro">
+        Use the address that best matches your question so we can assist you quickly.
+      </p>
+
+      <div class="storeContactGrid">
+        <a class="storeContactCard" href="mailto:orders@awakenedbyyahmusic.com">
+          <span class="storeContactLabel">Orders &amp; Purchases</span>
+          <span class="storeContactEmail">orders@awakenedbyyahmusic.com</span>
+          <span class="storeContactNote">Payment questions, receipts, coupons, refunds, and purchase confirmation.</span>
+        </a>
+
+        <a class="storeContactCard" href="mailto:support@awakenedbyyahmusic.com">
+          <span class="storeContactLabel">Download Support</span>
+          <span class="storeContactEmail">support@awakenedbyyahmusic.com</span>
+          <span class="storeContactNote">Missing files, download trouble, broken links, or playback assistance.</span>
+        </a>
+
+        <a class="storeContactCard" href="mailto:info@awakenedbyyahmusic.com">
+          <span class="storeContactLabel">General Information</span>
+          <span class="storeContactEmail">info@awakenedbyyahmusic.com</span>
+          <span class="storeContactNote">General questions about AWAKENED BY YAH MUSIC and the digital store.</span>
+        </a>
+      </div>
+    </section>
+
+    <footer class="storeFooter">
+      © <span id="storeYear"></span> AWAKENED BY YAH MUSIC GROUP. All Rights Reserved.<br>
+      Order assistance: <a href="mailto:orders@awakenedbyyahmusic.com">orders@awakenedbyyahmusic.com</a>
+      &nbsp;•&nbsp;
+      Download support: <a href="mailto:support@awakenedbyyahmusic.com">support@awakenedbyyahmusic.com</a>
+    </footer>
+
   </div>
 
   <script>
@@ -973,6 +1106,7 @@
     /*****************************************************************
       INIT
     ******************************************************************/
+    document.getElementById("storeYear").textContent = new Date().getFullYear();
     buildCarousel();
     buildGrid("bundle", "bundleGrid");
     buildGrid("album", "albumGrid");
