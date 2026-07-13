@@ -480,9 +480,11 @@
     }
 
     .tierRibbon{
-      position:absolute;
-      top:13px;
-      right:13px;
+      display:inline-flex;
+      align-items:center;
+      width:max-content;
+      max-width:100%;
+      margin:0 0 11px;
       padding:5px 8px;
       border-radius:999px;
       border:1px solid rgba(245,195,88,.42);
@@ -491,7 +493,9 @@
       font-size:.56rem;
       font-weight:900;
       letter-spacing:.10em;
+      line-height:1.2;
       text-transform:uppercase;
+      white-space:normal;
     }
 
     .tierHead{
@@ -504,10 +508,12 @@
     .tierName{
       margin:0;
       font-family:"Cinzel",serif;
-      font-size:1rem;
-      letter-spacing:.10em;
+      font-size:clamp(.88rem,1.5vw,1rem);
+      line-height:1.35;
+      letter-spacing:.08em;
       color:#fff2d2;
       text-transform:uppercase;
+      overflow-wrap:anywhere;
     }
 
     .tierPrice{
@@ -905,9 +911,8 @@
           </article>
 
           <article class="tierCard featured">
-            <div class="tierRibbon">Growing the Work</div>
-
             <div class="tierHead">
+              <div class="tierRibbon">Growing the Work</div>
               <h3 class="tierName">Builder — Ministry Support</h3>
               <div class="tierPrice">$10<span>/ month</span></div>
             </div>
