@@ -644,7 +644,7 @@
     footer{
       padding:22px;
       display:grid;
-      grid-template-columns:1fr auto 1fr;
+      grid-template-columns:1fr auto auto 1fr;
       align-items:center;
       gap:18px;
       border-top:1px solid var(--line);
@@ -688,7 +688,51 @@
       line-height:1.5;
     }
 
-    [hidden]{ display:none !important; }
+
+    .review-contact{
+      margin-top:18px;
+      padding:14px;
+      border:1px solid var(--line);
+      background:rgba(215,168,61,.06);
+    }
+
+    .review-contact strong{
+      display:block;
+      margin-bottom:6px;
+      color:var(--gold-light);
+      font-family:"Cinzel",serif;
+      font-size:.72rem;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+
+    .review-contact p{
+      margin:0;
+      color:#cfc5b5;
+      font-size:.69rem;
+      line-height:1.65;
+    }
+
+    .review-contact a{
+      color:var(--gold-light);
+      text-decoration:underline;
+      text-underline-offset:3px;
+    }
+
+    .footer-contacts{
+      display:grid;
+      gap:4px;
+      text-align:center;
+      color:var(--muted);
+      font-size:.54rem;
+      line-height:1.55;
+    }
+
+    .footer-contacts a{
+      color:var(--gold-light);
+    }
+
+        [hidden]{ display:none !important; }
 
     @media (max-width:900px){
       .stats{ grid-template-columns:repeat(2,1fr); }
@@ -905,6 +949,16 @@
                 <li>Do not include private contact information.</li>
               </ul>
             </div>
+            <div class="review-contact">
+              <strong>Review Questions or Assistance</strong>
+              <p>
+                For questions about reviews, contact
+                <a href="mailto:reviews@awakenedbyyahmusic.com">reviews@awakenedbyyahmusic.com</a>.
+                For technical help submitting the form, contact
+                <a href="mailto:support@awakenedbyyahmusic.com">support@awakenedbyyahmusic.com</a>.
+              </p>
+            </div>
+
           </div>
 
           <form id="reviewForm" class="reviewForm" novalidate>
@@ -1097,6 +1151,11 @@
       <a href="/reviews/">Reviews</a>
       <a href="/press/">Press</a>
     </nav>
+
+    <div class="footer-contacts" aria-label="Review contact information">
+      <span>Reviews: <a href="mailto:reviews@awakenedbyyahmusic.com">reviews@awakenedbyyahmusic.com</a></span>
+      <span>Support: <a href="mailto:support@awakenedbyyahmusic.com">support@awakenedbyyahmusic.com</a></span>
+    </div>
 
     <div class="copyright">
       <span id="year"></span> © AWAKENED BY YAH MUSIC GROUP.<br>
