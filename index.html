@@ -1547,6 +1547,72 @@
       transform:translateY(-1px);
     }
 
+    .footer-contact-directory{
+      margin: 1rem auto 0.9rem;
+      max-width: 920px;
+      padding: 1rem;
+      border-radius: 18px;
+      border: 1px solid rgba(251,191,36,0.28);
+      background: rgba(15,23,42,0.72);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.38);
+    }
+
+    .footer-contact-title{
+      margin-bottom: 0.7rem;
+      color: #fbbf24;
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+    }
+
+    .footer-contact-grid{
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.65rem;
+    }
+
+    .footer-contact-link{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.12rem;
+      min-height: 70px;
+      padding: 0.7rem 0.85rem;
+      border-radius: 14px;
+      border: 1px solid rgba(148,163,184,0.28);
+      background: rgba(2,6,23,0.58);
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+    }
+
+    .footer-contact-link:hover{
+      transform: translateY(-1px);
+      border-color: rgba(251,191,36,0.72);
+      background: rgba(251,191,36,0.08);
+    }
+
+    .footer-contact-label{
+      color: #cbd5e1;
+      font-size: 0.64rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .footer-contact-email{
+      color: #f9fafb;
+      font-size: 0.76rem;
+      font-weight: 700;
+      word-break: break-word;
+    }
+
+    @media (max-width: 700px){
+      .footer-contact-grid{
+        grid-template-columns: 1fr;
+      }
+    }
+
     .entity-clarification{
       margin: 0.75rem auto 0.85rem;
       padding-top: 0.85rem;
@@ -2119,8 +2185,8 @@
         </a>
 
         <a class="official-contact"
-          href="mailto:yahuahsremnant@gmail.com?subject=Awakened%20By%20YAH%20Official%20Inquiry"
-          onclick="setTimeout(()=>window.open('https://mail.google.com/mail/?view=cm&fs=1&to=yahuahsremnant@gmail.com&su=Awakened%20By%20YAH%20Official%20Inquiry','_blank','noopener'), 150);">
+          href="mailto:info@awakenedbyyahmusic.com?subject=AWAKENED%20BY%20YAH%20Official%20Inquiry"
+          onclick="setTimeout(()=>window.open('https://mail.google.com/mail/?view=cm&fs=1&to=info@awakenedbyyahmusic.com&su=AWAKENED%20BY%20YAH%20Official%20Inquiry','_blank','noopener'), 150);">
           Official Contact
         </a>
       </nav>
@@ -2458,13 +2524,13 @@
           </p>
 
           <div class="signup-form">
-            <a class="btn btn-primary" href="mailto:yahuahsremnant@gmail.com?subject=Join%20The%20Remnant%20List">
+            <a class="btn btn-primary" href="mailto:info@awakenedbyyahmusic.com?subject=Join%20The%20Remnant%20List">
               Join By Email
             </a>
           </div>
 
           <p class="signup-note">
-            Official contact: yahuahsremnant@gmail.com
+            Official contact: info@awakenedbyyahmusic.com
           </p>
         </div>
       </section>
@@ -2477,6 +2543,31 @@
           <a href="https://music.apple.com/us/artist/awakened-by-yah/1860666182" target="_blank" rel="noopener noreferrer">
     Apple Music
 </a>
+        </div>
+
+        <div class="footer-contact-directory" aria-label="AWAKENED BY YAH MUSIC contact directory">
+          <div class="footer-contact-title">Contact AWAKENED BY YAH MUSIC</div>
+          <div class="footer-contact-grid">
+            <a class="footer-contact-link" href="mailto:info@awakenedbyyahmusic.com?subject=General%20Inquiry">
+              <span class="footer-contact-label">General Information</span>
+              <span class="footer-contact-email">info@awakenedbyyahmusic.com</span>
+            </a>
+
+            <a class="footer-contact-link" href="mailto:support@awakenedbyyahmusic.com?subject=Customer%20Support%20Request">
+              <span class="footer-contact-label">Customer Support</span>
+              <span class="footer-contact-email">support@awakenedbyyahmusic.com</span>
+            </a>
+
+            <a class="footer-contact-link" href="mailto:orders@awakenedbyyahmusic.com?subject=Order%20or%20Download%20Assistance">
+              <span class="footer-contact-label">Orders &amp; Downloads</span>
+              <span class="footer-contact-email">orders@awakenedbyyahmusic.com</span>
+            </a>
+
+            <a class="footer-contact-link" href="mailto:reviews@awakenedbyyahmusic.com?subject=Reviews%20and%20Feedback">
+              <span class="footer-contact-label">Reviews &amp; Feedback</span>
+              <span class="footer-contact-email">reviews@awakenedbyyahmusic.com</span>
+            </a>
+          </div>
         </div>
 
         <p>&copy; <span id="year"></span> AWAKENED BY YAH. All rights reserved.</p>
