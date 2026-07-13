@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <title>Videos | AWAKENED BY YAH MUSIC</title>
+  <meta
+    name="description"
+    content="Watch official AWAKENED BY YAH MUSIC videos, short-form visuals, featured releases, TikTok content, and YouTube premieres."
+  />
+  <link rel="canonical" href="https://awakenedbyyahmusic.com/videos/" />
+
+  <meta name="theme-color" content="#1C39A8" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Videos | AWAKENED BY YAH MUSIC" />
+  <meta
+    property="og:description"
+    content="Official visual hub for AWAKENED BY YAH MUSIC — videos, short-form content, featured releases, TikTok, and YouTube."
+  />
+  <meta property="og:url" content="https://awakenedbyyahmusic.com/videos/" />
+  <meta property="og:image" content="https://awakenedbyyahmusic.com/images/og-awakened-by-yah.jpg" />
+
+  <link rel="icon" type="image/png" href="/abytransparent.png">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" href="/favicon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#020617;
+      --panel:rgba(8,15,30,.88);
+      --panel2:rgba(255,255,255,.045);
+      --text:#edf2f7;
+      --muted:#9ba7b8;
+      --line:rgba(255,255,255,.11);
+      --blue:#1c39a8;
+      --blue2:#3158f5;
+      --gold:#f5c358;
+      --gold-soft:#ffe4a4;
+      --radius:24px;
+      --shadow:0 28px 90px rgba(0,0,0,.55);
+      --max:1180px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+
+    body{
+      margin:0;
+      min-height:100vh;
+      color:var(--text);
+      font-family:"Inter",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:
+        radial-gradient(1100px 700px at 8% -10%, rgba(49,88,245,.28), transparent 60%),
+        radial-gradient(900px 620px at 98% 5%, rgba(28,57,168,.28), transparent 62%),
+        radial-gradient(800px 550px at 50% 115%, rgba(245,195,88,.08), transparent 58%),
+        linear-gradient(180deg,#020617 0%,#050b17 54%,#020617 100%);
+      -webkit-font-smoothing:antialiased;
+    }
+
+    a{color:inherit;text-decoration:none}
+
+    .wrap{
+      width:min(var(--max),calc(100% - 28px));
+      margin:0 auto;
+      padding:18px 0 72px;
+    }
+
+    .topbar{
+      position:sticky;
+      top:10px;
+      z-index:50;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      padding:11px 14px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background:rgba(2,6,23,.74);
+      backdrop-filter:blur(18px);
+      box-shadow:0 14px 40px rgba(0,0,0,.34);
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:11px;
+      min-width:0;
+    }
+
+    .brand img{
+      width:39px;
+      height:39px;
+      object-fit:contain;
+      filter:drop-shadow(0 0 12px rgba(245,195,88,.20));
+    }
+
+    .brandText strong{
+      display:block;
+      font-family:"Cinzel",serif;
+      color:var(--gold-soft);
+      font-size:.82rem;
+      letter-spacing:.11em;
+      white-space:nowrap;
+    }
+
+    .brandText span{
+      display:block;
+      margin-top:1px;
+      color:var(--muted);
+      font-size:.58rem;
+      letter-spacing:.20em;
+      text-transform:uppercase;
+    }
+
+    nav{
+      display:flex;
+      align-items:center;
+      gap:7px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    nav a{
+      padding:8px 11px;
+      border-radius:999px;
+      border:1px solid transparent;
+      color:#cbd5e1;
+      font-size:.68rem;
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      transition:.16s ease;
+    }
+
+    nav a:hover,
+    nav a.active{
+      color:var(--gold-soft);
+      border-color:rgba(245,195,88,.34);
+      background:rgba(245,195,88,.08);
+    }
+
+    .hero{
+      margin-top:18px;
+      min-height:500px;
+      display:grid;
+      place-items:center;
+      text-align:center;
+      position:relative;
+      overflow:hidden;
+      isolation:isolate;
+      border:1px solid rgba(245,195,88,.32);
+      border-radius:32px;
+      box-shadow:var(--shadow);
+      background:
+        linear-gradient(180deg,rgba(1,4,14,.18),rgba(1,4,14,.88)),
+        radial-gradient(circle at 50% 12%,rgba(245,195,88,.16),transparent 31%),
+        url("/images/awakened-by-yah-banner.jpg") center/cover no-repeat;
+    }
+
+    .hero::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      z-index:-1;
+      background:
+        linear-gradient(110deg,transparent 0 35%,rgba(255,255,255,.05) 45%,transparent 55%),
+        radial-gradient(circle at 50% 48%,rgba(49,88,245,.22),transparent 56%);
+    }
+
+    .heroInner{
+      max-width:870px;
+      padding:68px 22px;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:9px;
+      padding:8px 13px;
+      border-radius:999px;
+      border:1px solid rgba(245,195,88,.34);
+      background:rgba(4,10,22,.58);
+      color:var(--gold-soft);
+      font-size:.69rem;
+      font-weight:900;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+    }
+
+    .eyebrowDot{
+      width:7px;
+      height:7px;
+      border-radius:50%;
+      background:var(--gold);
+      box-shadow:0 0 10px rgba(245,195,88,.72);
+    }
+
+    h1{
+      margin:23px 0 0;
+      font-family:"Cinzel",serif;
+      font-size:clamp(2.6rem,7vw,5.6rem);
+      line-height:.98;
+      letter-spacing:.055em;
+      text-transform:uppercase;
+      color:#fff7e3;
+      text-shadow:0 16px 45px rgba(0,0,0,.80),0 0 28px rgba(245,195,88,.18);
+    }
+
+    .heroLead{
+      max-width:760px;
+      margin:21px auto 0;
+      color:#e4e9f1;
+      font-size:clamp(.98rem,1.7vw,1.13rem);
+      line-height:1.8;
+    }
+
+    .heroActions{
+      display:flex;
+      justify-content:center;
+      gap:11px;
+      flex-wrap:wrap;
+      margin-top:28px;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:46px;
+      padding:0 19px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
+      color:var(--text);
+      font-size:.72rem;
+      font-weight:900;
+      letter-spacing:.10em;
+      text-transform:uppercase;
+      transition:.16s ease;
+    }
+
+    .btn:hover{
+      transform:translateY(-1px);
+      border-color:rgba(49,88,245,.62);
+      box-shadow:0 0 0 4px rgba(49,88,245,.10);
+    }
+
+    .btnPrimary{
+      border-color:rgba(245,195,88,.56);
+      background:linear-gradient(180deg,#f7d273,#d9a93d);
+      color:#10131a;
+      box-shadow:0 12px 30px rgba(245,195,88,.18);
+    }
+
+    .section{
+      margin-top:20px;
+      padding:28px;
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      background:
+        radial-gradient(700px 260px at 10% 0%,rgba(49,88,245,.10),transparent 55%),
+        linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.018));
+      box-shadow:0 18px 56px rgba(0,0,0,.32);
+    }
+
+    .sectionHeader{
+      max-width:760px;
+      margin:0 auto;
+      text-align:center;
+    }
+
+    .sectionKicker{
+      color:var(--gold);
+      font-size:.67rem;
+      font-weight:900;
+      letter-spacing:.20em;
+      text-transform:uppercase;
+    }
+
+    .sectionHeader h2{
+      margin:8px 0 0;
+      font-family:"Cinzel",serif;
+      font-size:clamp(1.55rem,3vw,2.2rem);
+      letter-spacing:.06em;
+      text-transform:uppercase;
+    }
+
+    .sectionHeader p{
+      margin:11px auto 0;
+      color:var(--muted);
+      line-height:1.75;
+      font-size:.91rem;
+    }
+
+    .platformGrid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:16px;
+      margin-top:24px;
+    }
+
+    .platformCard{
+      min-height:250px;
+      display:flex;
+      flex-direction:column;
+      padding:22px;
+      border:1px solid var(--line);
+      border-radius:22px;
+      background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.022));
+      box-shadow:0 18px 48px rgba(0,0,0,.30);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .platformCard::before{
+      content:"";
+      position:absolute;
+      inset:0 0 auto;
+      height:2px;
+      background:linear-gradient(90deg,transparent,var(--gold),transparent);
+      opacity:.68;
+    }
+
+    .platformBadge{
+      display:inline-flex;
+      align-items:center;
+      width:max-content;
+      max-width:100%;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(245,195,88,.34);
+      background:rgba(245,195,88,.08);
+      color:var(--gold-soft);
+      font-size:.62rem;
+      font-weight:900;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+    }
+
+    .platformCard h3{
+      margin:17px 0 0;
+      font-family:"Cinzel",serif;
+      color:#fff2d6;
+      font-size:1.15rem;
+      letter-spacing:.05em;
+      text-transform:uppercase;
+    }
+
+    .platformCard p{
+      margin:10px 0 0;
+      color:var(--muted);
+      font-size:.82rem;
+      line-height:1.7;
+      flex:1;
+    }
+
+    .platformActions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:18px;
+    }
+
+    .videoGrid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:16px;
+      margin-top:24px;
+    }
+
+    .videoCard{
+      overflow:hidden;
+      border:1px solid var(--line);
+      border-radius:20px;
+      background:rgba(2,6,23,.50);
+      box-shadow:0 16px 42px rgba(0,0,0,.30);
+    }
+
+    .videoThumb{
+      position:relative;
+      aspect-ratio:16/9;
+      overflow:hidden;
+      background:
+        radial-gradient(circle at 50% 40%,rgba(49,88,245,.30),transparent 55%),
+        linear-gradient(145deg,#111827,#020617);
+    }
+
+    .videoThumb img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    .playMark{
+      position:absolute;
+      inset:0;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(180deg,transparent,rgba(2,6,23,.55));
+    }
+
+    .playMark span{
+      width:58px;
+      height:58px;
+      display:grid;
+      place-items:center;
+      border-radius:50%;
+      border:1px solid rgba(255,255,255,.22);
+      background:rgba(2,6,23,.68);
+      color:var(--gold-soft);
+      font-size:1.25rem;
+      box-shadow:0 14px 32px rgba(0,0,0,.45);
+    }
+
+    .videoBody{padding:16px}
+
+    .videoBody h3{
+      margin:0;
+      font-size:.92rem;
+      line-height:1.45;
+    }
+
+    .videoBody p{
+      margin:8px 0 0;
+      color:var(--muted);
+      font-size:.76rem;
+      line-height:1.6;
+    }
+
+    .comingSoon{
+      margin-top:22px;
+      padding:24px;
+      text-align:center;
+      border:1px dashed rgba(245,195,88,.28);
+      border-radius:20px;
+      background:rgba(245,195,88,.04);
+    }
+
+    .comingSoon strong{
+      font-family:"Cinzel",serif;
+      color:var(--gold-soft);
+      font-size:1rem;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+    }
+
+    .comingSoon p{
+      margin:10px auto 0;
+      max-width:720px;
+      color:var(--muted);
+      font-size:.80rem;
+      line-height:1.7;
+    }
+
+    .quickLinks{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:10px;
+      margin-top:20px;
+    }
+
+    .quickLinks a{
+      padding:9px 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      color:#cbd5e1;
+      font-size:.69rem;
+      font-weight:800;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      transition:.16s ease;
+    }
+
+    .quickLinks a:hover{
+      border-color:rgba(245,195,88,.38);
+      color:var(--gold-soft);
+      background:rgba(245,195,88,.07);
+    }
+
+    footer{
+      margin-top:20px;
+      padding:22px;
+      text-align:center;
+      border-top:1px solid var(--line);
+      color:var(--muted);
+      font-size:.71rem;
+      line-height:1.7;
+    }
+
+    footer a{
+      color:var(--gold-soft);
+      font-weight:800;
+    }
+
+    @media (max-width:920px){
+      .videoGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+    }
+
+    @media (max-width:760px){
+      .topbar{
+        position:static;
+        border-radius:24px;
+        align-items:flex-start;
+        flex-direction:column;
+      }
+
+      nav{justify-content:flex-start}
+      .platformGrid,.videoGrid{grid-template-columns:1fr}
+      .hero{min-height:430px}
+      .heroInner{padding:56px 18px}
+      .section{padding:22px 15px}
+      .brandText strong{white-space:normal}
+    }
+
+    @media (max-width:480px){
+      .wrap{width:min(100% - 18px,var(--max))}
+      nav a{padding:7px 9px;font-size:.61rem}
+      h1{font-size:2.4rem}
+      .heroActions .btn{width:100%}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <header class="topbar">
+      <a class="brand" href="/">
+        <img src="/abytransparent.png" alt="AWAKENED BY YAH MUSIC logo">
+        <div class="brandText">
+          <strong>AWAKENED BY YAH</strong>
+          <span>Official Video Hub</span>
+        </div>
+      </a>
+
+      <nav aria-label="Primary navigation">
+        <a href="/">Home</a>
+        <a href="/music/">Music</a>
+        <a href="/albums/">Albums</a>
+        <a class="active" href="/videos/">Videos</a>
+        <a href="/store/">Store</a>
+        <a href="/press/">Press</a>
+        <a href="/subscribe/">Support</a>
+        <a href="/contact/">Contact</a>
+      </nav>
+    </header>
+
+    <main>
+
+      <section class="hero" aria-labelledby="videoTitle">
+        <div class="heroInner">
+          <div class="eyebrow">
+            <span class="eyebrowDot" aria-hidden="true"></span>
+            Official Visuals
+          </div>
+
+          <h1 id="videoTitle">Videos</h1>
+
+          <p class="heroLead">
+            Watch official AWAKENED BY YAH MUSIC visuals, short-form messages,
+            featured-release content, artist spotlights, and ministry-centered video presentations.
+          </p>
+
+          <div class="heroActions">
+            <a
+              class="btn btnPrimary"
+              href="https://www.tiktok.com/@awakened_by_yah"
+              target="_blank"
+              rel="noopener"
+            >
+              Watch on TikTok
+            </a>
+
+            <a
+              class="btn"
+              href="https://www.youtube.com/@YAHUAHS_REMNANT"
+              target="_blank"
+              rel="noopener"
+            >
+              Watch on YouTube
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="sectionHeader">
+          <div class="sectionKicker">Official Channels</div>
+          <h2>Choose Your Platform</h2>
+          <p>
+            Follow AWAKENED BY YAH MUSIC where you prefer to watch and share.
+          </p>
+        </div>
+
+        <div class="platformGrid">
+
+          <article class="platformCard">
+            <span class="platformBadge">Short-Form Visuals</span>
+            <h3>TikTok</h3>
+            <p>
+              Watch song previews, visual messages, release clips, short-form ministry content,
+              and current AWAKENED BY YAH MUSIC updates.
+            </p>
+
+            <div class="platformActions">
+              <a
+                class="btn btnPrimary"
+                href="https://www.tiktok.com/@awakened_by_yah"
+                target="_blank"
+                rel="noopener"
+              >
+                Open TikTok
+              </a>
+            </div>
+          </article>
+
+          <article class="platformCard">
+            <span class="platformBadge">Long-Form &amp; Premieres</span>
+            <h3>YouTube</h3>
+            <p>
+              Watch full-length music visuals, teachings, featured presentations,
+              official releases, and longer ministry-centered content.
+            </p>
+
+            <div class="platformActions">
+              <a
+                class="btn btnPrimary"
+                href="https://www.youtube.com/@YAHUAHS_REMNANT"
+                target="_blank"
+                rel="noopener"
+              >
+                Open YouTube
+              </a>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="sectionHeader">
+          <div class="sectionKicker">Featured Visuals</div>
+          <h2>Watch the Message</h2>
+          <p>
+            These featured cards are ready for direct video links whenever you want to add specific releases.
+          </p>
+        </div>
+
+        <div class="videoGrid">
+
+          <article class="videoCard">
+            <a href="https://www.tiktok.com/@awakened_by_yah" target="_blank" rel="noopener">
+              <div class="videoThumb">
+                <img src="/images/the-book-is-open-cover.png" alt="THE BOOK IS OPEN visual">
+                <div class="playMark"><span>▶</span></div>
+              </div>
+
+              <div class="videoBody">
+                <h3>THE BOOK IS OPEN</h3>
+                <p>Watch the latest short-form visual content and release promotion on TikTok.</p>
+              </div>
+            </a>
+          </article>
+
+          <article class="videoCard">
+            <a href="https://www.youtube.com/@YAHUAHS_REMNANT" target="_blank" rel="noopener">
+              <div class="videoThumb">
+                <img src="/images/one-stick.png" alt="ONE STICK visual">
+                <div class="playMark"><span>▶</span></div>
+              </div>
+
+              <div class="videoBody">
+                <h3>ONE STICK</h3>
+                <p>Explore official music and ministry visuals through the YouTube channel.</p>
+              </div>
+            </a>
+          </article>
+
+          <article class="videoCard">
+            <a href="https://www.tiktok.com/@awakened_by_yah" target="_blank" rel="noopener">
+              <div class="videoThumb">
+                <img src="/images/how-long-yahuah.png" alt="HOW LONG, YAHUAH? visual">
+                <div class="playMark"><span>▶</span></div>
+              </div>
+
+              <div class="videoBody">
+                <h3>HOW LONG, YAHUAH?</h3>
+                <p>Watch current short-form content, song moments, and visual messages.</p>
+              </div>
+            </a>
+          </article>
+
+        </div>
+
+        <div class="comingSoon">
+          <strong>More Official Visuals Coming</strong>
+          <p>
+            As new music videos, visualizers, interviews, and release clips are published,
+            this hub can be updated with direct links to each individual video.
+          </p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="sectionHeader">
+          <div class="sectionKicker">Explore More</div>
+          <h2>Continue Through the Site</h2>
+        </div>
+
+        <div class="quickLinks">
+          <a href="/music/">Music</a>
+          <a href="/albums/">Albums</a>
+          <a href="/store/">Digital Store</a>
+          <a href="/reviews/">Reviews</a>
+          <a href="/press/">Press Hub</a>
+          <a href="/subscribe/">Support the Ministry</a>
+          <a href="/contact/">Contact</a>
+        </div>
+      </section>
+
+    </main>
+
+    <footer>
+      © <span id="year"></span> AWAKENED BY YAH MUSIC GROUP. All Rights Reserved.<br>
+      General information:
+      <a href="mailto:info@awakenedbyyahmusic.com">info@awakenedbyyahmusic.com</a>
+    </footer>
+
+  </div>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+
+  <script type="module" src="/js/firebase-live.js"></script>
+
+  <!-- Start of Tawk.to Script -->
+  <script type="text/javascript">
+    var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+    (function(){
+      var s1 = document.createElement("script"),
+          s0 = document.getElementsByTagName("script")[0];
+      s1.async = true;
+      s1.src = "https://embed.tawk.to/6a52dd0e99e61d1d501ed9fa/1jt9qv06e";
+      s1.charset = "UTF-8";
+      s1.setAttribute("crossorigin","*");
+      s0.parentNode.insertBefore(s1,s0);
+    })();
+  </script>
+  <!-- End of Tawk.to Script -->
+
+</body>
+</html>
