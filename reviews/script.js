@@ -1,94 +1,12 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbz4i8uQxxHKfcv33EAwvr1YC9vJem4o4tEv5ePDFGxGY1PdZIwUzMMV_aQtBqxK3Pr0/exec";
+<script>
+  window.REVIEWS_FIREBASE_CONFIG = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_AUTH_DOMAIN",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_STORAGE_BUCKET",
+    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+    appId: "YOUR_APP_ID"
+  };
+</script>
 
-const TRACKS = [
-  "Hidden With You",
-  "Think About Me",
-  "Not My Will",
-  "The Secret Place",
-  "Ten Toes Down",
-  "Sound The Shupar"
-];
-
-function normalizeKey(value) {
-  return String(value || "")
-    .trim()
-    .toUpperCase()
-    .replace(/[^A-Z0-9]+/g, "_")
-    .replace(/^_+|_+$/g, "")
-    .replace(/_+/g, "_");
-}
-
-function buildTracks() {
-  const grid = document.getElementById("tracksGrid");
-  if (!grid) return;
-
-  grid.innerHTML = "";
-
-  TRACKS.forEach(track => {
-    const key = normalizeKey(track);
-
-    const card = document.createElement("div");
-    card.className = "trackCard";
-    card.setAttribute("data-track", key);
-
-    card.innerHTML = `
-      <div class="trackName">${track}</div>
-      <div class="starsRow">
-        <div class="stars">★★★★★</div>
-        <div class="meta">
-          <span class="rating-average">0.0 ★</span> • 
-          <span class="rating-count">(0 RATINGS)</span>
-        </div>
-      </div>
-      <div class="quote latest-review">
-        No ratings yet — be the first to rate this track.
-      </div>
-    `;
-
-    grid.appendChild(card);
-  });
-}
-
-function applyRatings(data) {
-  if (!data) return;
-
-  Object.keys(data).forEach(trackKey => {
-    const trackData = data[trackKey];
-    const card = document.querySelector(`[data-track="${trackKey}"]`);
-    if (!card) return;
-
-    const avgEl = card.querySelector(".rating-average");
-    const countEl = card.querySelector(".rating-count");
-    const reviewEl = card.querySelector(".latest-review");
-
-    if (avgEl)
-      avgEl.textContent = `${trackData.average.toFixed(1)} ★`;
-
-    if (countEl)
-      countEl.textContent =
-        `(${trackData.count} RATING${trackData.count > 1 ? "S" : ""})`;
-
-    if (reviewEl && trackData.latestComment) {
-      reviewEl.innerHTML = `
-        "${trackData.latestComment}"
-        <small>${trackData.latestName}</small>
-      `;
-    }
-  });
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  const status = document.getElementById("status");
-
-  buildTracks();
-
-  fetch(API_URL)
-    .then(res => res.json())
-    .then(data => {
-      applyRatings(data);
-      if (status) status.textContent = "";
-    })
-    .catch(() => {
-      if (status) status.textContent = "";
-    });
-});
+<script type="module" src="script.js"></script>
