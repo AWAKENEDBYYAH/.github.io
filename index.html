@@ -182,6 +182,87 @@
     }
     /* ===================== END TOP HOMEPAGE BANNER ===================== */
 
+    /* ===================== OFFICIAL BRAND TAGLINE ===================== */
+    .official-tagline{
+      width:100%;
+      min-height:74px;
+      padding:17px 22px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:20px;
+      text-align:center;
+      border-top:1px solid rgba(251,191,36,0.22);
+      border-bottom:1px solid rgba(251,191,36,0.42);
+      background:
+        radial-gradient(circle at 50% 50%, rgba(251,191,36,0.10), transparent 42%),
+        linear-gradient(180deg, rgba(4,4,4,0.98), rgba(10,8,4,0.98));
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.025),
+        0 12px 30px rgba(0,0,0,0.45);
+    }
+
+    .official-tagline p{
+      margin:0;
+      color:#fbbf24;
+      font-family:"Cinzel",serif;
+      font-size:clamp(0.92rem,2vw,1.35rem);
+      font-weight:700;
+      letter-spacing:0.16em;
+      line-height:1.45;
+      text-transform:uppercase;
+      text-shadow:
+        0 0 12px rgba(251,191,36,0.20),
+        0 8px 22px rgba(0,0,0,0.78);
+    }
+
+    .official-tagline__ornament{
+      width:min(155px,14vw);
+      height:1px;
+      position:relative;
+      flex:0 1 155px;
+      background:linear-gradient(90deg,transparent,rgba(251,191,36,0.84));
+    }
+
+    .official-tagline__ornament::after{
+      content:"◆";
+      position:absolute;
+      right:-4px;
+      top:50%;
+      transform:translateY(-50%) rotate(45deg);
+      color:#fbbf24;
+      font-size:0.48rem;
+      text-shadow:0 0 8px rgba(251,191,36,0.55);
+    }
+
+    .official-tagline__ornament--right{
+      background:linear-gradient(90deg,rgba(251,191,36,0.84),transparent);
+    }
+
+    .official-tagline__ornament--right::after{
+      right:auto;
+      left:-4px;
+    }
+
+    @media (max-width:640px){
+      .official-tagline{
+        min-height:66px;
+        gap:10px;
+        padding:15px 12px;
+      }
+
+      .official-tagline p{
+        font-size:0.82rem;
+        letter-spacing:0.11em;
+      }
+
+      .official-tagline__ornament{
+        width:34px;
+        flex-basis:34px;
+      }
+    }
+    /* ===================== END OFFICIAL BRAND TAGLINE ===================== */
+
     .page { min-height: 100vh; display: flex; flex-direction: column; padding-top: 0; }
     .shell { width: 100%; max-width: 1200px; margin: 0 auto; padding: 2rem 1.75rem 3rem; }
 
@@ -1624,6 +1705,67 @@
       }
     }
 
+    .footer-legal-links{
+      margin:1.15rem auto 0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:0.55rem;
+      flex-wrap:wrap;
+      color:#cbd5e1;
+    }
+
+    .footer-legal-links a{
+      color:#d7dce5;
+      font-size:0.68rem;
+      font-weight:700;
+      letter-spacing:0.08em;
+      text-transform:uppercase;
+      transition:color .15s ease;
+    }
+
+    .footer-legal-links a:hover{
+      color:#fbbf24;
+    }
+
+    .footer-legal-separator{
+      color:#fbbf24;
+      opacity:0.78;
+      font-size:0.68rem;
+    }
+
+    .footer-copyright{
+      margin-top:1rem;
+      color:#d9dee7;
+      font-size:0.74rem;
+      font-weight:700;
+      letter-spacing:0.08em;
+    }
+
+    .footer-official-tagline{
+      margin-top:0.35rem;
+      color:#fbbf24;
+      font-family:"Cinzel",serif;
+      font-size:0.78rem;
+      font-style:italic;
+      font-weight:700;
+      letter-spacing:0.08em;
+    }
+
+    @media (max-width:640px){
+      .footer-legal-links{
+        gap:0.42rem;
+      }
+
+      .footer-legal-links a{
+        font-size:0.60rem;
+      }
+
+      .footer-official-tagline{
+        font-size:0.70rem;
+      }
+    }
+
     .entity-clarification{
       margin: 0.75rem auto 0.85rem;
       padding-top: 0.85rem;
@@ -1906,6 +2048,13 @@
   <div class="top-header-banner" aria-label="AWAKENED BY YAH banner">
     <img src="/images/awakened-by-yah-banner.jpg" alt="AWAKENED BY YAH - Uriyah and Zapanyah">
   </div>
+
+  <!-- ✅ OFFICIAL AWAKENED BY YAH MUSIC TAGLINE -->
+  <section class="official-tagline" aria-label="AWAKENED BY YAH MUSIC official tagline">
+    <span class="official-tagline__ornament" aria-hidden="true"></span>
+    <p>Don't Just Stream It, Own The Sound!</p>
+    <span class="official-tagline__ornament official-tagline__ornament--right" aria-hidden="true"></span>
+  </section>
 
   <!-- ===================== INTRO OVERLAY (runs once per session) ===================== -->
   <div id="introOverlay" aria-hidden="true">
@@ -2578,7 +2727,29 @@
           </div>
         </div>
 
-        <p>&copy; <span id="year"></span> AWAKENED BY YAH. All rights reserved.</p>
+        <nav
+          class="footer-legal-links"
+          aria-label="Legal and support navigation"
+        >
+          <a href="/privacy/">Privacy Policy</a>
+          <span class="footer-legal-separator" aria-hidden="true">|</span>
+
+          <a href="/terms/">Terms of Service</a>
+          <span class="footer-legal-separator" aria-hidden="true">|</span>
+
+          <a href="/contact/">Contact</a>
+          <span class="footer-legal-separator" aria-hidden="true">|</span>
+
+          <a href="/subscribe/">Support the Ministry</a>
+        </nav>
+
+        <p class="footer-copyright">
+          &copy; <span id="year"></span> AWAKENED BY YAH MUSIC GROUP
+        </p>
+
+        <p class="footer-official-tagline">
+          Don't Just Stream It, Own The Sound!
+        </p>
 
         <div class="entity-clarification">
           AWAKENED BY YAH is the official artist and music brand. YAHUAH'S_REMNANT is a separate teaching platform.
