@@ -162,7 +162,21 @@ function cacheElements() {
     "artistResponsesList",
 
     "reviewModal",
-    "reviewModalContent"
+    "reviewModalContent",
+
+    "artistResponseModal",
+    "artistResponseForm",
+    "artistResponseReviewId",
+    "artistResponseReviewer",
+    "artistResponseRelease",
+    "artistResponseRating",
+    "artistResponseOriginalReview",
+    "artistResponseText",
+    "artistResponseCharacterCount",
+    "artistResponsePreviewText",
+    "artistResponseMessage",
+    "saveArtistResponseButton",
+    "removeArtistResponseButton"
   ];
 
   elementIds.forEach(id => {
@@ -673,6 +687,21 @@ function normalizeReview(reviewId, data) {
         data.artistResponse
       ),
 
+    artistRespondedAt:
+      timestampToDate(
+        data.artistRespondedAt
+      ),
+
+    artistResponseUpdatedAt:
+      timestampToDate(
+        data.artistResponseUpdatedAt
+      ),
+
+    artistRespondedBy:
+      cleanText(
+        data.artistRespondedBy
+      ),
+
     helpfulCount:
       Math.max(
         0,
@@ -914,11 +943,23 @@ function createAdminReviewCard(review) {
         </h4>
       </div>
 
-      <span class="review-status review-status--${escapeAttribute(
-        review.status
-      )}">
-        ${escapeHtml(statusLabel)}
-      </span>
+      <div class="admin-review-card__status-group">
+        <span class="review-status review-status--${escapeAttribute(
+          review.status
+        )}">
+          ${escapeHtml(statusLabel)}
+        </span>
+
+        ${
+          review.artistResponse
+            ? `
+              <span class="review-response-badge">
+                Responded
+              </span>
+            `
+            : ""
+        }
+      </div>
     </div>
 
     <p class="admin-review-card__meta">
@@ -1338,30 +1379,270 @@ async function toggleReviewOfMonth(review) {
    ARTIST RESPONSE
 ========================================================= */
 
-async function openArtistResponsePrompt(review) {
-  const response =
-    window.prompt(
-      "Enter the official AWAKENED BY YAH MUSIC response:",
-      review.artistResponse
+function openArtistResponsePrompt(review) {
+  if (
+    !elements.artistResponseModal ||
+    !elements.artistResponseForm ||
+    !elements.artistResponseText
+  ) {
+    showDashboardMessage(
+      "The artist response editor could not be opened.",
+      "error"
     );
 
-  if (response === null) {
+    return;
+  }
+
+  state.selectedReviewId =
+    review.id;
+
+  if (elements.artistResponseReviewId) {
+    elements.artistResponseReviewId.value =
+      review.id;
+  }
+
+  setText(
+    elements.artistResponseReviewer,
+    review.reviewerName
+  );
+
+  setText(
+    elements.artistResponseRelease,
+    review.releaseTitle
+  );
+
+  setText(
+    elements.artistResponseRating,
+    renderStars(review.rating)
+  );
+
+  setText(
+    elements.artistResponseOriginalReview,
+    review.reviewText
+  );
+
+  elements.artistResponseText.value =
+    review.artistResponse || "";
+
+  updateArtistResponseEditor();
+
+  if (elements.removeArtistResponseButton) {
+    elements.removeArtistResponseButton.hidden =
+      !review.artistResponse;
+  }
+
+  showArtistResponseMessage("", "");
+
+  elements.artistResponseModal.hidden =
+    false;
+
+  document.body.style.overflow =
+    "hidden";
+
+  window.setTimeout(
+    () => {
+      elements.artistResponseText?.focus();
+
+      const textLength =
+        elements.artistResponseText?.value.length || 0;
+
+      elements.artistResponseText?.setSelectionRange(
+        textLength,
+        textLength
+      );
+    },
+    40
+  );
+}
+
+function closeArtistResponseModal() {
+  if (elements.artistResponseModal) {
+    elements.artistResponseModal.hidden =
+      true;
+  }
+
+  if (elements.artistResponseForm) {
+    elements.artistResponseForm.reset();
+  }
+
+  state.selectedReviewId = null;
+
+  showArtistResponseMessage("", "");
+
+  document.body.style.overflow = "";
+}
+
+function updateArtistResponseEditor() {
+  const responseText =
+    String(
+      elements.artistResponseText?.value || ""
+    );
+
+  const responseLength =
+    responseText.length;
+
+  if (elements.artistResponseCharacterCount) {
+    elements.artistResponseCharacterCount.textContent =
+      `${responseLength.toLocaleString()} / 1,000`;
+
+    elements.artistResponseCharacterCount.classList.toggle(
+      "is-over-limit",
+      responseLength > 1000
+    );
+  }
+
+  if (elements.artistResponsePreviewText) {
+    elements.artistResponsePreviewText.textContent =
+      responseText.trim() ||
+      "Your response preview will appear here.";
+  }
+
+  if (elements.saveArtistResponseButton) {
+    elements.saveArtistResponseButton.disabled =
+      responseLength > 1000;
+  }
+
+  if (elements.artistResponseText) {
+    elements.artistResponseText.style.height =
+      "auto";
+
+    elements.artistResponseText.style.height =
+      `${Math.max(
+        180,
+        elements.artistResponseText.scrollHeight
+      )}px`;
+  }
+}
+
+async function saveArtistResponse(event) {
+  event.preventDefault();
+
+  const reviewId =
+    String(
+      elements.artistResponseReviewId?.value ||
+      state.selectedReviewId ||
+      ""
+    ).trim();
+
+  const review =
+    state.reviews.find(item => {
+      return item.id === reviewId;
+    });
+
+  if (!review) {
+    showArtistResponseMessage(
+      "The selected review could not be found.",
+      "error"
+    );
+
     return;
   }
 
   const cleanedResponse =
-    response.trim();
+    String(
+      elements.artistResponseText?.value || ""
+    ).trim();
 
-  if (
-    cleanedResponse.length > 1000
-  ) {
-    showDashboardMessage(
+  if (!cleanedResponse) {
+    showArtistResponseMessage(
+      "Write a response before saving, or use Remove Response to delete an existing response.",
+      "error"
+    );
+
+    return;
+  }
+
+  if (cleanedResponse.length > 1000) {
+    showArtistResponseMessage(
       "Artist responses must be 1,000 characters or fewer.",
       "error"
     );
 
     return;
   }
+
+  setArtistResponseSavingState(true);
+  showArtistResponseMessage("", "");
+
+  try {
+    const responseData = {
+      artistResponse:
+        cleanedResponse,
+
+      artistResponseUpdatedAt:
+        serverTimestamp(),
+
+      artistRespondedBy:
+        "AWAKENED BY YAH MUSIC"
+    };
+
+    if (!review.artistRespondedAt) {
+      responseData.artistRespondedAt =
+        serverTimestamp();
+    }
+
+    await updateDoc(
+      doc(
+        db,
+        REVIEWS_COLLECTION,
+        review.id
+      ),
+      responseData
+    );
+
+    showDashboardMessage(
+      review.artistResponse
+        ? "The artist response was updated."
+        : "The artist response was published.",
+      "success"
+    );
+
+    closeArtistResponseModal();
+
+    await loadReviewDashboard();
+  } catch (error) {
+    handleAdminWriteError(
+      "The artist response could not be saved.",
+      error
+    );
+
+    showArtistResponseMessage(
+      "The response could not be saved. Please try again.",
+      "error"
+    );
+  } finally {
+    setArtistResponseSavingState(false);
+  }
+}
+
+async function removeArtistResponse() {
+  const reviewId =
+    String(
+      elements.artistResponseReviewId?.value ||
+      state.selectedReviewId ||
+      ""
+    ).trim();
+
+  const review =
+    state.reviews.find(item => {
+      return item.id === reviewId;
+    });
+
+  if (!review || !review.artistResponse) {
+    return;
+  }
+
+  const confirmed =
+    window.confirm(
+      `Remove the official response to ${review.reviewerName}'s review?`
+    );
+
+  if (!confirmed) {
+    return;
+  }
+
+  setArtistResponseSavingState(true);
+  showArtistResponseMessage("", "");
 
   try {
     await updateDoc(
@@ -1371,25 +1652,68 @@ async function openArtistResponsePrompt(review) {
         review.id
       ),
       {
-        artistResponse:
-          cleanedResponse
+        artistResponse: "",
+        artistRespondedAt: null,
+        artistResponseUpdatedAt:
+          serverTimestamp(),
+        artistRespondedBy: ""
       }
     );
 
     showDashboardMessage(
-      cleanedResponse
-        ? "The artist response was saved."
-        : "The artist response was removed.",
+      "The artist response was removed.",
       "success"
     );
+
+    closeArtistResponseModal();
 
     await loadReviewDashboard();
   } catch (error) {
     handleAdminWriteError(
-      "The artist response could not be saved.",
+      "The artist response could not be removed.",
       error
     );
+
+    showArtistResponseMessage(
+      "The response could not be removed. Please try again.",
+      "error"
+    );
+  } finally {
+    setArtistResponseSavingState(false);
   }
+}
+
+function setArtistResponseSavingState(isSaving) {
+  if (elements.saveArtistResponseButton) {
+    elements.saveArtistResponseButton.disabled =
+      isSaving;
+
+    elements.saveArtistResponseButton.textContent =
+      isSaving
+        ? "Saving…"
+        : "Save Response";
+  }
+
+  if (elements.removeArtistResponseButton) {
+    elements.removeArtistResponseButton.disabled =
+      isSaving;
+  }
+
+  if (elements.artistResponseText) {
+    elements.artistResponseText.disabled =
+      isSaving;
+  }
+}
+
+function showArtistResponseMessage(
+  message,
+  type
+) {
+  showMessage(
+    elements.artistResponseMessage,
+    message,
+    type
+  );
 }
 
 
@@ -1447,11 +1771,62 @@ function connectModalControls() {
       );
     });
 
-  document.addEventListener(
+  document
+    .querySelectorAll(
+      "[data-close-artist-response]"
+    )
+    .forEach(element => {
+      element.addEventListener(
+        "click",
+        closeArtistResponseModal
+      );
+    });
+
+  elements.artistResponseForm?.addEventListener(
+    "submit",
+    saveArtistResponse
+  );
+
+  elements.artistResponseText?.addEventListener(
+    "input",
+    updateArtistResponseEditor
+  );
+
+  elements.artistResponseText?.addEventListener(
     "keydown",
     event => {
       if (
-        event.key === "Escape" &&
+        event.key === "Enter" &&
+        (event.ctrlKey || event.metaKey)
+      ) {
+        event.preventDefault();
+
+        elements.artistResponseForm?.requestSubmit();
+      }
+    }
+  );
+
+  elements.removeArtistResponseButton?.addEventListener(
+    "click",
+    removeArtistResponse
+  );
+
+  document.addEventListener(
+    "keydown",
+    event => {
+      if (event.key !== "Escape") {
+        return;
+      }
+
+      if (
+        elements.artistResponseModal &&
+        !elements.artistResponseModal.hidden
+      ) {
+        closeArtistResponseModal();
+        return;
+      }
+
+      if (
         elements.reviewModal &&
         !elements.reviewModal.hidden
       ) {
