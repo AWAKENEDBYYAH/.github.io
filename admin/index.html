@@ -940,6 +940,216 @@
 
 
   <!-- =====================================================
+       PROFESSIONAL ARTIST RESPONSE MODAL
+       Added without changing the existing review modal.
+  ====================================================== -->
+
+  <div
+    id="artistResponseModal"
+    class="modal artist-response-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="artistResponseModalTitle"
+    hidden
+  >
+
+    <div
+      class="modal-backdrop"
+      data-close-artist-response
+    ></div>
+
+    <div class="modal-panel artist-response-panel">
+
+      <button
+        class="modal-close"
+        type="button"
+        data-close-artist-response
+        aria-label="Close artist response editor"
+      >
+        ×
+      </button>
+
+      <header class="artist-response-header">
+
+        <p class="panel-eyebrow">
+          OFFICIAL ARTIST COMMUNICATION
+        </p>
+
+        <h2 id="artistResponseModalTitle">
+          AWAKENED BY YAH MUSIC Response
+        </h2>
+
+        <p class="artist-response-intro">
+          Write, preview, publish, edit, or remove the official response
+          that will appear beneath this listener review.
+        </p>
+
+      </header>
+
+
+      <section
+        class="artist-response-review-summary"
+        aria-label="Selected review summary"
+      >
+
+        <div>
+          <span class="artist-response-summary-label">
+            Reviewer
+          </span>
+
+          <strong id="artistResponseReviewer">
+            —
+          </strong>
+        </div>
+
+        <div>
+          <span class="artist-response-summary-label">
+            Release
+          </span>
+
+          <strong id="artistResponseRelease">
+            —
+          </strong>
+        </div>
+
+        <div>
+          <span class="artist-response-summary-label">
+            Rating
+          </span>
+
+          <strong id="artistResponseRating">
+            —
+          </strong>
+        </div>
+
+      </section>
+
+
+      <section class="artist-response-original-review">
+
+        <span class="artist-response-summary-label">
+          Listener Review
+        </span>
+
+        <p id="artistResponseOriginalReview">
+          —
+        </p>
+
+      </section>
+
+
+      <form
+        id="artistResponseForm"
+        class="artist-response-form"
+        novalidate
+      >
+
+        <input
+          id="artistResponseReviewId"
+          type="hidden"
+          value=""
+        >
+
+        <div class="artist-response-field-header">
+
+          <label for="artistResponseText">
+            Official Response
+          </label>
+
+          <span
+            id="artistResponseCharacterCount"
+            class="artist-response-character-count"
+          >
+            0 / 1,000
+          </span>
+
+        </div>
+
+        <textarea
+          id="artistResponseText"
+          name="artistResponse"
+          maxlength="1000"
+          rows="8"
+          placeholder="Write the official AWAKENED BY YAH MUSIC response…"
+        ></textarea>
+
+        <p class="artist-response-helper">
+          This response will be published publicly beneath the approved review.
+          Press Ctrl + Enter to save.
+        </p>
+
+
+        <section
+          id="artistResponsePreview"
+          class="artist-response-preview"
+          aria-live="polite"
+        >
+
+          <span class="artist-response-summary-label">
+            Public Preview
+          </span>
+
+          <div class="artist-response-preview__box">
+
+            <strong>
+              Response from AWAKENED BY YAH MUSIC
+            </strong>
+
+            <p id="artistResponsePreviewText">
+              Your response preview will appear here.
+            </p>
+
+          </div>
+
+        </section>
+
+
+        <div
+          id="artistResponseMessage"
+          class="dashboard-message"
+          role="status"
+          aria-live="polite"
+          hidden
+        ></div>
+
+
+        <div class="artist-response-actions">
+
+          <button
+            id="saveArtistResponseButton"
+            class="admin-action-button admin-action-button--approve"
+            type="submit"
+          >
+            Save Response
+          </button>
+
+          <button
+            id="removeArtistResponseButton"
+            class="admin-action-button admin-action-button--reject"
+            type="button"
+            hidden
+          >
+            Remove Response
+          </button>
+
+          <button
+            class="admin-action-button"
+            type="button"
+            data-close-artist-response
+          >
+            Cancel
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
        FIREBASE CONFIGURATION
   ====================================================== -->
 
