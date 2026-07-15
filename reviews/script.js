@@ -356,6 +356,12 @@ function normalizeReview(reviewId, reviewData) {
     artistResponse:
       cleanText(reviewData.artistResponse),
 
+    artistRespondedAt:
+      timestampToDate(
+        reviewData.artistRespondedAt ||
+        reviewData.artistResponseUpdatedAt
+      ),
+
     helpfulCount:
       Math.max(
         0,
@@ -557,15 +563,35 @@ function createReviewCard(review, options = {}) {
       ? `
         <section
           class="artist-response"
-          aria-label="Artist response"
+          aria-label="Official response from AWAKENED BY YAH MUSIC GROUP"
         >
-          <div class="artist-response__label">
-            Response from AWAKENED BY YAH
+          <div class="artist-response__official">
+            Official Response
           </div>
 
-          <p>
+          <div class="artist-response__company">
+            AWAKENED BY YAH MUSIC GROUP
+          </div>
+
+          <div
+            class="artist-response__divider"
+            aria-hidden="true"
+          ></div>
+
+          <p class="artist-response__text">
             ${escapeHtml(review.artistResponse)}
           </p>
+
+          ${
+            review.artistRespondedAt
+              ? `
+                <div class="artist-response__date">
+                  Responded:
+                  ${formatDate(review.artistRespondedAt)}
+                </div>
+              `
+              : ""
+          }
         </section>
       `
       : "";
