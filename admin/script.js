@@ -63,6 +63,7 @@ const AUTHORIZED_ADMIN_EMAIL =
     .toLowerCase();
 
 const REVIEWS_COLLECTION = "reviews";
+const SUBSCRIBERS_COLLECTION = "subscribers";
 
 
 /* =========================================================
@@ -97,7 +98,10 @@ const state = {
   reviews: [],
   activeView: "dashboard",
   loading: false,
-  selectedReviewId: null
+  selectedReviewId: null,
+  subscribers: [],
+  subscriberSearch: "",
+  subscriberStatus: "all"
 };
 
 const elements = {};
@@ -117,6 +121,7 @@ function initializeAdminCenter() {
   connectLoginControls();
   connectDashboardControls();
   connectModalControls();
+  connectSubscriberControls();
   initializePasswordVisibility();
 
   onAuthStateChanged(
@@ -176,7 +181,16 @@ function cacheElements() {
     "artistResponsePreviewText",
     "artistResponseMessage",
     "saveArtistResponseButton",
-    "removeArtistResponseButton"
+    "removeArtistResponseButton",
+
+    "subscriberNavBadge",
+    "activeSubscriberCount",
+    "subscriberActiveSummary",
+    "subscriberUnsubscribedSummary",
+    "subscriberSearchInput",
+    "subscriberStatusFilter",
+    "exportSubscribersButton",
+    "subscribersList"
   ];
 
   elementIds.forEach(id => {
@@ -396,7 +410,10 @@ async function handleAuthenticationChange(user) {
 
   showDashboardScreen();
 
-  await loadReviewDashboard();
+  await Promise.all([
+    loadReviewDashboard(),
+    loadSubscribers()
+  ]);
 }
 
 
@@ -503,7 +520,12 @@ function connectDashboardControls() {
 
   elements.refreshDashboardButton?.addEventListener(
     "click",
-    loadReviewDashboard
+    async () => {
+      await Promise.all([
+        loadReviewDashboard(),
+        loadSubscribers()
+      ]);
+    }
   );
 
   document
@@ -603,6 +625,511 @@ async function loadReviewDashboard() {
 
     setRefreshButtonState(false);
   }
+}
+
+
+/* =========================================================
+   REMNANT LIST SUBSCRIBERS
+========================================================= */
+
+function connectSubscriberControls() {
+  elements.subscriberSearchInput?.addEventListener(
+    "input",
+    () => {
+      state.subscriberSearch =
+        String(
+          elements.subscriberSearchInput.value || ""
+        )
+          .trim()
+          .toLowerCase();
+
+      renderSubscribers();
+    }
+  );
+
+  elements.subscriberStatusFilter?.addEventListener(
+    "change",
+    () => {
+      state.subscriberStatus =
+        String(
+          elements.subscriberStatusFilter.value || "all"
+        );
+
+      renderSubscribers();
+    }
+  );
+
+  elements.exportSubscribersButton?.addEventListener(
+    "click",
+    exportSubscribersToCsv
+  );
+}
+
+async function loadSubscribers() {
+  if (!state.currentUser) {
+    return;
+  }
+
+  try {
+    const subscribersReference =
+      collection(
+        db,
+        SUBSCRIBERS_COLLECTION
+      );
+
+    const snapshot =
+      await getDocs(
+        subscribersReference
+      );
+
+    state.subscribers =
+      snapshot.docs
+        .map(snapshotDocument => {
+          return normalizeSubscriber(
+            snapshotDocument.id,
+            snapshotDocument.data()
+          );
+        })
+        .sort((subscriberA, subscriberB) => {
+          return (
+            subscriberB.joinedDate -
+            subscriberA.joinedDate
+          );
+        });
+
+    renderSubscriberStatistics();
+    renderSubscribers();
+  } catch (error) {
+    console.error(
+      "Unable to load subscribers:",
+      error
+    );
+
+    showDashboardMessage(
+      "The subscriber list could not be loaded. Publish the updated Firestore rules first.",
+      "error"
+    );
+  }
+}
+
+function normalizeSubscriber(
+  subscriberId,
+  data
+) {
+  return {
+    id: subscriberId,
+
+    name:
+      cleanText(data.name) ||
+      "Remnant Subscriber",
+
+    email:
+      cleanText(data.email),
+
+    emailNormalized:
+      cleanText(data.emailNormalized),
+
+    status:
+      cleanText(data.status) ||
+      "active",
+
+    source:
+      cleanText(data.source) ||
+      "website",
+
+    consent:
+      Boolean(data.consent),
+
+    joinedDate:
+      timestampToDate(data.joinedAt) ||
+      new Date(0),
+
+    updatedDate:
+      timestampToDate(data.updatedAt),
+
+    unsubscribedDate:
+      timestampToDate(data.unsubscribedAt)
+  };
+}
+
+function renderSubscriberStatistics() {
+  const activeSubscribers =
+    state.subscribers.filter(subscriber => {
+      return subscriber.status === "active";
+    });
+
+  const unsubscribedSubscribers =
+    state.subscribers.filter(subscriber => {
+      return subscriber.status === "unsubscribed";
+    });
+
+  setText(
+    elements.subscriberNavBadge,
+    activeSubscribers.length
+  );
+
+  setText(
+    elements.activeSubscriberCount,
+    activeSubscribers.length
+  );
+
+  setText(
+    elements.subscriberActiveSummary,
+    activeSubscribers.length
+  );
+
+  setText(
+    elements.subscriberUnsubscribedSummary,
+    unsubscribedSubscribers.length
+  );
+}
+
+function getFilteredSubscribers() {
+  return state.subscribers.filter(subscriber => {
+    const matchesStatus =
+      state.subscriberStatus === "all" ||
+      subscriber.status ===
+        state.subscriberStatus;
+
+    const searchHaystack =
+      `${subscriber.name} ${subscriber.email}`
+        .toLowerCase();
+
+    const matchesSearch =
+      !state.subscriberSearch ||
+      searchHaystack.includes(
+        state.subscriberSearch
+      );
+
+    return (
+      matchesStatus &&
+      matchesSearch
+    );
+  });
+}
+
+function renderSubscribers() {
+  if (!elements.subscribersList) {
+    return;
+  }
+
+  const subscribers =
+    getFilteredSubscribers();
+
+  elements.subscribersList.innerHTML = "";
+
+  if (subscribers.length === 0) {
+    elements.subscribersList.innerHTML = `
+      <div class="dashboard-empty-state">
+        <span aria-hidden="true">✉</span>
+
+        <h4>
+          No subscribers match this view.
+        </h4>
+
+        <p>
+          New Remnant List subscriptions will appear here.
+        </p>
+      </div>
+    `;
+
+    return;
+  }
+
+  subscribers.forEach(subscriber => {
+    elements.subscribersList.appendChild(
+      createSubscriberCard(subscriber)
+    );
+  });
+}
+
+function createSubscriberCard(subscriber) {
+  const article =
+    document.createElement("article");
+
+  article.className =
+    "subscriber-card";
+
+  article.innerHTML = `
+    <div class="subscriber-card__identity">
+      <div class="subscriber-card__avatar" aria-hidden="true">
+        ${escapeHtml(
+          subscriber.name
+            .charAt(0)
+            .toUpperCase() || "R"
+        )}
+      </div>
+
+      <div>
+        <h4>
+          ${escapeHtml(subscriber.name)}
+        </h4>
+
+        <a href="mailto:${escapeAttribute(subscriber.email)}">
+          ${escapeHtml(subscriber.email)}
+        </a>
+      </div>
+    </div>
+
+    <div class="subscriber-card__details">
+      <span>
+        Joined
+        <strong>${formatDate(subscriber.joinedDate)}</strong>
+      </span>
+
+      <span>
+        Source
+        <strong>${escapeHtml(subscriber.source)}</strong>
+      </span>
+
+      <span>
+        Status
+        <strong class="subscriber-status subscriber-status--${escapeAttribute(subscriber.status)}">
+          ${subscriber.status === "active" ? "Active" : "Unsubscribed"}
+        </strong>
+      </span>
+    </div>
+
+    <div class="subscriber-card__actions">
+      <button
+        class="admin-action-button"
+        type="button"
+        data-subscriber-action="toggle"
+        data-subscriber-id="${escapeAttribute(subscriber.id)}"
+      >
+        ${
+          subscriber.status === "active"
+            ? "Mark Unsubscribed"
+            : "Reactivate"
+        }
+      </button>
+
+      <button
+        class="admin-action-button admin-action-button--reject"
+        type="button"
+        data-subscriber-action="delete"
+        data-subscriber-id="${escapeAttribute(subscriber.id)}"
+      >
+        Delete
+      </button>
+    </div>
+  `;
+
+  article
+    .querySelectorAll(
+      "[data-subscriber-action]"
+    )
+    .forEach(button => {
+      button.addEventListener(
+        "click",
+        () => {
+          handleSubscriberAction(
+            button.dataset.subscriberAction,
+            button.dataset.subscriberId
+          );
+        }
+      );
+    });
+
+  return article;
+}
+
+async function handleSubscriberAction(
+  action,
+  subscriberId
+) {
+  const subscriber =
+    state.subscribers.find(item => {
+      return item.id === subscriberId;
+    });
+
+  if (!subscriber) {
+    return;
+  }
+
+  if (action === "toggle") {
+    await toggleSubscriberStatus(subscriber);
+    return;
+  }
+
+  if (action === "delete") {
+    await deleteSubscriber(subscriber);
+  }
+}
+
+async function toggleSubscriberStatus(
+  subscriber
+) {
+  const becomingUnsubscribed =
+    subscriber.status === "active";
+
+  const confirmed =
+    window.confirm(
+      becomingUnsubscribed
+        ? `Mark ${subscriber.email} as unsubscribed?`
+        : `Reactivate ${subscriber.email}?`
+    );
+
+  if (!confirmed) {
+    return;
+  }
+
+  try {
+    await updateDoc(
+      doc(
+        db,
+        SUBSCRIBERS_COLLECTION,
+        subscriber.id
+      ),
+      {
+        status:
+          becomingUnsubscribed
+            ? "unsubscribed"
+            : "active",
+
+        updatedAt:
+          serverTimestamp(),
+
+        unsubscribedAt:
+          becomingUnsubscribed
+            ? serverTimestamp()
+            : null
+      }
+    );
+
+    showDashboardMessage(
+      becomingUnsubscribed
+        ? "The subscriber was marked as unsubscribed."
+        : "The subscriber was reactivated.",
+      "success"
+    );
+
+    await loadSubscribers();
+  } catch (error) {
+    handleAdminWriteError(
+      "The subscriber status could not be updated.",
+      error
+    );
+  }
+}
+
+async function deleteSubscriber(
+  subscriber
+) {
+  const confirmed =
+    window.confirm(
+      `Permanently delete ${subscriber.email} from the subscriber database?`
+    );
+
+  if (!confirmed) {
+    return;
+  }
+
+  try {
+    await deleteDoc(
+      doc(
+        db,
+        SUBSCRIBERS_COLLECTION,
+        subscriber.id
+      )
+    );
+
+    showDashboardMessage(
+      "The subscriber record was deleted.",
+      "success"
+    );
+
+    await loadSubscribers();
+  } catch (error) {
+    handleAdminWriteError(
+      "The subscriber could not be deleted.",
+      error
+    );
+  }
+}
+
+function exportSubscribersToCsv() {
+  const subscribers =
+    getFilteredSubscribers();
+
+  if (subscribers.length === 0) {
+    showDashboardMessage(
+      "There are no subscriber records to export in the current view.",
+      "error"
+    );
+
+    return;
+  }
+
+  const rows = [
+    [
+      "Name",
+      "Email",
+      "Status",
+      "Source",
+      "Joined Date",
+      "Unsubscribed Date"
+    ],
+
+    ...subscribers.map(subscriber => {
+      return [
+        subscriber.name,
+        subscriber.email,
+        subscriber.status,
+        subscriber.source,
+        formatDate(subscriber.joinedDate),
+        subscriber.unsubscribedDate
+          ? formatDate(
+              subscriber.unsubscribedDate
+            )
+          : ""
+      ];
+    })
+  ];
+
+  const csv =
+    rows
+      .map(row => {
+        return row
+          .map(value => {
+            return `"${String(value || "")
+              .replace(/"/g, '""')}"`;
+          })
+          .join(",");
+      })
+      .join("\n");
+
+  const blob =
+    new Blob(
+      [csv],
+      {
+        type:
+          "text/csv;charset=utf-8"
+      }
+    );
+
+  const url =
+    URL.createObjectURL(blob);
+
+  const link =
+    document.createElement("a");
+
+  link.href = url;
+  link.download =
+    `aby-remnant-list-${new Date()
+      .toISOString()
+      .slice(0, 10)}.csv`;
+
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  URL.revokeObjectURL(url);
+
+  showDashboardMessage(
+    `${subscribers.length} subscriber record${subscribers.length === 1 ? "" : "s"} exported.`,
+    "success"
+  );
 }
 
 
