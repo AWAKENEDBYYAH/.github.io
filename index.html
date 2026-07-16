@@ -1593,15 +1593,125 @@
     }
 
     .signup-form {
-      margin-top: 1.1rem;
-      display: flex;
-      justify-content: center;
+      margin: 1.25rem auto 0;
+      width: min(720px, 100%);
+      display: grid;
+      grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
+      gap: 0.8rem;
+      text-align: left;
+    }
+
+    .remnant-field{
+      display:grid;
+      gap:0.4rem;
+    }
+
+    .remnant-field--full{
+      grid-column:1 / -1;
+    }
+
+    .remnant-field label{
+      color:#fbbf24;
+      font-size:0.67rem;
+      font-weight:900;
+      letter-spacing:0.13em;
+      text-transform:uppercase;
+    }
+
+    .remnant-field input{
+      width:100%;
+      min-height:50px;
+      padding:0 0.9rem;
+      border-radius:13px;
+      border:1px solid rgba(251,191,36,0.38);
+      outline:none;
+      color:#f9fafb;
+      background:rgba(2,6,23,0.72);
+      transition:border-color .16s ease, box-shadow .16s ease;
+    }
+
+    .remnant-field input:focus{
+      border-color:#fbbf24;
+      box-shadow:0 0 0 3px rgba(251,191,36,0.10);
+    }
+
+    .remnant-consent{
+      grid-column:1 / -1;
+      display:flex;
+      align-items:flex-start;
+      gap:0.65rem;
+      color:#cbd5e1;
+      font-size:0.75rem;
+      line-height:1.55;
+    }
+
+    .remnant-consent input{
+      width:18px;
+      height:18px;
+      margin-top:2px;
+      accent-color:#fbbf24;
+      flex:0 0 auto;
+    }
+
+    .remnant-consent a{
+      color:#fbbf24;
+      text-decoration:underline;
+      text-underline-offset:3px;
+    }
+
+    .remnant-submit{
+      grid-column:1 / -1;
+      justify-self:center;
+      min-width:min(330px,100%);
+      border:0;
+    }
+
+    .remnant-submit:disabled{
+      opacity:.65;
+      cursor:wait;
+      transform:none;
+    }
+
+    .remnant-message{
+      grid-column:1 / -1;
+      padding:0.8rem 0.9rem;
+      border-radius:12px;
+      font-size:0.78rem;
+      line-height:1.55;
+      text-align:center;
+    }
+
+    .remnant-message.is-success{
+      color:#d9ffe5;
+      border:1px solid rgba(74,222,128,.45);
+      background:rgba(74,222,128,.08);
+    }
+
+    .remnant-message.is-error{
+      color:#ffd9d9;
+      border:1px solid rgba(248,113,113,.45);
+      background:rgba(248,113,113,.08);
     }
 
     .signup-note {
-      margin-top: 0.65rem;
+      margin-top: 0.75rem;
       font-size: 0.78rem;
       color: #9ca3af;
+    }
+
+    @media(max-width:640px){
+      .signup-form{
+        grid-template-columns:1fr;
+      }
+
+      .remnant-field,
+      .remnant-field--full{
+        grid-column:1;
+      }
+
+      .remnant-submit{
+        width:100%;
+      }
     }
 
     .site-footer {
@@ -2680,14 +2790,81 @@
             Get updates when new music, videos, releases, and exclusive drops are available.
           </p>
 
-          <div class="signup-form">
-            <a class="btn btn-primary" href="mailto:info@awakenedbyyahmusic.com?subject=Join%20The%20Remnant%20List">
-              Join By Email
-            </a>
-          </div>
+          <form
+            id="remnantSignupForm"
+            class="signup-form"
+            novalidate
+          >
+            <div class="remnant-field">
+              <label for="remnantName">
+                Name <span aria-hidden="true">(Optional)</span>
+              </label>
+
+              <input
+                id="remnantName"
+                name="name"
+                type="text"
+                autocomplete="name"
+                maxlength="80"
+                placeholder="Your name"
+              >
+            </div>
+
+            <div class="remnant-field">
+              <label for="remnantEmail">
+                Email Address
+              </label>
+
+              <input
+                id="remnantEmail"
+                name="email"
+                type="email"
+                inputmode="email"
+                autocomplete="email"
+                maxlength="160"
+                placeholder="you@example.com"
+                required
+              >
+            </div>
+
+            <label class="remnant-consent">
+              <input
+                id="remnantConsent"
+                name="consent"
+                type="checkbox"
+                required
+              >
+
+              <span>
+                I agree to receive music releases, videos, store news,
+                ministry updates, and announcements from AWAKENED BY YAH
+                MUSIC GROUP. I have read the
+                <a href="/privacy/" target="_blank" rel="noopener">
+                  Privacy Policy
+                </a>.
+              </span>
+            </label>
+
+            <button
+              id="remnantSubmitButton"
+              class="btn btn-primary remnant-submit"
+              type="submit"
+            >
+              Join The Remnant List
+            </button>
+
+            <div
+              id="remnantSignupMessage"
+              class="remnant-message"
+              role="status"
+              aria-live="polite"
+              hidden
+            ></div>
+          </form>
 
           <p class="signup-note">
-            Official contact: info@awakenedbyyahmusic.com
+            You may unsubscribe at any time. Subscription support:
+            support@awakenedbyyahmusic.com
           </p>
         </div>
       </section>
@@ -3031,6 +3208,191 @@
       setActiveTrack(0, false);
     });
   </script>
+  <!-- =====================================================
+       REMNANT LIST SUBSCRIPTION
+  ====================================================== -->
+  <script type="module">
+    import {
+      initializeApp,
+      getApps
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+    import {
+      getFirestore,
+      doc,
+      setDoc,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+    const remnantFirebaseConfig = {
+      apiKey: "AIzaSyC4i9NobSeKErPgoB0LkaRq82nTOc62YOw",
+      authDomain: "awakened-by-yah-live-tracker.firebaseapp.com",
+      projectId: "awakened-by-yah-live-tracker",
+      storageBucket: "awakened-by-yah-live-tracker.firebasestorage.app",
+      messagingSenderId: "28174425646",
+      appId: "1:28174425646:web:984c07adf4f38a542d09bf"
+    };
+
+    const remnantApp =
+      getApps().length > 0
+        ? getApps()[0]
+        : initializeApp(remnantFirebaseConfig);
+
+    const remnantDb =
+      getFirestore(remnantApp);
+
+    const remnantForm =
+      document.getElementById("remnantSignupForm");
+
+    const remnantSubmitButton =
+      document.getElementById("remnantSubmitButton");
+
+    const remnantMessage =
+      document.getElementById("remnantSignupMessage");
+
+    function showRemnantMessage(message, type) {
+      if (!remnantMessage) {
+        return;
+      }
+
+      remnantMessage.textContent = message;
+      remnantMessage.className =
+        `remnant-message ${type ? `is-${type}` : ""}`;
+      remnantMessage.hidden = !message;
+    }
+
+    function normalizeSubscriberEmail(value) {
+      return String(value || "")
+        .trim()
+        .toLowerCase();
+    }
+
+    function isValidSubscriberEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    async function createEmailFingerprint(email) {
+      const encoded =
+        new TextEncoder().encode(email);
+
+      const digest =
+        await crypto.subtle.digest(
+          "SHA-256",
+          encoded
+        );
+
+      return Array.from(
+        new Uint8Array(digest)
+      )
+        .map(byte => {
+          return byte
+            .toString(16)
+            .padStart(2, "0");
+        })
+        .join("");
+    }
+
+    remnantForm?.addEventListener(
+      "submit",
+      async event => {
+        event.preventDefault();
+
+        const formData =
+          new FormData(remnantForm);
+
+        const name =
+          String(formData.get("name") || "")
+            .trim()
+            .replace(/\s+/g, " ")
+            .slice(0, 80);
+
+        const email =
+          normalizeSubscriberEmail(
+            formData.get("email")
+          );
+
+        const consent =
+          formData.get("consent") === "on";
+
+        if (!isValidSubscriberEmail(email)) {
+          showRemnantMessage(
+            "Enter a valid email address.",
+            "error"
+          );
+          return;
+        }
+
+        if (!consent) {
+          showRemnantMessage(
+            "Please confirm that you agree to receive email updates.",
+            "error"
+          );
+          return;
+        }
+
+        remnantSubmitButton.disabled = true;
+        remnantSubmitButton.textContent =
+          "Joining…";
+        showRemnantMessage("", "");
+
+        try {
+          const subscriberId =
+            await createEmailFingerprint(email);
+
+          await setDoc(
+            doc(
+              remnantDb,
+              "subscribers",
+              subscriberId
+            ),
+            {
+              name,
+              email,
+              emailNormalized: email,
+              status: "active",
+              source: "homepage",
+              consent: true,
+              joinedAt: serverTimestamp(),
+              updatedAt: serverTimestamp(),
+              unsubscribedAt: null
+            }
+          );
+
+          remnantForm.reset();
+
+          showRemnantMessage(
+            "Welcome to the Remnant List! Your email has been added successfully.",
+            "success"
+          );
+        } catch (error) {
+          console.error(
+            "Remnant List signup failed:",
+            error
+          );
+
+          if (
+            error?.code ===
+            "permission-denied"
+          ) {
+            showRemnantMessage(
+              "This email may already be subscribed, or the subscription system is still being activated.",
+              "error"
+            );
+          } else {
+            showRemnantMessage(
+              "Your subscription could not be completed. Please try again.",
+              "error"
+            );
+          }
+        } finally {
+          remnantSubmitButton.disabled = false;
+          remnantSubmitButton.textContent =
+            "Join The Remnant List";
+        }
+      }
+    );
+  </script>
+
 <link rel="stylesheet" href="/css/live-dashboard.css">
 <script type="module" src="/js/firebase-live.js"></script>
  <script type="module" src="/js/live-ui.js"></script>
