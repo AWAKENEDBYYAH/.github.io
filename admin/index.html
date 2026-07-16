@@ -517,6 +517,23 @@
             Artist Responses
           </button>
 
+
+          <button
+            class="admin-nav-item"
+            type="button"
+            data-admin-view="subscribers"
+          >
+            <span aria-hidden="true">✉</span>
+            Subscribers
+
+            <span
+              id="subscriberNavBadge"
+              class="nav-count"
+            >
+              0
+            </span>
+          </button>
+
         </nav>
 
 
@@ -649,6 +666,21 @@
 
               <span class="dashboard-stat-note">
                 Approved reviews
+              </span>
+            </article>
+
+
+            <article class="dashboard-stat-card">
+              <span class="dashboard-stat-label">
+                Active Subscribers
+              </span>
+
+              <strong id="activeSubscriberCount">
+                0
+              </strong>
+
+              <span class="dashboard-stat-note">
+                Remnant List
               </span>
             </article>
 
@@ -881,6 +913,86 @@
           <div
             id="artistResponsesList"
             class="admin-review-list"
+          ></div>
+
+        </section>
+
+
+        <!-- REMNANT LIST SUBSCRIBERS -->
+
+        <section
+          id="subscribersView"
+          class="admin-view"
+          data-view-panel="subscribers"
+          hidden
+        >
+
+          <div class="view-heading subscriber-view-heading">
+
+            <div>
+              <p class="panel-eyebrow">
+                EMAIL COMMUNITY
+              </p>
+
+              <h3>
+                Remnant List Subscribers
+              </h3>
+
+              <p>
+                Search, export, activate, deactivate, or remove subscriber records.
+              </p>
+            </div>
+
+            <button
+              id="exportSubscribersButton"
+              class="header-action-button header-action-button--gold"
+              type="button"
+            >
+              Export CSV
+            </button>
+
+          </div>
+
+          <div class="subscriber-toolbar">
+
+            <label class="subscriber-search">
+              <span>Search Subscribers</span>
+
+              <input
+                id="subscriberSearchInput"
+                type="search"
+                placeholder="Search by name or email"
+                autocomplete="off"
+              >
+            </label>
+
+            <label class="subscriber-filter">
+              <span>Status</span>
+
+              <select id="subscriberStatusFilter">
+                <option value="all">All Subscribers</option>
+                <option value="active">Active</option>
+                <option value="unsubscribed">Unsubscribed</option>
+              </select>
+            </label>
+
+            <div class="subscriber-summary">
+              <span>
+                Active:
+                <strong id="subscriberActiveSummary">0</strong>
+              </span>
+
+              <span>
+                Unsubscribed:
+                <strong id="subscriberUnsubscribedSummary">0</strong>
+              </span>
+            </div>
+
+          </div>
+
+          <div
+            id="subscribersList"
+            class="subscriber-list"
           ></div>
 
         </section>
