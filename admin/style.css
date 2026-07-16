@@ -969,7 +969,7 @@ img {
 .dashboard-statistics {
   display: grid;
   grid-template-columns:
-    repeat(4, minmax(0, 1fr));
+    repeat(5, minmax(0, 1fr));
   gap: 14px;
 }
 
@@ -1662,5 +1662,228 @@ img {
 
   .artist-response-actions .admin-action-button {
     width: 100%;
+  }
+}
+
+/* =========================================================
+   REMNANT LIST SUBSCRIBERS
+========================================================= */
+
+.subscriber-view-heading {
+  align-items: center;
+}
+
+.subscriber-toolbar {
+  margin-top: 14px;
+  padding: 14px;
+  display: grid;
+  grid-template-columns:
+    minmax(230px, 1fr)
+    minmax(160px, 220px)
+    auto;
+  gap: 12px;
+  align-items: end;
+  border: 1px solid var(--aby-line);
+  border-radius: 14px;
+  background: #090806;
+}
+
+.subscriber-search,
+.subscriber-filter {
+  display: grid;
+  gap: 7px;
+}
+
+.subscriber-search span,
+.subscriber-filter span {
+  color: var(--aby-gold-light);
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.subscriber-search input,
+.subscriber-filter select {
+  width: 100%;
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: 1px solid var(--aby-line);
+  outline: none;
+  color: var(--aby-text);
+  background: #050504;
+}
+
+.subscriber-search input:focus,
+.subscriber-filter select:focus {
+  border-color: var(--aby-gold);
+  box-shadow:
+    0 0 0 3px
+    rgba(215, 168, 61, 0.09);
+}
+
+.subscriber-summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+  color: var(--aby-muted);
+  font-size: 0.68rem;
+}
+
+.subscriber-summary strong {
+  color: var(--aby-gold-light);
+}
+
+.subscriber-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.subscriber-card {
+  padding: 15px;
+  display: grid;
+  grid-template-columns:
+    minmax(220px, 1fr)
+    minmax(300px, 1.25fr)
+    auto;
+  gap: 16px;
+  align-items: center;
+  border: 1px solid var(--aby-line);
+  border-radius: 15px;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(215, 168, 61, 0.045),
+      transparent 44%
+    ),
+    #090806;
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.3);
+}
+
+.subscriber-card__identity {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.subscriber-card__avatar {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #080706;
+  background:
+    linear-gradient(
+      180deg,
+      var(--aby-gold-light),
+      var(--aby-gold)
+    );
+  font-family: "Cinzel", serif;
+  font-weight: 800;
+}
+
+.subscriber-card h4 {
+  margin: 0;
+  color: var(--aby-cream);
+  font-family: "Cinzel", serif;
+  font-size: 0.86rem;
+}
+
+.subscriber-card__identity a {
+  display: inline-block;
+  margin-top: 4px;
+  color: var(--aby-gold-light);
+  font-size: 0.72rem;
+  overflow-wrap: anywhere;
+}
+
+.subscriber-card__details {
+  display: grid;
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.subscriber-card__details span {
+  padding: 9px 10px;
+  border: 1px solid rgba(215, 168, 61, 0.16);
+  border-radius: 9px;
+  color: var(--aby-muted);
+  background: rgba(0, 0, 0, 0.25);
+  font-size: 0.58rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.subscriber-card__details strong {
+  display: block;
+  margin-top: 4px;
+  color: var(--aby-text);
+  font-size: 0.66rem;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.subscriber-status--active {
+  color: var(--aby-success) !important;
+}
+
+.subscriber-status--unsubscribed {
+  color: var(--aby-danger) !important;
+}
+
+.subscriber-card__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 1160px) {
+  .dashboard-statistics {
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+  }
+
+  .subscriber-card {
+    grid-template-columns:
+      minmax(220px, 1fr)
+      minmax(300px, 1fr);
+  }
+
+  .subscriber-card__actions {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 850px) {
+  .subscriber-toolbar {
+    grid-template-columns: 1fr;
+  }
+
+  .subscriber-summary {
+    justify-content: flex-start;
+  }
+
+  .subscriber-card {
+    grid-template-columns: 1fr;
+  }
+
+  .subscriber-card__details {
+    grid-template-columns: 1fr;
+  }
+
+  .subscriber-card__actions {
+    grid-column: auto;
+    justify-content: flex-start;
   }
 }
