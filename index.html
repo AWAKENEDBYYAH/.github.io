@@ -110,9 +110,9 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 
-  <title>AWAKENED BY YAH | Official Website | Truth-Based Soul &amp; Cinematic Praise</title>
+  <title>THE MERCY SEAT | AWAKENED BY YAH Official Website</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="AWAKENED BY YAH Official Website. Stream unlimited truth-based music, explore albums, rate songs, watch videos, and support the movement. Exclusive releases available only here." />
+  <meta name="description" content="Experience THE MERCY SEAT, the official worship video by AWAKENED BY YAH. Truth-based soul, cinematic praise, albums, music, videos, and the official digital store." />
 
   <!-- ✅ OPEN GRAPH (GOOGLE / SOCIAL PREVIEW) -->
   <meta property="og:type" content="website" />
@@ -120,7 +120,7 @@
   <meta property="og:url" content="https://awakenedbyyahmusic.com/" />
   <meta property="og:title" content="AWAKENED BY YAH | Official Website" />
   <meta property="og:description" content="Stream unlimited truth-based music, explore albums, rate songs, watch videos, and support the movement. Exclusive releases available only here." />
-  <meta property="og:image" content="https://awakenedbyyahmusic.com/images/og-awakened-by-yah.jpg" />
+  <meta property="og:image" content="https://awakenedbyyahmusic.com/images/mercy-seat-cover.webp" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
 
@@ -128,7 +128,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="AWAKENED BY YAH | Official Website" />
   <meta name="twitter:description" content="Stream unlimited truth-based music, explore albums, rate songs, watch videos, and support the movement. Exclusive releases available only here." />
-  <meta name="twitter:image" content="https://awakenedbyyahmusic.com/images/og-awakened-by-yah.jpg" />
+  <meta name="twitter:image" content="https://awakenedbyyahmusic.com/images/mercy-seat-cover.webp" />
 
   <!-- CINZEL BOLD (intro title) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -2132,6 +2132,318 @@
       #photoHit, #introOverlay.fadeOut{ transition:none; }
     }
     /* ===================== END INTRO ===================== */
+  
+    /* ===================== THE MERCY SEAT HOMEPAGE PREMIERE ===================== */
+    .mercy-premiere{
+      margin:1.65rem auto 2.25rem;
+      width:100%;
+    }
+
+    .mercy-premiere__panel{
+      position:relative;
+      overflow:hidden;
+      display:grid;
+      grid-template-columns:minmax(250px, 360px) minmax(0, 1fr);
+      gap:1.75rem;
+      align-items:center;
+      padding:1.65rem;
+      border-radius:28px;
+      border:1px solid rgba(251,191,36,.52);
+      background:
+        radial-gradient(circle at 18% 8%, rgba(251,191,36,.22), transparent 34%),
+        radial-gradient(circle at 88% 88%, rgba(120,53,15,.24), transparent 42%),
+        linear-gradient(145deg, rgba(13,10,5,.99), rgba(2,3,8,.99));
+      box-shadow:
+        0 30px 72px rgba(0,0,0,.82),
+        inset 0 1px 0 rgba(255,255,255,.04),
+        0 0 30px rgba(251,191,36,.12);
+    }
+
+    .mercy-premiere__panel::before{
+      content:"";
+      position:absolute;
+      inset:-35%;
+      pointer-events:none;
+      background:
+        conic-gradient(from 180deg at 50% 50%,
+          transparent 0 22%,
+          rgba(251,191,36,.07) 26%,
+          transparent 31% 72%,
+          rgba(255,255,255,.05) 76%,
+          transparent 82%);
+      animation:mercyLightTurn 18s linear infinite;
+    }
+
+    @keyframes mercyLightTurn{
+      to{ transform:rotate(360deg); }
+    }
+
+    .mercy-premiere__art,
+    .mercy-premiere__content{
+      position:relative;
+      z-index:1;
+      min-width:0;
+    }
+
+    .mercy-premiere__art{
+      border-radius:22px;
+      overflow:hidden;
+      border:1px solid rgba(251,191,36,.72);
+      background:#070502;
+      box-shadow:
+        0 24px 58px rgba(0,0,0,.82),
+        0 0 34px rgba(251,191,36,.18);
+    }
+
+    .mercy-premiere__art img{
+      width:100%;
+      aspect-ratio:1/1;
+      display:block;
+      object-fit:cover;
+    }
+
+    .aby-exclusive-seal{
+      width:min(100%, 520px);
+      margin:0 auto 1rem;
+      padding:14px 22px;
+      position:relative;
+      text-align:center;
+      border-radius:18px;
+      border:1px solid #d69a16;
+      background:
+        linear-gradient(145deg, rgba(255,224,133,.15), rgba(112,66,4,.05)),
+        linear-gradient(180deg, #171006, #080603);
+      box-shadow:
+        inset 0 1px 0 rgba(255,244,204,.45),
+        inset 0 -2px 5px rgba(0,0,0,.86),
+        0 12px 30px rgba(0,0,0,.64),
+        0 0 20px rgba(251,191,36,.16);
+    }
+
+    .aby-exclusive-seal::before,
+    .aby-exclusive-seal::after{
+      content:"◆";
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%) rotate(45deg);
+      color:#fbbf24;
+      font-size:.56rem;
+      text-shadow:0 0 10px rgba(251,191,36,.72);
+    }
+
+    .aby-exclusive-seal::before{ left:14px; }
+    .aby-exclusive-seal::after{ right:14px; }
+
+    .aby-exclusive-seal strong{
+      display:block;
+      font-family:"Cinzel", serif;
+      font-size:clamp(1rem, 2.1vw, 1.45rem);
+      line-height:1.15;
+      letter-spacing:.24em;
+      text-transform:uppercase;
+      color:#f7cf66;
+      background:linear-gradient(180deg,#fff1a8 0%,#f5bf37 42%,#9c5b05 76%,#ffe48a 100%);
+      -webkit-background-clip:text;
+      background-clip:text;
+      -webkit-text-fill-color:transparent;
+      filter:drop-shadow(0 2px 0 rgba(64,32,0,.9));
+    }
+
+    .aby-exclusive-seal span{
+      display:block;
+      margin-top:.3rem;
+      color:#e8d6a5;
+      font-size:.64rem;
+      font-weight:800;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+    }
+
+    .mercy-premiere h2{
+      margin:0;
+      text-align:center;
+      font-family:"Cinzel",serif;
+      font-size:clamp(1.75rem, 3.4vw, 3rem);
+      line-height:1.08;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color:#f9fafb;
+      text-shadow:0 10px 30px rgba(0,0,0,.9);
+    }
+
+    .mercy-premiere__artist{
+      margin:.45rem 0 .85rem;
+      text-align:center;
+      color:#fbbf24;
+      font-size:.72rem;
+      font-weight:900;
+      letter-spacing:.25em;
+      text-transform:uppercase;
+    }
+
+    .mercy-premiere__message{
+      max-width:720px;
+      margin:0 auto 1rem;
+      text-align:center;
+      color:#e8e0cf;
+      font-size:.96rem;
+      line-height:1.72;
+    }
+
+    .mercy-video-wrap{
+      width:100%;
+      overflow:hidden;
+      border-radius:20px;
+      border:1px solid rgba(251,191,36,.5);
+      background:#000;
+      box-shadow:0 20px 48px rgba(0,0,0,.8);
+    }
+
+    .mercy-video-wrap video{
+      width:100%;
+      display:block;
+      aspect-ratio:16/9;
+      background:#000;
+      object-fit:contain;
+    }
+
+    .mercy-premiere__buttons{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:.7rem;
+      margin-top:1rem;
+    }
+
+    .mercy-premiere__button{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:46px;
+      padding:.75rem 1.15rem;
+      border-radius:999px;
+      border:1px solid rgba(251,191,36,.52);
+      background:rgba(16,11,4,.9);
+      color:#f4dfaa;
+      font-size:.72rem;
+      font-weight:900;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      transition:transform .15s ease, background .15s ease, border-color .15s ease;
+    }
+
+    .mercy-premiere__button:hover{
+      transform:translateY(-1px);
+      border-color:#fbbf24;
+      background:rgba(251,191,36,.12);
+    }
+
+    .mercy-premiere__button--gold{
+      color:#161006;
+      border-color:rgba(0,0,0,.18);
+      background:linear-gradient(120deg,#d98b08,#f7ce55,#d98b08);
+      box-shadow:0 10px 24px rgba(0,0,0,.5);
+    }
+
+    .mercy-lyrics{
+      margin-top:1rem;
+      border-radius:16px;
+      border:1px solid rgba(251,191,36,.28);
+      background:rgba(2,6,23,.58);
+    }
+
+    .mercy-lyrics summary{
+      cursor:pointer;
+      padding:.85rem 1rem;
+      text-align:center;
+      color:#fbbf24;
+      font-size:.72rem;
+      font-weight:900;
+      letter-spacing:.16em;
+      text-transform:uppercase;
+      list-style:none;
+    }
+
+    .mercy-lyrics summary::-webkit-details-marker{ display:none; }
+
+    .mercy-lyrics__text{
+      max-height:390px;
+      overflow:auto;
+      padding:0 1.1rem 1.15rem;
+      text-align:center;
+      white-space:pre-line;
+      color:#e5e7eb;
+      font-size:.86rem;
+      line-height:1.75;
+    }
+
+    .hero.hero--single{
+      grid-template-columns:1fr;
+    }
+
+    .hero.hero--single .hero-left{
+      text-align:center;
+    }
+
+    .hero.hero--single .hero-copy{
+      margin-left:auto;
+      margin-right:auto;
+    }
+
+    .hero.hero--single .hero-cta-row{
+      justify-content:center;
+    }
+
+    .hero.hero--single .support-work p{
+      margin-left:auto;
+      margin-right:auto;
+    }
+
+    @media(max-width:900px){
+      .mercy-premiere__panel{
+        grid-template-columns:1fr;
+        text-align:center;
+        padding:1.25rem;
+      }
+
+      .mercy-premiere__art{
+        width:min(420px, 100%);
+        margin:0 auto;
+      }
+    }
+
+    @media(max-width:640px){
+      .mercy-premiere{
+        margin-top:1.15rem;
+      }
+
+      .mercy-premiere__panel{
+        padding:1rem;
+        border-radius:20px;
+      }
+
+      .aby-exclusive-seal{
+        padding:12px 30px;
+      }
+
+      .mercy-premiere h2{
+        letter-spacing:.09em;
+      }
+
+      .mercy-premiere__message{
+        font-size:.9rem;
+      }
+
+      .mercy-premiere__button{
+        width:100%;
+      }
+
+      .mercy-video-wrap{
+        border-radius:14px;
+      }
+    }
+    /* ===================== END THE MERCY SEAT HOMEPAGE PREMIERE ===================== */
+
   </style>
 
  <script type="application/ld+json">
@@ -2141,7 +2453,7 @@
   "name": "AWAKENED BY YAH",
   "url": "https://awakenedbyyahmusic.com/",
   "logo": "https://awakenedbyyahmusic.com/images/aby-official-logo.png",
-  "image": "https://awakenedbyyahmusic.com/images/og-awakened-by-yah.jpg",
+  "image": "https://awakenedbyyahmusic.com/images/mercy-seat-cover.webp",
   "description": "AWAKENED BY YAH is an independent music artist brand producing cinematic, spiritually conscious albums including The Battlefield (2026), Kingdom Biz (2025), and The Rise of Yasharal (2025).",
   "genre": ["Spiritual", "Cinematic", "Inspirational"],
   "sameAs": [
@@ -2489,58 +2801,137 @@
       </div>
 
 
-      <!-- ===================== FEATURED RELEASE: THE BOOK IS OPEN ===================== -->
-      <section class="featured-release" aria-label="Featured release The Book Is Open">
-        <div class="featured-release-grid">
+      <!-- ===================== THE MERCY SEAT HOMEPAGE PREMIERE ===================== -->
+      <section class="mercy-premiere" aria-labelledby="mercy-seat-title">
+        <div class="mercy-premiere__panel">
 
-          <div class="featured-release-cover">
-            <img src="/images/the-book-is-open-cover.png" alt="THE BOOK IS OPEN - AWAKENED BY YAH official cover art">
+          <div class="mercy-premiere__art">
+            <img
+              src="/images/mercy-seat-cover.webp"
+              alt="THE MERCY SEAT by AWAKENED BY YAH official cover artwork"
+              width="1200"
+              height="1200"
+              loading="eager"
+              fetchpriority="high"
+            >
           </div>
 
-          <div class="featured-release-content">
-            <span class="featured-kicker">🔥 AVAILABLE NOW</span>
-
-            <h2>THE BOOK IS OPEN</h2>
-
-            <p class="featured-description">
-              <strong>THE BOOK IS OPEN – Digital Collector's Edition</strong> is now available.
-              This powerful Neo-Soul single calls listeners to examine their lives before YAHUAH as
-              every deed, every word, every choice, and every work is brought into remembrance.
-            </p>
-
-            <blockquote>
-              “And the books were opened... and the dead were judged according to their works.”
-              <br><strong>Revelation 20:12</strong>
-            </blockquote>
-
-            <audio
-              id="featured-book-player"
-              controls
-              preload="metadata"
-              data-track-title="THE BOOK IS OPEN"
-            >
-              <source src="/audio/THE BOOK IS OPEN.mp3" type="audio/mpeg">
-              Your browser does not support the audio element.
-            </audio>
-
-            <div class="featured-buttons">
-              <a href="https://payhip.com/b/W0Uxr" class="featured-btn gold" target="_blank" rel="noopener">
-                GET DIGITAL COLLECTOR'S EDITION
-              </a>
-              <a href="/music/" class="featured-btn">STREAM NOW</a>
-              <a href="/store/" class="featured-btn">VISIT DIGITAL STORE</a>
+          <div class="mercy-premiere__content">
+            <div class="aby-exclusive-seal" aria-label="ABY Exclusive">
+              <strong>ABY Exclusive</strong>
+              <span>Official Worship Video Premiere</span>
             </div>
 
-            <p class="featured-platform-note">
-              Includes official MP3 • cover artwork • lyric booklet • exclusive thank-you bonus
+            <h2 id="mercy-seat-title">THE MERCY SEAT</h2>
+            <p class="mercy-premiere__artist">AWAKENED BY YAH</p>
+
+            <p class="mercy-premiere__message">
+              The Mercy Seat is where we find atonement, where mercy is extended,
+              and where we draw near to YAHUAH in repentance, worship, and reverence.
             </p>
+
+            <div class="mercy-video-wrap" id="mercy-seat-video">
+              <video
+                controls
+                preload="metadata"
+                playsinline
+                poster="/images/mercy-seat-cover.webp"
+                aria-label="THE MERCY SEAT official worship video"
+              >
+                <source src="/media/the-mercy-seat.mp4" type="video/mp4">
+                Your browser does not support HTML5 video.
+              </video>
+            </div>
+
+            <div class="mercy-premiere__buttons">
+              <a class="mercy-premiere__button mercy-premiere__button--gold" href="#mercy-seat-video">
+                Watch the Video
+              </a>
+              <a class="mercy-premiere__button" href="/store/">
+                Own the Song
+              </a>
+              <a class="mercy-premiere__button" href="/music/">
+                Browse Music
+              </a>
+              <a
+                class="mercy-premiere__button"
+                href="https://www.tiktok.com/@awakened_by_yah/video/7665173586440621326"
+                target="_blank"
+                rel="noopener"
+              >
+                Watch on TikTok
+              </a>
+            </div>
+
+            <details class="mercy-lyrics" id="mercy-seat-lyrics">
+              <summary>Read Selected Lyrics</summary>
+              <div class="mercy-lyrics__text">YAHUAH...
+
+Yaaaaaaahuaaaaaah...
+
+Yaaaaaaahuaaaaaah...
+
+YAHUAH...
+
+I draw near...
+
+To Your Mercy Seat...
+
+Where mercy waits...
+
+For those You call...
+
+Where atonement flows...
+
+From Your loving hand...
+
+YAHUAH...
+
+Draw us near...
+
+Draw us close...
+
+To Your Mercy Seat...
+
+Your mercy has carried me...
+
+Your love remains forever true...
+
+Your loving hand has covered me...
+
+Your mercy endures forever...
+
+You are worthy...
+
+So worthy...
+
+Teach us now to walk Your ways...
+
+To trust Your voice...
+
+To seek Your face...
+
+There is none like You...
+
+No other beside You...
+
+You are Holy...
+
+You are worthy...
+
+Your mercy endures forever...
+
+YAHUAH...
+
+We worship You...</div>
+            </details>
           </div>
 
         </div>
       </section>
-      <!-- ===================== END FEATURED RELEASE ===================== -->
+      <!-- ===================== END THE MERCY SEAT HOMEPAGE PREMIERE ===================== -->
 
-      <section class="hero">
+      <section class="hero hero--single">
         <div class="hero-left">
           <p class="eyebrow">TRUTH-BASED • SET-APART</p>
 
@@ -2550,46 +2941,22 @@
           </h1>
 
           <p class="hero-copy">
-            Welcome to the official home of <strong>Awakened By YAH</strong> — music for the
+            Welcome to the official home of <strong>AWAKENED BY YAH</strong> — music for the
             Remnant that refuses to compromise. Press play, feel the conviction, and let your
             Ruah rise.
           </p>
 
           <div class="hero-cta-row">
-            <a href="#music" class="btn btn-primary">🎧 Listen &amp; Download</a>
-            <a href="#signup" class="btn btn-outline">Join The Remnant List</a>
+            <a href="/music/" class="btn btn-primary">Listen &amp; Download</a>
+            <a href="#signup" class="btn btn-outline">Join the Remnant List</a>
+            <a href="/albums/" class="btn btn-outline">Explore Albums</a>
           </div>
 
           <div class="support-work" aria-label="Support the work">
-            <p>If this music speaks to you,<br>support the work and help carry the message forward.</p>
-            <a href="/subscribe/" class="btn btn-outline support-btn">SUPPORT THE MINISTRY</a>
+            <p>If this music speaks to you, support the work and help carry the message forward.</p>
+            <a href="/subscribe/" class="btn btn-outline support-btn">Support the Ministry</a>
           </div>
         </div>
-
-        <aside class="hero-right" aria-label="Also available">
-          <div class="hero-right-inner">
-            <div class="release-player-card">
-              <p class="release-kicker">Also Available</p>
-              <h2 class="release-title">Physical Releases</h2>
-              <p class="release-subtitle">CD • Vinyl • Direct Support</p>
-
-              <div class="release-cover">
-                <img src="/images/transformation-aby.jpg" alt="The Transformation by AWAKENED BY YAH cover art" />
-              </div>
-
-              <p class="featured-description" style="font-size:0.86rem; line-height:1.6; max-width:360px; margin:0 auto;">
-                The Transformation CD is still available for supporters who want a physical copy.
-                Digital downloads and collector's editions are now featured first through the official store.
-              </p>
-
-              <div class="release-actions">
-                <a class="release-primary" href="/store/">DIGITAL STORE</a>
-                <a href="/order-now/">CD ORDER FORM</a>
-                <a href="/albums/">PHYSICAL ALBUMS</a>
-              </div>
-            </div>
-          </div>
-        </aside>
       </section>
 
       <section class="bf-feature" aria-label="Featured release: The Battlefield">
